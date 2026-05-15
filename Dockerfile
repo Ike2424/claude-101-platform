@@ -57,8 +57,8 @@ COPY --from=builder --chown=app:app /build/scripts ./scripts
 COPY --from=builder --chown=app:app /build/public ./public
 
 # Volumen para SQLite (si DB_DRIVER=sqlite)
+# To persist /app/db, attach a Railway Volume via the dashboard mounted at /app/db
 RUN mkdir -p /app/db && chown -R app:app /app/db
-VOLUME /app/db
 
 USER app
 
