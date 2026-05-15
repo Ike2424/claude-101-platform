@@ -1,0 +1,1927 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude 101 · Curso de formación</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Geist:wght@300..700&family=Geist+Mono:wght@400..600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F4EFE3;
+    --bg-2: #EFE9DA;
+    --card: #FBF8F0;
+    --ink: #1C1A16;
+    --ink-2: #3A352D;
+    --muted: #756B5B;
+    --muted-2: #A39782;
+    --line: #E1D8C2;
+    --line-2: #CFC4AA;
+    --accent: #C8542B;
+    --accent-2: #8B3A1E;
+    --olive: #4F5D38;
+    --gold: #B08436;
+    --shadow: 0 1px 0 rgba(28,26,22,.04), 0 2px 8px rgba(28,26,22,.04);
+    --shadow-lg: 0 4px 24px rgba(28,26,22,.08), 0 1px 0 rgba(28,26,22,.04);
+    --display: 'Fraunces', Georgia, serif;
+    --body: 'Geist', system-ui, sans-serif;
+    --mono: 'Geist Mono', ui-monospace, monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    height: 100%;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: 15px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    background-image:
+      radial-gradient(circle at 12% 8%, rgba(200, 84, 43, 0.06) 0%, transparent 40%),
+      radial-gradient(circle at 88% 92%, rgba(79, 93, 56, 0.05) 0%, transparent 40%);
+    min-height: 100vh;
+  }
+
+  /* === Header === */
+  header {
+    border-bottom: 1px solid var(--line);
+    background: rgba(244, 239, 227, 0.9);
+    backdrop-filter: blur(12px);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+
+  .header-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 18px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+
+  .brand {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+  }
+
+  .brand-mark {
+    font-family: var(--display);
+    font-weight: 400;
+    font-style: italic;
+    font-size: 28px;
+    letter-spacing: -0.02em;
+    font-variation-settings: "opsz" 144, "SOFT" 50;
+    color: var(--ink);
+  }
+
+  .brand-mark em {
+    font-style: normal;
+    color: var(--accent);
+  }
+
+  .brand-tag {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 4px 10px;
+    border: 1px solid var(--line-2);
+    border-radius: 100px;
+  }
+
+  .header-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .progress-pill {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-2);
+    background: var(--card);
+    border: 1px solid var(--line);
+    padding: 8px 14px;
+    border-radius: 100px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .progress-bar {
+    width: 80px;
+    height: 4px;
+    background: var(--line-2);
+    border-radius: 100px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--gold));
+    transition: width .4s cubic-bezier(.2,.8,.2,1);
+  }
+
+  .mode-toggle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 14px;
+    border: 1px solid var(--line-2);
+    background: var(--card);
+    border-radius: 100px;
+    cursor: pointer;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-2);
+    transition: all .2s;
+  }
+
+  .mode-toggle:hover {
+    border-color: var(--ink-2);
+  }
+
+  .mode-toggle.active {
+    background: var(--ink);
+    color: var(--bg);
+    border-color: var(--ink);
+  }
+
+  .mode-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--muted-2);
+  }
+
+  .mode-toggle.active .mode-dot {
+    background: var(--accent);
+    box-shadow: 0 0 8px var(--accent);
+  }
+
+  /* === Layout === */
+  .app {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 340px 1fr;
+    gap: 32px;
+    padding: 32px;
+    align-items: start;
+  }
+
+  /* === Sidebar === */
+  aside {
+    position: sticky;
+    top: 96px;
+    max-height: calc(100vh - 120px);
+    overflow-y: auto;
+    padding-right: 8px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--line-2) transparent;
+  }
+
+  aside::-webkit-scrollbar { width: 6px; }
+  aside::-webkit-scrollbar-thumb { background: var(--line-2); border-radius: 100px; }
+
+  .toc-intro {
+    margin-bottom: 28px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .toc-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+
+  .toc-title {
+    font-family: var(--display);
+    font-size: 32px;
+    line-height: 1.05;
+    font-weight: 400;
+    letter-spacing: -0.025em;
+    color: var(--ink);
+    font-variation-settings: "opsz" 144, "SOFT" 30;
+  }
+
+  .toc-title em {
+    font-style: italic;
+    color: var(--accent);
+    font-variation-settings: "opsz" 144, "SOFT" 80;
+  }
+
+  .module {
+    margin-bottom: 4px;
+  }
+
+  .module-header {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    padding: 10px 0;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .module-num {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    min-width: 22px;
+  }
+
+  .module-title {
+    font-family: var(--display);
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    flex: 1;
+  }
+
+  .module-chevron {
+    color: var(--muted-2);
+    transition: transform .2s;
+    font-size: 12px;
+  }
+
+  .module.open .module-chevron {
+    transform: rotate(90deg);
+    color: var(--accent);
+  }
+
+  .module-lessons {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height .3s ease;
+    margin-left: 32px;
+    border-left: 1px solid var(--line);
+  }
+
+  .module.open .module-lessons {
+    max-height: 600px;
+  }
+
+  .lesson {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 14px;
+    cursor: pointer;
+    color: var(--ink-2);
+    font-size: 13.5px;
+    border-left: 2px solid transparent;
+    margin-left: -1px;
+    transition: all .15s;
+    position: relative;
+  }
+
+  .lesson:hover {
+    color: var(--ink);
+    background: rgba(200, 84, 43, 0.04);
+  }
+
+  .lesson.active {
+    color: var(--accent);
+    border-left-color: var(--accent);
+    background: rgba(200, 84, 43, 0.06);
+    font-weight: 500;
+  }
+
+  .lesson-check {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 1px solid var(--line-2);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 9px;
+    color: white;
+  }
+
+  .lesson.done .lesson-check {
+    background: var(--olive);
+    border-color: var(--olive);
+  }
+
+  .lesson-num {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    min-width: 24px;
+  }
+
+  .lesson.active .lesson-num { color: var(--accent); }
+
+  .lesson-video-indicator {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--gold);
+    margin-left: auto;
+    opacity: 0;
+  }
+
+  .lesson.has-video .lesson-video-indicator { opacity: 1; }
+
+  /* === Main content === */
+  main {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    box-shadow: var(--shadow);
+    min-height: calc(100vh - 160px);
+    overflow: hidden;
+  }
+
+  .lesson-header {
+    padding: 48px 56px 32px;
+    border-bottom: 1px solid var(--line);
+    background: var(--bg-2);
+    position: relative;
+  }
+
+  .lesson-header::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--gold), var(--olive));
+  }
+
+  .lesson-breadcrumb {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .lesson-breadcrumb span:not(.sep) {
+    color: var(--ink-2);
+  }
+
+  .sep { color: var(--muted-2); }
+
+  .lesson-title {
+    font-family: var(--display);
+    font-size: 42px;
+    line-height: 1.05;
+    font-weight: 400;
+    letter-spacing: -0.025em;
+    color: var(--ink);
+    margin-bottom: 12px;
+    font-variation-settings: "opsz" 144, "SOFT" 40;
+  }
+
+  .lesson-title em {
+    font-style: italic;
+    color: var(--accent);
+    font-variation-settings: "opsz" 144, "SOFT" 100;
+  }
+
+  .lesson-summary {
+    font-size: 16px;
+    color: var(--ink-2);
+    max-width: 600px;
+    line-height: 1.55;
+  }
+
+  /* === Video area === */
+  .video-section {
+    padding: 32px 56px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .video-frame {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: var(--ink);
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+  }
+
+  .video-frame iframe,
+  .video-frame video {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
+  }
+
+  .video-empty {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background:
+      repeating-linear-gradient(45deg, transparent 0, transparent 12px, rgba(28,26,22,0.025) 12px, rgba(28,26,22,0.025) 13px),
+      var(--bg-2);
+    border: 1px dashed var(--line-2);
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    color: var(--muted);
+    text-align: center;
+    padding: 32px;
+  }
+
+  .video-empty-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--card);
+    border: 1px solid var(--line-2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--muted-2);
+  }
+
+  .video-empty-title {
+    font-family: var(--display);
+    font-size: 20px;
+    color: var(--ink-2);
+    font-style: italic;
+  }
+
+  .video-empty-sub {
+    font-size: 13px;
+    color: var(--muted);
+    max-width: 320px;
+  }
+
+  .video-controls {
+    margin-top: 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    justify-content: space-between;
+  }
+
+  .video-source {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+  }
+
+  .btn {
+    font-family: var(--body);
+    font-size: 13px;
+    font-weight: 500;
+    padding: 9px 16px;
+    border-radius: 100px;
+    border: 1px solid var(--line-2);
+    background: var(--card);
+    color: var(--ink-2);
+    cursor: pointer;
+    transition: all .15s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .btn:hover {
+    border-color: var(--ink-2);
+    color: var(--ink);
+  }
+
+  .btn-primary {
+    background: var(--ink);
+    color: var(--bg);
+    border-color: var(--ink);
+  }
+
+  .btn-primary:hover {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: white;
+  }
+
+  .btn-ghost {
+    background: transparent;
+    border-color: transparent;
+    color: var(--muted);
+  }
+
+  .btn-ghost:hover {
+    color: var(--accent);
+    background: rgba(200, 84, 43, 0.06);
+  }
+
+  .btn-danger:hover {
+    color: var(--accent-2);
+    border-color: var(--accent-2);
+  }
+
+  /* === Content === */
+  .lesson-body {
+    padding: 40px 56px 56px;
+    max-width: 760px;
+  }
+
+  .lesson-body h3 {
+    font-family: var(--display);
+    font-size: 24px;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    margin: 36px 0 14px;
+    color: var(--ink);
+    font-variation-settings: "opsz" 60;
+  }
+
+  .lesson-body h3:first-child { margin-top: 0; }
+
+  .lesson-body p {
+    margin-bottom: 16px;
+    color: var(--ink-2);
+    font-size: 15.5px;
+    line-height: 1.7;
+  }
+
+  .lesson-body ul, .lesson-body ol {
+    margin: 0 0 20px 0;
+    padding-left: 24px;
+  }
+
+  .lesson-body li {
+    margin-bottom: 8px;
+    color: var(--ink-2);
+    line-height: 1.6;
+  }
+
+  .lesson-body strong {
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  .lesson-body code {
+    font-family: var(--mono);
+    font-size: 13px;
+    background: var(--bg-2);
+    padding: 2px 6px;
+    border-radius: 3px;
+    color: var(--accent-2);
+    border: 1px solid var(--line);
+  }
+
+  .callout {
+    border-left: 3px solid var(--accent);
+    padding: 16px 20px;
+    background: rgba(200, 84, 43, 0.05);
+    margin: 24px 0;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .callout-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent-2);
+    margin-bottom: 6px;
+    font-weight: 600;
+  }
+
+  .callout p { margin-bottom: 0; }
+
+  .example {
+    background: var(--bg-2);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 20px;
+    margin: 20px 0;
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--ink-2);
+    line-height: 1.6;
+    white-space: pre-wrap;
+  }
+
+  .example-label {
+    font-family: var(--body);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--olive);
+    margin-bottom: 10px;
+    font-weight: 600;
+  }
+
+  /* === Footer of lesson === */
+  .lesson-footer {
+    padding: 28px 56px;
+    border-top: 1px solid var(--line);
+    background: var(--bg-2);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .complete-toggle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 18px;
+    border: 1px solid var(--line-2);
+    background: var(--card);
+    border-radius: 100px;
+    cursor: pointer;
+    font-size: 13px;
+    color: var(--ink-2);
+    transition: all .15s;
+  }
+
+  .complete-toggle:hover {
+    border-color: var(--olive);
+    color: var(--olive);
+  }
+
+  .complete-toggle.done {
+    background: var(--olive);
+    color: white;
+    border-color: var(--olive);
+  }
+
+  .nav-buttons {
+    display: flex;
+    gap: 10px;
+  }
+
+  /* === Modal === */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(28, 26, 22, 0.55);
+    backdrop-filter: blur(4px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    padding: 24px;
+  }
+
+  .modal-overlay.open {
+    display: flex;
+    animation: fadeIn .2s;
+  }
+
+  .modal {
+    background: var(--card);
+    border-radius: 6px;
+    max-width: 520px;
+    width: 100%;
+    box-shadow: 0 20px 60px rgba(0,0,0,.3);
+    overflow: hidden;
+    animation: slideUp .25s cubic-bezier(.2,.8,.2,1);
+  }
+
+  @keyframes fadeIn { from { opacity: 0; } }
+  @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } }
+
+  .modal-header {
+    padding: 28px 32px 20px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .modal-title {
+    font-family: var(--display);
+    font-size: 24px;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    margin-bottom: 6px;
+    color: var(--ink);
+  }
+
+  .modal-sub {
+    font-size: 13.5px;
+    color: var(--muted);
+  }
+
+  .modal-body {
+    padding: 24px 32px;
+  }
+
+  .field-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  .field-input {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid var(--line-2);
+    border-radius: 4px;
+    background: white;
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--ink);
+    transition: border-color .15s;
+  }
+
+  .field-input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(200, 84, 43, 0.1);
+  }
+
+  .field-help {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 6px;
+    line-height: 1.5;
+  }
+
+  .modal-footer {
+    padding: 18px 32px 24px;
+    background: var(--bg-2);
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    border-top: 1px solid var(--line);
+  }
+
+  /* Empty admin state hint */
+  .admin-hint {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--ink);
+    color: var(--bg);
+    padding: 14px 18px;
+    border-radius: 4px;
+    font-size: 13px;
+    max-width: 280px;
+    box-shadow: 0 8px 32px rgba(0,0,0,.2);
+    z-index: 40;
+    display: none;
+    animation: slideUp .3s;
+  }
+
+  .admin-hint.show { display: block; }
+
+  .admin-hint strong {
+    color: var(--accent);
+    display: block;
+    margin-bottom: 4px;
+    font-family: var(--display);
+    font-style: italic;
+    font-size: 15px;
+  }
+
+  /* Responsive */
+  @media (max-width: 960px) {
+    .app {
+      grid-template-columns: 1fr;
+      padding: 16px;
+    }
+    aside {
+      position: relative;
+      top: 0;
+      max-height: none;
+    }
+    .lesson-header, .video-section, .lesson-body, .lesson-footer {
+      padding-left: 24px;
+      padding-right: 24px;
+    }
+    .lesson-title { font-size: 32px; }
+    .header-inner { padding: 14px 16px; flex-wrap: wrap; }
+    .progress-pill { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="brand">
+      <div class="brand-mark">Claude <em>101</em></div>
+      <div class="brand-tag">Curso de formación</div>
+    </div>
+    <div class="header-controls">
+      <div class="progress-pill" id="progressPill">
+        <span id="progressText">0 / 32</span>
+        <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width: 0%"></div></div>
+      </div>
+      <button class="mode-toggle" id="modeToggle">
+        <span class="mode-dot"></span>
+        <span id="modeLabel">Modo alumno</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="app">
+  <aside id="toc"></aside>
+  <main id="main"></main>
+</div>
+
+<!-- Modal for adding videos -->
+<div class="modal-overlay" id="videoModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Añadir vídeo a la lección</div>
+      <div class="modal-sub" id="modalLessonName"></div>
+    </div>
+    <div class="modal-body">
+      <label class="field-label" for="videoUrl">URL del vídeo</label>
+      <input type="url" id="videoUrl" class="field-input" placeholder="https://www.youtube.com/watch?v=..." autocomplete="off">
+      <div class="field-help">
+        Acepta enlaces de <strong>YouTube</strong>, <strong>Vimeo</strong>, archivos <strong>.mp4</strong> alojados en cualquier servidor, o rutas <strong>.html</strong> locales (p. ej. <code>claude-101-videos/M1-video-animado.html</code>).
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" onclick="closeModal()">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveVideo()">Guardar vídeo</button>
+    </div>
+  </div>
+</div>
+
+<div class="admin-hint" id="adminHint">
+  <strong>Modo instructor activo</strong>
+  Ahora puedes añadir vídeos a cada lección. Pulsa el botón "Añadir vídeo" en cualquier lección.
+</div>
+
+<script>
+// ============================================
+// CONTENIDO DEL CURSO
+// ============================================
+const COURSE = [
+  {
+    id: 'm1',
+    title: 'Bienvenida y fundamentos',
+    lessons: [
+      {
+        id: 'l1-1',
+        title: '¿Qué es Claude?',
+        emphasis: 'Claude',
+        summary: 'Una introducción al asistente de IA creado por Anthropic y la filosofía detrás de su diseño.',
+        defaultVideo: 'claude-101-videos/M1-video-animado.html',
+        body: `
+          <h3>El origen</h3>
+          <p>Claude es un asistente de inteligencia artificial desarrollado por <strong>Anthropic</strong>, una empresa fundada en 2021 con un enfoque distintivo: construir sistemas de IA que sean a la vez <strong>útiles, honestos e inofensivos</strong>. No es un detalle menor. Esa tríada de valores condiciona cómo Claude responde, qué decisiones toma y dónde establece sus límites.</p>
+          <h3>¿Qué puede hacer?</h3>
+          <p>Claude conversa en lenguaje natural, escribe textos, programa, analiza documentos, interpreta imágenes, razona sobre problemas complejos y crea archivos. Pero más allá del listado de capacidades, lo importante es entender que funciona como un <em>colaborador</em>: aporta criterio, hace preguntas cuando es útil y reconoce cuando no sabe algo.</p>
+          <div class="callout">
+            <div class="callout-label">Idea clave</div>
+            <p>Claude no es un buscador ni un oráculo. Funciona mejor cuando lo tratas como un colega informado al que le pides ayuda con tareas concretas, dándole contexto suficiente.</p>
+          </div>
+          <h3>¿Qué <em>no</em> es Claude?</h3>
+          <ul>
+            <li>No es infalible: puede equivocarse, especialmente con datos muy recientes o cifras específicas.</li>
+            <li>No tiene memoria automática entre conversaciones (salvo que actives funciones específicas).</li>
+            <li>No actúa por iniciativa propia: solo hace lo que le pides en cada turno.</li>
+          </ul>
+        `
+      },
+      {
+        id: 'l1-2',
+        title: 'La familia de modelos',
+        emphasis: 'familia',
+        summary: 'Haiku, Sonnet y Opus: cómo elegir el modelo adecuado según la tarea.',
+        body: `
+          <h3>Tres modelos, tres perfiles</h3>
+          <p>Anthropic ofrece una familia de modelos pensada para cubrir diferentes equilibrios entre velocidad, coste e inteligencia:</p>
+          <ul>
+            <li><strong>Haiku</strong> — Rápido y eficiente. Ideal para tareas ligeras, respuestas instantáneas o procesamiento en volumen.</li>
+            <li><strong>Sonnet</strong> — El equilibrio. Combina razonamiento sólido con tiempos de respuesta razonables. Es el más usado en el día a día.</li>
+            <li><strong>Opus</strong> — El más potente. Para problemas complejos, análisis profundo, escritura matizada o tareas que requieren razonamiento extenso.</li>
+          </ul>
+          <h3>¿Cómo elegir?</h3>
+          <p>Una regla práctica: empieza con <strong>Sonnet</strong>. Si necesitas pensar a fondo en algo complicado, sube a <strong>Opus</strong>. Si quieres respuestas inmediatas para tareas sencillas, baja a <strong>Haiku</strong>.</p>
+          <div class="callout">
+            <div class="callout-label">A tener en cuenta</div>
+            <p>Los modelos se actualizan periódicamente. Conviene revisar la documentación oficial en docs.claude.com para saber qué versión es la más reciente.</p>
+          </div>
+        `
+      },
+      {
+        id: 'l1-3',
+        title: 'Cómo razona Claude',
+        emphasis: 'razona',
+        summary: 'Una mirada honesta a cómo procesa, piensa y comete errores este tipo de modelo.',
+        body: `
+          <h3>Predicción, no recuperación</h3>
+          <p>Claude genera texto prediciendo qué viene a continuación basándose en patrones aprendidos durante su entrenamiento. No "consulta una base de datos" cuando responde una pregunta de cultura general: genera la respuesta más probable según lo aprendido. Esto tiene dos consecuencias importantes:</p>
+          <ul>
+            <li>Puede sonar muy seguro incluso cuando se equivoca (las llamadas <em>alucinaciones</em>).</li>
+            <li>Funciona mejor cuanto más claro y específico es el contexto que recibe.</li>
+          </ul>
+          <h3>Pensamiento extendido</h3>
+          <p>Los modelos modernos pueden "pensar" antes de responder, dedicando más tiempo a razonar paso a paso en problemas complejos. Esto mejora notablemente la calidad en matemáticas, lógica, código y análisis multipaso.</p>
+          <h3>Límite de contexto</h3>
+          <p>Claude tiene una <strong>ventana de contexto</strong>: la cantidad de texto que puede tener "en la cabeza" en cada conversación. Es muy amplia (cientos de páginas), pero no infinita. Conversaciones muy largas o documentos enormes pueden empezar a olvidar el principio.</p>
+        `
+      },
+      {
+        id: 'l1-4',
+        title: 'Diferencias clave con otros asistentes',
+        emphasis: 'Diferencias',
+        summary: 'Qué hace especial a Claude frente a otras alternativas del mercado.',
+        body: `
+          <h3>Filosofía de diseño</h3>
+          <p>Aunque comparte muchas capacidades con otros asistentes (ChatGPT, Gemini, etc.), Claude se distingue en varios aspectos:</p>
+          <ul>
+            <li><strong>Estilo de escritura</strong>: Tiende a producir texto más natural, menos formulaico, mejor estructurado para lectura humana.</li>
+            <li><strong>Honestidad calibrada</strong>: Reconoce con frecuencia sus límites y matiza sus respuestas en lugar de afirmar con falsa seguridad.</li>
+            <li><strong>Razonamiento ético matizado</strong>: Aborda temas sensibles con criterio en lugar de bloquear de forma rígida.</li>
+            <li><strong>Manejo de contextos largos</strong>: Sobresale al trabajar con documentos extensos y mantener coherencia.</li>
+          </ul>
+          <h3>¿Es mejor que los demás?</h3>
+          <p>Depende de la tarea. La mejor manera de saberlo es probar el mismo prompt en varios asistentes y comparar. Lo que sí es cierto es que Claude tiene una <em>personalidad</em> propia: directa, reflexiva y con un punto editorial.</p>
+        `
+      }
+    ]
+  },
+  {
+    id: 'm2',
+    title: 'Primeros pasos',
+    lessons: [
+      {
+        id: 'l2-1',
+        title: 'Cómo acceder a Claude',
+        emphasis: 'acceder',
+        summary: 'Las distintas vías para empezar a usar Claude: web, móvil, escritorio y API.',
+        defaultVideo: 'claude-101-videos/M2-video-animado.html',
+        body: `
+          <h3>Las cuatro puertas de entrada</h3>
+          <ul>
+            <li><strong>Claude.ai</strong> — La web pública. Es el punto de entrada habitual: abres el navegador, inicias sesión y empiezas a chatear.</li>
+            <li><strong>App móvil</strong> — Disponible para iOS y Android. Misma experiencia, optimizada para pantalla pequeña.</li>
+            <li><strong>App de escritorio</strong> — Para Mac y Windows. Útil si vas a usar Claude intensivamente: atajos, acceso rápido, integraciones con tu sistema.</li>
+            <li><strong>API y Claude Code</strong> — Para desarrolladores que quieren integrar Claude en sus propios productos o trabajar desde el terminal.</li>
+          </ul>
+          <h3>Planes</h3>
+          <p>Existen un plan gratuito (con límites de uso) y planes de pago (<strong>Pro</strong>, <strong>Team</strong>, <strong>Enterprise</strong>) que desbloquean más capacidad, acceso prioritario a los modelos más potentes y funciones adicionales.</p>
+          <div class="callout">
+            <div class="callout-label">Consejo</div>
+            <p>Si trabajas con Claude todos los días, el plan Pro suele compensar. Si lo usas de manera puntual, el plan gratuito puede ser suficiente.</p>
+          </div>
+        `
+      },
+      {
+        id: 'l2-2',
+        title: 'Anatomía de la interfaz',
+        emphasis: 'Anatomía',
+        summary: 'Recorrido por los elementos esenciales de la interfaz web de Claude.',
+        body: `
+          <h3>Lo que ves al entrar</h3>
+          <ul>
+            <li><strong>Caja de mensaje</strong> — Donde escribes. Puedes adjuntar imágenes, PDFs, hojas de cálculo, código y otros archivos.</li>
+            <li><strong>Selector de modelo</strong> — Te permite elegir entre Sonnet, Opus, Haiku según la tarea.</li>
+            <li><strong>Historial</strong> — Conversaciones anteriores, organizadas cronológicamente.</li>
+            <li><strong>Proyectos</strong> — Espacios donde agrupar conversaciones que comparten contexto y archivos.</li>
+            <li><strong>Configuración</strong> — Preferencias, estilos personalizados, conectores activos.</li>
+          </ul>
+          <h3>Funciones contextuales</h3>
+          <p>Dentro de la caja de mensaje puedes activar herramientas específicas: búsqueda web, generación de archivos, modo de investigación profunda, etc. Cada función altera ligeramente cómo se comporta Claude.</p>
+        `
+      },
+      {
+        id: 'l2-3',
+        title: 'Conversaciones, proyectos y estilos',
+        emphasis: 'Proyectos',
+        summary: 'Organizar tu trabajo con Claude usando proyectos y estilos personalizados.',
+        body: `
+          <h3>La conversación</h3>
+          <p>Es la unidad básica: un hilo en el que Claude recuerda todo lo dicho. Si cambias de tema o quieres empezar limpio, crea una conversación nueva. No mezcles muchas tareas distintas en un único hilo: la memoria se ensucia.</p>
+          <h3>Los proyectos</h3>
+          <p>Un proyecto es como una carpeta con su propio contexto. Puedes subir documentos de referencia (un libro de marca, un código fuente, una guía de estilo) y todas las conversaciones dentro del proyecto los tendrán disponibles. Útil para trabajos largos.</p>
+          <h3>Los estilos</h3>
+          <p>Permiten configurar cómo se expresa Claude: tono formal, directo, divertido, con o sin emojis, etc. Puedes crear el tuyo a partir de un texto de ejemplo.</p>
+          <div class="callout">
+            <div class="callout-label">Truco</div>
+            <p>Crea un proyecto por cada cliente o tema recurrente. Sube los documentos clave una sola vez y olvídate de pegar contexto en cada conversación.</p>
+          </div>
+        `
+      },
+      {
+        id: 'l2-4',
+        title: 'Configuración esencial',
+        emphasis: 'esencial',
+        summary: 'Los ajustes que deberías revisar antes de ponerte a trabajar en serio.',
+        body: `
+          <h3>Preferencias de usuario</h3>
+          <p>Dentro de los ajustes puedes guardar información persistente: cómo te llamas, a qué te dedicas, cómo prefieres que te respondan. Claude lo tendrá en cuenta en todas tus conversaciones.</p>
+          <h3>Privacidad y datos</h3>
+          <p>Revisa las opciones de privacidad: si tus datos se usan para entrenamiento, retención del historial, etc. Por defecto, en los planes de consumidor de Anthropic, tus conversaciones no se utilizan para entrenar futuros modelos.</p>
+          <h3>Funciones a activar/desactivar</h3>
+          <ul>
+            <li><strong>Búsqueda web</strong> — Permite a Claude buscar información actual.</li>
+            <li><strong>Memoria</strong> — Hace que Claude recuerde información entre conversaciones.</li>
+            <li><strong>Creación de archivos</strong> — Habilita exportar a Word, Excel, PDF, etc.</li>
+            <li><strong>Conectores</strong> — Acceso a apps externas (Google Drive, Slack, etc.).</li>
+          </ul>
+          <p>Empieza con lo básico, activa el resto a medida que lo necesites.</p>
+        `
+      }
+    ]
+  },
+  {
+    id: 'm3',
+    title: 'El arte del prompt',
+    lessons: [
+      {
+        id: 'l3-1',
+        title: 'Anatomía de un buen prompt',
+        emphasis: 'Anatomía',
+        summary: 'Los ingredientes esenciales para escribir instrucciones efectivas.',
+        defaultVideo: 'claude-101-videos/M3-video-animado.html',
+        body: `
+          <h3>Un buen prompt tiene cuatro partes</h3>
+          <ul>
+            <li><strong>Tarea</strong> — Qué quieres que haga, expresado con un verbo claro (escribe, analiza, traduce, propón…).</li>
+            <li><strong>Contexto</strong> — La información de fondo que Claude necesita para hacer la tarea bien.</li>
+            <li><strong>Formato</strong> — Cómo quieres que se entregue la respuesta (longitud, estructura, tono).</li>
+            <li><strong>Restricciones</strong> — Lo que NO quieres, los límites, las cosas a evitar.</li>
+          </ul>
+          <h3>Antes y después</h3>
+          <div class="example">
+<span class="example-label">Prompt débil</span>Escríbeme un email a un cliente.
+          </div>
+          <div class="example">
+<span class="example-label">Prompt sólido</span>Escribe un email para María (cliente, lleva 3 años con nosotros) anunciándole que el proyecto se retrasa 2 semanas por causa ajena a nosotros (un proveedor falló). Tono cálido pero profesional. Máximo 6 frases. No te excuses en exceso. Termina ofreciendo una llamada esta semana.
+          </div>
+          <p>La diferencia no es la longitud. Es la <strong>especificidad</strong>.</p>
+        `
+      },
+      {
+        id: 'l3-2',
+        title: 'Contexto, claridad y especificidad',
+        emphasis: 'claridad',
+        summary: 'Las tres palancas que más mejoran la calidad de cualquier respuesta.',
+        body: `
+          <h3>Contexto: cuanto más relevante, mejor</h3>
+          <p>Claude no conoce tu negocio, tu equipo, tu tono ni tus restricciones. Dáselos. Pero sé selectivo: no es "cuanta más información, mejor", sino "<em>la información relevante</em>, mejor".</p>
+          <h3>Claridad: una idea por frase</h3>
+          <p>Frases largas con cinco subordinadas confunden tanto a humanos como a máquinas. Divide. Usa listas si tienes varios requisitos.</p>
+          <h3>Especificidad: huye de las palabras vagas</h3>
+          <p>Palabras como "corto", "profesional", "creativo" o "interesante" significan cosas distintas para distintas personas. Cuanto más concreto seas, mejor:</p>
+          <ul>
+            <li>"Corto" → "Máximo 100 palabras"</li>
+            <li>"Profesional" → "Como hablaría un consultor a un director financiero"</li>
+            <li>"Creativo" → "Usa al menos una metáfora visual inesperada"</li>
+          </ul>
+        `
+      },
+      {
+        id: 'l3-3',
+        title: 'Ejemplos prácticos: antes y después',
+        emphasis: 'Ejemplos',
+        summary: 'Casos reales de transformación de prompts.',
+        body: `
+          <h3>Caso 1: Resumen de reunión</h3>
+          <div class="example">
+<span class="example-label">Antes</span>Resume esta reunión.
+          </div>
+          <div class="example">
+<span class="example-label">Después</span>Resume esta transcripción de reunión en tres bloques: 1) Decisiones tomadas (con responsable), 2) Próximos pasos (con fecha), 3) Temas pendientes para la próxima reunión. Usa viñetas. No más de 250 palabras en total.
+          </div>
+          <h3>Caso 2: Brainstorming</h3>
+          <div class="example">
+<span class="example-label">Antes</span>Dame ideas para una campaña.
+          </div>
+          <div class="example">
+<span class="example-label">Después</span>Necesito 10 ideas para una campaña de Instagram dirigida a profesionales de marketing entre 28-40 años. Objetivo: promocionar una herramienta SaaS de analítica. Presupuesto: bajo. Tono: irreverente, anti-corporativo. Formato: cada idea en una frase + por qué funcionaría.
+          </div>
+        `
+      },
+      {
+        id: 'l3-4',
+        title: 'Errores comunes a evitar',
+        emphasis: 'Errores',
+        summary: 'Los tropiezos más habituales al empezar a usar Claude.',
+        body: `
+          <h3>Top 5 de errores</h3>
+          <ol>
+            <li><strong>Prompts ambiguos</strong> — "Hazlo mejor" sin decir qué significa "mejor" para ti.</li>
+            <li><strong>Falta de contexto</strong> — Pedir un email sin decir a quién, para qué, ni qué relación tienes con esa persona.</li>
+            <li><strong>Mezclar tareas</strong> — "Tradúceme esto, resume aquello y de paso escríbeme otro texto". Mejor en mensajes separados.</li>
+            <li><strong>No iterar</strong> — Conformarse con la primera respuesta. Casi siempre mejora con uno o dos ajustes.</li>
+            <li><strong>Asumir conocimiento</strong> — Dar por hecho que Claude conoce tu empresa, tu proyecto o el contexto del que vienes.</li>
+          </ol>
+          <div class="callout">
+            <div class="callout-label">Regla de oro</div>
+            <p>Si una persona inteligente que no conoce tu contexto pudiera hacer la tarea con tu prompt, Claude también podrá. Si no, falta información.</p>
+          </div>
+        `
+      }
+    ]
+  },
+  {
+    id: 'm4',
+    title: 'Técnicas avanzadas de prompting',
+    lessons: [
+      {
+        id: 'l4-1',
+        title: 'Cadenas de razonamiento',
+        emphasis: 'razonamiento',
+        summary: 'Cómo conseguir que Claude piense antes de responder en problemas complejos.',
+        defaultVideo: 'claude-101-videos/M4-video-animado.html',
+        body: `
+          <h3>El truco del "piensa paso a paso"</h3>
+          <p>En problemas con varias capas (matemáticas, lógica, planificación, análisis), pedirle a Claude que <strong>razone paso a paso antes de responder</strong> mejora drásticamente los resultados. Es lo que en inglés se llama <em>chain-of-thought prompting</em>.</p>
+          <div class="example">
+<span class="example-label">Ejemplo</span>Analiza este contrato. Antes de darme tu conclusión, identifica las cláusulas problemáticas una por una, explica por qué te preocupan, y luego propón una recomendación final.
+          </div>
+          <h3>Estructurar el razonamiento</h3>
+          <p>Puedes pedir explícitamente que separe pasos: "Primero haz X. Después Y. Por último Z, basándote en lo anterior". Esto evita que se salte etapas.</p>
+        `
+      },
+      {
+        id: 'l4-2',
+        title: 'Few-shot: enseñar con ejemplos',
+        emphasis: 'ejemplos',
+        summary: 'Cómo guiar a Claude mostrándole ejemplos del resultado que esperas.',
+        body: `
+          <h3>Mostrar es mejor que describir</h3>
+          <p>Cuando el formato o el estilo es difícil de describir con palabras, dale ejemplos directamente. Esto se llama <strong>few-shot prompting</strong>: das varios pares de entrada/salida y Claude infiere el patrón.</p>
+          <div class="example">
+<span class="example-label">Ejemplo</span>Convierte estos titulares en versiones más provocadoras:
+
+Original: "Nuevo estudio sobre el sueño"
+Provocador: "Lo que tu sueño dice de ti (y no querrás oírlo)"
+
+Original: "Consejos para ahorrar"
+Provocador: "Estás ahorrando mal. Esto es lo que nadie te cuenta."
+
+Ahora hazlo con: "Guía para empezar a correr"
+          </div>
+          <p>Con 2-5 ejemplos suele bastar. Si los ejemplos son muy distintos entre sí, Claude se confundirá: mantén consistencia.</p>
+        `
+      },
+      {
+        id: 'l4-3',
+        title: 'Etiquetas XML para estructurar',
+        emphasis: 'Etiquetas',
+        summary: 'Cómo usar etiquetas para organizar prompts complejos.',
+        body: `
+          <h3>Cuando el prompt empieza a ser largo</h3>
+          <p>En prompts con varias secciones (instrucciones, documentos, ejemplos), las <strong>etiquetas XML</strong> ayudan a Claude a distinguir qué es qué. No es magia: es claridad estructural.</p>
+          <div class="example">
+<span class="example-label">Ejemplo</span>&lt;tarea&gt;
+Resume el siguiente documento en un párrafo.
+&lt;/tarea&gt;
+
+&lt;estilo&gt;
+Lenguaje claro, frases cortas, sin tecnicismos.
+&lt;/estilo&gt;
+
+&lt;documento&gt;
+[aquí el texto largo]
+&lt;/documento&gt;
+          </div>
+          <p>No necesitas etiquetas estándar: invéntalas con nombres descriptivos. Lo importante es que separen bloques con propósitos distintos.</p>
+        `
+      },
+      {
+        id: 'l4-4',
+        title: 'Roles, personas y restricciones',
+        emphasis: 'Roles',
+        summary: 'Asignar un papel a Claude para enmarcar su respuesta.',
+        body: `
+          <h3>"Actúa como…"</h3>
+          <p>Pedirle a Claude que adopte un rol específico cambia el tono, el vocabulario y el enfoque. Es útil cuando quieres una perspectiva concreta.</p>
+          <div class="example">
+<span class="example-label">Ejemplo</span>Actúa como un editor de revista de divulgación científica con 20 años de experiencia. Revisa mi artículo y dime, sin filtros, qué partes son confusas para un lector general.
+          </div>
+          <h3>Restricciones útiles</h3>
+          <ul>
+            <li><strong>Longitud</strong>: "Máximo 200 palabras."</li>
+            <li><strong>Formato</strong>: "Devuélvelo como tabla en Markdown."</li>
+            <li><strong>Vocabulario</strong>: "No uses tecnicismos."</li>
+            <li><strong>Estructura</strong>: "Empieza con la conclusión y luego justifícala."</li>
+          </ul>
+          <p>Las restricciones bien usadas no limitan: enfocan.</p>
+        `
+      }
+    ]
+  },
+  {
+    id: 'm5',
+    title: 'Capacidades y herramientas',
+    lessons: [
+      {
+        id: 'l5-1',
+        title: 'Artifacts: documentos vivos',
+        emphasis: 'Artifacts',
+        summary: 'La función que convierte respuestas en código y documentos interactivos.',
+        defaultVideo: 'claude-101-videos/M5-video-animado.html',
+        body: `
+          <h3>¿Qué es un artifact?</h3>
+          <p>Un <strong>artifact</strong> es un bloque de contenido sustancial que aparece en un panel aparte de la conversación. Sirve para código, documentos largos, componentes interactivos, visualizaciones, juegos, prototipos web…</p>
+          <h3>Cuándo aparecen</h3>
+          <p>Claude crea artifacts automáticamente cuando pide algo lo suficientemente extenso o reutilizable: una calculadora interactiva, una landing page, un componente React, un informe largo.</p>
+          <h3>Iterar sobre el artifact</h3>
+          <p>Lo potente: puedes pedir cambios sucesivos sobre el mismo artifact ("haz el botón más grande", "cambia el color a verde") y Claude lo edita sin reempezar desde cero.</p>
+          <div class="callout">
+            <div class="callout-label">Práctico</div>
+            <p>Para prototipar una idea visual rápidamente, Artifacts es imbatible. Describe lo que quieres ver, itera 3 o 4 veces, y tendrás una versión funcional.</p>
+          </div>
+        `
+      },
+      {
+        id: 'l5-2',
+        title: 'Búsqueda web e investigación',
+        emphasis: 'Búsqueda',
+        summary: 'Cómo y cuándo usar las capacidades de búsqueda online.',
+        body: `
+          <h3>Cuándo necesitas búsqueda web</h3>
+          <ul>
+            <li>Información posterior al corte de conocimiento del modelo.</li>
+            <li>Datos que cambian con frecuencia (precios, cotizaciones, noticias).</li>
+            <li>Verificación de hechos específicos.</li>
+            <li>Investigación sobre productos, empresas o personas actuales.</li>
+          </ul>
+          <h3>Investigación profunda</h3>
+          <p>Para temas que requieren consultar muchas fuentes, existe un <strong>modo de investigación</strong> que dedica más tiempo, hace múltiples búsquedas y produce un informe estructurado con citas. Es ideal para análisis de mercado, due diligence o estudios temáticos.</p>
+          <h3>Buenas prácticas</h3>
+          <p>Pide siempre que cite las fuentes. Verifica los datos críticos. Recuerda que la web también tiene desinformación: Claude la filtra mejor que la búsqueda directa, pero ningún sistema es perfecto.</p>
+        `
+      },
+      {
+        id: 'l5-3',
+        title: 'Creación de archivos',
+        emphasis: 'archivos',
+        summary: 'Generar documentos Word, Excel, PowerPoint, PDF y código directamente.',
+        body: `
+          <h3>Lo que Claude puede generar</h3>
+          <ul>
+            <li><strong>Word (.docx)</strong> — Informes, propuestas, cartas, plantillas con formato.</li>
+            <li><strong>Excel (.xlsx)</strong> — Tablas, modelos financieros, análisis de datos con fórmulas.</li>
+            <li><strong>PowerPoint (.pptx)</strong> — Presentaciones con varias diapositivas.</li>
+            <li><strong>PDF</strong> — Documentos finales listos para enviar.</li>
+            <li><strong>Código</strong> — Archivos en cualquier lenguaje, scripts, configuraciones.</li>
+          </ul>
+          <h3>Pedir bien</h3>
+          <p>Sé específico con el formato deseado. Para una propuesta comercial: "crea un documento Word con portada, índice, tres secciones y tabla de precios al final". Cuanto más estructura describas, mejor.</p>
+        `
+      },
+      {
+        id: 'l5-4',
+        title: 'Memoria y conversaciones pasadas',
+        emphasis: 'Memoria',
+        summary: 'Cómo Claude puede recordar entre sesiones y por qué controlar qué guarda.',
+        body: `
+          <h3>Dos tipos de memoria</h3>
+          <ul>
+            <li><strong>Memoria automática</strong> — Si la activas, Claude guarda automáticamente datos relevantes (tu nombre, preferencias, proyectos en curso) y los usa en futuras conversaciones.</li>
+            <li><strong>Búsqueda en historial</strong> — Permite que Claude consulte conversaciones pasadas cuando lo pidas: "¿de qué hablamos la semana pasada sobre el lanzamiento?".</li>
+          </ul>
+          <h3>Por qué controlar la memoria</h3>
+          <p>Es útil pero también puede contaminar conversaciones nuevas con contexto antiguo irrelevante. En la configuración puedes ver qué recuerda, editar o borrar. Si vas a hacer una tarea muy distinta a las habituales, considera empezar limpio.</p>
+        `
+      }
+    ]
+  },
+  {
+    id: 'm6',
+    title: 'Casos de uso prácticos',
+    lessons: [
+      {
+        id: 'l6-1',
+        title: 'Escritura y comunicación',
+        emphasis: 'Escritura',
+        summary: 'Emails, informes, copy y todos los textos que produces cada día.',
+        defaultVideo: 'claude-101-videos/M6-video-animado.html',
+        body: `
+          <h3>El flujo recomendado</h3>
+          <ol>
+            <li><strong>Borrador rápido</strong> — Tú escribes (mal, sin pulir) lo esencial.</li>
+            <li><strong>Reescritura</strong> — Le pides a Claude que lo mejore con un encargo claro: "más conciso", "más cálido", "tono ejecutivo".</li>
+            <li><strong>Iteración</strong> — Ajustas detalles: una frase aquí, un párrafo allá.</li>
+            <li><strong>Toque humano final</strong> — Repasas, añades tus particularidades, envías.</li>
+          </ol>
+          <p>Este flujo es mucho mejor que pedir "escríbeme un email" desde cero, porque tú aportas la intención y Claude la ejecución.</p>
+          <h3>Casos típicos</h3>
+          <ul>
+            <li>Reformular emails delicados.</li>
+            <li>Resumir reuniones largas.</li>
+            <li>Traducir manteniendo el tono.</li>
+            <li>Adaptar el mismo mensaje a distintos públicos.</li>
+            <li>Generar variantes de un copy para A/B testing.</li>
+          </ul>
+        `
+      },
+      {
+        id: 'l6-2',
+        title: 'Programación y análisis técnico',
+        emphasis: 'Programación',
+        summary: 'Cómo usar Claude para escribir, revisar y entender código.',
+        body: `
+          <h3>Tareas en las que destaca</h3>
+          <ul>
+            <li>Escribir funciones, scripts y componentes desde una descripción.</li>
+            <li>Revisar código y sugerir mejoras.</li>
+            <li>Explicar código ajeno (línea por línea si hace falta).</li>
+            <li>Convertir entre lenguajes (Python → JavaScript, SQL → Pandas).</li>
+            <li>Depurar errores: pega el mensaje + el código relevante.</li>
+            <li>Diseñar arquitectura: discutir opciones antes de programar.</li>
+          </ul>
+          <h3>Para desarrolladores</h3>
+          <p>Existe <strong>Claude Code</strong>, una herramienta de línea de comandos que permite que Claude trabaje directamente con tu base de código: lee archivos, hace cambios, ejecuta comandos. Es como tener un colega senior en el terminal.</p>
+        `
+      },
+      {
+        id: 'l6-3',
+        title: 'Análisis de datos y documentos',
+        emphasis: 'Análisis',
+        summary: 'Sacar conclusiones de PDFs, Excel, imágenes y conjuntos de datos.',
+        body: `
+          <h3>Sube y pregunta</h3>
+          <p>Adjunta PDFs, hojas de cálculo, imágenes, documentos de texto. Claude puede leerlos directamente. Algunas tareas útiles:</p>
+          <ul>
+            <li>Extraer información estructurada de documentos largos.</li>
+            <li>Comparar varios PDFs (contratos, propuestas, informes).</li>
+            <li>Resumir actas, papers o libros técnicos.</li>
+            <li>Analizar datos en Excel: tendencias, anomalías, recomendaciones.</li>
+            <li>Interpretar gráficos, tablas y diagramas en imágenes.</li>
+          </ul>
+          <h3>Limitaciones a tener en cuenta</h3>
+          <p>En documentos muy largos puede saltarse partes. Siempre verifica afirmaciones críticas. En datos numéricos, conviene pedir que muestre los cálculos para poder revisarlos.</p>
+        `
+      },
+      {
+        id: 'l6-4',
+        title: 'Creatividad: ideas y storytelling',
+        emphasis: 'Creatividad',
+        summary: 'Usar Claude como pareja creativa, no como sustituto de tu criterio.',
+        body: `
+          <h3>Lo que funciona bien</h3>
+          <ul>
+            <li><strong>Brainstorming amplio</strong> — "Dame 30 ángulos posibles para este artículo". Después tú eliges.</li>
+            <li><strong>Construcción de personajes</strong> — Perfiles, backstories, voces narrativas.</li>
+            <li><strong>Variantes</strong> — "Dame 5 versiones de este eslogan con tonos distintos".</li>
+            <li><strong>Bloqueos creativos</strong> — Pídele que te haga preguntas, no que te dé respuestas.</li>
+            <li><strong>Crítica constructiva</strong> — "Sé el editor más exigente del mundo y rompe este texto".</li>
+          </ul>
+          <h3>Donde no llega</h3>
+          <p>Claude no tiene gustos propios ni vive en el mundo. No sabe lo que está de moda esta semana en tu ciudad ni qué va a emocionar a tu público concreto. Tu criterio sigue siendo el filtro final.</p>
+        `
+      }
+    ]
+  },
+  {
+    id: 'm7',
+    title: 'Buenas prácticas y límites',
+    lessons: [
+      {
+        id: 'l7-1',
+        title: 'Privacidad y datos sensibles',
+        emphasis: 'Privacidad',
+        summary: 'Qué debes y qué no debes compartir nunca con un asistente de IA.',
+        defaultVideo: 'claude-101-videos/M7-video-animado.html',
+        body: `
+          <h3>Reglas claras</h3>
+          <ul>
+            <li><strong>No compartas</strong> datos personales de terceros sin permiso (clientes, empleados).</li>
+            <li><strong>No introduzcas</strong> contraseñas, claves API, números de tarjeta, datos bancarios.</li>
+            <li><strong>Cuidado con</strong> información confidencial de empresa: revisa la política interna.</li>
+            <li><strong>Anonimiza</strong> cuando sea posible: cambia nombres reales por ficticios si solo necesitas que Claude trabaje sobre la estructura.</li>
+          </ul>
+          <h3>Configura tu cuenta</h3>
+          <p>Revisa los ajustes de retención de datos y uso para entrenamiento. En los planes de consumidor de Anthropic, por defecto tus conversaciones no se usan para entrenar futuros modelos, pero sí se almacenan durante un tiempo. Conviene saber qué política aplica a tu plan.</p>
+        `
+      },
+      {
+        id: 'l7-2',
+        title: 'Verificación y pensamiento crítico',
+        emphasis: 'Verificación',
+        summary: 'Por qué no debes creer todo lo que Claude te diga.',
+        body: `
+          <h3>Las alucinaciones</h3>
+          <p>Claude puede generar información que <em>parece</em> correcta pero no lo es: datos inventados, citas falsas, referencias a libros que no existen. Sucede menos que en otros modelos, pero sucede.</p>
+          <h3>Cuándo verificar siempre</h3>
+          <ul>
+            <li>Cifras, estadísticas y datos concretos.</li>
+            <li>Citas, referencias bibliográficas, URLs.</li>
+            <li>Fechas y eventos históricos específicos.</li>
+            <li>Información legal, médica o financiera concreta.</li>
+            <li>Hechos sobre personas reales.</li>
+          </ul>
+          <h3>Cómo verificar</h3>
+          <p>Pídele que active la búsqueda web. Contrasta con fuentes primarias. Si algo te suena demasiado perfecto, sospecha. Una buena costumbre: preguntarle "¿estás seguro de esto? ¿cómo lo sabes?". A veces se rectifica.</p>
+        `
+      },
+      {
+        id: 'l7-3',
+        title: 'Limitaciones que debes conocer',
+        emphasis: 'Limitaciones',
+        summary: 'El mapa honesto de lo que Claude no puede hacer.',
+        body: `
+          <h3>No es bueno en…</h3>
+          <ul>
+            <li><strong>Cálculo numérico preciso</strong> sin herramientas: las multiplicaciones largas suelen fallar.</li>
+            <li><strong>Información en tiempo real</strong> sin búsqueda web activada.</li>
+            <li><strong>Acciones por ti</strong>: no puede ejecutar nada en tus sistemas sin integraciones específicas.</li>
+            <li><strong>Recordar entre conversaciones</strong> salvo que actives la memoria.</li>
+            <li><strong>Acceder a archivos privados</strong> a menos que se los subas explícitamente.</li>
+            <li><strong>Garantizar reproducibilidad</strong>: dos veces el mismo prompt pueden dar respuestas distintas.</li>
+          </ul>
+          <h3>Y tampoco…</h3>
+          <p>No es un terapeuta, ni un médico, ni un abogado. Puede ayudarte a entender, explorar, preparar preguntas. No es sustituto de un profesional cuando el riesgo es real.</p>
+        `
+      },
+      {
+        id: 'l7-4',
+        title: 'Uso responsable y ético',
+        emphasis: 'ético',
+        summary: 'Pautas para integrar Claude en tu trabajo sin perder principios.',
+        body: `
+          <h3>Transparencia</h3>
+          <p>Si publicas contenido generado o asistido por IA en contextos donde el lector lo esperaría saber (medios, académico, profesional), sé transparente. La regla: ¿se sentiría engañado el receptor si supiera? Si la respuesta es sí, declara.</p>
+          <h3>Sesgo y representación</h3>
+          <p>Claude refleja sesgos presentes en sus datos de entrenamiento. Al usarlo para tomar decisiones sobre personas (RRHH, créditos, evaluaciones), aplica supervisión humana y considera cómo el sistema puede tratar distinto a grupos diferentes.</p>
+          <h3>Tu autoría sigue siendo tuya</h3>
+          <p>Que una herramienta te ayude no quita tu responsabilidad sobre el resultado final. Lo que publicas con tu nombre, lo respondes con tu nombre.</p>
+          <div class="callout">
+            <div class="callout-label">Principio guía</div>
+            <p>Usa Claude para amplificar lo que tú haces bien, no para sustituir el pensamiento crítico, el criterio profesional y la responsabilidad.</p>
+          </div>
+        `
+      }
+    ]
+  },
+  {
+    id: 'm8',
+    title: 'Siguiente nivel',
+    lessons: [
+      {
+        id: 'l8-1',
+        title: 'Claude Code para desarrolladores',
+        emphasis: 'Code',
+        summary: 'La herramienta para integrar Claude en el flujo de programación.',
+        defaultVideo: 'claude-101-videos/M8-video-animado.html',
+        body: `
+          <h3>Qué es</h3>
+          <p><strong>Claude Code</strong> es una herramienta de línea de comandos que trae las capacidades de Claude directamente al terminal. Permite que Claude lea, escriba y edite archivos en tu proyecto, ejecute comandos, y trabaje en tareas de programación con autonomía supervisada.</p>
+          <h3>Para qué sirve</h3>
+          <ul>
+            <li>Refactorizar partes de una base de código.</li>
+            <li>Crear features completas partiendo de una descripción.</li>
+            <li>Generar tests, documentación y migraciones.</li>
+            <li>Investigar problemas a través de varios archivos.</li>
+            <li>Integrar con tu flujo de Git, CI/CD y MCP servers.</li>
+          </ul>
+          <h3>Cómo empezar</h3>
+          <p>Necesitas Node.js. Se instala como un paquete de npm y se ejecuta en cualquier directorio de proyecto. La documentación oficial está en <code>docs.claude.com</code>.</p>
+        `
+      },
+      {
+        id: 'l8-2',
+        title: 'Integraciones y conectores MCP',
+        emphasis: 'conectores',
+        summary: 'Cómo Claude se conecta con tus herramientas habituales.',
+        body: `
+          <h3>El protocolo MCP</h3>
+          <p><strong>MCP</strong> (Model Context Protocol) es un estándar abierto que permite a Claude conectarse con apps externas: Google Drive, Notion, GitHub, Slack, Asana, Linear, Jira, Salesforce y muchas más.</p>
+          <h3>Qué desbloquea</h3>
+          <ul>
+            <li>Pedirle a Claude que mire tu calendario y te resuma la semana.</li>
+            <li>Que busque información en documentos de Drive sin tener que subirlos.</li>
+            <li>Que cree issues en GitHub o tareas en Asana directamente.</li>
+            <li>Que responda preguntas combinando tu base de conocimiento con razonamiento general.</li>
+          </ul>
+          <h3>Activación</h3>
+          <p>Los conectores se activan desde los ajustes. Cada conector pide los permisos necesarios. Revisa siempre qué da acceso a qué antes de aprobar.</p>
+        `
+      },
+      {
+        id: 'l8-3',
+        title: 'Recursos para seguir aprendiendo',
+        emphasis: 'Recursos',
+        summary: 'Por dónde continuar después de este curso.',
+        body: `
+          <h3>Documentación oficial</h3>
+          <ul>
+            <li><strong>docs.claude.com</strong> — Documentación de la API y los productos.</li>
+            <li><strong>support.claude.com</strong> — Ayuda y guías para usuarios de Claude.ai.</li>
+            <li><strong>anthropic.com/news</strong> — Anuncios y nuevas funciones.</li>
+          </ul>
+          <h3>Comunidades</h3>
+          <p>Hay comunidades activas en Reddit, Discord y X donde se comparten prompts, trucos y casos de uso. Buscar "Claude prompt engineering" suele llevar a recursos útiles.</p>
+          <h3>Práctica deliberada</h3>
+          <p>La mejor forma de mejorar: identifica una tarea repetitiva en tu trabajo y conviértela en un flujo con Claude. Itera durante una semana. Después busca otra. En tres meses tendrás un repertorio personal de flujos que multiplican tu productividad.</p>
+        `
+      },
+      {
+        id: 'l8-4',
+        title: 'Proyecto final',
+        emphasis: 'final',
+        summary: 'Tu reto: convertir una tarea de tu trabajo en un flujo con Claude.',
+        body: `
+          <h3>El reto</h3>
+          <p>Elige <strong>una tarea recurrente</strong> de tu trabajo (semanal o más frecuente) y diseña un flujo completo con Claude. Documéntalo: prompt usado, ejemplos de entrada, resultado, ajustes hechos.</p>
+          <h3>Estructura sugerida del proyecto</h3>
+          <ol>
+            <li><strong>Tarea elegida</strong> — Describe qué haces, cuánto te lleva, qué la hace pesada.</li>
+            <li><strong>Diseño del prompt</strong> — Tarea + contexto + formato + restricciones.</li>
+            <li><strong>Primera prueba</strong> — Resultado inicial. Qué funcionó, qué no.</li>
+            <li><strong>Iteraciones</strong> — 2-3 ajustes documentados, con razonamiento.</li>
+            <li><strong>Versión final</strong> — Prompt definitivo, listo para reutilizar.</li>
+            <li><strong>Reflexión</strong> — Tiempo ahorrado, calidad, próximos pasos.</li>
+          </ol>
+          <div class="callout">
+            <div class="callout-label">Entregable</div>
+            <p>Un documento de 2-3 páginas con el flujo completo. Más importante que la longitud: que el prompt sea reutilizable y la documentación clara.</p>
+          </div>
+          <h3>Y después de esto…</h3>
+          <p>Has terminado Claude 101. Conoces los fundamentos, las técnicas de prompting, las capacidades y los límites. Lo que queda es práctica deliberada: usa Claude todos los días en cosas reales y, en pocas semanas, sentirás la diferencia.</p>
+        `
+      }
+    ]
+  }
+];
+
+// ============================================
+// ESTADO
+// ============================================
+const STORAGE_KEY = 'claude101';
+let state = loadState();
+let currentLessonId = state.lastLesson || 'l1-1';
+let editingLessonId = null;
+let adminMode = false;
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch (e) {}
+  return { videos: {}, completed: {}, lastLesson: null };
+}
+
+function saveState() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  } catch (e) {
+    console.warn('No se pudo guardar en localStorage', e);
+  }
+}
+
+// ============================================
+// HELPERS
+// ============================================
+function findLesson(id) {
+  for (const m of COURSE) {
+    const l = m.lessons.find(l => l.id === id);
+    if (l) return { module: m, lesson: l };
+  }
+  return null;
+}
+
+function flatLessons() {
+  return COURSE.flatMap(m => m.lessons.map(l => ({ module: m, lesson: l })));
+}
+
+function lessonIndex(id) {
+  return flatLessons().findIndex(x => x.lesson.id === id);
+}
+
+function totalLessons() {
+  return flatLessons().length;
+}
+
+function completedCount() {
+  return Object.values(state.completed).filter(Boolean).length;
+}
+
+// Convert URL to embed
+function getEmbed(url) {
+  if (!url) return null;
+  const u = url.trim();
+
+  // YouTube
+  let m = u.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&?\s]+)/);
+  if (m) return { type: 'iframe', src: `https://www.youtube.com/embed/${m[1]}`, source: 'YouTube' };
+
+  // Vimeo
+  m = u.match(/vimeo\.com\/(?:video\/)?(\d+)/);
+  if (m) return { type: 'iframe', src: `https://player.vimeo.com/video/${m[1]}`, source: 'Vimeo' };
+
+  // Direct video file
+  if (/\.(mp4|webm|ogg|mov)(\?|$)/i.test(u)) {
+    return { type: 'video', src: u, source: 'Vídeo directo' };
+  }
+
+  // HTML file (local relative path or absolute) — para piloto animado
+  if (/\.html?(\?|#|$)/i.test(u)) {
+    return { type: 'iframe', src: u, source: 'HTML local' };
+  }
+
+  // Try as iframe by default (for other embeds)
+  if (/^https?:\/\//i.test(u)) {
+    return { type: 'iframe', src: u, source: 'Externo' };
+  }
+
+  return null;
+}
+
+// ============================================
+// RENDER: SIDEBAR
+// ============================================
+function renderTOC() {
+  const toc = document.getElementById('toc');
+  const intro = `
+    <div class="toc-intro">
+      <div class="toc-label">Programa formativo</div>
+      <div class="toc-title">Aprende a trabajar con <em>Claude</em></div>
+    </div>
+  `;
+
+  const modulesHtml = COURSE.map((mod, i) => {
+    const activeModule = mod.lessons.some(l => l.id === currentLessonId);
+    const num = String(i + 1).padStart(2, '0');
+    const lessonsHtml = mod.lessons.map((l, j) => {
+      const isActive = l.id === currentLessonId;
+      const isDone = !!state.completed[l.id];
+      const hasVideo = !!(state.videos[l.id] || l.defaultVideo);
+      return `
+        <div class="lesson ${isActive ? 'active' : ''} ${isDone ? 'done' : ''} ${hasVideo ? 'has-video' : ''}"
+             data-lesson="${l.id}">
+          <div class="lesson-check">${isDone ? '✓' : ''}</div>
+          <div class="lesson-num">${i + 1}.${j + 1}</div>
+          <div class="lesson-name">${l.title}</div>
+          <div class="lesson-video-indicator" title="Tiene vídeo"></div>
+        </div>
+      `;
+    }).join('');
+
+    return `
+      <div class="module ${activeModule ? 'open' : ''}" data-module="${mod.id}">
+        <div class="module-header">
+          <span class="module-num">${num}</span>
+          <span class="module-title">${mod.title}</span>
+          <span class="module-chevron">▸</span>
+        </div>
+        <div class="module-lessons">${lessonsHtml}</div>
+      </div>
+    `;
+  }).join('');
+
+  toc.innerHTML = intro + modulesHtml;
+
+  // Listeners
+  toc.querySelectorAll('.module-header').forEach(el => {
+    el.addEventListener('click', () => {
+      el.parentElement.classList.toggle('open');
+    });
+  });
+
+  toc.querySelectorAll('.lesson').forEach(el => {
+    el.addEventListener('click', () => {
+      currentLessonId = el.dataset.lesson;
+      state.lastLesson = currentLessonId;
+      saveState();
+      render();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  });
+}
+
+// ============================================
+// RENDER: MAIN
+// ============================================
+function renderMain() {
+  const main = document.getElementById('main');
+  const data = findLesson(currentLessonId);
+  if (!data) {
+    main.innerHTML = '<div style="padding:48px;">Lección no encontrada.</div>';
+    return;
+  }
+  const { module: mod, lesson } = data;
+  const modIdx = COURSE.findIndex(m => m.id === mod.id);
+  const lesIdx = mod.lessons.findIndex(l => l.id === lesson.id);
+
+  // Title with emphasis
+  let titleHtml = lesson.title;
+  if (lesson.emphasis) {
+    titleHtml = lesson.title.replace(lesson.emphasis, `<em>${lesson.emphasis}</em>`);
+  }
+
+  // Si el usuario no ha establecido un vídeo manualmente, usa el defaultVideo de la lección
+  const video = state.videos[lesson.id] || lesson.defaultVideo || null;
+  const embed = getEmbed(video);
+
+  // Video section
+  let videoSection = '';
+  if (embed) {
+    const player = embed.type === 'iframe'
+      ? `<iframe src="${embed.src}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`
+      : `<video src="${embed.src}" controls></video>`;
+    videoSection = `
+      <div class="video-section">
+        <div class="video-frame">${player}</div>
+        <div class="video-controls">
+          <div class="video-source">Fuente: ${embed.source}</div>
+          <div>
+            ${adminMode ? `
+              <button class="btn btn-ghost" onclick="openModal('${lesson.id}')">Cambiar vídeo</button>
+              <button class="btn btn-ghost btn-danger" onclick="removeVideo('${lesson.id}')">Eliminar</button>
+            ` : ''}
+          </div>
+        </div>
+      </div>
+    `;
+  } else {
+    videoSection = `
+      <div class="video-section">
+        <div class="video-empty">
+          <div class="video-empty-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <polygon points="5 3 19 12 5 21 5 3"></polygon>
+            </svg>
+          </div>
+          <div class="video-empty-title">Sin vídeo todavía</div>
+          <div class="video-empty-sub">
+            ${adminMode
+              ? 'Como instructor, puedes añadir un vídeo a esta lección desde el botón de abajo.'
+              : 'El instructor aún no ha añadido un vídeo para esta lección. Mientras tanto, puedes leer el contenido completo abajo.'}
+          </div>
+          ${adminMode ? `<button class="btn btn-primary" onclick="openModal('${lesson.id}')">+ Añadir vídeo</button>` : ''}
+        </div>
+      </div>
+    `;
+  }
+
+  const isDone = !!state.completed[lesson.id];
+  const flat = flatLessons();
+  const idx = lessonIndex(lesson.id);
+  const prev = idx > 0 ? flat[idx - 1].lesson.id : null;
+  const next = idx < flat.length - 1 ? flat[idx + 1].lesson.id : null;
+
+  main.innerHTML = `
+    <div class="lesson-header">
+      <div class="lesson-breadcrumb">
+        <span>Módulo ${modIdx + 1}</span>
+        <span class="sep">/</span>
+        <span>${mod.title}</span>
+        <span class="sep">/</span>
+        <span>Lección ${modIdx + 1}.${lesIdx + 1}</span>
+      </div>
+      <h1 class="lesson-title">${titleHtml}</h1>
+      <p class="lesson-summary">${lesson.summary}</p>
+    </div>
+    ${videoSection}
+    <div class="lesson-body">${lesson.body}</div>
+    <div class="lesson-footer">
+      <button class="complete-toggle ${isDone ? 'done' : ''}" onclick="toggleComplete('${lesson.id}')">
+        ${isDone ? '✓ Lección completada' : 'Marcar como completada'}
+      </button>
+      <div class="nav-buttons">
+        ${prev ? `<button class="btn" onclick="goTo('${prev}')">← Anterior</button>` : ''}
+        ${next ? `<button class="btn btn-primary" onclick="goTo('${next}')">Siguiente →</button>` : ''}
+      </div>
+    </div>
+  `;
+}
+
+// ============================================
+// RENDER: PROGRESS
+// ============================================
+function renderProgress() {
+  const done = completedCount();
+  const total = totalLessons();
+  const pct = total ? (done / total) * 100 : 0;
+  document.getElementById('progressText').textContent = `${done} / ${total}`;
+  document.getElementById('progressFill').style.width = pct + '%';
+}
+
+// ============================================
+// ACTIONS
+// ============================================
+function goTo(lessonId) {
+  currentLessonId = lessonId;
+  state.lastLesson = lessonId;
+  saveState();
+  render();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function toggleComplete(lessonId) {
+  state.completed[lessonId] = !state.completed[lessonId];
+  saveState();
+  render();
+}
+
+function openModal(lessonId) {
+  editingLessonId = lessonId;
+  const data = findLesson(lessonId);
+  document.getElementById('modalLessonName').textContent = data ? data.lesson.title : '';
+  document.getElementById('videoUrl').value = state.videos[lessonId] || '';
+  document.getElementById('videoModal').classList.add('open');
+  setTimeout(() => document.getElementById('videoUrl').focus(), 50);
+}
+
+function closeModal() {
+  document.getElementById('videoModal').classList.remove('open');
+  editingLessonId = null;
+}
+
+function saveVideo() {
+  const url = document.getElementById('videoUrl').value.trim();
+  if (!url) {
+    removeVideo(editingLessonId);
+    closeModal();
+    return;
+  }
+  if (!getEmbed(url)) {
+    alert('No reconozco esa URL. Usa enlaces de YouTube, Vimeo, archivos .mp4 o rutas .html locales.');
+    return;
+  }
+  state.videos[editingLessonId] = url;
+  saveState();
+  closeModal();
+  render();
+}
+
+function removeVideo(lessonId) {
+  if (!confirm('¿Eliminar el vídeo de esta lección?')) return;
+  delete state.videos[lessonId];
+  saveState();
+  render();
+}
+
+function toggleMode() {
+  adminMode = !adminMode;
+  const btn = document.getElementById('modeToggle');
+  const label = document.getElementById('modeLabel');
+  const hint = document.getElementById('adminHint');
+  if (adminMode) {
+    btn.classList.add('active');
+    label.textContent = 'Modo instructor';
+    hint.classList.add('show');
+    setTimeout(() => hint.classList.remove('show'), 4000);
+  } else {
+    btn.classList.remove('active');
+    label.textContent = 'Modo alumno';
+    hint.classList.remove('show');
+  }
+  render();
+}
+
+// ============================================
+// RENDER ALL
+// ============================================
+function render() {
+  renderTOC();
+  renderMain();
+  renderProgress();
+}
+
+// ============================================
+// INIT
+// ============================================
+document.getElementById('modeToggle').addEventListener('click', toggleMode);
+document.getElementById('videoModal').addEventListener('click', (e) => {
+  if (e.target.id === 'videoModal') closeModal();
+});
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeModal();
+  if (e.key === 'Enter' && document.getElementById('videoModal').classList.contains('open')) {
+    saveVideo();
+  }
+});
+
+render();
+</script>
+</body>
+</html>

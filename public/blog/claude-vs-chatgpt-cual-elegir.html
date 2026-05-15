@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude vs. ChatGPT: cuál usar y para qué · Claude 101</title>
+<meta name="description" content="Comparativa honesta entre Claude y ChatGPT tras un año usando ambos en producción. Para qué tareas brilla cada uno y cuándo conviene cambiar.">
+<link rel="canonical" href="/blog/claude-vs-chatgpt-cual-elegir">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Geist:wght@300..700&family=Geist+Mono:wght@400..600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles-shared.css">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Claude vs. ChatGPT: cuál usar y para qué">
+<meta property="og:description" content="Comparativa honesta tras un año usando ambos en producción real.">
+<meta property="og:image" content="/og-image.svg">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Article","headline":"Claude vs. ChatGPT: cuál usar y para qué","description":"Comparativa honesta tras un año usando ambos en producción real.","datePublished":"2026-05-08","author":{"@type":"Organization","name":"Claude 101"},"publisher":{"@type":"Organization","name":"Claude 101"},"image":"/og-image.svg","inLanguage":"es"}
+</script>
+<style>
+.article-wrap { max-width: 720px; margin: 0 auto; padding: 48px 0 80px; }
+.article-meta { display: flex; gap: 14px; align-items: center; font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-bottom: 20px; }
+.article-meta .cat { color: var(--accent); }
+.article-wrap h1 { font-family: var(--display); font-style: italic; font-size: clamp(32px, 4.5vw, 52px); line-height: 1.1; margin-bottom: 18px; }
+.article-wrap h1 em { font-style: normal; color: var(--accent); }
+.article-wrap .lede { font-size: 19px; color: var(--ink-2); line-height: 1.6; margin-bottom: 36px; }
+.article-wrap h2 { font-family: var(--display); font-size: 28px; margin: 40px 0 14px; }
+.article-wrap h2 em { font-style: italic; color: var(--accent); }
+.article-wrap p, .article-wrap li { font-size: 16px; color: var(--ink-2); line-height: 1.75; }
+.article-wrap p { margin-bottom: 14px; }
+.article-wrap ul, .article-wrap ol { margin: 12px 0 14px 22px; }
+.compare-table { width: 100%; border-collapse: collapse; margin: 18px 0; font-size: 14px; }
+.compare-table th { background: var(--bg-2); padding: 10px 14px; text-align: left; border-bottom: 2px solid var(--line); }
+.compare-table td { padding: 10px 14px; border-bottom: 1px solid var(--line); }
+.compare-table .win { color: var(--olive); font-weight: 600; }
+.compare-table .lose { color: var(--muted); }
+.compare-table .tie { color: var(--gold); font-weight: 600; }
+.article-wrap blockquote { border-left: 3px solid var(--accent); padding: 8px 0 8px 20px; font-family: var(--display); font-style: italic; font-size: 19px; color: var(--ink); margin: 24px 0; }
+.cta-end { background: linear-gradient(135deg, var(--accent), var(--gold)); color: var(--bg); border-radius: var(--r-xl); padding: 36px; text-align: center; margin: 48px 0 0; }
+.cta-end h3 { color: var(--bg); font-family: var(--display); font-style: italic; font-size: 26px; margin-bottom: 10px; }
+.cta-end p { color: rgba(244,239,227,.85); margin-bottom: 18px; }
+.cta-end .btn { background: var(--bg); color: var(--ink); border-color: var(--bg); }
+</style>
+</head>
+<body>
+<a href="#main" class="skip-link">Saltar al contenido</a>
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="brand">Claude<em>·101</em></a>
+    <div class="nav-links"><a href="/blog">← Blog</a><a href="/#precio" class="btn btn-ghost btn-sm">Comprar acceso</a></div>
+  </div>
+</nav>
+
+<main id="main" class="container">
+  <article class="article-wrap">
+    <div class="article-meta"><span class="cat">Comparativa</span><span>· 6 min</span><span>· Mayo 2026</span></div>
+    <h1>Claude vs. ChatGPT: <em>cuál usar</em> y para qué</h1>
+    <p class="lede">Llevamos un año largo usando ambos en producción real, no solo en hilos de Twitter. Esta es la comparativa que nos habría gustado tener al empezar. Spoiler: la respuesta no es "el mejor" — es "el mejor para qué tarea".</p>
+
+    <p>Antes de meternos: ambos son herramientas excelentes. La diferencia para un profesional no está en cuál tiene mejores benchmarks, sino en cuál encaja con tu flujo. Aquí va el desglose por tareas.</p>
+
+    <h2>Donde <em>Claude</em> brilla más</h2>
+
+    <h3>Escritura natural en español</h3>
+    <p>Diferencia notable. ChatGPT tiende a sonar más "traducido del inglés" en castellano. Claude escribe en un español más natural, con menos americanismos, mejor cadencia. Si te dedicas a comunicación, redacción profesional o copy, Claude te ahorra más revisiones.</p>
+
+    <h3>Contextos largos coherentes</h3>
+    <p>Si pegas un PDF de 50 páginas o un código de 30 archivos, Claude mantiene la coherencia mejor. ChatGPT también es bueno aquí, pero Claude empuja un poco más en este escenario específico — sobre todo cuando hay que cruzar información entre el principio y el final del contexto.</p>
+
+    <h3>Razonamiento ético matizado</h3>
+    <p>Esto suena abstracto pero es práctico. Cuando le pides analizar un tema delicado, Claude tiende a dar respuestas con criterio en lugar de bloquear de forma rígida. Útil cuando trabajas en sectores sensibles (legal, salud, RRHH).</p>
+
+    <h3>Artifacts y prototipos visuales</h3>
+    <p>Esta es la función que más le envidian. Claude crea código y vistas interactivas en un panel aparte donde puedes iterar sin reempezar. Para prototipar ideas visuales rápido, es difícil de igualar.</p>
+
+    <h2>Donde <em>ChatGPT</em> brilla más</h2>
+
+    <h3>Ecosistema de plugins y GPTs</h3>
+    <p>La cantidad de GPTs especializados y plugins disponibles es enorme. Si trabajas en un nicho con plugins específicos (SEO, finanzas, software concreto), ChatGPT te ofrece más herramientas pre-hechas.</p>
+
+    <h3>Generación de imágenes integrada</h3>
+    <p>DALL-E está integrado nativamente. Claude no genera imágenes — solo las interpreta. Si la generación visual es central para tu trabajo, ChatGPT (o herramientas dedicadas como Midjourney) gana.</p>
+
+    <h3>Voz y modalidades nativas</h3>
+    <p>El modo voz de ChatGPT es maduro. Claude se está poniendo al día pero ChatGPT lleva ventaja en uso conversacional por voz.</p>
+
+    <h2>Comparativa <em>rápida</em></h2>
+    <table class="compare-table">
+      <thead><tr><th>Tarea</th><th>Claude</th><th>ChatGPT</th></tr></thead>
+      <tbody>
+        <tr><td>Escritura profesional en español</td><td class="win">★ Mejor</td><td class="lose">Bien</td></tr>
+        <tr><td>Análisis de documentos largos</td><td class="win">★ Mejor</td><td class="lose">Bien</td></tr>
+        <tr><td>Prototipos visuales rápidos (Artifacts)</td><td class="win">★ Mejor</td><td class="lose">N/A nativo</td></tr>
+        <tr><td>Generación de imágenes</td><td class="lose">N/A</td><td class="win">★ Integrado</td></tr>
+        <tr><td>Plugins y GPTs especializados</td><td class="lose">Limitado (MCP en crecimiento)</td><td class="win">★ Más maduro</td></tr>
+        <tr><td>Programación general</td><td class="tie">Empate</td><td class="tie">Empate</td></tr>
+        <tr><td>Razonamiento ético matizado</td><td class="win">★ Mejor</td><td class="lose">Más rígido</td></tr>
+        <tr><td>Modo voz</td><td class="lose">Menor</td><td class="win">★ Más maduro</td></tr>
+      </tbody>
+    </table>
+
+    <h2>¿Y entonces, <em>cuál uso</em>?</h2>
+    <p>Si te tienes que casar con uno, depende de lo que hagas el 70% del tiempo:</p>
+    <ul>
+      <li><strong>Si redactas, analizas documentos o trabajas con prototipos:</strong> Claude.</li>
+      <li><strong>Si necesitas plugins de nicho, voz o generación visual:</strong> ChatGPT.</li>
+      <li><strong>Si puedes permitirte ambos:</strong> tener los dos. Cuestan ~20 €/mes cada uno y la diferencia se nota.</li>
+    </ul>
+
+    <blockquote>La mejor decisión no es "elegir el mejor", es elegir el adecuado para cada tarea — y saber cuándo cambiar.</blockquote>
+
+    <h2>Cómo decidir <em>en tu caso</em></h2>
+    <p>Coge 5 tareas reales que hagas en tu trabajo. Pásalas por los dos. Mide:</p>
+    <ol>
+      <li>Calidad del primer intento (sin iterar).</li>
+      <li>Cuánto tienes que editarlo.</li>
+      <li>Cómo de natural suena en tu español.</li>
+    </ol>
+    <p>En tres tareas tendrás clara la respuesta. Para profesionales hispanohablantes que pasan el día redactando, en el 80% de los casos gana Claude. Para otros perfiles depende.</p>
+
+    <div class="cta-end">
+      <h3>Aprende Claude a fondo</h3>
+      <p>Si decides irte con Claude, aprovéchalo. 8 módulos · acceso vitalicio · 49 €.</p>
+      <a href="/#precio" class="btn btn-lg" onclick="track('blog_cta_click', { post: 'claude-vs-chatgpt' })">Ver el curso →</a>
+    </div>
+  </article>
+</main>
+
+<footer class="foot">
+  <div class="foot-inner"><div class="foot-bottom"><a href="/" class="brand">Claude<em>·101</em></a><div><a href="/blog">Más artículos</a> · <a href="/terminos">Términos</a> · <a href="/contacto">Contacto</a></div></div></div>
+</footer>
+<script src="/track.js"></script>
+</body>
+</html>

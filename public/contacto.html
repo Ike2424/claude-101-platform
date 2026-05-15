@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contacto · Claude 101</title>
+<meta name="description" content="Contacta con Claude 101. Para soporte, dudas antes de comprar, facturas, partnerships y prensa.">
+<link rel="canonical" href="/contacto">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Geist:wght@300..700&family=Geist+Mono:wght@400..600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles-shared.css">
+<style>
+.page-head { padding: 64px 0 32px; text-align: center; }
+.page-head h1 { font-family: var(--display); font-style: italic; font-size: clamp(36px, 5vw, 56px); margin-bottom: 12px; }
+.page-head h1 em { font-style: normal; color: var(--accent); }
+.page-head .sub { color: var(--muted); max-width: 52ch; margin: 0 auto; font-size: 16px; }
+
+.contact-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 24px; padding-bottom: 80px; }
+.contact-form { background: var(--card); border: 1px solid var(--line); border-radius: var(--r-xl); padding: 36px; }
+.contact-form .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+.contact-form .textarea { min-height: 160px; resize: vertical; }
+.contact-form .topics { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+.topic-chip { font-family: var(--mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; padding: 8px 14px; border: 1px solid var(--line-2); border-radius: var(--r-pill); background: var(--bg); color: var(--ink-2); cursor: pointer; transition: all .2s; }
+.topic-chip.active { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+
+.contact-side { display: flex; flex-direction: column; gap: 14px; }
+.side-card { background: var(--card); border: 1px solid var(--line); border-radius: var(--r-lg); padding: 24px; }
+.side-card .icon { font-size: 22px; margin-bottom: 8px; }
+.side-card h3 { font-family: var(--display); font-size: 18px; margin-bottom: 6px; }
+.side-card p { font-size: 13px; color: var(--ink-2); line-height: 1.55; margin-bottom: 8px; }
+.side-card a { font-size: 14px; font-weight: 600; }
+
+#contactResult { margin-top: 14px; }
+
+@media (max-width: 880px) {
+  .contact-grid { grid-template-columns: 1fr; }
+  .contact-form .row { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<a href="#main" class="skip-link">Saltar al contenido</a>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="brand">Claude<em>·101</em></a>
+    <div class="nav-links">
+      <a href="/#precio">Precio</a>
+      <a href="/blog">Blog</a>
+      <a href="/recursos">Recursos</a>
+      <a href="/login" class="btn btn-ghost btn-sm">Ya tengo acceso</a>
+    </div>
+  </div>
+</nav>
+
+<main id="main" class="container">
+  <header class="page-head">
+    <h1>Hablemos. <em>Sin formularios crípticos.</em></h1>
+    <p class="sub">Para soporte, dudas antes de comprar, factura, partnerships o prensa. Respondemos en menos de 24h laborables.</p>
+  </header>
+
+  <div class="contact-grid">
+    <form class="contact-form" id="contactForm" onsubmit="return sendContact(event)" novalidate>
+      <label class="label">Tema</label>
+      <div class="topics" id="topics" role="radiogroup">
+        <button type="button" class="topic-chip active" data-topic="general">General</button>
+        <button type="button" class="topic-chip" data-topic="soporte">Soporte</button>
+        <button type="button" class="topic-chip" data-topic="factura">Factura</button>
+        <button type="button" class="topic-chip" data-topic="partnership">Partnership</button>
+        <button type="button" class="topic-chip" data-topic="prensa">Prensa</button>
+      </div>
+
+      <div class="row">
+        <div>
+          <label class="label" for="cn">Nombre</label>
+          <input type="text" id="cn" name="name" class="input" required placeholder="Tu nombre" autocomplete="name">
+        </div>
+        <div>
+          <label class="label" for="ce">Email</label>
+          <input type="email" id="ce" name="email" class="input" required placeholder="tu@email.com" autocomplete="email">
+        </div>
+      </div>
+
+      <label class="label" for="cm">Mensaje</label>
+      <textarea id="cm" name="message" class="input textarea" required placeholder="Cuéntanos qué necesitas. Cuanto más concreto, mejor te podemos ayudar."></textarea>
+
+      <button type="submit" class="btn btn-primary btn-lg btn-block" id="contactBtn">Enviar mensaje</button>
+      <div id="contactResult" role="status" aria-live="polite"></div>
+    </form>
+
+    <aside class="contact-side">
+      <div class="side-card">
+        <div class="icon">📩</div>
+        <h3>Email directo</h3>
+        <p>Si prefieres escribir un email tradicional, sin formularios:</p>
+        <a id="supportEmailLink" href="mailto:hola@claude101.com">hola@claude101.com</a>
+      </div>
+      <div class="side-card">
+        <div class="icon">💬</div>
+        <h3>Comunidad</h3>
+        <p>Únete al Discord de Claude 101 — debates, prompts compartidos y dudas resueltas en comunidad.</p>
+        <a id="communityLink" href="#">Entrar al Discord →</a>
+      </div>
+      <div class="side-card">
+        <div class="icon">⏱</div>
+        <h3>Tiempos de respuesta</h3>
+        <p>Soporte y dudas: &lt; 24h laborables. Facturas: mismo día. Partnerships: 48-72h.</p>
+      </div>
+      <div class="side-card">
+        <div class="icon">🌍</div>
+        <h3>Sede</h3>
+        <p>Atendemos en español desde Europa. Horario laboral CET. Pero leemos a cualquier hora.</p>
+      </div>
+    </aside>
+  </div>
+</main>
+
+<footer class="foot">
+  <div class="foot-inner">
+    <div class="foot-bottom">
+      <a href="/" class="brand">Claude<em>·101</em></a>
+      <div>
+        <a href="/terminos">Términos</a> · <a href="/privacidad">Privacidad</a> · <a href="/reembolsos">Reembolsos</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="/track.js"></script>
+<script>
+// Topics
+let currentTopic = 'general';
+document.querySelectorAll('.topic-chip').forEach(c => c.onclick = () => {
+  document.querySelectorAll('.topic-chip').forEach(x => x.classList.remove('active'));
+  c.classList.add('active');
+  currentTopic = c.dataset.topic;
+});
+
+// Cargar config (email + community)
+async function loadCfg() {
+  try {
+    const r = await fetch('/api/config');
+    const c = await r.json();
+    const a = document.getElementById('supportEmailLink');
+    a.href = 'mailto:' + c.support_email;
+    a.textContent = c.support_email;
+    document.getElementById('communityLink').href = c.community_url || '#';
+  } catch {}
+}
+loadCfg();
+
+async function sendContact(e) {
+  e.preventDefault();
+  const btn = document.getElementById('contactBtn');
+  const result = document.getElementById('contactResult');
+  btn.disabled = true; btn.innerHTML = '<span class="spin"></span> Enviando…';
+  result.innerHTML = '';
+  const body = {
+    name: e.target.name.value.trim(),
+    email: e.target.email.value.trim(),
+    message: e.target.message.value.trim(),
+    topic: currentTopic,
+  };
+  try {
+    const r = await fetch('/api/contact', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+    if (r.ok) {
+      result.innerHTML = '<div class="alert alert-success">Mensaje enviado. Te respondemos en menos de 24h laborables.</div>';
+      e.target.reset();
+      if (window.track) window.track('contact_sent', { topic: currentTopic });
+    } else {
+      const d = await r.json().catch(()=>({}));
+      result.innerHTML = '<div class="alert alert-error">' + (d.error || 'No se pudo enviar.') + '</div>';
+    }
+  } catch {
+    result.innerHTML = '<div class="alert alert-error">Error de red. Inténtalo de nuevo.</div>';
+  }
+  btn.disabled = false; btn.textContent = 'Enviar mensaje';
+  return false;
+}
+</script>
+</body>
+</html>

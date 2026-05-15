@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mi curso · Claude 101</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Geist:wght@300..700&family=Geist+Mono:wght@400..600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #F4EFE3; --bg-2: #EFE9DA; --card: #FBF8F0;
+  --ink: #1C1A16; --ink-2: #3A352D; --muted: #756B5B; --line: #E1D8C2; --line-2: #CFC4AA;
+  --accent: #C8542B; --olive: #4F5D38;
+  --display: 'Fraunces', Georgia, serif;
+  --body: 'Geist', system-ui, sans-serif;
+  --mono: 'Geist Mono', ui-monospace, monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; background: var(--bg); color: var(--ink); font-family: var(--body); }
+.app-bar {
+  position: sticky; top: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 24px;
+  background: rgba(244,239,227,.95); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+}
+.app-brand { font-family: var(--display); font-style: italic; font-size: 18px; color: var(--ink); }
+.app-brand em { font-style: normal; color: var(--accent); }
+.app-user { display: flex; align-items: center; gap: 12px; }
+.user-email { font-family: var(--mono); font-size: 11px; color: var(--muted); letter-spacing: .05em; }
+.logout-btn {
+  background: transparent; border: 1px solid var(--line-2); color: var(--ink-2);
+  font-family: var(--mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
+  padding: 6px 12px; border-radius: 100px; cursor: pointer; transition: all .2s;
+}
+.logout-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+.course-frame {
+  width: 100%;
+  height: calc(100vh - 50px);
+  border: none;
+  display: block;
+}
+</style>
+</head>
+<body>
+
+<div class="app-bar">
+  <div class="app-brand">Claude<em>·101</em></div>
+  <div class="app-user">
+    <span class="user-email" id="userEmail">cargando…</span>
+    <a href="/account" class="logout-btn" style="text-decoration: none;">Mi cuenta</a>
+    <button class="logout-btn" onclick="logout()">Salir</button>
+  </div>
+</div>
+
+<iframe class="course-frame" src="/course.html" title="Claude 101 — Curso" allow="autoplay"></iframe>
+
+<script>
+async function loadUser() {
+  try {
+    const r = await fetch('/api/auth/me');
+    const data = await r.json();
+    if (data.authenticated) {
+      document.getElementById('userEmail').textContent = data.user.email;
+    }
+  } catch {}
+}
+loadUser();
+
+async function logout() {
+  await fetch('/api/auth/logout', { method: 'POST' });
+  location.href = '/';
+}
+</script>
+<script src="/track.js"></script>
+</body>
+</html>

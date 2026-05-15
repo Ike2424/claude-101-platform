@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>¡Bienvenido a Claude 101!</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Geist:wght@300..700&family=Geist+Mono:wght@400..600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles-shared.css">
+<style>
+.wrap { min-height: calc(100vh - 80px); display: flex; align-items: center; justify-content: center; padding: 40px 20px; }
+.box { max-width: 520px; text-align: center; }
+.success-badge { display: inline-flex; align-items: center; gap: 10px; padding: 10px 18px; background: rgba(79,93,56,.1); border: 1px solid var(--olive); border-radius: 100px; font-family: var(--mono); font-size: 12px; color: var(--olive); letter-spacing: .12em; text-transform: uppercase; margin-bottom: 18px; }
+h1 { font-size: 44px; font-style: italic; line-height: 1.1; margin-bottom: 14px; max-width: 14ch; margin-left: auto; margin-right: auto; }
+h1 em { font-style: normal; color: var(--accent); }
+.lead { color: var(--ink-2); font-size: 16px; margin-bottom: 28px; line-height: 1.6; }
+.tip { margin-top: 18px; font-size: 13px; color: var(--muted); line-height: 1.6; }
+.spin { display: inline-block; width: 14px; height: 14px; border: 2px solid var(--accent); border-top-color: transparent; border-radius: 50%; animation: spin 1s linear infinite; vertical-align: -2px; margin-right: 6px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="brand">Claude<em>·101</em></a>
+  </div>
+</nav>
+
+<div class="wrap">
+  <div class="card box">
+    <div class="success-badge">✓ Pago confirmado</div>
+    <h1 class="h-display">¡Bienvenido a <em>Claude 101</em>!</h1>
+    <p class="lead">Te hemos enviado un email con tu enlace de acceso. Solo haz clic y entras al curso.</p>
+
+    <div class="alert alert-info" style="text-align: left; margin: 18px 0;">
+      <strong>¿No te llega en 1-2 minutos?</strong> Revisa la carpeta de spam o usa <a href="/login">esta página</a> para pedir otro enlace con tu email de compra.
+    </div>
+
+    <p style="margin-top: 24px;">
+      <a href="/login" class="btn btn-primary btn-lg">Ir al login</a>
+    </p>
+    <p class="tip">También puedes guardar este email — el acceso es vitalicio.</p>
+  </div>
+</div>
+<script src="/track.js"></script>
+</body>
+</html>

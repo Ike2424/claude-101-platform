@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin · Claude 101</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Geist:wght@300..700&family=Geist+Mono:wght@400..600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles-shared.css">
+<style>
+.admin-header { padding: 28px 0 18px; border-bottom: 1px solid var(--line); margin-bottom: 24px; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 16px; }
+.admin-title { font-family: var(--display); font-size: 32px; font-style: italic; }
+.admin-title em { font-style: normal; color: var(--accent); }
+.admin-sub { color: var(--muted); font-size: 14px; }
+
+.tabs { display: flex; gap: 4px; margin-bottom: 24px; border-bottom: 1px solid var(--line); }
+.tab { background: transparent; border: none; padding: 12px 18px; font-family: var(--mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); cursor: pointer; border-bottom: 2px solid transparent; transition: all .2s; }
+.tab:hover { color: var(--ink-2); }
+.tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+.panel { display: none; }
+.panel.active { display: block; }
+
+.login-wrap { min-height: 80vh; display: flex; align-items: center; justify-content: center; padding: 40px 20px; }
+.login-box { max-width: 420px; width: 100%; }
+
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 24px; }
+.stat { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 18px; }
+.stat-label { font-family: var(--mono); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+.stat-value { font-family: var(--display); font-size: 28px; line-height: 1; color: var(--ink); }
+.stat-extra { font-size: 11px; color: var(--muted); margin-top: 5px; }
+
+.range-picker { display: flex; gap: 4px; background: var(--card); border: 1px solid var(--line); border-radius: 100px; padding: 4px; }
+.range-btn { background: transparent; border: none; padding: 6px 14px; font-family: var(--mono); font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); cursor: pointer; border-radius: 100px; }
+.range-btn:hover { color: var(--ink); }
+.range-btn.active { background: var(--ink); color: var(--bg); }
+
+.chart-card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 20px; margin-bottom: 14px; }
+.chart-title { font-family: var(--display); font-size: 18px; margin-bottom: 12px; }
+.chart-title em { font-style: italic; color: var(--accent); }
+.chart-sub { font-size: 12px; color: var(--muted); margin-bottom: 14px; }
+
+.section-title { display: flex; align-items: center; justify-content: space-between; margin: 24px 0 12px; }
+.section-title h2 { font-family: var(--display); font-size: 22px; color: var(--ink); font-style: italic; }
+.section-title h2 em { font-style: normal; color: var(--accent); }
+.section-title .actions { display: flex; gap: 8px; }
+
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+.table-wrap { background: var(--card); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
+table { width: 100%; border-collapse: collapse; }
+th, td { padding: 10px 14px; text-align: left; font-size: 13px; border-bottom: 1px solid var(--line); }
+th { background: var(--bg-2); font-weight: 600; color: var(--ink-2); font-size: 10px; letter-spacing: .1em; text-transform: uppercase; }
+td { color: var(--ink-2); }
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: var(--bg-2); }
+.bar-cell { position: relative; }
+.bar-cell .bar { position: absolute; left: 0; top: 50%; transform: translateY(-50%); height: 4px; background: var(--accent); border-radius: 100px; opacity: .3; }
+.bar-cell .label { position: relative; z-index: 1; padding-left: 10px; }
+
+.badge { display: inline-block; font-family: var(--mono); font-size: 9px; letter-spacing: .1em; text-transform: uppercase; padding: 3px 7px; border-radius: 6px; }
+.badge-paid { background: rgba(79,93,56,.12); color: var(--olive); }
+.badge-unpaid { background: rgba(117,107,91,.12); color: var(--muted); }
+.badge-refunded { background: rgba(200,84,43,.12); color: var(--accent); }
+.badge-completed { background: rgba(79,93,56,.12); color: var(--olive); }
+.badge-active { background: rgba(79,93,56,.12); color: var(--olive); }
+.badge-inactive { background: rgba(117,107,91,.12); color: var(--muted); }
+
+.row-action { background: transparent; border: 1px solid var(--line-2); color: var(--ink-2); padding: 4px 10px; border-radius: 6px; cursor: pointer; font-family: var(--mono); font-size: 10px; letter-spacing: .08em; text-transform: uppercase; transition: all .2s; }
+.row-action:hover { border-color: var(--accent); color: var(--accent); }
+.row-action.danger:hover { border-color: var(--accent); background: var(--accent); color: var(--bg); }
+
+.search { width: 280px; max-width: 100%; }
+.empty { padding: 36px; text-align: center; color: var(--muted); font-size: 13px; }
+
+.grant-form, .coupon-form { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; padding: 14px; background: var(--card); border: 1px solid var(--line); border-radius: 12px; margin-bottom: 12px; }
+.grant-form .input, .coupon-form .input { flex: 1; min-width: 160px; }
+.grant-form label { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--ink-2); }
+
+/* Funnel visual */
+.funnel { display: flex; flex-direction: column; gap: 8px; }
+.funnel-step { background: var(--bg); border: 1px solid var(--line); border-radius: 10px; padding: 12px 16px; position: relative; overflow: hidden; }
+.funnel-step .fill { position: absolute; left: 0; top: 0; bottom: 0; background: linear-gradient(90deg, var(--accent), var(--gold)); opacity: .15; transition: width .8s; }
+.funnel-step .content { position: relative; display: flex; justify-content: space-between; align-items: center; }
+.funnel-step .label { font-weight: 600; color: var(--ink); }
+.funnel-step .meta { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+
+/* SVG chart */
+.svg-chart { width: 100%; height: 180px; }
+.svg-chart .axis { stroke: var(--line-2); stroke-width: 1; }
+.svg-chart .grid-line { stroke: var(--line); stroke-width: 1; stroke-dasharray: 2,3; }
+.svg-chart .area { fill: var(--accent); fill-opacity: .12; }
+.svg-chart .line { stroke: var(--accent); stroke-width: 2; fill: none; }
+.svg-chart .dot { fill: var(--accent); }
+.svg-chart .label { font-family: var(--mono); font-size: 10px; fill: var(--muted); }
+
+@media(max-width: 880px) { .stats { grid-template-columns: repeat(2, 1fr); } .grid-2 { grid-template-columns: 1fr; } table { font-size: 12px; } th, td { padding: 8px 10px; } }
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="loginView" class="login-wrap" style="display:none;">
+  <div class="card login-box">
+    <div class="admin-title">Admin <em>Claude 101</em></div>
+    <p class="admin-sub" style="margin: 8px 0 24px;">Introduce el token administrativo (`ADMIN_TOKEN` de tu `.env`).</p>
+    <div id="loginAlert"></div>
+    <form id="loginForm" onsubmit="return doLogin(event)">
+      <label class="label" for="token">Admin token</label>
+      <input type="password" id="token" class="input" placeholder="•••••••••••••••" required autofocus>
+      <button type="submit" class="btn btn-primary btn-block btn-lg" style="margin-top: 14px;">Entrar</button>
+    </form>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashView" class="container" style="display:none; padding-top: 24px; padding-bottom: 60px;">
+
+  <header class="admin-header">
+    <div>
+      <div class="admin-title">Admin <em>Claude 101</em></div>
+      <div class="admin-sub">Estadísticas y operativa.</div>
+    </div>
+    <div style="display: flex; gap: 8px; align-items: center;">
+      <div class="range-picker">
+        <button class="range-btn" data-days="7">7d</button>
+        <button class="range-btn active" data-days="30">30d</button>
+        <button class="range-btn" data-days="90">90d</button>
+        <button class="range-btn" data-days="365">1a</button>
+      </div>
+      <button class="btn btn-ghost" onclick="refresh()">↻</button>
+      <button class="btn btn-ghost" onclick="doLogout()">Salir</button>
+    </div>
+  </header>
+
+  <nav class="tabs">
+    <button class="tab active" data-tab="overview">Visión</button>
+    <button class="tab" data-tab="web">Web</button>
+    <button class="tab" data-tab="course">Curso</button>
+    <button class="tab" data-tab="users">Usuarios</button>
+    <button class="tab" data-tab="purchases">Compras</button>
+    <button class="tab" data-tab="coupons">Cupones</button>
+  </nav>
+
+  <!-- ============ OVERVIEW ============ -->
+  <div class="panel active" data-panel="overview">
+    <div class="stats" id="statsOverview"></div>
+
+    <div class="grid-2">
+      <div class="chart-card">
+        <div class="chart-title">Visitas <em>por día</em></div>
+        <div id="chartViews"></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">Ingresos <em>por día</em></div>
+        <div id="chartRevenue"></div>
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-title">Embudo de <em>conversión</em></div>
+      <div class="chart-sub">Visitas únicas a la landing → checkouts iniciados → compras completadas.</div>
+      <div class="funnel" id="funnel"></div>
+    </div>
+  </div>
+
+  <!-- ============ WEB ============ -->
+  <div class="panel" data-panel="web">
+    <div class="grid-2">
+      <div class="chart-card">
+        <div class="chart-title">Páginas <em>más vistas</em></div>
+        <div id="topPages"></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">Referrers <em>externos</em></div>
+        <div id="topReferrers"></div>
+      </div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Eventos <em>capturados</em></div>
+      <div class="chart-sub">Acciones del usuario en la web (checkout iniciado, video reproducido, etc).</div>
+      <div id="eventTable"></div>
+    </div>
+  </div>
+
+  <!-- ============ COURSE ============ -->
+  <div class="panel" data-panel="course">
+    <div class="stats" id="statsCourse"></div>
+    <div class="grid-2">
+      <div class="chart-card">
+        <div class="chart-title">Lecciones <em>más completadas</em></div>
+        <div id="topLessons"></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">Distribución de <em>progreso</em></div>
+        <div class="chart-sub">Cuántos usuarios han completado X lecciones.</div>
+        <div id="completionDist"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ USERS ============ -->
+  <div class="panel" data-panel="users">
+    <div class="section-title">
+      <h2>Conceder acceso <em>manualmente</em></h2>
+    </div>
+    <form class="grant-form" onsubmit="return grantByEmail(event)">
+      <input type="email" id="grantEmail" class="input" placeholder="cliente@example.com" required>
+      <label><input type="checkbox" id="grantSendLink" checked> Enviar magic link</label>
+      <button type="submit" class="btn btn-primary">Conceder</button>
+    </form>
+
+    <div class="section-title">
+      <h2>Usuarios</h2>
+      <input type="search" id="userSearch" class="input search" placeholder="Buscar por email…" oninput="debouncedSearch()">
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>ID</th><th>Email</th><th>Estado</th><th>Pagado el</th><th>Creado</th><th></th></tr></thead>
+        <tbody id="usersBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ============ PURCHASES ============ -->
+  <div class="panel" data-panel="purchases">
+    <div class="section-title"><h2>Últimas <em>compras</em></h2></div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Fecha</th><th>Email</th><th>Importe</th><th>Estado</th><th>Stripe ID</th></tr></thead>
+        <tbody id="purchasesBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ============ COUPONS ============ -->
+  <div class="panel" data-panel="coupons">
+    <div class="section-title"><h2>Crear <em>cupón</em></h2></div>
+    <form class="coupon-form" onsubmit="return createCoupon(event)">
+      <input type="text" id="couponCode" class="input" placeholder="VERANO20" required style="text-transform: uppercase;">
+      <input type="number" id="couponPct" class="input" min="1" max="100" placeholder="% descuento" required style="max-width: 140px;">
+      <input type="number" id="couponMax" class="input" min="1" placeholder="máx usos (opcional)" style="max-width: 180px;">
+      <button type="submit" class="btn btn-primary">Crear</button>
+    </form>
+    <p style="font-size: 12px; color: var(--muted); margin-bottom: 14px;">Los cupones se validan en el checkout (parámetro <code>coupon</code> en la URL <code>/?coupon=CODIGO</code>) y se aplican como descuento en Stripe Checkout.</p>
+    <div class="section-title"><h2>Cupones <em>activos</em></h2></div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Código</th><th>%</th><th>Usos</th><th>Caduca</th><th>Estado</th><th></th></tr></thead>
+        <tbody id="couponsBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<script src="/track.js"></script>
+<script>
+// ============================================================
+// State
+// ============================================================
+let CURRENT_DAYS = 30;
+let ANALYTICS = null;
+
+function fmt(n) { return (n || 0).toLocaleString('es-ES'); }
+function eur(c) { return ((c||0)/100).toLocaleString('es-ES', { style: 'currency', currency: 'EUR' }); }
+function escapeHtml(s) { return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+// ============================================================
+// Auth
+// ============================================================
+async function bootstrap() {
+  const ok = await checkAuth();
+  if (ok) { showDash(); refresh(); }
+  else { document.getElementById('loginView').style.display = 'flex'; }
+}
+async function checkAuth() { try { const r = await fetch('/api/admin/stats'); return r.ok; } catch { return false; } }
+function showDash() { document.getElementById('loginView').style.display = 'none'; document.getElementById('dashView').style.display = 'block'; }
+async function doLogin(e) {
+  e.preventDefault();
+  const token = document.getElementById('token').value;
+  const r = await fetch('/api/admin/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ token }) });
+  if (r.ok) { showDash(); refresh(); }
+  else document.getElementById('loginAlert').innerHTML = '<div class="alert alert-error">Token inválido.</div>';
+  return false;
+}
+async function doLogout() { await fetch('/api/admin/logout', { method: 'POST' }); location.reload(); }
+
+// ============================================================
+// Tabs + range
+// ============================================================
+document.querySelectorAll('.tab').forEach(t => t.onclick = () => {
+  document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(x => x.classList.remove('active'));
+  t.classList.add('active');
+  document.querySelector(`.panel[data-panel="${t.dataset.tab}"]`).classList.add('active');
+});
+document.querySelectorAll('.range-btn').forEach(b => b.onclick = () => {
+  document.querySelectorAll('.range-btn').forEach(x => x.classList.remove('active'));
+  b.classList.add('active');
+  CURRENT_DAYS = parseInt(b.dataset.days, 10);
+  refresh();
+});
+
+// ============================================================
+// Load all
+// ============================================================
+async function refresh() {
+  await Promise.all([loadStats(), loadAnalytics(), loadUsers(), loadPurchases(), loadCoupons()]);
+}
+
+async function loadStats() {
+  const r = await fetch('/api/admin/stats');
+  if (!r.ok) return;
+  const s = await r.json();
+  document.getElementById('statsOverview').innerHTML = `
+    <div class="stat"><div class="stat-label">Acceso activo</div><div class="stat-value">${fmt(s.paid_users)}</div><div class="stat-extra">de ${fmt(s.total_users)} usuarios</div></div>
+    <div class="stat"><div class="stat-label">Compras</div><div class="stat-value">${fmt(s.completed_purchases)}</div><div class="stat-extra">${fmt(s.refunded)} reembolsadas</div></div>
+    <div class="stat"><div class="stat-label">Ingresos brutos</div><div class="stat-value">${eur(s.total_revenue_cents)}</div><div class="stat-extra">total acumulado</div></div>
+    <div class="stat"><div class="stat-label">Ventas hoy</div><div class="stat-value">${(s.by_day[0]?.n || 0)}</div><div class="stat-extra">${eur(s.by_day[0]?.revenue || 0)}</div></div>
+  `;
+}
+
+async function loadAnalytics() {
+  const r = await fetch('/api/admin/analytics?days=' + CURRENT_DAYS);
+  if (!r.ok) return;
+  ANALYTICS = await r.json();
+  renderCharts();
+  renderWeb();
+  renderCourse();
+}
+
+function svgLineChart(data, key, opts={}) {
+  if (!data.length) return '<div class="empty">Sin datos en este periodo todavía.</div>';
+  const W = 560, H = 160, P = 28;
+  const values = data.map(d => Number(d[key] || 0));
+  const max = Math.max(...values, 1);
+  const days = data.map(d => d.day);
+  const x = (i) => P + (i * (W - P*2) / Math.max(values.length - 1, 1));
+  const y = (v) => H - P - (v / max) * (H - P*2);
+  const linePath = values.map((v, i) => `${i ? 'L' : 'M'}${x(i).toFixed(1)},${y(v).toFixed(1)}`).join(' ');
+  const areaPath = linePath + ` L${x(values.length-1).toFixed(1)},${H-P} L${P},${H-P} Z`;
+  const ticks = [0, max/2, max].map(v => ({v, y: y(v)}));
+  return `
+    <svg class="svg-chart" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">
+      ${ticks.map(t => `<line class="grid-line" x1="${P}" y1="${t.y}" x2="${W-P}" y2="${t.y}"/><text class="label" x="6" y="${t.y+3}">${opts.fmt ? opts.fmt(t.v) : Math.round(t.v)}</text>`).join('')}
+      <path class="area" d="${areaPath}"/>
+      <path class="line" d="${linePath}"/>
+      ${values.map((v,i) => `<circle class="dot" cx="${x(i)}" cy="${y(v)}" r="3"><title>${days[i]}: ${opts.fmt ? opts.fmt(v) : v}</title></circle>`).join('')}
+      <text class="label" x="${P}" y="${H-6}">${days[0] || ''}</text>
+      <text class="label" x="${W-P-50}" y="${H-6}">${days[days.length-1] || ''}</text>
+    </svg>
+  `;
+}
+
+function renderCharts() {
+  if (!ANALYTICS) return;
+  document.getElementById('chartViews').innerHTML = svgLineChart(ANALYTICS.web.views_by_day, 'views');
+  document.getElementById('chartRevenue').innerHTML = svgLineChart(ANALYTICS.revenue_by_day, 'revenue', { fmt: v => eur(v) });
+
+  const f = ANALYTICS.funnel;
+  const maxF = Math.max(f.landing_uniques, 1);
+  document.getElementById('funnel').innerHTML = `
+    <div class="funnel-step"><div class="fill" style="width: 100%"></div><div class="content"><div class="label">Visitas a la landing</div><div class="meta">${fmt(f.landing_uniques)} únicas</div></div></div>
+    <div class="funnel-step"><div class="fill" style="width: ${(f.checkout_started/maxF*100).toFixed(1)}%"></div><div class="content"><div class="label">Checkouts iniciados</div><div class="meta">${fmt(f.checkout_started)} · ${f.conv_started_pct}%</div></div></div>
+    <div class="funnel-step"><div class="fill" style="width: ${(f.purchases/maxF*100).toFixed(1)}%"></div><div class="content"><div class="label">Compras completadas</div><div class="meta">${fmt(f.purchases)} · ${f.conv_purchase_pct}%</div></div></div>
+  `;
+}
+
+function renderWeb() {
+  if (!ANALYTICS) return;
+  const tp = ANALYTICS.web.top_pages;
+  const maxHits = Math.max(...tp.map(p => p.hits), 1);
+  document.getElementById('topPages').innerHTML = tp.length ? `
+    <table style="width:100%; border-collapse: collapse;">
+      ${tp.map(p => `
+        <tr>
+          <td class="bar-cell" style="padding: 8px 14px 8px 0; font-family: var(--mono); font-size: 12px;">
+            <div class="bar" style="width: ${(p.hits/maxHits*100).toFixed(1)}%"></div>
+            <span class="label">${escapeHtml(p.path)}</span>
+          </td>
+          <td style="text-align: right; font-family: var(--mono); font-size: 12px; color: var(--ink);">${fmt(p.hits)}</td>
+          <td style="text-align: right; font-family: var(--mono); font-size: 11px; color: var(--muted); padding-left: 14px;">${fmt(p.uniques)} uniques</td>
+        </tr>
+      `).join('')}
+    </table>
+  ` : '<div class="empty">Sin visitas aún.</div>';
+
+  const tr_ = ANALYTICS.web.top_referrers;
+  document.getElementById('topReferrers').innerHTML = tr_.length ? `
+    <table style="width:100%; border-collapse: collapse;">
+      ${tr_.map(r => `<tr><td style="padding: 6px 8px; font-size: 12px;">${escapeHtml(r.referrer)}</td><td style="text-align:right; font-family:var(--mono); font-size:12px;">${fmt(r.hits)}</td></tr>`).join('')}
+    </table>
+  ` : '<div class="empty">Sin referrers externos en este periodo.</div>';
+
+  const ev = ANALYTICS.events;
+  document.getElementById('eventTable').innerHTML = ev.length ? `
+    <table style="width:100%; border-collapse: collapse;">
+      ${ev.map(e => `<tr><td style="padding: 8px; font-family: var(--mono); font-size: 12px;">${escapeHtml(e.event_type)}</td><td style="text-align:right; font-family:var(--mono); font-size:12px;">${fmt(e.n)}</td></tr>`).join('')}
+    </table>
+  ` : '<div class="empty">No se han capturado eventos todavía.</div>';
+}
+
+function renderCourse() {
+  if (!ANALYTICS) return;
+  const c = ANALYTICS.course;
+  document.getElementById('statsCourse').innerHTML = `
+    <div class="stat"><div class="stat-label">Activos en periodo</div><div class="stat-value">${fmt(c.active_learners)}</div><div class="stat-extra">usuarios con ≥1 lección completada</div></div>
+    <div class="stat"><div class="stat-label">Lecciones completadas</div><div class="stat-value">${fmt(c.top_lessons.reduce((s,l)=>s+l.completions,0))}</div><div class="stat-extra">en últimos ${ANALYTICS.period_days}d</div></div>
+    <div class="stat"><div class="stat-label">Top lección</div><div class="stat-value" style="font-size: 22px;">${c.top_lessons[0]?.lesson_id || '—'}</div><div class="stat-extra">${c.top_lessons[0]?.completions || 0} completions</div></div>
+    <div class="stat"><div class="stat-label">Cobertura</div><div class="stat-value">${c.top_lessons.length}</div><div class="stat-extra">lecciones distintas tocadas</div></div>
+  `;
+
+  const tl = c.top_lessons;
+  const maxC = Math.max(...tl.map(l => l.completions), 1);
+  document.getElementById('topLessons').innerHTML = tl.length ? `
+    <table style="width:100%; border-collapse: collapse;">
+      ${tl.map(l => `
+        <tr>
+          <td class="bar-cell" style="padding: 8px 14px 8px 0; font-family: var(--mono); font-size: 12px;">
+            <div class="bar" style="width: ${(l.completions/maxC*100).toFixed(1)}%"></div>
+            <span class="label">${escapeHtml(l.lesson_id)}</span>
+          </td>
+          <td style="text-align: right; font-family: var(--mono); font-size: 12px;">${fmt(l.completions)}</td>
+        </tr>
+      `).join('')}
+    </table>
+  ` : '<div class="empty">Sin actividad de curso aún.</div>';
+
+  const cd = c.completion_distribution;
+  document.getElementById('completionDist').innerHTML = cd.length ? `
+    <table style="width:100%; border-collapse: collapse;">
+      <thead><tr><th>Nº de lecciones completadas</th><th style="text-align:right;">Usuarios</th></tr></thead>
+      ${cd.map(d => `<tr><td style="padding: 6px 8px; font-family: var(--mono); font-size: 12px;">${d.done}</td><td style="text-align:right; font-family:var(--mono); font-size:12px;">${fmt(d.users)}</td></tr>`).join('')}
+    </table>
+  ` : '<div class="empty">Sin datos.</div>';
+}
+
+// ============================================================
+// Users
+// ============================================================
+let _searchT;
+function debouncedSearch() { clearTimeout(_searchT); _searchT = setTimeout(loadUsers, 200); }
+async function loadUsers() {
+  const search = document.getElementById('userSearch')?.value?.trim() || '';
+  const r = await fetch('/api/admin/users?limit=100' + (search ? `&search=${encodeURIComponent(search)}` : ''));
+  if (!r.ok) return;
+  const { users } = await r.json();
+  const tbody = document.getElementById('usersBody');
+  if (!users.length) { tbody.innerHTML = '<tr><td colspan="6" class="empty">Sin resultados</td></tr>'; return; }
+  tbody.innerHTML = users.map(u => `
+    <tr>
+      <td>${u.id}</td>
+      <td>${escapeHtml(u.email)}</td>
+      <td><span class="badge ${u.has_paid ? 'badge-paid' : 'badge-unpaid'}">${u.has_paid ? '✓ pagado' : 'pendiente'}</span></td>
+      <td>${u.paid_at ? new Date(u.paid_at).toLocaleDateString('es-ES') : '—'}</td>
+      <td>${new Date(u.created_at).toLocaleDateString('es-ES')}</td>
+      <td>${u.has_paid ? `<button class="row-action danger" onclick="revoke(${u.id})">Revocar</button>` : `<button class="row-action" onclick="grant(${u.id})">Conceder</button>`}</td>
+    </tr>
+  `).join('');
+}
+async function grant(id) { if (!confirm('¿Conceder acceso?')) return; await fetch(`/api/admin/users/${id}/grant`, { method: 'POST' }); refresh(); }
+async function revoke(id) { if (!confirm('¿Revocar acceso?')) return; await fetch(`/api/admin/users/${id}/revoke`, { method: 'POST' }); refresh(); }
+async function grantByEmail(e) {
+  e.preventDefault();
+  const email = document.getElementById('grantEmail').value.trim();
+  const send = document.getElementById('grantSendLink').checked;
+  const r = await fetch('/api/admin/grant-by-email', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, send_link: send }) });
+  if (r.ok) { alert(send ? `Acceso concedido y magic link enviado a ${email}` : `Acceso concedido a ${email}`); document.getElementById('grantEmail').value = ''; refresh(); }
+  else alert('Error');
+  return false;
+}
+
+// ============================================================
+// Purchases
+// ============================================================
+async function loadPurchases() {
+  const r = await fetch('/api/admin/purchases?limit=100');
+  if (!r.ok) return;
+  const { purchases } = await r.json();
+  const tbody = document.getElementById('purchasesBody');
+  if (!purchases.length) { tbody.innerHTML = '<tr><td colspan="5" class="empty">Sin compras todavía</td></tr>'; return; }
+  tbody.innerHTML = purchases.map(p => `
+    <tr>
+      <td>${new Date(p.created_at).toLocaleString('es-ES')}</td>
+      <td>${escapeHtml(p.email)}</td>
+      <td>${(p.amount_cents/100).toLocaleString('es-ES', { style: 'currency', currency: p.currency.toUpperCase() })}</td>
+      <td><span class="badge badge-${p.status}">${p.status}</span></td>
+      <td><code style="font-family: var(--mono); font-size: 11px; color: var(--muted);">${p.stripe_session_id.slice(0,18)}…</code></td>
+    </tr>
+  `).join('');
+}
+
+// ============================================================
+// Coupons
+// ============================================================
+async function loadCoupons() {
+  const r = await fetch('/api/admin/coupons');
+  if (!r.ok) return;
+  const { coupons } = await r.json();
+  const tbody = document.getElementById('couponsBody');
+  if (!coupons.length) { tbody.innerHTML = '<tr><td colspan="6" class="empty">Sin cupones creados.</td></tr>'; return; }
+  tbody.innerHTML = coupons.map(c => `
+    <tr>
+      <td><code style="font-family:var(--mono); font-size:13px; color:var(--ink); background:var(--bg-2); padding:2px 8px; border-radius:6px;">${escapeHtml(c.code)}</code></td>
+      <td><strong>-${c.discount_pct}%</strong></td>
+      <td>${c.uses}${c.max_uses ? ` / ${c.max_uses}` : ''}</td>
+      <td>${c.expires_at ? new Date(c.expires_at).toLocaleDateString('es-ES') : '—'}</td>
+      <td><span class="badge ${c.active ? 'badge-active' : 'badge-inactive'}">${c.active ? 'activo' : 'inactivo'}</span></td>
+      <td>
+        <button class="row-action" onclick="toggleCoupon(${c.id})">${c.active ? 'Pausar' : 'Activar'}</button>
+        <button class="row-action danger" onclick="deleteCoupon(${c.id})">Borrar</button>
+      </td>
+    </tr>
+  `).join('');
+}
+async function createCoupon(e) {
+  e.preventDefault();
+  const body = {
+    code: document.getElementById('couponCode').value.trim().toUpperCase(),
+    discount_pct: parseInt(document.getElementById('couponPct').value, 10),
+    max_uses: parseInt(document.getElementById('couponMax').value, 10) || null,
+  };
+  const r = await fetch('/api/admin/coupons', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+  if (r.ok) { e.target.reset(); loadCoupons(); }
+  else { const d = await r.json().catch(()=>({})); alert(d.error || 'Error'); }
+  return false;
+}
+async function toggleCoupon(id) { await fetch(`/api/admin/coupons/${id}/toggle`, { method: 'POST' }); loadCoupons(); }
+async function deleteCoupon(id) { if (!confirm('¿Borrar cupón?')) return; await fetch(`/api/admin/coupons/${id}/delete`, { method: 'POST' }); loadCoupons(); }
+
+bootstrap();
+</script>
+</body>
+</html>

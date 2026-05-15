@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Política de reembolsos · Claude 101</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Geist:wght@300..700&family=Geist+Mono:wght@400..600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles-shared.css">
+<style>
+.legal { max-width: 720px; margin: 0 auto; padding: 60px 32px; }
+.legal h1 { font-family: var(--display); font-size: 42px; font-style: italic; margin-bottom: 8px; }
+.legal h1 em { font-style: normal; color: var(--accent); }
+.legal .meta { color: var(--muted); margin-bottom: 32px; font-size: 13px; }
+.legal h2 { font-family: var(--display); font-size: 22px; margin-top: 32px; margin-bottom: 10px; }
+.legal p, .legal li { color: var(--ink-2); font-size: 14px; line-height: 1.7; }
+.legal ul { padding-left: 24px; margin: 8px 0 14px; }
+.legal a { color: var(--accent); }
+.legal .highlight { background: rgba(79,93,56,.08); border-left: 4px solid var(--olive); padding: 18px; border-radius: 10px; margin: 20px 0; }
+</style>
+</head>
+<body>
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="brand">Claude<em>·101</em></a>
+    <div class="nav-links"><a href="/">← Volver</a></div>
+  </div>
+</nav>
+
+<main class="legal">
+  <h1>Política de <em>reembolsos</em></h1>
+  <p class="meta">Última actualización: mayo 2026.</p>
+
+  <div class="highlight">
+    <strong>Resumen:</strong> 14 días para pedir reembolso íntegro, sin preguntas. Si no te aporta valor, no queremos tu dinero.
+  </div>
+
+  <h2>1. Periodo de garantía</h2>
+  <p>Dispones de <strong>14 días naturales</strong> desde la fecha de tu compra para solicitar la devolución del importe completo.</p>
+
+  <h2>2. Cómo pedirlo</h2>
+  <p>Envía un email a <a href="mailto:hola@claude101.com" class="js-support-mail">hola@tudominio.com</a> desde la dirección con la que realizaste la compra, indicando "Reembolso" en el asunto. No necesitas justificarlo.</p>
+
+  <h2>3. Plazo de devolución</h2>
+  <p>El reembolso se procesa en un plazo máximo de <strong>14 días naturales</strong> desde la recepción de tu solicitud. Se realiza mediante el mismo medio de pago utilizado en la compra.</p>
+
+  <h2>4. ¿Por qué confiamos en esta política?</h2>
+  <p>Porque sabemos que el curso funciona y porque preferimos un cliente satisfecho que un cliente atrapado. Si te das cuenta de que no es para ti, te devolvemos el dinero y nos despedimos en buenos términos.</p>
+
+  <h2>5. Tras los 14 días</h2>
+  <p>Pasado el periodo de garantía, las compras son finales. El acceso al curso es vitalicio y las actualizaciones son gratuitas, así que el valor sigue creciendo con el tiempo.</p>
+
+  <h2>6. Casos especiales</h2>
+  <p>Si tienes una situación particular fuera de los 14 días (un problema técnico que no podemos resolver, un cargo erróneo, etc), escríbenos y lo valoramos caso por caso.</p>
+
+  <h2>7. Reembolsos parciales</h2>
+  <p>No los hacemos. La política es 100% o nada. Si pides reembolso te devolvemos el importe íntegro y revocamos tu acceso al curso.</p>
+</main>
+
+<script src="/track.js"></script>
+<script>
+(async function loadSupportEmail() {
+  try {
+    const r = await fetch('/api/config');
+    const c = await r.json();
+    const links = document.querySelectorAll('.js-support-mail');
+    links.forEach(a => {
+      a.href = 'mailto:' + c.support_email;
+      // Si el texto del link es el email, actualizarlo también
+      if (a.textContent.includes('@')) a.textContent = c.support_email;
+    });
+  } catch {}
+})();
+</script>
+</body>
+</html>

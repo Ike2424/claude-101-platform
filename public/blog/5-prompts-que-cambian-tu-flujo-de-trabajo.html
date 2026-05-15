@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Los 5 prompts que cambian tu flujo de trabajo · Claude 101</title>
+<meta name="description" content="5 plantillas de prompt reales que ahorran horas a la semana. Reescritura de emails, resúmenes de reuniones, análisis de Excel, debugging y desbloqueo creativo.">
+<link rel="canonical" href="/blog/5-prompts-que-cambian-tu-flujo-de-trabajo">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Geist:wght@300..700&family=Geist+Mono:wght@400..600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles-shared.css">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Los 5 prompts que cambian tu flujo de trabajo">
+<meta property="og:description" content="5 plantillas reales con patrón explicado. Antes/después medido en minutos ahorrados.">
+<meta property="og:image" content="/og-image.svg">
+<meta property="article:published_time" content="2026-05-10">
+<meta property="article:author" content="Claude 101">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Los 5 prompts que cambian tu flujo de trabajo",
+  "description": "5 plantillas de prompt reales con patrón explicado y antes/después medido.",
+  "datePublished": "2026-05-10",
+  "dateModified": "2026-05-14",
+  "author": { "@type": "Organization", "name": "Claude 101" },
+  "publisher": { "@type": "Organization", "name": "Claude 101", "logo": { "@type": "ImageObject", "url": "/og-image.svg" } },
+  "image": "/og-image.svg",
+  "mainEntityOfPage": "/blog/5-prompts-que-cambian-tu-flujo-de-trabajo",
+  "inLanguage": "es"
+}
+</script>
+
+<style>
+.article-wrap { max-width: 720px; margin: 0 auto; padding: 48px 0 80px; }
+.article-meta { display: flex; gap: 14px; align-items: center; font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-bottom: 20px; }
+.article-meta .cat { color: var(--accent); }
+.article-wrap h1 { font-family: var(--display); font-style: italic; font-size: clamp(32px, 4.5vw, 52px); line-height: 1.1; margin-bottom: 18px; }
+.article-wrap h1 em { font-style: normal; color: var(--accent); }
+.article-wrap .lede { font-size: 19px; color: var(--ink-2); line-height: 1.6; margin-bottom: 40px; }
+.article-wrap h2 { font-family: var(--display); font-size: 28px; margin: 44px 0 14px; }
+.article-wrap h2 em { font-style: italic; color: var(--accent); }
+.article-wrap h3 { font-family: var(--display); font-size: 21px; margin: 28px 0 10px; }
+.article-wrap p { font-size: 16px; color: var(--ink-2); line-height: 1.75; margin-bottom: 14px; }
+.article-wrap ul, .article-wrap ol { margin: 14px 0 14px 24px; }
+.article-wrap li { font-size: 16px; line-height: 1.7; padding: 4px 0; color: var(--ink-2); }
+.article-wrap blockquote { border-left: 3px solid var(--accent); padding: 8px 0 8px 20px; font-family: var(--display); font-style: italic; font-size: 19px; color: var(--ink); margin: 24px 0; }
+.prompt-box { background: var(--ink); color: #E8E4DA; border-radius: var(--r-md); padding: 18px; margin: 14px 0 6px; font-family: var(--mono); font-size: 13px; line-height: 1.6; white-space: pre-wrap; }
+.copy-btn { font-family: var(--mono); font-size: 10px; letter-spacing: .1em; text-transform: uppercase; padding: 6px 12px; background: transparent; border: 1px solid var(--line-2); border-radius: var(--r-pill); cursor: pointer; color: var(--muted); transition: all .2s; margin-bottom: 18px; }
+.copy-btn:hover { color: var(--accent); border-color: var(--accent); }
+.copy-btn.copied { color: var(--olive); border-color: var(--olive); }
+.savings { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; background: var(--olive-soft); color: var(--olive); border-radius: var(--r-pill); font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; margin: 4px 8px 4px 0; }
+.cta-end { background: linear-gradient(135deg, var(--accent), var(--gold)); color: var(--bg); border-radius: var(--r-xl); padding: 36px; text-align: center; margin: 48px 0 0; }
+.cta-end h3 { color: var(--bg); font-family: var(--display); font-style: italic; font-size: 26px; margin-bottom: 10px; }
+.cta-end p { color: rgba(244,239,227,.85); margin-bottom: 18px; }
+.cta-end .btn { background: var(--bg); color: var(--ink); border-color: var(--bg); }
+.cta-end .btn:hover { background: var(--card); color: var(--ink); border-color: var(--card); }
+</style>
+</head>
+<body>
+<a href="#main" class="skip-link">Saltar al contenido</a>
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="brand">Claude<em>·101</em></a>
+    <div class="nav-links">
+      <a href="/blog">← Blog</a>
+      <a href="/#precio" class="btn btn-ghost btn-sm">Comprar acceso</a>
+    </div>
+  </div>
+</nav>
+
+<main id="main" class="container">
+  <article class="article-wrap">
+    <div class="article-meta">
+      <span class="cat">Prompts</span>
+      <span>· 8 min lectura</span>
+      <span>· Mayo 2026</span>
+    </div>
+
+    <h1>Los 5 prompts que <em>cambian</em> tu flujo de trabajo</h1>
+    <p class="lede">Olvida las listas de "prompts mágicos" de Twitter. Esto son cinco plantillas que usamos a diario en producción, con el patrón explicado, el antes/después medido en minutos reales, y cuándo no usarlos.</p>
+
+    <p>La diferencia entre alguien que "ha probado Claude" y alguien que lo tiene integrado en su trabajo casi siempre se reduce a un puñado de prompts buenos que reutiliza. No 50. Cinco. Estos.</p>
+
+    <h2>1. <em>Reescritura</em> de email difícil</h2>
+    <p>El más usado. Funciona cuando ya tienes una idea de lo que quieres decir, pero el tono no acaba de salir. Tu cerebro aporta la intención. Claude la ejecuta.</p>
+    <div class="prompt-box" id="p1">Te paso el borrador de un email que quiero mandar a [contexto del receptor: cliente, jefe, proveedor]. Estoy [estado emocional: frustrado, cansado, enfadado] pero necesito mantener el tono profesional.
+
+Reescríbelo:
+- Tono [cálido pero firme / profesional pero accesible / asertivo sin agresividad]
+- Máximo [N] frases
+- [Restricción específica: no te excuses en exceso / no prometas fechas concretas / termina ofreciendo X]
+
+Borrador:
+[pega aquí tu texto crudo]</div>
+    <button class="copy-btn" onclick="copyPrompt('p1', this)">Copiar prompt</button>
+    <p><span class="savings">Antes: 12 min</span><span class="savings">Después: 90 seg</span></p>
+    <p><strong>Por qué funciona:</strong> al darle el estado emocional explícito ("estoy frustrado") Claude entiende qué tono <em>tienes que evitar</em>. Sin esa pista, suele acertar el 60%. Con la pista, el 95%.</p>
+
+    <h2>2. <em>Resumen</em> de reunión estructurado</h2>
+    <p>Si transcribes reuniones (Otter, Loom, Granola, lo que sea), este prompt convierte 47 minutos de divagación en un resumen accionable.</p>
+    <div class="prompt-box" id="p2">Resume esta transcripción de reunión en tres bloques exactos:
+
+1) DECISIONES TOMADAS — con responsable de cada una
+2) PRÓXIMOS PASOS — con fecha límite si se mencionó
+3) TEMAS PENDIENTES — para la próxima reunión
+
+Usa viñetas. Máximo 250 palabras en total. Si algo se mencionó pero quedó ambiguo, ponlo en "pendientes" — no inventes consensos.
+
+Transcripción:
+[pegar]</div>
+    <button class="copy-btn" onclick="copyPrompt('p2', this)">Copiar prompt</button>
+    <p><span class="savings">Antes: 25 min</span><span class="savings">Después: 90 seg</span></p>
+    <p><strong>Por qué funciona:</strong> la última frase — "no inventes consensos" — es clave. Sin ella, Claude tiende a "redondear" decisiones ambiguas. Le estás dando permiso explícito para dejar cosas como "pendiente".</p>
+
+    <h2>3. Análisis de Excel con <em>cálculos visibles</em></h2>
+    <p>El truco aquí no es el prompt: es exigir que muestre los cálculos. Sin eso, te fías de números que no puedes verificar.</p>
+    <div class="prompt-box" id="p3">Adjunto [tipo de datos: ventas mensuales, costes operativos, métricas de producto] del periodo [X].
+
+Hazme tres cosas:
+1) Resumen de tendencias: crecimiento o decrecimiento, estacionalidad, anomalías evidentes.
+2) [Tu pregunta específica: ¿qué productos son más rentables? ¿qué meses tuvieron márgenes bajos? ¿hay correlación entre X e Y?]
+3) Una recomendación accionable para [tu objetivo: próximo trimestre, presentación al CEO, ajuste de pricing].
+
+IMPORTANTE: muestra los cálculos que has hecho para llegar a las cifras. Quiero poder verificarlos manualmente.</div>
+    <button class="copy-btn" onclick="copyPrompt('p3', this)">Copiar prompt</button>
+    <p><span class="savings">Antes: 45 min</span><span class="savings">Después: 5 min con cálculos visibles</span></p>
+    <p><strong>Por qué funciona:</strong> Claude puede equivocarse en cálculos numéricos largos. Si le obligas a mostrar las operaciones, los errores son obvios — y suele acertar más porque tiene que "pensar paso a paso" para escribirlos.</p>
+
+    <h2>4. <em>Debug</em> de código con diagnóstico antes del fix</h2>
+    <p>El patrón es importante: primero diagnóstico en una frase, luego fix. Así sabes si Claude entiende el problema o solo está parchando.</p>
+    <div class="prompt-box" id="p4">Este código [lenguaje] me lanza este error en producción:
+
+[mensaje de error exacto, con stack trace si lo tienes]
+
+Quiero:
+1) Diagnóstico en UNA frase: qué está pasando exactamente.
+2) Fix con el código corregido completo (no diff, código completo).
+3) Si crees que hay un problema upstream que también convendría arreglar, señálalo separadamente.
+
+Código:
+[pegar]</div>
+    <button class="copy-btn" onclick="copyPrompt('p4', this)">Copiar prompt</button>
+    <p><span class="savings">Antes: 25 min</span><span class="savings">Después: 2 min</span></p>
+    <p><strong>Por qué funciona:</strong> separar diagnóstico y fix te permite detectar cuando Claude está "adivinando". Si el diagnóstico es vago, no apliques el fix — itera primero el entendimiento.</p>
+
+    <h2>5. <em>Desbloqueo creativo</em> con preguntas, no respuestas</h2>
+    <p>El más contraintuitivo. La mayoría de la gente pide respuestas cuando está bloqueada. Pide preguntas. Cambia el juego.</p>
+    <div class="prompt-box" id="p5">Estoy escribiendo [tipo de texto: artículo, pitch, propuesta, email importante] sobre [tema específico]. Tengo claro QUÉ quiero comunicar pero no SÉ por dónde empezar — estoy bloqueado.
+
+NO me des respuestas, no me des estructura, no me des un primer párrafo. En cambio:
+
+Hazme 5 preguntas poderosas que, si yo las contesto, me hagan ver con claridad qué quiero decir realmente y cuál es el ángulo único de mi perspectiva.
+
+Las preguntas deben ser específicas a mi tema. Nada genérico. Que duelan un poco.</div>
+    <button class="copy-btn" onclick="copyPrompt('p5', this)">Copiar prompt</button>
+    <p><span class="savings">Antes: 1h bloqueado</span><span class="savings">Después: 10 min con claridad</span></p>
+    <p><strong>Por qué funciona:</strong> el bloqueo creativo casi nunca es falta de información — es falta de foco. Las preguntas externas obligan a tu cerebro a elegir, y de ahí sale la dirección.</p>
+
+    <h2>Lo que no <em>te he contado</em></h2>
+    <p>Estos 5 prompts funcionan, pero son la punta del iceberg. Dentro del curso completo entras a:</p>
+    <ul>
+      <li>Cuándo cambiar de modelo (Haiku para volumen, Opus para análisis duro).</li>
+      <li>Cómo construir <em>chains of thought</em> que no se inventan datos.</li>
+      <li>Few-shot prompting con 2-3 ejemplos que cambian el output radicalmente.</li>
+      <li>Etiquetas XML para prompts complejos con múltiples bloques.</li>
+      <li>Cómo verificar las respuestas antes de actuar sobre ellas.</li>
+    </ul>
+    <blockquote>Si estos 5 prompts ya te aportan algo, el curso completo multiplica el efecto.</blockquote>
+
+    <div class="cta-end">
+      <h3>Curso completo de Claude</h3>
+      <p>8 módulos · 32 lecciones · prompts copiables · acceso vitalicio. Un pago.</p>
+      <a href="/#precio" class="btn btn-lg" onclick="track('blog_cta_click', { post: '5-prompts' })">Ver el programa →</a>
+    </div>
+  </article>
+</main>
+
+<footer class="foot">
+  <div class="foot-inner">
+    <div class="foot-bottom">
+      <a href="/" class="brand">Claude<em>·101</em></a>
+      <div>
+        <a href="/blog">Más artículos</a> · <a href="/terminos">Términos</a> · <a href="/privacidad">Privacidad</a> · <a href="/contacto">Contacto</a>
+      </div>
+    </div>
+  </div>
+</footer>
+<script src="/track.js"></script>
+<script>
+function copyPrompt(id, btn) {
+  const text = document.getElementById(id).textContent;
+  navigator.clipboard?.writeText(text);
+  const orig = btn.textContent;
+  btn.textContent = '✓ Copiado';
+  btn.classList.add('copied');
+  if (window.track) window.track('prompt_copied', { post: '5-prompts', prompt: id });
+  setTimeout(() => { btn.textContent = orig; btn.classList.remove('copied'); }, 1800);
+}
+</script>
+</body>
+</html>

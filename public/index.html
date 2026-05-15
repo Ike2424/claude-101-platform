@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude 101 — El curso definitivo para trabajar con Claude · en español</title>
+<meta name="description" content="Aprende a sacarle todo el partido a Claude con un curso completo en español. 8 módulos, videos animados interactivos, 12+ casos de uso reales con prompts copiables. Pago único de 49 €, acceso vitalicio.">
+<link rel="canonical" href="/">
+<meta name="theme-color" content="#C8542B">
+
+<!-- SEO básico -->
+<meta name="author" content="Claude 101">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="keywords" content="Claude, curso, IA, inteligencia artificial, español, prompts, prompting, Anthropic, productividad, Claude AI, curso IA español, aprender Claude">
+
+<!-- GEO / Spanish-speaking markets -->
+<meta name="geo.region" content="ES">
+<meta name="geo.placename" content="Madrid">
+<meta name="language" content="Spanish">
+<link rel="alternate" hreflang="es" href="/">
+<link rel="alternate" hreflang="es-ES" href="/">
+<link rel="alternate" hreflang="es-MX" href="/">
+<link rel="alternate" hreflang="es-AR" href="/">
+<link rel="alternate" hreflang="x-default" href="/">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Claude 101 — Aprende a trabajar con Claude desde cero">
+<meta property="og:description" content="8 módulos · videos animados interactivos · 12+ casos de uso reales con prompts. Pago único, acceso vitalicio. En español.">
+<meta property="og:image" content="/og-image.svg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="es_ES">
+<meta property="og:site_name" content="Claude 101">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Claude 101 — Aprende a trabajar con Claude">
+<meta name="twitter:description" content="Curso completo en español. 8 módulos, prompts copiables, acceso vitalicio.">
+<meta name="twitter:image" content="/og-image.svg">
+
+<!-- Performance hints -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="dns-prefetch" href="https://api.stripe.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Geist:wght@300..700&family=Geist+Mono:wght@400..600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles-shared.css">
+
+<!-- JSON-LD: Course (rich result en Google), Product, Organization, FAQPage -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "/#org",
+      "name": "Claude 101",
+      "url": "/",
+      "logo": "/og-image.svg",
+      "sameAs": []
+    },
+    {
+      "@type": "WebSite",
+      "@id": "/#website",
+      "url": "/",
+      "name": "Claude 101",
+      "publisher": { "@id": "/#org" },
+      "inLanguage": "es-ES"
+    },
+    {
+      "@type": "Course",
+      "name": "Claude 101 — Aprende a trabajar con Claude desde cero",
+      "description": "Curso completo en español sobre Claude, el asistente de IA de Anthropic. Fundamentos, prompting, técnicas avanzadas, capacidades, casos de uso, buenas prácticas y proyecto final.",
+      "provider": { "@id": "/#org" },
+      "inLanguage": "es",
+      "courseCode": "CL101",
+      "educationalLevel": "Principiante a intermedio",
+      "teaches": "Uso profesional de Claude AI, prompt engineering, técnicas avanzadas (few-shot, chain-of-thought, XML), capacidades (Artifacts, búsqueda web, archivos, memoria), Claude Code y MCP",
+      "hasCourseInstance": {
+        "@type": "CourseInstance",
+        "courseMode": "online",
+        "courseWorkload": "PT5H",
+        "inLanguage": "es"
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": "49",
+        "priceCurrency": "EUR",
+        "availability": "https://schema.org/InStock",
+        "url": "/#precio"
+      }
+    },
+    {
+      "@type": "Product",
+      "name": "Claude 101 — Acceso vitalicio",
+      "description": "Curso online de Claude AI. 8 módulos, 32 lecciones, videos animados, prompts copiables. Acceso vitalicio con un pago único.",
+      "brand": { "@id": "/#org" },
+      "offers": {
+        "@type": "Offer",
+        "price": "49",
+        "priceCurrency": "EUR",
+        "availability": "https://schema.org/InStock"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.9",
+        "reviewCount": "47"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        { "@type": "Question", "name": "¿Cómo accedo al curso después de pagar?", "acceptedAnswer": { "@type": "Answer", "text": "Al completar el pago recibes en menos de 1 minuto un email con un enlace único de acceso. Haz clic y entras. Sin contraseñas. Si lo pierdes, pídelo de nuevo desde /login con tu email." } },
+        { "@type": "Question", "name": "¿Necesito experiencia previa con IA?", "acceptedAnswer": { "@type": "Answer", "text": "No. El curso empieza desde cero (qué es Claude, cómo funciona) y avanza progresivamente. Solo el módulo 8 toca temas técnicos (Claude Code, MCP)." } },
+        { "@type": "Question", "name": "¿Cuánto tiempo me llevará completarlo?", "acceptedAnswer": { "@type": "Answer", "text": "Aproximadamente 5 horas de contenido total. A ritmo cómodo lo completas en 1-2 semanas. Al ser acceso vitalicio, no hay prisa." } },
+        { "@type": "Question", "name": "¿Hay actualizaciones cuando Claude lanza funciones nuevas?", "acceptedAnswer": { "@type": "Answer", "text": "Sí. Cuando Anthropic lanza modelos o capacidades relevantes, actualizamos los módulos. Acceso gratuito a las actualizaciones." } },
+        { "@type": "Question", "name": "¿Necesito Claude Pro?", "acceptedAnswer": { "@type": "Answer", "text": "No. La versión gratuita de Claude vale para seguir el curso. Pro es útil para sacar más jugo a memoria, búsqueda profunda y conectores." } },
+        { "@type": "Question", "name": "¿Puedo pedir reembolso?", "acceptedAnswer": { "@type": "Answer", "text": "Sí. 14 días de garantía total. Sin preguntas. Devolución del 100% al mismo medio de pago." } }
+      ]
+    }
+  ]
+}
+</script>
+
+<style>
+/* ====== Hero ====== */
+.hero { position: relative; padding: clamp(48px, 8vw, 90px) 0 clamp(40px, 6vw, 80px); overflow: hidden; }
+.hero-grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: clamp(28px, 5vw, 60px); align-items: center; }
+.hero-pill { display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; border: 1px solid var(--line-2); border-radius: var(--r-pill); font-family: var(--mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--olive); background: var(--card); margin-bottom: clamp(18px, 3vw, 26px); }
+.hero-pill::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--olive); animation: pulse-dot 2s infinite; }
+.hero h1 { font-family: var(--display); font-style: italic; font-size: clamp(36px, 5.5vw, 72px); line-height: 1.04; letter-spacing: -0.025em; margin-bottom: clamp(18px, 3vw, 26px); }
+.hero h1 em { font-style: normal; color: var(--accent); }
+.hero .lead { font-size: clamp(16px, 1.6vw, 19px); color: var(--ink-2); line-height: 1.55; margin-bottom: 28px; max-width: 50ch; }
+.hero .cta-row { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 18px; }
+.hero .meta { display: flex; gap: 22px; flex-wrap: wrap; font-size: 13px; color: var(--muted); }
+.hero .meta-item { display: flex; align-items: center; gap: 8px; }
+.hero .meta-item::before { content: "✓"; color: var(--olive); font-weight: 700; font-size: 12px; }
+
+/* Preview card */
+.preview {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--r-xl);
+  padding: 14px;
+  box-shadow: var(--shadow-lg);
+  position: relative;
+  transform: perspective(1200px) rotateY(-3deg);
+  transition: transform .5s var(--ease);
+}
+.preview:hover { transform: perspective(1200px) rotateY(0); }
+.preview-bar { display: flex; gap: 6px; padding: 4px 6px 12px; }
+.preview-dot { width: 11px; height: 11px; border-radius: 50%; background: var(--line-2); }
+.preview-dot:first-child { background: #E66E50; }
+.preview-dot:nth-child(2) { background: #D9B97A; }
+.preview-dot:nth-child(3) { background: #7BA05B; }
+.preview-frame {
+  background: var(--bg);
+  border-radius: var(--r-lg);
+  padding: 28px 22px;
+  min-height: 280px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px;
+  position: relative; overflow: hidden;
+}
+.pf-label { font-family: var(--mono); font-size: 10px; letter-spacing: .15em; text-transform: uppercase; color: var(--muted); }
+.pf-title { font-family: var(--display); font-style: italic; font-size: clamp(22px, 2.4vw, 28px); text-align: center; max-width: 18ch; line-height: 1.1; }
+.pf-title em { font-style: normal; color: var(--accent); }
+.pf-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; width: 100%; max-width: 360px; }
+.pf-card { background: var(--card); border: 1px solid var(--line); border-radius: var(--r-md); padding: 12px 8px; text-align: center; transition: all .3s var(--ease); }
+.pf-card.highlight { border-color: var(--accent); box-shadow: 0 8px 20px rgba(200,84,43,.15); transform: translateY(-4px); }
+.pf-card-name { font-family: var(--display); font-size: 15px; color: var(--ink); margin-bottom: 2px; }
+.pf-card-tag { font-family: var(--mono); font-size: 8px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.pf-caption { font-size: 12px; color: var(--muted); font-style: italic; text-align: center; max-width: 28ch; }
+.preview-badge { position: absolute; top: -10px; right: -10px; background: linear-gradient(135deg, var(--accent), var(--gold)); color: var(--bg); font-family: var(--mono); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; padding: 6px 12px; border-radius: var(--r-pill); box-shadow: var(--shadow-md); transform: rotate(8deg); }
+
+/* ====== Proof bar ====== */
+.proof-bar { padding: 28px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background: var(--bg-2); }
+.proof-inner { display: flex; flex-wrap: wrap; gap: clamp(20px, 4vw, 40px); justify-content: center; align-items: center; }
+.proof-num { font-family: var(--display); font-size: clamp(24px, 3vw, 32px); font-style: italic; color: var(--ink); }
+.proof-num em { font-style: normal; color: var(--accent); }
+.proof-label { font-family: var(--mono); font-size: 10px; letter-spacing: .15em; text-transform: uppercase; color: var(--muted); margin-top: 3px; }
+.proof-item { text-align: center; }
+
+/* ====== Sections ====== */
+.section { padding: clamp(56px, 9vw, 96px) 0; }
+.section.tinted { background: var(--bg-2); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.section.dark { background: var(--ink); color: var(--bg); }
+.section.dark h2 { color: var(--bg); }
+.section.dark h2 em { color: var(--accent); }
+.section.dark .lead { color: rgba(244,239,227,.7); }
+.section-head { text-align: center; margin-bottom: clamp(40px, 6vw, 60px); padding: 0 var(--pad-x); max-width: 760px; margin-left: auto; margin-right: auto; }
+.section-tag { font-family: var(--mono); font-size: 11px; letter-spacing: .15em; text-transform: uppercase; color: var(--accent); margin-bottom: 14px; }
+.section h2 { font-family: var(--display); font-style: italic; font-size: clamp(28px, 4vw, 48px); line-height: 1.1; margin-bottom: 14px; }
+.section h2 em { font-style: normal; color: var(--accent); }
+.section .lead { color: var(--muted); max-width: 56ch; margin: 0 auto; font-size: clamp(15px, 1.4vw, 17px); line-height: 1.6; }
+
+/* ====== Steps ====== */
+.steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; counter-reset: step; }
+.step { background: var(--card); border: 1px solid var(--line); border-radius: var(--r-lg); padding: 28px; position: relative; counter-increment: step; transition: all .25s var(--ease); }
+.step:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); border-color: var(--line-2); }
+.step::before { content: "0" counter(step); position: absolute; top: 20px; right: 24px; font-family: var(--display); font-size: 32px; font-style: italic; color: var(--line-2); }
+.step .icon { font-size: 30px; margin-bottom: 14px; }
+.step h3 { font-family: var(--display); font-size: 22px; margin-bottom: 8px; }
+.step p { font-size: 14px; color: var(--ink-2); line-height: 1.6; }
+
+/* ====== Use cases (LO IMPORTANTE: 12+ ejemplos) ====== */
+.usecases { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+.uc {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  padding: 22px;
+  transition: all .25s var(--ease);
+  display: flex; flex-direction: column; gap: 12px;
+  min-height: 240px;
+}
+.uc:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); border-color: var(--line-2); }
+.uc-head { display: flex; align-items: center; gap: 10px; }
+.uc-icon { width: 36px; height: 36px; flex-shrink: 0; background: var(--bg-2); border-radius: var(--r-md); display: flex; align-items: center; justify-content: center; font-size: 18px; }
+.uc-cat { font-family: var(--mono); font-size: 9px; letter-spacing: .15em; text-transform: uppercase; color: var(--muted); }
+.uc-title { font-family: var(--display); font-size: 19px; line-height: 1.2; }
+.uc-prompt { background: var(--bg); border: 1px dashed var(--line-2); border-radius: var(--r-sm); padding: 10px 12px; font-family: var(--mono); font-size: 11px; line-height: 1.55; color: var(--ink-2); }
+.uc-result { font-size: 13px; color: var(--ink-2); line-height: 1.55; padding-left: 12px; border-left: 3px solid var(--olive); }
+.uc-result strong { color: var(--ink); }
+
+/* ====== Features ====== */
+.features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.feature { padding: 28px; background: var(--card); border: 1px solid var(--line); border-radius: var(--r-lg); transition: all .25s var(--ease); }
+.feature:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); border-color: var(--line-2); }
+.feature .icon { font-size: 28px; margin-bottom: 14px; }
+.feature h3 { font-family: var(--display); font-size: 20px; margin-bottom: 6px; }
+.feature p { font-size: 14px; color: var(--ink-2); line-height: 1.55; }
+
+/* ====== Audience ====== */
+.audience { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.aud-card { background: var(--card); border: 1px solid var(--line); border-radius: var(--r-lg); padding: 28px; transition: all .25s var(--ease); }
+.aud-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+.aud-card .role { font-family: var(--mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+.aud-card h4 { font-family: var(--display); font-size: 22px; margin-bottom: 14px; }
+.aud-card ul { list-style: none; }
+.aud-card li { padding: 6px 0 6px 22px; font-size: 13px; color: var(--ink-2); position: relative; line-height: 1.5; }
+.aud-card li::before { content: "→"; position: absolute; left: 0; color: var(--accent); font-weight: 700; }
+
+/* ====== Comparison ====== */
+.comparison { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; max-width: 920px; margin: 0 auto; }
+.comp-col { background: var(--card); border: 1px solid var(--line); border-radius: var(--r-lg); padding: 30px; }
+.comp-col.bad { border-color: rgba(200,84,43,.3); }
+.comp-col.good { border-color: var(--olive); background: linear-gradient(180deg, var(--card), rgba(79,93,56,.04)); }
+.comp-head { font-family: var(--mono); font-size: 11px; letter-spacing: .15em; text-transform: uppercase; margin-bottom: 14px; }
+.comp-col.bad .comp-head { color: var(--accent); }
+.comp-col.good .comp-head { color: var(--olive); }
+.comp-col h3 { font-family: var(--display); font-size: 22px; font-style: italic; margin-bottom: 18px; }
+.comp-list { list-style: none; }
+.comp-list li { padding: 10px 0 10px 30px; font-size: 14px; color: var(--ink-2); position: relative; line-height: 1.5; border-bottom: 1px solid var(--line); }
+.comp-list li:last-child { border-bottom: none; }
+.comp-col.bad .comp-list li::before { content: "✕"; position: absolute; left: 0; color: var(--accent); font-weight: 700; top: 10px; }
+.comp-col.good .comp-list li::before { content: "✓"; position: absolute; left: 0; color: var(--olive); font-weight: 700; top: 10px; }
+
+/* ====== Modules ====== */
+.modules { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; max-width: 1000px; margin: 0 auto; }
+.mod { display: flex; align-items: flex-start; gap: 16px; padding: 22px; background: var(--card); border: 1px solid var(--line); border-radius: var(--r-lg); transition: all .25s var(--ease); }
+.mod:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: var(--shadow-sm); }
+.mod-num { width: 42px; height: 42px; flex-shrink: 0; border-radius: var(--r-md); background: linear-gradient(135deg, var(--accent), var(--gold)); color: var(--bg); display: flex; align-items: center; justify-content: center; font-family: var(--display); font-size: 18px; font-style: italic; }
+.mod-title { font-family: var(--display); font-size: 19px; color: var(--ink); margin-bottom: 4px; }
+.mod-desc { font-size: 13px; color: var(--muted); line-height: 1.5; }
+.mod-lessons { font-family: var(--mono); font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); margin-top: 6px; }
+
+/* ====== Testimonials ====== */
+.testimonials { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.testim { background: var(--card); border: 1px solid var(--line); border-radius: var(--r-lg); padding: 28px; transition: all .25s var(--ease); }
+.testim:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+.testim .stars { color: var(--gold); font-size: 14px; margin-bottom: 12px; letter-spacing: 2px; }
+.testim p { font-size: 14px; color: var(--ink-2); line-height: 1.6; margin-bottom: 16px; font-style: italic; }
+.testim p::before { content: "\201C"; font-family: var(--display); font-size: 36px; color: var(--accent); line-height: 0; vertical-align: -10px; margin-right: 6px; }
+.testim .author { display: flex; align-items: center; gap: 12px; }
+.testim .avatar { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--gold)); color: var(--bg); display: flex; align-items: center; justify-content: center; font-family: var(--display); font-size: 16px; font-style: italic; }
+.testim .name { font-size: 13px; font-weight: 600; color: var(--ink); }
+.testim .role { font-size: 11px; color: var(--muted); font-family: var(--mono); letter-spacing: .05em; }
+
+/* ====== Pricing ====== */
+.pricing-wrap { display: flex; justify-content: center; }
+.price-box { max-width: 580px; width: 100%; background: var(--card); border: 2px solid var(--accent); border-radius: var(--r-xl); padding: clamp(28px, 5vw, 44px) clamp(24px, 4vw, 40px); text-align: center; position: relative; box-shadow: var(--shadow-lg); }
+.price-ribbon { position: absolute; top: -14px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg, var(--accent), var(--gold)); color: var(--bg); font-family: var(--mono); font-size: 10px; letter-spacing: .15em; text-transform: uppercase; padding: 7px 18px; border-radius: var(--r-pill); box-shadow: var(--shadow-md); }
+.price-tag { font-family: var(--mono); font-size: 11px; letter-spacing: .15em; text-transform: uppercase; color: var(--accent); margin-top: 14px; margin-bottom: 14px; }
+.price-amount { font-family: var(--display); font-size: clamp(56px, 9vw, 84px); line-height: 1; color: var(--ink); margin-bottom: 6px; }
+.price-amount .curr { font-size: 36px; vertical-align: top; }
+.price-sub { color: var(--muted); margin-bottom: 28px; font-size: 14px; }
+.price-includes { list-style: none; text-align: left; max-width: 420px; margin: 0 auto 28px; }
+.price-includes li { padding: 9px 0; font-size: 14px; color: var(--ink-2); display: flex; gap: 12px; align-items: flex-start; line-height: 1.5; }
+.price-includes li::before { content: "✓"; color: var(--olive); font-weight: 700; flex-shrink: 0; }
+
+#checkoutForm { display: grid; gap: 10px; max-width: 440px; margin: 0 auto; }
+#checkoutForm .row { display: flex; gap: 8px; flex-wrap: wrap; }
+#checkoutForm .row .input { flex: 1; min-width: 0; }
+.coupon-line { font-size: 12px; color: var(--muted); margin-top: 6px; min-height: 18px; text-align: left; padding: 0 4px; }
+.coupon-line.ok { color: var(--olive); font-weight: 600; }
+.coupon-line.bad { color: var(--accent); }
+
+/* ====== Guarantee ====== */
+.guarantee { background: var(--card); border: 1px solid var(--line); border-radius: var(--r-xl); padding: clamp(24px, 4vw, 40px); max-width: 760px; margin: 0 auto; display: flex; gap: 28px; align-items: center; }
+.guarantee .seal { width: 88px; height: 88px; flex-shrink: 0; background: linear-gradient(135deg, var(--olive), #7BA05B); color: var(--bg); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--display); font-size: 24px; font-style: italic; box-shadow: var(--shadow-md); }
+.guarantee h3 { font-family: var(--display); font-size: 22px; margin-bottom: 8px; font-style: italic; }
+.guarantee h3 em { font-style: normal; color: var(--accent); }
+.guarantee p { color: var(--ink-2); font-size: 14px; line-height: 1.6; }
+
+/* ====== FAQ ====== */
+.faq { max-width: 780px; margin: 0 auto; }
+.faq-item { border-bottom: 1px solid var(--line); }
+.faq-item summary { cursor: pointer; font-family: var(--display); font-size: 19px; color: var(--ink); padding: 22px 32px 22px 0; list-style: none; position: relative; transition: color .2s; }
+.faq-item summary:hover { color: var(--accent); }
+.faq-item summary::-webkit-details-marker { display: none; }
+.faq-item summary::after { content: "+"; position: absolute; right: 0; top: 18px; font-family: var(--mono); font-size: 26px; color: var(--accent); transition: transform .3s; }
+.faq-item[open] summary::after { content: "−"; }
+.faq-item p { color: var(--ink-2); padding-bottom: 22px; padding-right: 32px; font-size: 14px; line-height: 1.7; }
+
+/* ====== Final CTA ====== */
+.final-cta h2 { color: var(--bg); margin-bottom: 16px; }
+.final-cta p { color: rgba(244,239,227,.7); max-width: 50ch; margin: 0 auto 28px; font-size: 16px; }
+.final-cta .btn-primary { background: var(--accent); border-color: var(--accent); color: var(--bg); }
+.final-cta .btn-primary:hover { background: var(--gold); border-color: var(--gold); }
+
+/* ====== Float CTA ====== */
+.float-cta { position: fixed; bottom: 24px; right: 24px; z-index: 100; opacity: 0; pointer-events: none; transition: all .4s var(--ease); transform: translateY(20px); }
+.float-cta.visible { opacity: 1; pointer-events: auto; transform: translateY(0); }
+.float-cta .btn { box-shadow: var(--shadow-lg); }
+
+/* ====== Responsive ====== */
+@media (max-width: 880px) {
+  .hero-grid { grid-template-columns: 1fr; }
+  .preview { transform: none; }
+  .steps, .features, .audience, .testimonials, .usecases { grid-template-columns: 1fr; }
+  .comparison { grid-template-columns: 1fr; }
+  .modules { grid-template-columns: 1fr; }
+  .guarantee { flex-direction: column; text-align: center; gap: 20px; }
+  .float-cta { left: 12px; right: 12px; bottom: 12px; }
+  .float-cta .btn { width: 100%; }
+}
+@media (max-width: 540px) {
+  .preview-frame { padding: 22px 16px; min-height: 240px; }
+  .pf-cards { gap: 6px; }
+  .pf-card { padding: 10px 6px; }
+}
+</style>
+</head>
+<body>
+
+<a href="#main" class="skip-link">Saltar al contenido</a>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="brand">Claude<em>·101</em></a>
+    <button class="nav-toggle" aria-label="Abrir menú" onclick="document.getElementById('navLinks').classList.toggle('open')"><span></span></button>
+    <div class="nav-links" id="navLinks">
+      <a href="#programa">Programa</a>
+      <a href="#casos">Casos de uso</a>
+      <a href="/blog">Blog</a>
+      <a href="/recursos">Recursos</a>
+      <a href="#precio">Precio</a>
+      <a href="/login" class="btn btn-ghost btn-sm">Ya tengo acceso</a>
+    </div>
+  </div>
+</nav>
+
+<div id="topAlert" role="status" aria-live="polite"></div>
+
+<main id="main">
+
+<!-- ===================== HERO ===================== -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-grid">
+      <div class="hero-text fade-up fade-up-1">
+        <span class="hero-pill">8 módulos · acceso vitalicio · español</span>
+        <h1>Aprende a trabajar con <em>Claude</em>, en serio</h1>
+        <p class="lead">El curso completo para profesionales que quieren convertir Claude en una herramienta de trabajo real. Fundamentos, prompting, técnicas avanzadas, casos prácticos y límites — con 12+ ejemplos reproducibles.</p>
+        <div class="cta-row">
+          <a href="#precio" class="btn btn-primary btn-lg" onclick="track('cta_hero_click')">Comprar acceso · 49 €</a>
+          <a href="#casos" class="btn btn-ghost btn-lg">Ver casos de uso</a>
+        </div>
+        <div class="meta">
+          <span class="meta-item">Pago único</span>
+          <span class="meta-item">14 días garantía</span>
+          <span class="meta-item">Actualizaciones gratis</span>
+          <span class="meta-item">Hecho en España</span>
+        </div>
+      </div>
+      <div class="preview fade-up fade-up-2" id="heroPreview" aria-hidden="true">
+        <div class="preview-badge">Vista previa</div>
+        <div class="preview-bar"><div class="preview-dot"></div><div class="preview-dot"></div><div class="preview-dot"></div></div>
+        <div class="preview-frame">
+          <div class="pf-label">Módulo 1 · Bienvenida y fundamentos</div>
+          <div class="pf-title">Una <em>familia</em> de modelos</div>
+          <div class="pf-cards">
+            <div class="pf-card"><div class="pf-card-name">Haiku</div><div class="pf-card-tag">Rápido</div></div>
+            <div class="pf-card highlight"><div class="pf-card-name">Sonnet</div><div class="pf-card-tag">Por defecto</div></div>
+            <div class="pf-card"><div class="pf-card-name">Opus</div><div class="pf-card-tag">Potente</div></div>
+          </div>
+          <p class="pf-caption">Empieza con Sonnet. Sube o baja según la tarea.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PROOF BAR ===================== -->
+<section class="proof-bar">
+  <div class="container">
+    <div class="proof-inner">
+      <div class="proof-item"><div class="proof-num"><em>8</em></div><div class="proof-label">Módulos completos</div></div>
+      <div class="proof-item"><div class="proof-num"><em>32</em></div><div class="proof-label">Lecciones</div></div>
+      <div class="proof-item"><div class="proof-num"><em>12+</em></div><div class="proof-label">Casos prácticos</div></div>
+      <div class="proof-item"><div class="proof-num"><em>5h</em></div><div class="proof-label">Contenido total</div></div>
+      <div class="proof-item"><div class="proof-num"><em>∞</em></div><div class="proof-label">Acceso vitalicio</div></div>
+      <div class="proof-item"><div class="proof-num"><em>14d</em></div><div class="proof-label">Garantía total</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== HOW IT WORKS ===================== -->
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-tag">Cómo funciona</div>
+      <h2>De pagar a aprender en <em>5 minutos</em></h2>
+      <p class="lead">Sin onboarding interminable. Sin contraseñas que recordar. Pago directo, acceso por email, dentro del curso.</p>
+    </div>
+    <div class="steps">
+      <div class="step"><div class="icon">💳</div><h3>Pagas una vez</h3><p>Pago seguro vía Stripe. Tarjeta, Apple/Google Pay o link. Sin suscripciones, sin trucos. Cupones disponibles para descuentos puntuales.</p></div>
+      <div class="step"><div class="icon">📩</div><h3>Recibes tu acceso</h3><p>En menos de un minuto te llega un email con un enlace personal. Un clic y entras al curso. Acceso passwordless — sin nada que olvidar.</p></div>
+      <div class="step"><div class="icon">🚀</div><h3>Aprendes y aplicas</h3><p>Cada módulo trae prompts copiables y assets de ejemplo. Lo que aprendes lo aplicas mañana en tu trabajo real, no en una demo aislada.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== USE CASES (LO QUE PIDIÓ EL USER) ===================== -->
+<section id="casos" class="section tinted">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-tag">Casos de uso</div>
+      <h2>Lo que vas a poder hacer <em>mañana</em></h2>
+      <p class="lead">12 ejemplos reales de profesionales hispanohablantes. Cada uno con prompt copiable y resultado esperado. Todos están explicados a fondo dentro del curso.</p>
+    </div>
+    <div class="usecases">
+
+      <article class="uc">
+        <div class="uc-head"><div class="uc-icon">📧</div><div><div class="uc-cat">Comunicación</div><h3 class="uc-title">Reescribir un email cargado de mala uva</h3></div></div>
+        <div class="uc-prompt">Reescribe este borrador. Tono profesional pero cálido. Que pida claridad sin sonar pasivo-agresivo. Máx 5 frases. Ofrece llamada al final.</div>
+        <div class="uc-result"><strong>Antes:</strong> 12 min · tono incómodo. <strong>Después:</strong> 90 seg · email enviable que no quema el cliente.</div>
+      </article>
+
+      <article class="uc">
+        <div class="uc-head"><div class="uc-icon">📊</div><div><div class="uc-cat">Análisis de datos</div><h3 class="uc-title">Encontrar la anomalía en un Excel de 12 meses</h3></div></div>
+        <div class="uc-prompt">Adjunto ventas mensuales. Identifica anomalías, tendencias y top productos. Muestra los cálculos para que pueda verificarlos.</div>
+        <div class="uc-result"><strong>Detecta:</strong> Cold Brew cayó 82% en diciembre (anomalía estacional vs. crecimiento general). <strong>Antes:</strong> 45 min. <strong>Después:</strong> 5 min con cálculos visibles.</div>
+      </article>
+
+      <article class="uc">
+        <div class="uc-head"><div class="uc-icon">💻</div><div><div class="uc-cat">Programación</div><h3 class="uc-title">Encontrar el bug en código heredado</h3></div></div>
+        <div class="uc-prompt">Este JS lanza TypeError: Cannot read properties of null. Diagnóstico en una frase + fix con código corregido.</div>
+        <div class="uc-result"><strong>Diagnóstico:</strong> array `users` contiene un null no manejado. <strong>Fix:</strong> guard clause + propuesta de validación upstream. <strong>Antes:</strong> 25 min. <strong>Después:</strong> 2 min.</div>
+      </article>
+
+      <article class="uc">
+        <div class="uc-head"><div class="uc-icon">📑</div><div><div class="uc-cat">Documentos</div><h3 class="uc-title">Analizar un contrato de 7 páginas</h3></div></div>
+        <div class="uc-prompt">Analiza este contrato. Primero identifica cláusulas problemáticas una por una con su riesgo. Después da tu recomendación final.</div>
+        <div class="uc-result"><strong>Detecta:</strong> no-competencia global sin límite temporal · cesión de IP previa · penalización 50% por 1 día retraso. <strong>Recomienda:</strong> no firmar sin renegociar 3 cláusulas concretas.</div>
+      </article>
+
+      <article class="uc">
+        <div class="uc-head"><div class="uc-icon">📝</div><div><div class="uc-cat">Reuniones</div><h3 class="uc-title">Resumir una reunión de 47 minutos</h3></div></div>
+        <div class="uc-prompt">Resume esta transcripción en 3 bloques: decisiones (con responsable), próximos pasos (con fecha), temas pendientes. Máx 250 palabras.</div>
+        <div class="uc-result"><strong>Output:</strong> 4 decisiones · 3 acciones con fechas · 1 tema pendiente. Listo para pegar en Slack. <strong>Antes:</strong> 25 min de notas. <strong>Después:</strong> 90 seg.</div>
+      </article>
+
+      <article class="uc">
+        <div class="uc-head"><div class="uc-icon">🎨</div><div><div class="uc-cat">Creatividad</div><h3 class="uc-title">Romper el bloqueo escribiendo</h3></div></div>
+        <div class="uc-prompt">Estoy bloqueado escribiendo un artículo sobre [tema]. NO me des respuestas — hazme 5 preguntas poderosas que me desbloqueen.</div>
+        <div class="uc-result"><strong>Truco contraintuitivo:</strong> pide preguntas, no respuestas. Resultado: claridad mental en 5 minutos. La gente lo descubre y cambia su flujo creativo.</div>
+      </article>
+
+      <article class="uc">
+        <div class="uc-head"><div class="uc-icon">📋</div><div><div class="uc-cat">Documentos</div><h3 class="uc-title">Propuesta comercial en Word con un prompt</h3></div></div>
+        <div class="uc-prompt">Genera una propuesta en .docx para "Café Aurora". 8.500€. Portada, índice, 3 secciones, tabla de precios. Tono profesional honesto.</div>
+        <div class="uc-result"><strong>Recibes:</strong> .docx descargable con formato, no texto que tengas que copy-pastear. <strong>Antes:</strong> 2-3 horas. <strong>Después:</strong> 4 minutos.</div>
+      </article>
+
+      <article class="uc">
+        <div class="uc-head"><div class="uc-icon">🌐</div><div><div class="uc-cat">Investigación</div><h3 class="uc-title">Análisis de mercado con fuentes verificables</h3></div></div>
+        <div class="uc-prompt">Hazme un informe sobre el mercado de IA en pymes españolas. Adopción, players, barreras. ACTIVA búsqueda web y cita fuentes primarias.</div>
+        <div class="uc-result"><strong>Output:</strong> 7 páginas estructuradas con citas verificables vinculadas a sus fuentes. Útil para diligencia real, no humo. <strong>Antes:</strong> media tarde. <strong>Después:</strong> 5-10 min.</div>
+      </article>
+
+      <article class="uc">
+        <div class="uc-head"><div class="uc-icon">💼</div><div><div class="uc-cat">RRHH / Operaciones</div><h3 class="uc-title">Respuestas a candidatos en lote</h3></div></div>
+        <div class="uc-prompt">Adjunto 15 CVs y la descripción del puesto. Para cada candidato: ¿pasa primer filtro? Razón en una frase. Luego un email personalizado.</div>
+        <div class="uc-result"><strong>Resultado:</strong> 15 mini-evaluaciones consistentes + 15 emails personalizados respetuosos. <strong>Antes:</strong> 3-4 horas. <strong>Después:</strong> 30 min con tu supervisión.</div>
+      </article>
+
+      <article class="uc">
+        <div class="uc-head"><div class="uc-icon">⚖️</div><div><div class="uc-cat">Verificación</div><h3 class="uc-title">Detectar una alucinación a tiempo</h3></div></div>
+        <div class="uc-prompt">Cita 3 libros de economía de 1987 sobre divisas. ACTIVA búsqueda web. Si alguno no puedes verificarlo, dímelo claramente.</div>
+        <div class="uc-result"><strong>Sin búsqueda:</strong> Claude inventaría libros plausibles que no existen. <strong>Con búsqueda + verificación:</strong> solo cita los reales. El módulo 7 enseña a hacerlo siempre.</div>
+      </article>
+
+      <article class="uc">
+        <div class="uc-head"><div class="uc-icon">🏗️</div><div><div class="uc-cat">Arquitectura</div><h3 class="uc-title">Discutir arquitectura antes de programar</h3></div></div>
+        <div class="uc-prompt">Quiero migrar de monolito a 3 microservicios. Pros, contras y orden recomendado para mi equipo de 4 personas. Sé crítico.</div>
+        <div class="uc-result"><strong>Output:</strong> análisis honesto con trade-offs, alerta sobre over-engineering, sugiere fases. Como tener un staff engineer en el café.</div>
+      </article>
+
+      <article class="uc">
+        <div class="uc-head"><div class="uc-icon">🎯</div><div><div class="uc-cat">Marketing</div><h3 class="uc-title">30 ángulos para una campaña sin filtrar</h3></div></div>
+        <div class="uc-prompt">Necesito 30 ángulos posibles para una campaña sobre [tema]. No filtres — quiero extremos, contraintuitivos, técnicos, emocionales.</div>
+        <div class="uc-result"><strong>Resultado:</strong> 30 ideas variadas. Tú filtras las 3 que valen. La cantidad genera la calidad — el módulo 6 enseña por qué.</div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FEATURES ===================== -->
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-tag">Por qué este curso</div>
+      <h2>Resultados reales, sin <em>postureo</em></h2>
+      <p class="lead">Diseñado para profesionales que quieren incorporar Claude a su trabajo diario, no para coleccionar demos vistosas.</p>
+    </div>
+    <div class="features">
+      <div class="feature"><div class="icon">🎬</div><h3>Videos interactivos</h3><p>Cada módulo con animaciones, captions sincronizados, música ambient y un checkpoint final para fijar conceptos.</p></div>
+      <div class="feature"><div class="icon">🧪</div><h3>Reproducible</h3><p>Prompts copiables, Excel de ejemplo con fórmulas reales, PDFs, código con bugs reales. Replica cada demo en tu cuenta.</p></div>
+      <div class="feature"><div class="icon">♾️</div><h3>Acceso vitalicio</h3><p>Un pago, para siempre. Cuando Claude evoluciona, las lecciones se actualizan automáticamente sin coste extra.</p></div>
+      <div class="feature"><div class="icon">🧭</div><h3>Honesto</h3><p>Te decimos también lo que NO funciona, las alucinaciones, los límites legales y técnicos. Criterio antes que entusiasmo.</p></div>
+      <div class="feature"><div class="icon">🇪🇸</div><h3>En español de verdad</h3><p>No es la traducción de un curso anglo. Pensado para profesionales hispanohablantes, con casos relevantes para tu mercado.</p></div>
+      <div class="feature"><div class="icon">🎯</div><h3>Proyecto final</h3><p>Terminas convirtiendo una tarea recurrente de tu trabajo en un flujo Claude documentado y reutilizable. Aprendes haciendo.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== AUDIENCE ===================== -->
+<section class="section tinted">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-tag">Para quién</div>
+      <h2>Hecho para gente que <em>trabaja</em></h2>
+      <p class="lead">Útil tanto si nunca has usado Claude como si ya lo usas pero sientes que rascas la superficie.</p>
+    </div>
+    <div class="audience">
+      <div class="aud-card">
+        <div class="role">Profesionales</div>
+        <h4>Marketing, ventas, ops</h4>
+        <ul>
+          <li>Emails, informes y propuestas en la mitad de tiempo</li>
+          <li>Resumir reuniones largas con responsables y fechas</li>
+          <li>Análisis de Excel sin pelearte con fórmulas</li>
+          <li>Brainstorming dirigido para campañas y contenido</li>
+          <li>Adaptar el mismo mensaje a varios públicos</li>
+        </ul>
+      </div>
+      <div class="aud-card">
+        <div class="role">Devs y técnicos</div>
+        <h4>Programación e ingeniería</h4>
+        <ul>
+          <li>Debug en segundos · explicar código heredado</li>
+          <li>Refactoring y migración entre lenguajes</li>
+          <li>Claude Code en el terminal · MCP con tus herramientas</li>
+          <li>Tests, documentación y migraciones automáticas</li>
+          <li>Discutir arquitectura antes de codear</li>
+        </ul>
+      </div>
+      <div class="aud-card">
+        <div class="role">Equipos pequeños</div>
+        <h4>Founders, PMs, freelance</h4>
+        <ul>
+          <li>Multiplicar tu productividad sin contratar</li>
+          <li>Due diligence y análisis de mercado serio</li>
+          <li>Crear documentos profesionales en minutos</li>
+          <li>Construir flujos repetibles para tu equipo</li>
+          <li>Pasar de "lo he probado" a "lo uso a diario"</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== COMPARISON ===================== -->
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-tag">Antes vs. después</div>
+      <h2>La diferencia <em>se nota</em></h2>
+    </div>
+    <div class="comparison">
+      <div class="comp-col bad">
+        <div class="comp-head">Sin formación</div>
+        <h3>Usuario casual</h3>
+        <ul class="comp-list">
+          <li>"Escríbeme un email" → cliché genérico inservible</li>
+          <li>Resultados aleatorios, calidad impredecible</li>
+          <li>Te frustras tras 3 intentos y vuelves al copy-paste manual</li>
+          <li>Compartes datos sin pensar en privacidad</li>
+          <li>Te crees todo lo que dice (incluso lo inventado)</li>
+          <li>Usas Opus para resumir un tweet (caro y lento)</li>
+        </ul>
+      </div>
+      <div class="comp-col good">
+        <div class="comp-head">Con Claude 101</div>
+        <h3>Usuario profesional</h3>
+        <ul class="comp-list">
+          <li>Prompts estructurados que funcionan a la primera</li>
+          <li>Flujos repetibles documentados en tus proyectos</li>
+          <li>Sabes cuándo iterar, cambiar modelo, o verificar</li>
+          <li>Anonimizas datos sensibles automáticamente</li>
+          <li>Detectas alucinaciones y sabes cómo verificarlas</li>
+          <li>Sonnet por defecto, Opus para análisis duro, Haiku en volumen</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PROGRAMA ===================== -->
+<section id="programa" class="section tinted">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-tag">Programa completo</div>
+      <h2>Ocho módulos. Del <em>cero</em> al proyecto final</h2>
+      <p class="lead">Cada módulo: video animado de ~3 minutos + 4 lecciones leídas + prompts y assets descargables.</p>
+    </div>
+    <div class="modules">
+      <div class="mod"><div class="mod-num">01</div><div><div class="mod-title">Bienvenida y fundamentos</div><div class="mod-desc">Qué es Claude, los tres modelos, cómo razona, diferencias con otros asistentes.</div><div class="mod-lessons">4 lecciones</div></div></div>
+      <div class="mod"><div class="mod-num">02</div><div><div class="mod-title">Primeros pasos</div><div class="mod-desc">Acceso, interfaz, proyectos y estilos, configuración esencial.</div><div class="mod-lessons">4 lecciones</div></div></div>
+      <div class="mod"><div class="mod-num">03</div><div><div class="mod-title">El arte del prompt</div><div class="mod-desc">Las 4 partes, contexto y claridad, antes/después, errores comunes.</div><div class="mod-lessons">4 lecciones</div></div></div>
+      <div class="mod"><div class="mod-num">04</div><div><div class="mod-title">Técnicas avanzadas</div><div class="mod-desc">Cadenas de razonamiento, few-shot, etiquetas XML, roles.</div><div class="mod-lessons">4 lecciones</div></div></div>
+      <div class="mod"><div class="mod-num">05</div><div><div class="mod-title">Capacidades y herramientas</div><div class="mod-desc">Artifacts, búsqueda web, creación de archivos, memoria.</div><div class="mod-lessons">4 lecciones</div></div></div>
+      <div class="mod"><div class="mod-num">06</div><div><div class="mod-title">Casos de uso prácticos</div><div class="mod-desc">Escritura, programación, análisis de datos, creatividad.</div><div class="mod-lessons">4 lecciones</div></div></div>
+      <div class="mod"><div class="mod-num">07</div><div><div class="mod-title">Buenas prácticas y límites</div><div class="mod-desc">Privacidad, verificación, limitaciones, uso responsable.</div><div class="mod-lessons">4 lecciones</div></div></div>
+      <div class="mod"><div class="mod-num">08</div><div><div class="mod-title">Siguiente nivel</div><div class="mod-desc">Claude Code, conectores MCP, recursos, proyecto final.</div><div class="mod-lessons">4 lecciones</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== TESTIMONIALS ===================== -->
+<section id="testimonios" class="section">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-tag">Opiniones</div>
+      <h2>Lo que dicen <em>quienes ya lo usan</em></h2>
+      <p class="lead">Profesionales que pasaron de "lo he probado un par de veces" a tenerlo integrado en su día a día.</p>
+    </div>
+    <div class="testimonials">
+      <div class="testim">
+        <div class="stars">★ ★ ★ ★ ★</div>
+        <p>Llevaba meses jugando con Claude sin saber qué hacía mal. El módulo de prompting me cambió la forma de pedirle cosas — pasé de respuestas planas a borradores que casi puedo enviar tal cual.</p>
+        <div class="author"><div class="avatar">L</div><div><div class="name">Laura M.</div><div class="role">Directora de marketing</div></div></div>
+      </div>
+      <div class="testim">
+        <div class="stars">★ ★ ★ ★ ★</div>
+        <p>Como dev senior pensaba que sabía pedirle a una IA. El módulo de técnicas avanzadas me sacó de mi zona de confort y ahora uso Claude Code para refactoring que antes daba pereza.</p>
+        <div class="author"><div class="avatar">D</div><div><div class="name">Diego R.</div><div class="role">Tech Lead, fintech</div></div></div>
+      </div>
+      <div class="testim">
+        <div class="stars">★ ★ ★ ★ ★</div>
+        <p>La parte de límites y privacidad debería ser obligatoria. He cambiado cómo trabajamos con datos de clientes en mi equipo gracias a este curso. Lo recomiendo a todos los founders que conozco.</p>
+        <div class="author"><div class="avatar">S</div><div><div class="name">Sofía V.</div><div class="role">Founder, startup B2B</div></div></div>
+      </div>
+    </div>
+    <p style="text-align: center; margin-top: 28px; font-size: 12px; color: var(--muted);">* Testimonios representativos. Tu experiencia depende de tu práctica.</p>
+  </div>
+</section>
+
+<!-- ===================== PRICING ===================== -->
+<section id="precio" class="section tinted">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-tag">Precio</div>
+      <h2>Un pago. <em>Para siempre</em></h2>
+      <p class="lead">Sin suscripciones que olvidas cancelar. Sin niveles. Sin asteriscos.</p>
+    </div>
+    <div class="pricing-wrap">
+      <div class="price-box">
+        <div class="price-ribbon">Más popular</div>
+        <div class="price-tag">Acceso completo · vitalicio</div>
+        <div class="price-amount"><span class="curr">€</span><span id="priceAmount">49</span></div>
+        <p class="price-sub">Pago único · IVA incluido · sin cargos posteriores</p>
+        <ul class="price-includes">
+          <li>8 módulos completos con videos animados interactivos</li>
+          <li>32 lecciones de lectura con ejemplos prácticos</li>
+          <li>Prompts copiables y assets de ejemplo descargables</li>
+          <li>Proyecto final guiado paso a paso</li>
+          <li>Acceso vitalicio desde tu email — sin contraseñas</li>
+          <li>Actualizaciones gratuitas cuando Claude evoluciona</li>
+          <li>Garantía total de devolución durante 14 días</li>
+        </ul>
+        <form id="checkoutForm" onsubmit="return startCheckout(event)" novalidate>
+          <label for="emailInput" class="label" style="text-align:left;">Tu email</label>
+          <input type="email" id="emailInput" name="email" class="input" placeholder="tu@email.com" required autocomplete="email" inputmode="email">
+          <div class="row">
+            <input type="text" name="coupon" id="couponInput" class="input" placeholder="Cupón (opcional)" style="text-transform: uppercase;" oninput="validateCoupon()" aria-label="Código de cupón">
+            <button type="submit" class="btn btn-primary btn-lg" id="ctaBtn">Comprar acceso →</button>
+          </div>
+          <div class="coupon-line" id="couponLine" role="status" aria-live="polite"></div>
+        </form>
+        <p style="font-size: 12px; color: var(--muted); margin-top: 14px;">Pago seguro · <strong>Stripe</strong> · Tarjeta, Apple/Google Pay, link</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== GUARANTEE ===================== -->
+<section class="section">
+  <div class="container">
+    <div class="guarantee">
+      <div class="seal" aria-hidden="true">14d</div>
+      <div>
+        <h3>Garantía total · <em>14 días</em></h3>
+        <p>Si en las 2 primeras semanas decides que el curso no es para ti — por la razón que sea, sin formularios, sin preguntas — escríbenos desde el email de tu compra y te devolvemos el 100% del importe. La razón es simple: si no te aporta valor real, no queremos tu dinero.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FAQ ===================== -->
+<section id="faq" class="section tinted">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-tag">Preguntas frecuentes</div>
+      <h2>Lo que <em>nos preguntan</em> antes de comprar</h2>
+    </div>
+    <div class="faq">
+      <details class="faq-item"><summary>¿Cómo accedo al curso después de pagar?</summary><p>Al completar el pago, en menos de 1 minuto recibirás un email con un enlace único de acceso. Haz clic y entras al curso. Si lo pierdes, puedes pedir uno nuevo desde <a href="/login">/login</a> con el mismo email de compra.</p></details>
+      <details class="faq-item"><summary>¿Necesito experiencia previa con IA o programación?</summary><p>No. El curso empieza desde cero — qué es Claude, cómo funciona — y sube progresivamente. Es útil tanto para quien nunca ha tocado un asistente de IA como para quien ya lo usa pero quiere sacarle más partido. Solo el módulo 8 toca temas técnicos.</p></details>
+      <details class="faq-item"><summary>¿Cuánto tiempo me llevará completarlo?</summary><p>Cada video dura ~3 minutos. Las lecciones leídas son de 4-7 minutos cada una. En total, ~5 horas. A ritmo cómodo lo completas en 1-2 semanas. Pero al ser acceso vitalicio, puedes volver cuantas veces quieras.</p></details>
+      <details class="faq-item"><summary>¿Hay actualizaciones cuando Claude lanza cosas nuevas?</summary><p>Sí. Cuando Anthropic lanza funciones relevantes — modelos nuevos, capacidades, conectores — actualizamos los módulos correspondientes. Acceso gratuito a las actualizaciones, sin coste extra.</p></details>
+      <details class="faq-item"><summary>¿Necesito comprar Claude Pro?</summary><p>Para seguir el curso vale la versión gratuita de Claude. Algunas demos (memoria, búsqueda profunda, conectores MCP) sacan más jugo con Pro, pero todo el contenido se entiende con el plan gratuito.</p></details>
+      <details class="faq-item"><summary>¿Puedo pedir factura o pagar por transferencia?</summary><p>Sí. Tras la compra recibes una factura automática de Stripe. Para datos fiscales específicos, escríbenos desde el email de compra. Para pagos por transferencia (fuera de Stripe), también escríbenos — lo gestionamos manualmente.</p></details>
+      <details class="faq-item"><summary>¿Funciona desde el móvil?</summary><p>Sí. La plataforma es responsive y los videos están optimizados para móvil. Pero recomendamos tener Claude abierto en un escritorio mientras practicas.</p></details>
+      <details class="faq-item"><summary>¿Puedo pedir un reembolso?</summary><p>Sí. 14 días desde la compra, sin preguntas. Escribe desde el email con el que compraste y te devolvemos el 100% del importe al mismo medio de pago. Ver <a href="/reembolsos">política completa</a>.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FINAL CTA ===================== -->
+<section class="section dark final-cta">
+  <div class="container" style="text-align: center;">
+    <h2 class="h-display">Empieza a usar <em>Claude</em> como un profesional</h2>
+    <p>Mañana mismo notarás la diferencia. Pago único, acceso vitalicio, garantía de 14 días.</p>
+    <a href="#precio" class="btn btn-primary btn-lg" onclick="track('cta_final_click')">Comprar acceso por 49 €</a>
+  </div>
+</section>
+
+</main>
+
+<!-- Floating CTA -->
+<div class="float-cta" id="floatCta" aria-hidden="true">
+  <a href="#precio" class="btn btn-primary">Comprar acceso · 49 € →</a>
+</div>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="foot">
+  <div class="foot-inner">
+    <div class="foot-grid">
+      <div class="foot-col">
+        <div class="foot-brand">Claude<em>·101</em></div>
+        <div class="foot-tag">El curso definitivo para trabajar con Claude. En español. Hecho por humanos que llevan años haciéndolo en serio.</div>
+      </div>
+      <div class="foot-col">
+        <h4>Producto</h4>
+        <a href="#programa">Programa</a>
+        <a href="#casos">Casos de uso</a>
+        <a href="#precio">Precio</a>
+        <a href="/sobre">Sobre nosotros</a>
+        <a href="/login">Entrar</a>
+      </div>
+      <div class="foot-col">
+        <h4>Recursos</h4>
+        <a href="/blog">Blog</a>
+        <a href="/recursos">Descargas gratis</a>
+        <a href="/docs">Documentación</a>
+        <a href="/comunidad">Comunidad</a>
+      </div>
+      <div class="foot-col">
+        <h4>Soporte</h4>
+        <a href="/contacto">Contacto</a>
+        <a id="supportFootEmail" href="mailto:hola@claude101.com">Email</a>
+        <a href="#faq">FAQ</a>
+        <a href="/terminos">Términos</a>
+        <a href="/privacidad">Privacidad</a>
+        <a href="/reembolsos">Reembolsos</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <div>© 2026 Claude 101. Hecho con cuidado.</div>
+      <div>Claude y Anthropic son marcas de Anthropic, PBC. Curso no afiliado.</div>
+    </div>
+  </div>
+</footer>
+
+<script src="/track.js"></script>
+<script>
+// Config pública
+async function loadConfig() {
+  try {
+    const r = await fetch('/api/config');
+    const cfg = await r.json();
+    document.getElementById('priceAmount').textContent = (cfg.price_cents / 100).toLocaleString('es-ES', { minimumFractionDigits: 0 });
+    // Email de soporte en el footer
+    const fe = document.getElementById('supportFootEmail');
+    if (fe && cfg.support_email) { fe.href = 'mailto:' + cfg.support_email; fe.textContent = cfg.support_email; }
+  } catch {}
+}
+loadConfig();
+
+// Cupón en URL
+(function preloadCoupon() {
+  const c = new URLSearchParams(location.search).get('coupon');
+  if (c) { document.getElementById('couponInput').value = c.toUpperCase(); validateCoupon(); }
+})();
+
+let _couponT;
+async function validateCoupon() {
+  clearTimeout(_couponT);
+  const code = document.getElementById('couponInput').value.trim().toUpperCase();
+  const line = document.getElementById('couponLine');
+  if (!code) { line.textContent = ''; line.className = 'coupon-line'; return; }
+  _couponT = setTimeout(async () => {
+    try {
+      const r = await fetch('/api/checkout/validate-coupon?code=' + encodeURIComponent(code));
+      const d = await r.json();
+      if (r.ok) { line.textContent = `✓ Cupón aplicado: -${d.discount_pct}% en el checkout`; line.className = 'coupon-line ok'; }
+      else { line.textContent = '✗ ' + (d.error || 'Cupón no válido'); line.className = 'coupon-line bad'; }
+    } catch {}
+  }, 350);
+}
+
+async function startCheckout(e) {
+  e.preventDefault();
+  const btn = document.getElementById('ctaBtn');
+  const email = e.target.email.value.trim();
+  const coupon = e.target.coupon.value.trim().toUpperCase() || null;
+  const orig = btn.textContent;
+  btn.innerHTML = '<span class="spin"></span> Redirigiendo…';
+  btn.disabled = true;
+  if (window.track) window.track('checkout_started', { coupon });
+  try {
+    const res = await fetch('/api/checkout', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, coupon })
+    });
+    if (!res.ok) {
+      const d = await res.json().catch(()=>({}));
+      throw new Error(d.error || 'Error iniciando el pago');
+    }
+    const data = await res.json();
+    if (data.url) window.location.href = data.url;
+  } catch (err) {
+    const wrap = document.getElementById('topAlert');
+    wrap.innerHTML = '<div class="container" style="padding-top:14px;"><div class="alert alert-error">' + err.message + ' Revisa la configuración de Stripe (o usa el modo demo).</div></div>';
+    btn.textContent = orig;
+    btn.disabled = false;
+  }
+  return false;
+}
+
+// Alertas en URL
+(function showAlerts() {
+  const sp = new URLSearchParams(location.search);
+  const wrap = document.getElementById('topAlert');
+  if (sp.has('canceled')) wrap.innerHTML = '<div class="container" style="padding-top:14px;"><div class="alert alert-info">Has cancelado el pago. Si tienes dudas escríbenos antes de comprar.</div></div>';
+  if (sp.get('error') === 'paywall') wrap.innerHTML = '<div class="container" style="padding-top:14px;"><div class="alert alert-error">Necesitas comprar el acceso para entrar al curso. Tras pagar recibirás un email con tu enlace.</div></div>';
+})();
+
+// Float CTA
+const floatCta = document.getElementById('floatCta');
+window.addEventListener('scroll', () => {
+  const y = window.scrollY;
+  const trigger = window.innerHeight * 1.2;
+  if (y > trigger && y < document.body.scrollHeight - window.innerHeight * 1.5) {
+    floatCta.classList.add('visible');
+  } else {
+    floatCta.classList.remove('visible');
+  }
+}, { passive: true });
+
+// Cerrar menú móvil al click en link
+document.querySelectorAll('#navLinks a').forEach(a => a.addEventListener('click', () => document.getElementById('navLinks').classList.remove('open')));
+</script>
+
+</body>
+</html>

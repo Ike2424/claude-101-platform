@@ -1,0 +1,49 @@
+# =====================================================
+# Fly.io config para Claude 101
+# Uso:
+#   fly launch --no-deploy --copy-config
+#   fly volumes create claude101_data --size 1 --region mad   # solo si DB_DRIVER=sqlite
+#   fly secrets set JWT_SECRET=... STRIPE_SECRET_KEY=... ...
+#   fly deploy
+# =====================================================
+
+app = "claude-101"
+primary_region = "mad"
+
+[build]
+  dockerfile = "Dockerfile"
+
+[env]
+  PORT = "3000"
+  NODE_ENV = "production"
+  DB_DRIVER = "sqlite"
+  LOG_LEVEL = "info"
+
+[[mounts]]
+  source = "claude101_data"
+  destination = "/app/db"
+
+[http_service]
+  internal_port = 3000
+  force_https = true
+  auto_stop_machines = "stop"
+  auto_start_machines = true
+  min_machines_running = 1
+  processes = ["app"]
+
+  [http_service.concurrency]
+    type = "requests"
+    soft_limit = 200
+    hard_limit = 250
+
+  [[http_service.checks]]
+    interval = "30s"
+    timeout = "5s"
+    grace_period = "10s"
+    method = "GET"
+    path = "/healthz"
+
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "512mb"
+  cpus = 1

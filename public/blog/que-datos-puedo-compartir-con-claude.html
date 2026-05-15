@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Qué datos puedes compartir con Claude (y cuáles no) · Claude 101</title>
+<meta name="description" content="Guía operativa de privacidad para usar Claude en el trabajo. Datos personales, confidenciales, regulados. Qué hacer caso por caso con la regla de oro de la anonimización.">
+<link rel="canonical" href="/blog/que-datos-puedo-compartir-con-claude">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Geist:wght@300..700&family=Geist+Mono:wght@400..600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles-shared.css">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Qué datos puedes compartir con Claude (y cuáles no)">
+<meta property="og:description" content="Guía operativa de privacidad para usar Claude en el trabajo.">
+<meta property="og:image" content="/og-image.svg">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Article","headline":"Qué datos puedes compartir con Claude (y cuáles no)","datePublished":"2026-05-02","author":{"@type":"Organization","name":"Claude 101"},"publisher":{"@type":"Organization","name":"Claude 101"},"image":"/og-image.svg","inLanguage":"es"}
+</script>
+<style>
+.article-wrap { max-width: 720px; margin: 0 auto; padding: 48px 0 80px; }
+.article-meta { display: flex; gap: 14px; align-items: center; font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-bottom: 20px; }
+.article-meta .cat { color: var(--accent); }
+.article-wrap h1 { font-family: var(--display); font-style: italic; font-size: clamp(32px, 4.5vw, 52px); line-height: 1.1; margin-bottom: 18px; }
+.article-wrap h1 em { font-style: normal; color: var(--accent); }
+.article-wrap .lede { font-size: 19px; color: var(--ink-2); line-height: 1.6; margin-bottom: 36px; }
+.article-wrap h2 { font-family: var(--display); font-size: 28px; margin: 40px 0 14px; }
+.article-wrap h2 em { font-style: italic; color: var(--accent); }
+.article-wrap h3 { font-family: var(--display); font-size: 20px; margin: 22px 0 8px; }
+.article-wrap p, .article-wrap li { font-size: 16px; color: var(--ink-2); line-height: 1.75; }
+.article-wrap p { margin-bottom: 14px; }
+.article-wrap ul, .article-wrap ol { margin: 12px 0 14px 22px; }
+.article-wrap blockquote { border-left: 3px solid var(--accent); padding: 8px 0 8px 20px; font-family: var(--display); font-style: italic; font-size: 19px; color: var(--ink); margin: 24px 0; }
+.rule-box { border: 1px solid var(--line); border-radius: var(--r-md); padding: 18px 22px; margin: 12px 0; }
+.rule-box.never { border-left: 4px solid var(--accent); background: rgba(200,84,43,.03); }
+.rule-box.careful { border-left: 4px solid var(--gold); background: rgba(176,132,54,.04); }
+.rule-box.ok { border-left: 4px solid var(--olive); background: rgba(79,93,56,.04); }
+.rule-box .tag { font-family: var(--mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; font-weight: 600; margin-bottom: 6px; }
+.rule-box.never .tag { color: var(--accent); }
+.rule-box.careful .tag { color: var(--gold); }
+.rule-box.ok .tag { color: var(--olive); }
+.cta-end { background: linear-gradient(135deg, var(--accent), var(--gold)); color: var(--bg); border-radius: var(--r-xl); padding: 36px; text-align: center; margin: 48px 0 0; }
+.cta-end h3 { color: var(--bg); font-family: var(--display); font-style: italic; font-size: 26px; margin-bottom: 10px; }
+.cta-end p { color: rgba(244,239,227,.85); margin-bottom: 18px; }
+.cta-end .btn { background: var(--bg); color: var(--ink); border-color: var(--bg); }
+</style>
+</head>
+<body>
+<a href="#main" class="skip-link">Saltar al contenido</a>
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="brand">Claude<em>·101</em></a>
+    <div class="nav-links"><a href="/blog">← Blog</a><a href="/#precio" class="btn btn-ghost btn-sm">Comprar acceso</a></div>
+  </div>
+</nav>
+
+<main id="main" class="container">
+  <article class="article-wrap">
+    <div class="article-meta"><span class="cat">Privacidad</span><span>· 7 min</span><span>· Mayo 2026</span></div>
+    <h1>Qué datos puedes <em>compartir</em> con Claude (y cuáles no)</h1>
+    <p class="lede">Los términos legales de Anthropic dicen una cosa. Tu departamento de IT puede decir otra. Tu RGPD interno otra distinta. Esta es la guía operativa que no te dan: caso por caso, con la regla de oro al final que resuelve el 95% de las dudas.</p>
+
+    <h2>El error <em>más común</em></h2>
+    <p>Vemos a profesionales pegar contenido en Claude que nunca pegarían en un email no cifrado a un externo. La sensación de "es solo una herramienta" hace bajar la guardia. No bajes la guardia. Trata Claude como tratarías a un consultor externo bajo NDA: útil para muchas cosas, pero con criterio sobre qué le enseñas.</p>
+
+    <h2>Qué NUNCA <em>compartas</em></h2>
+
+    <div class="rule-box never">
+      <div class="tag">Nunca ❌</div>
+      <p style="margin:0;"><strong>Datos personales identificables de terceros sin permiso.</strong> Listas de clientes con nombre y email. Datos de empleados. Cualquier información que identifique a una persona concreta y que no te haya dado permiso para compartir.</p>
+    </div>
+
+    <div class="rule-box never">
+      <div class="tag">Nunca ❌</div>
+      <p style="margin:0;"><strong>Credenciales.</strong> Contraseñas. Claves API. Tokens. Cookies de sesión. Números de tarjeta de crédito. Cuentas bancarias. Aunque te parezca "una herramienta segura", lo que metes en un chat puede acabar en logs, en backups, en cachés. No se mete y punto.</p>
+    </div>
+
+    <div class="rule-box never">
+      <div class="tag">Nunca ❌</div>
+      <p style="margin:0;"><strong>Información sanitaria identificable.</strong> Historias clínicas, resultados de pruebas con nombre asociado. Esto está regulado de forma específica (en España, la LOPD-GDD; en EEUU, HIPAA). Las plataformas consumer no están preparadas para esto.</p>
+    </div>
+
+    <h2>Qué requiere <em>cuidado</em></h2>
+
+    <div class="rule-box careful">
+      <div class="tag">Cuidado ⚠</div>
+      <p style="margin:0;"><strong>Información confidencial de empresa.</strong> Documentos internos, estrategias, datos financieros no publicados. Revisa la política de tu empresa primero. Si dudas, asume que NO se puede.</p>
+    </div>
+
+    <div class="rule-box careful">
+      <div class="tag">Cuidado ⚠</div>
+      <p style="margin:0;"><strong>Contratos en negociación.</strong> Si pegas un contrato que estás negociando, ten en cuenta que el contenido entra en los sistemas de Anthropic. Para los planes consumer las conversaciones no se usan para entrenamiento, pero sí se almacenan. Para casos sensibles, considera anonimizar nombres y cifras.</p>
+    </div>
+
+    <div class="rule-box careful">
+      <div class="tag">Cuidado ⚠</div>
+      <p style="margin:0;"><strong>Código fuente con secretos hardcodeados.</strong> No solo el código — los secrets dentro. Si vas a pegar código para que Claude lo analice, sustituye API keys y credentials por placeholders.</p>
+    </div>
+
+    <h2>Qué puedes <em>compartir</em> con normalidad</h2>
+
+    <div class="rule-box ok">
+      <div class="tag">OK ✓</div>
+      <p style="margin:0;"><strong>Tu propio email, tus datos.</strong> Si la información es tuya y solo tuya, decides tú. Para tus emails, tus borradores, tus notas, tu CV — adelante.</p>
+    </div>
+
+    <div class="rule-box ok">
+      <div class="tag">OK ✓</div>
+      <p style="margin:0;"><strong>Datos anonimizados.</strong> Sustituye nombres reales por ficticios. "Cliente A" en lugar de "Carmen García". Si Claude trabaja sobre la estructura del documento (resumir, analizar tono, detectar errores), el resultado es idéntico — y dejas de exponer datos.</p>
+    </div>
+
+    <div class="rule-box ok">
+      <div class="tag">OK ✓</div>
+      <p style="margin:0;"><strong>Documentos públicos.</strong> Artículos, papers académicos públicos, informes de mercado publicados, código open source. Si está en Internet sin restricciones, no hay problema en pasarlo a Claude para que te lo analice.</p>
+    </div>
+
+    <h2>La <em>regla de oro</em>: anonimización</h2>
+    <p>Si te tienes que llevar UNA cosa de este artículo: <strong>anonimiza siempre que puedas</strong>. Es trivial de hacer y resuelve el 95% de las dudas legales.</p>
+
+    <h3>Cómo anonimizar en 30 segundos</h3>
+    <ol>
+      <li><strong>Cmd+F / Ctrl+F</strong> en el documento original.</li>
+      <li>Buscar nombre real → reemplazar por placeholder ("Cliente A", "Empresa X").</li>
+      <li>Hacer lo mismo con emails, teléfonos, direcciones, números de cuenta, NIFs.</li>
+      <li>Pegar la versión anonimizada en Claude.</li>
+      <li>Cuando recibas la respuesta, sustituir mentalmente o con otro Cmd+F los placeholders por los reales.</li>
+    </ol>
+    <p>Para Claude el resultado es idéntico: trabaja sobre la estructura, el tono, los argumentos. Para ti es una capa de seguridad que no cuesta nada.</p>
+
+    <blockquote>"Cliente A me pidió X" produce el mismo análisis que "Carmen García me pidió X" — y la primera versión no expone datos.</blockquote>
+
+    <h2>El test del <em>email forwardeado</em></h2>
+    <p>Cuando dudes si compartir algo, hazte esta pregunta: <strong>"¿Reenviaría este contenido a un consultor externo bajo NDA?"</strong></p>
+    <ul>
+      <li><strong>Sí</strong> → probablemente lo puedes meter en Claude (con tu política de empresa al día).</li>
+      <li><strong>No</strong> → no lo metas tampoco en Claude.</li>
+      <li><strong>Solo si lo anonimizo</strong> → anonimízalo antes.</li>
+    </ul>
+
+    <h2>Configuración <em>recomendada</em></h2>
+    <p>En tu cuenta de Claude, revisa:</p>
+    <ul>
+      <li><strong>Privacidad → uso de datos para entrenamiento:</strong> en planes consumer está OFF por defecto, pero verifícalo.</li>
+      <li><strong>Memoria:</strong> útil pero ten cuidado con lo que guardas. Revisa periódicamente qué recuerda y borra lo irrelevante.</li>
+      <li><strong>Conectores MCP:</strong> cada conector da acceso a una app externa. Revisa qué permisos pides y a qué.</li>
+    </ul>
+
+    <h2>Si tu empresa tiene <em>NDA con clientes</em></h2>
+    <p>Si tu trabajo te obliga a manejar datos de clientes bajo NDA explícito, considera un plan Team o Enterprise de Anthropic. Estos planes tienen garantías adicionales sobre retención y uso de datos. Las conversaciones no se almacenan más allá del tiempo necesario para el servicio. Consulta a tu departamento legal antes.</p>
+
+    <p>Para freelance y solopreneurs, el plan Pro es suficiente para el 95% de los casos si aplicas anonimización.</p>
+
+    <div class="cta-end">
+      <h3>Privacidad operativa en profundidad</h3>
+      <p>El módulo 7 del curso cubre esto a fondo, con ejemplos para sectores regulados (salud, legal, financiero).</p>
+      <a href="/#precio" class="btn btn-lg" onclick="track('blog_cta_click', { post: 'privacidad' })">Ver Claude 101 →</a>
+    </div>
+  </article>
+</main>
+
+<footer class="foot">
+  <div class="foot-inner"><div class="foot-bottom"><a href="/" class="brand">Claude<em>·101</em></a><div><a href="/blog">Más artículos</a> · <a href="/privacidad">Privacidad</a> · <a href="/contacto">Contacto</a></div></div></div>
+</footer>
+<script src="/track.js"></script>
+</body>
+</html>

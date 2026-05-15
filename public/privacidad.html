@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacidad · Claude 101</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Geist:wght@300..700&family=Geist+Mono:wght@400..600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles-shared.css">
+<style>
+.legal { max-width: 720px; margin: 0 auto; padding: 60px 32px; }
+.legal h1 { font-family: var(--display); font-size: 42px; font-style: italic; margin-bottom: 8px; }
+.legal h1 em { font-style: normal; color: var(--accent); }
+.legal .meta { color: var(--muted); margin-bottom: 32px; font-size: 13px; }
+.legal h2 { font-family: var(--display); font-size: 22px; margin-top: 32px; margin-bottom: 10px; }
+.legal p, .legal li { color: var(--ink-2); font-size: 14px; line-height: 1.7; }
+.legal ul { padding-left: 24px; margin: 8px 0 14px; }
+.legal a { color: var(--accent); }
+.legal table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 13px; }
+.legal th, .legal td { border: 1px solid var(--line); padding: 8px 12px; text-align: left; }
+.legal th { background: var(--bg-2); }
+</style>
+</head>
+<body>
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="brand">Claude<em>·101</em></a>
+    <div class="nav-links"><a href="/">← Volver</a></div>
+  </div>
+</nav>
+
+<main class="legal">
+  <h1>Política de <em>privacidad</em></h1>
+  <p class="meta">Última actualización: mayo 2026 · Plantilla genérica conforme al RGPD. <strong>Adáptala a tu caso real y consulta con un asesor antes de producción.</strong></p>
+
+  <h2>1. Responsable del tratamiento</h2>
+  <p><strong>[Tu Nombre / Razón Social]</strong>, NIF <strong>[XXX]</strong>, domicilio <strong>[Dirección]</strong>, email <a href="mailto:hola@claude101.com" class="js-support-mail">hola@tudominio.com</a>.</p>
+
+  <h2>2. Qué datos recopilamos</h2>
+  <table>
+    <thead><tr><th>Dato</th><th>Origen</th><th>Finalidad</th></tr></thead>
+    <tbody>
+      <tr><td>Email</td><td>Compra · login</td><td>Identificación, acceso al curso, comunicaciones operativas</td></tr>
+      <tr><td>Datos de pago</td><td>Stripe (no los almacenamos)</td><td>Procesamiento del pago</td></tr>
+      <tr><td>Hash de IP</td><td>Visitas</td><td>Estadísticas agregadas y antifraude. No identificable.</td></tr>
+      <tr><td>User-Agent</td><td>Visitas</td><td>Compatibilidad del producto</td></tr>
+      <tr><td>Visitor ID anónimo</td><td>localStorage</td><td>Métricas de uso. No es PII.</td></tr>
+      <tr><td>Progreso en el curso</td><td>Tu uso</td><td>Mostrarte lo que has completado</td></tr>
+    </tbody>
+  </table>
+  <p>No usamos cookies de terceros, no compartimos tu email con anunciantes y no hacemos perfilado para fines comerciales más allá del propio servicio.</p>
+
+  <h2>3. Base legal</h2>
+  <ul>
+    <li><strong>Ejecución del contrato:</strong> para entregarte el curso que has comprado.</li>
+    <li><strong>Obligación legal:</strong> para conservar facturas según la normativa fiscal.</li>
+    <li><strong>Interés legítimo:</strong> para estadísticas agregadas anónimas y mejora del servicio.</li>
+  </ul>
+
+  <h2>4. Encargados del tratamiento</h2>
+  <p>Compartimos datos estrictamente necesarios con:</p>
+  <ul>
+    <li><strong>Stripe</strong> (pasarela de pago) — datos de pago y email.</li>
+    <li><strong>Resend</strong> o tu proveedor SMTP (envío de emails) — email del destinatario.</li>
+    <li><strong>Tu proveedor de hosting</strong> (Railway, Fly.io, etc) — almacenamiento de la base de datos.</li>
+  </ul>
+  <p>Todos los encargados están en regiones con garantías adecuadas (UE/EEUU con cláusulas tipo).</p>
+
+  <h2>5. Plazo de conservación</h2>
+  <ul>
+    <li>Datos de usuario: mientras tengas acceso al curso + 1 año tras la cancelación.</li>
+    <li>Datos de facturación: 6 años (obligación fiscal en España).</li>
+    <li>Datos de tracking agregado: sin identificación personal, conservados indefinidamente.</li>
+  </ul>
+
+  <h2>6. Tus derechos</h2>
+  <p>Tienes derecho a acceder, rectificar, suprimir, oponerte, limitar el tratamiento y a la portabilidad de tus datos. Para ejercerlos, escribe a <a href="mailto:hola@claude101.com" class="js-support-mail">hola@tudominio.com</a> desde el email asociado a tu cuenta. Responderemos en un plazo máximo de 30 días.</p>
+  <p>También puedes presentar una reclamación ante la <strong>Agencia Española de Protección de Datos</strong> (<a href="https://www.aepd.es" target="_blank" rel="noopener">aepd.es</a>) si consideras que tus derechos no han sido atendidos.</p>
+
+  <h2>7. Cookies</h2>
+  <p>No usamos cookies de terceros. Las cookies propias son estrictamente necesarias:</p>
+  <ul>
+    <li><code>session</code>: tu sesión autenticada (JWT, HTTP-only).</li>
+    <li><code>admin_token</code>: sesión administrativa (solo si eres admin).</li>
+  </ul>
+  <p>El identificador anónimo de visitante (<code>c101_vid</code>) se guarda en localStorage, no en cookies.</p>
+
+  <h2>8. Seguridad</h2>
+  <p>Almacenamos las contraseñas... no, mentira: no usamos contraseñas. Los tokens de acceso se almacenan hasheados con SHA-256. Las comunicaciones van por HTTPS. Las copias de seguridad se hacen cifradas.</p>
+
+  <h2>9. Cambios en esta política</h2>
+  <p>Si hacemos cambios materiales te notificaremos por email con al menos 30 días de antelación.</p>
+
+  <h2>10. Contacto</h2>
+  <p>Para cualquier duda relacionada con privacidad: <a href="mailto:hola@claude101.com" class="js-support-mail">hola@tudominio.com</a>.</p>
+</main>
+
+<script src="/track.js"></script>
+<script>
+(async function loadSupportEmail() {
+  try {
+    const r = await fetch('/api/config');
+    const c = await r.json();
+    const links = document.querySelectorAll('.js-support-mail');
+    links.forEach(a => {
+      a.href = 'mailto:' + c.support_email;
+      // Si el texto del link es el email, actualizarlo también
+      if (a.textContent.includes('@')) a.textContent = c.support_email;
+    });
+  } catch {}
+})();
+</script>
+</body>
+</html>

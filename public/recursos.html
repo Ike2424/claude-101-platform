@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Recursos gratis · Claude 101</title>
+<meta name="description" content="Descarga gratis: 50 prompts esenciales para Claude, guía rápida de modelos, plantillas Excel y más. Para profesionales hispanohablantes.">
+<link rel="canonical" href="/recursos">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Geist:wght@300..700&family=Geist+Mono:wght@400..600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles-shared.css">
+<style>
+.hero-r { padding: 64px 0 32px; text-align: center; }
+.hero-r h1 { font-family: var(--display); font-style: italic; font-size: clamp(36px, 5vw, 60px); margin-bottom: 14px; }
+.hero-r h1 em { font-style: normal; color: var(--accent); }
+.hero-r p { color: var(--ink-2); max-width: 56ch; margin: 0 auto 8px; font-size: 17px; line-height: 1.6; }
+.hero-r .small { color: var(--muted); font-size: 13px; }
+
+.resources { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; padding-bottom: 40px; }
+.resource { background: var(--card); border: 1px solid var(--line); border-radius: var(--r-lg); padding: 28px; display: flex; flex-direction: column; gap: 14px; transition: all .25s var(--ease); }
+.resource:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+.resource .top { display: flex; align-items: flex-start; gap: 14px; }
+.resource .icon { width: 48px; height: 48px; background: linear-gradient(135deg, var(--accent), var(--gold)); color: var(--bg); border-radius: var(--r-md); display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+.resource .meta { display: flex; gap: 8px; flex-wrap: wrap; }
+.resource h3 { font-family: var(--display); font-size: 22px; margin-bottom: 4px; }
+.resource .type { font-family: var(--mono); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+.resource p { font-size: 14px; color: var(--ink-2); line-height: 1.6; }
+.resource .footer { display: flex; justify-content: space-between; align-items: center; margin-top: auto; padding-top: 8px; }
+.resource .size { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+
+.newsletter { background: var(--ink); color: var(--bg); border-radius: var(--r-xl); padding: 40px; text-align: center; margin: 30px 0; }
+.newsletter h2 { color: var(--bg); font-family: var(--display); font-style: italic; font-size: 28px; margin-bottom: 10px; }
+.newsletter h2 em { color: var(--accent); font-style: normal; }
+.newsletter p { color: rgba(244,239,227,.7); margin-bottom: 22px; max-width: 50ch; margin-left: auto; margin-right: auto; }
+.newsletter form { display: flex; gap: 8px; max-width: 440px; margin: 0 auto; }
+.newsletter .input { background: rgba(255,255,255,.1); color: var(--bg); border-color: rgba(255,255,255,.2); }
+.newsletter .input::placeholder { color: rgba(244,239,227,.5); }
+
+@media (max-width: 720px) {
+  .resources { grid-template-columns: 1fr; }
+  .newsletter form { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+<a href="#main" class="skip-link">Saltar al contenido</a>
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="brand">Claude<em>·101</em></a>
+    <div class="nav-links">
+      <a href="/#programa">Programa</a>
+      <a href="/blog">Blog</a>
+      <a href="/contacto">Contacto</a>
+      <a href="/login" class="btn btn-ghost btn-sm">Ya tengo acceso</a>
+    </div>
+  </div>
+</nav>
+
+<main id="main" class="container">
+  <header class="hero-r">
+    <h1>Recursos <em>gratis</em> para empezar</h1>
+    <p>Descargas útiles, sin email gate, sin formularios. Si te ayudan, considera el curso completo en <a href="/#precio">/precio</a>.</p>
+    <p class="small">Todos los recursos son una muestra del material del curso. La calidad y profundidad del producto completo es mayor.</p>
+  </header>
+
+  <div class="resources">
+    <article class="resource">
+      <div class="top">
+        <div class="icon">📋</div>
+        <div>
+          <h3>50 prompts esenciales</h3>
+          <div class="type">PDF · 12 páginas</div>
+        </div>
+      </div>
+      <p>Plantillas de prompt para los casos más comunes: emails delicados, resúmenes de reuniones, análisis de PDFs, debug de código, brainstorming dirigido. Cada uno con el patrón explicado.</p>
+      <div class="footer">
+        <span class="size">~ 320 KB</span>
+        <a href="/claude-101-videos/assets/08-informe-mercado.pdf" download class="btn btn-ghost btn-sm" onclick="track('resource_download', { name: '50-prompts' })">Descargar PDF</a>
+      </div>
+    </article>
+
+    <article class="resource">
+      <div class="top">
+        <div class="icon">📊</div>
+        <div>
+          <h3>Plantilla Excel de análisis</h3>
+          <div class="type">XLSX · con fórmulas</div>
+        </div>
+      </div>
+      <p>Hoja con 12 meses de datos de ventas ficticios y fórmulas reales. Sube el archivo a Claude y prueba el flujo de análisis del módulo 6 sin necesidad de tus datos.</p>
+      <div class="footer">
+        <span class="size">~ 9 KB</span>
+        <a href="/claude-101-videos/assets/06-ventas-mensuales.xlsx" download class="btn btn-ghost btn-sm" onclick="track('resource_download', { name: 'excel-ventas' })">Descargar XLSX</a>
+      </div>
+    </article>
+
+    <article class="resource">
+      <div class="top">
+        <div class="icon">📝</div>
+        <div>
+          <h3>Acta de reunión ficticia</h3>
+          <div class="type">Markdown · ejemplo</div>
+        </div>
+      </div>
+      <p>Transcripción intencionalmente "real" con digresiones, comentarios off-topic y decisiones poco claras. Perfecta para practicar prompts de resumen estructurado.</p>
+      <div class="footer">
+        <span class="size">~ 3 KB</span>
+        <a href="/claude-101-videos/assets/09-transcripcion-reunion.md" download class="btn btn-ghost btn-sm" onclick="track('resource_download', { name: 'acta-reunion' })">Descargar MD</a>
+      </div>
+    </article>
+
+    <article class="resource">
+      <div class="top">
+        <div class="icon">💻</div>
+        <div>
+          <h3>Código con bug real</h3>
+          <div class="type">JavaScript · debugging</div>
+        </div>
+      </div>
+      <p>30 líneas de JavaScript con un bug de <code>null</code> realista. Pruébalo en Claude para ver cómo diagnostica y propone fix. Útil para el módulo 6 (programación).</p>
+      <div class="footer">
+        <span class="size">~ 2 KB</span>
+        <a href="/claude-101-videos/assets/02-codigo-con-bug.js" download class="btn btn-ghost btn-sm" onclick="track('resource_download', { name: 'codigo-bug' })">Descargar JS</a>
+      </div>
+    </article>
+
+    <article class="resource">
+      <div class="top">
+        <div class="icon">📄</div>
+        <div>
+          <h3>Contrato para análisis</h3>
+          <div class="type">Markdown · 3 cláusulas problemáticas</div>
+        </div>
+      </div>
+      <p>Contrato ficticio con cláusulas trampa (no-competencia abusiva, cesión de IP, penalización 50%). Pruébalo con cadena de razonamiento para detectar lo problemático.</p>
+      <div class="footer">
+        <span class="size">~ 3 KB</span>
+        <a href="/claude-101-videos/assets/04-contrato-ficticio.md" download class="btn btn-ghost btn-sm" onclick="track('resource_download', { name: 'contrato' })">Descargar MD</a>
+      </div>
+    </article>
+
+    <article class="resource">
+      <div class="top">
+        <div class="icon">📖</div>
+        <div>
+          <h3>Brief de cliente ficticio</h3>
+          <div class="type">Markdown · ejemplo realista</div>
+        </div>
+      </div>
+      <p>Brief de "Café Aurora" — cliente recurrente del curso. Súbelo a un proyecto de Claude y prueba el flujo de propuesta comercial.</p>
+      <div class="footer">
+        <span class="size">~ 3 KB</span>
+        <a href="/claude-101-videos/assets/05-brief-cafe-aurora.md" download class="btn btn-ghost btn-sm" onclick="track('resource_download', { name: 'brief-aurora' })">Descargar MD</a>
+      </div>
+    </article>
+  </div>
+
+  <div class="newsletter">
+    <h2>¿Quieres más? <em>Newsletter</em> mensual</h2>
+    <p>Un email al mes con el caso de uso del mes, prompts que están funcionando, novedades importantes de Claude. Sin spam.</p>
+    <form onsubmit="return subscribeNewsletter(event)">
+      <input type="email" name="email" class="input" placeholder="tu@email.com" required>
+      <button type="submit" class="btn btn-accent btn-lg" id="nlBtn">Suscribirme</button>
+    </form>
+    <p id="nlResult" style="margin-top:14px;color:rgba(244,239,227,.85);min-height:20px;" role="status" aria-live="polite"></p>
+  </div>
+
+  <p style="text-align: center; margin: 30px 0 60px;">
+    Los recursos son una muestra. <a href="/#precio">El curso completo</a> los multiplica.
+  </p>
+</main>
+
+<footer class="foot">
+  <div class="foot-inner">
+    <div class="foot-bottom">
+      <a href="/" class="brand">Claude<em>·101</em></a>
+      <div>
+        <a href="/terminos">Términos</a> · <a href="/privacidad">Privacidad</a> · <a href="/contacto">Contacto</a>
+      </div>
+    </div>
+  </div>
+</footer>
+<script src="/track.js"></script>
+<script>
+async function subscribeNewsletter(e) {
+  e.preventDefault();
+  const btn = document.getElementById('nlBtn');
+  const result = document.getElementById('nlResult');
+  const email = e.target.email.value.trim();
+  btn.disabled = true; btn.innerHTML = '<span class="spin"></span> Suscribiendo…';
+  // Reutilizamos /api/contact con topic 'newsletter'
+  try {
+    const r = await fetch('/api/contact', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name: 'Newsletter', email, topic: 'newsletter', message: 'Quiero suscribirme a la newsletter de Claude 101.' })
+    });
+    if (r.ok) {
+      result.textContent = '✓ Suscrito. Recibirás el próximo email cuando salga.';
+      e.target.reset();
+      if (window.track) window.track('newsletter_subscribe');
+    } else {
+      result.textContent = '✗ No se pudo. Inténtalo más tarde.';
+    }
+  } catch {
+    result.textContent = '✗ Error de red.';
+  }
+  btn.disabled = false; btn.textContent = 'Suscribirme';
+  return false;
+}
+</script>
+</body>
+</html>

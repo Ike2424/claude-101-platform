@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Revisa tu email · Claude 101</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Geist:wght@300..700&family=Geist+Mono:wght@400..600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles-shared.css">
+<style>
+.wrap { min-height: calc(100vh - 80px); display: flex; align-items: center; justify-content: center; padding: 40px 20px; }
+.box { max-width: 480px; text-align: center; }
+h1 { font-size: 36px; font-style: italic; margin-bottom: 12px; }
+h1 em { font-style: normal; color: var(--accent); }
+.email-pill { display: inline-block; padding: 6px 14px; background: var(--bg-2); border-radius: 100px; font-family: var(--mono); font-size: 13px; color: var(--ink); margin: 8px 0 18px; }
+.tip { margin-top: 16px; font-size: 13px; color: var(--muted); line-height: 1.6; }
+.icon { font-size: 56px; margin-bottom: 12px; }
+</style>
+</head>
+<body>
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="brand">Claude<em>·101</em></a>
+    <div class="nav-links"><a href="/login">Reenviar</a></div>
+  </div>
+</nav>
+
+<div class="wrap">
+  <div class="card box">
+    <div class="icon">📩</div>
+    <h1 class="h-display">Revisa tu <em>email</em></h1>
+    <p>Hemos enviado un enlace de acceso a</p>
+    <div class="email-pill" id="emailLabel">tu@email.com</div>
+    <p style="color: var(--ink-2);">Haz clic en el botón del email para entrar. El enlace caduca pronto por seguridad y solo se puede usar una vez.</p>
+    <p class="tip">¿No te llega? Revisa la carpeta de spam o <a href="/login">pide otro enlace</a>. Si compraste con otro email, prueba ese.</p>
+  </div>
+</div>
+
+<script>
+const email = new URLSearchParams(location.search).get('email');
+if (email) document.getElementById('emailLabel').textContent = email;
+</script>
+<script src="/track.js"></script>
+</body>
+</html>

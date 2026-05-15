@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blog · Claude 101 — Casos, prompts y novedades sobre Claude AI</title>
+<meta name="description" content="Artículos sobre Claude AI: prompts que funcionan, casos de uso reales, comparativas y novedades. En español, sin humo.">
+<link rel="canonical" href="/blog">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Geist:wght@300..700&family=Geist+Mono:wght@400..600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles-shared.css">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Blog · Claude 101">
+<meta property="og:description" content="Artículos sobre Claude AI en español: prompts, casos de uso, comparativas.">
+<meta property="og:image" content="/og-image.svg">
+
+<!-- JSON-LD Blog -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Blog",
+  "name": "Claude 101 Blog",
+  "description": "Artículos sobre Claude AI: prompts, casos de uso, novedades.",
+  "inLanguage": "es",
+  "publisher": { "@type": "Organization", "name": "Claude 101", "url": "/" }
+}
+</script>
+
+<style>
+.blog-hero { padding: 60px 0 32px; text-align: center; }
+.blog-hero h1 { font-family: var(--display); font-style: italic; font-size: clamp(36px, 5vw, 60px); margin-bottom: 14px; }
+.blog-hero h1 em { font-style: normal; color: var(--accent); }
+.blog-hero p { color: var(--muted); max-width: 50ch; margin: 0 auto; font-size: 16px; }
+
+.posts { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; padding: 32px 0 60px; }
+.post-card { background: var(--card); border: 1px solid var(--line); border-radius: var(--r-lg); padding: 30px; transition: all .25s var(--ease); display: flex; flex-direction: column; gap: 14px; }
+.post-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); border-color: var(--line-2); }
+.post-card .meta { display: flex; gap: 10px; align-items: center; font-family: var(--mono); font-size: 11px; letter-spacing: .08em; color: var(--muted); text-transform: uppercase; }
+.post-card .cat { color: var(--accent); }
+.post-card h2 { font-family: var(--display); font-size: 24px; line-height: 1.2; margin: 0; }
+.post-card h2 a { color: var(--ink); text-decoration: none; transition: color .15s; }
+.post-card h2 a:hover { color: var(--accent); }
+.post-card p { font-size: 14px; color: var(--ink-2); line-height: 1.6; flex: 1; }
+.post-card .read { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; color: var(--accent); text-transform: uppercase; }
+
+.post-card.featured { grid-column: 1 / -1; padding: 40px; background: linear-gradient(135deg, var(--card), var(--bg-2)); }
+.post-card.featured h2 { font-size: 32px; }
+
+@media (max-width: 720px) {
+  .posts { grid-template-columns: 1fr; }
+  .post-card.featured { padding: 28px; }
+}
+</style>
+</head>
+<body>
+<a href="#main" class="skip-link">Saltar al contenido</a>
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="brand">Claude<em>·101</em></a>
+    <div class="nav-links">
+      <a href="/#programa">Programa</a>
+      <a href="/recursos">Recursos</a>
+      <a href="/contacto">Contacto</a>
+      <a href="/login" class="btn btn-ghost btn-sm">Ya tengo acceso</a>
+    </div>
+  </div>
+</nav>
+
+<main id="main" class="container">
+  <header class="blog-hero">
+    <span class="badge badge-accent">Blog</span>
+    <h1 style="margin-top:16px;">Casos, prompts y <em>novedades</em></h1>
+    <p>Artículos sobre Claude AI en español. Sin humo, con ejemplos reales.</p>
+  </header>
+
+  <div class="posts">
+    <article class="post-card featured">
+      <div class="meta"><span class="cat">Prompts</span><span>· 8 min · Mayo 2026</span></div>
+      <h2><a href="/blog/5-prompts-que-cambian-tu-flujo-de-trabajo">Los 5 prompts que cambian tu flujo de trabajo</a></h2>
+      <p>Plantillas reales con contexto, no las típicas listas de "prompts mágicos" de Twitter. Cada uno con su patrón explicado, antes/después medido en minutos ahorrados y cuándo usarlo.</p>
+      <span class="read">Leer →</span>
+    </article>
+
+    <article class="post-card">
+      <div class="meta"><span class="cat">Comparativa</span><span>· 6 min</span></div>
+      <h2><a href="/blog/claude-vs-chatgpt-cual-elegir">Claude vs. ChatGPT: cuál usar y para qué</a></h2>
+      <p>Comparativa honesta tras un año usando ambos en producción. Spoiler: la respuesta no es "el mejor" — es "el mejor para qué tarea".</p>
+      <span class="read">Leer →</span>
+    </article>
+
+    <article class="post-card">
+      <div class="meta"><span class="cat">Empezar</span><span>· 5 min</span></div>
+      <h2><a href="/blog/como-empezar-con-claude">Cómo empezar con Claude si nunca has usado IA</a></h2>
+      <p>Guía paso a paso para profesionales que oyen hablar de Claude todo el día pero no se atreven a abrirlo. Sin tecnicismos. Tres tareas concretas para hacer hoy.</p>
+      <span class="read">Leer →</span>
+    </article>
+
+    <article class="post-card">
+      <div class="meta"><span class="cat">Privacidad</span><span>· 7 min</span></div>
+      <h2><a href="/blog/que-datos-puedo-compartir-con-claude">Qué datos puedes compartir con Claude (y cuáles no)</a></h2>
+      <p>La guía operativa que no te dan los términos. Datos personales, confidenciales, regulados — qué hacer caso por caso, con la regla de oro de la anonimización.</p>
+      <span class="read">Leer →</span>
+    </article>
+  </div>
+</main>
+
+<footer class="foot">
+  <div class="foot-inner">
+    <div class="foot-bottom">
+      <a href="/" class="brand">Claude<em>·101</em></a>
+      <div>
+        <a href="/terminos">Términos</a> · <a href="/privacidad">Privacidad</a> · <a href="/contacto">Contacto</a>
+      </div>
+    </div>
+  </div>
+</footer>
+<script src="/track.js"></script>
+</body>
+</html>
