@@ -114,8 +114,7 @@
         { "@type": "Question", "name": "¿Necesito experiencia previa con IA?", "acceptedAnswer": { "@type": "Answer", "text": "No. El curso empieza desde cero (qué es Claude, cómo funciona) y avanza progresivamente. Solo el módulo 8 toca temas técnicos (Claude Code, MCP)." } },
         { "@type": "Question", "name": "¿Cuánto tiempo me llevará completarlo?", "acceptedAnswer": { "@type": "Answer", "text": "Aproximadamente 5 horas de contenido total. A ritmo cómodo lo completas en 1-2 semanas. Al ser acceso vitalicio, no hay prisa." } },
         { "@type": "Question", "name": "¿Hay actualizaciones cuando Claude lanza funciones nuevas?", "acceptedAnswer": { "@type": "Answer", "text": "Sí. Cuando Anthropic lanza modelos o capacidades relevantes, actualizamos los módulos. Acceso gratuito a las actualizaciones." } },
-        { "@type": "Question", "name": "¿Necesito Claude Pro?", "acceptedAnswer": { "@type": "Answer", "text": "No. La versión gratuita de Claude vale para seguir el curso. Pro es útil para sacar más jugo a memoria, búsqueda profunda y conectores." } },
-        { "@type": "Question", "name": "¿Puedo pedir reembolso?", "acceptedAnswer": { "@type": "Answer", "text": "Sí. 14 días de garantía total. Sin preguntas. Devolución del 100% al mismo medio de pago." } }
+        { "@type": "Question", "name": "¿Necesito Claude Pro?", "acceptedAnswer": { "@type": "Answer", "text": "No. La versión gratuita de Claude vale para seguir el curso. Pro es útil para sacar más jugo a memoria, búsqueda profunda y conectores." } }
       ]
     }
   ]
@@ -378,7 +377,7 @@
         </div>
         <div class="meta">
           <span class="meta-item">Pago único</span>
-          <span class="meta-item">14 días garantía</span>
+          
           <span class="meta-item">Actualizaciones gratis</span>
           <span class="meta-item">Hecho en España</span>
         </div>
@@ -689,7 +688,6 @@
           <li>Proyecto final guiado paso a paso</li>
           <li>Acceso vitalicio desde tu email — sin contraseñas</li>
           <li>Actualizaciones gratuitas cuando Claude evoluciona</li>
-          <li>Garantía total de devolución durante 14 días</li>
         </ul>
         <form id="checkoutForm" onsubmit="return startCheckout(event)" novalidate>
           <label for="emailInput" class="label" style="text-align:left;">Tu email</label>
@@ -701,19 +699,6 @@
           <div class="coupon-line" id="couponLine" role="status" aria-live="polite"></div>
         </form>
         <p style="font-size: 12px; color: var(--muted); margin-top: 14px;">Pago seguro · <strong>Stripe</strong> · Tarjeta, Apple/Google Pay, link</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ===================== GUARANTEE ===================== -->
-<section class="section">
-  <div class="container">
-    <div class="guarantee">
-      <div class="seal" aria-hidden="true">14d</div>
-      <div>
-        <h3>Garantía total · <em>14 días</em></h3>
-        <p>Si en las 2 primeras semanas decides que el curso no es para ti — por la razón que sea, sin formularios, sin preguntas — escríbenos desde el email de tu compra y te devolvemos el 100% del importe. La razón es simple: si no te aporta valor real, no queremos tu dinero.</p>
       </div>
     </div>
   </div>
@@ -734,7 +719,6 @@
       <details class="faq-item"><summary>¿Necesito comprar Claude Pro?</summary><p>Para seguir el curso vale la versión gratuita de Claude. Algunas demos (memoria, búsqueda profunda, conectores MCP) sacan más jugo con Pro, pero todo el contenido se entiende con el plan gratuito.</p></details>
       <details class="faq-item"><summary>¿Puedo pedir factura o pagar por transferencia?</summary><p>Sí. Tras la compra recibes una factura automática de Stripe. Para datos fiscales específicos, escríbenos desde el email de compra. Para pagos por transferencia (fuera de Stripe), también escríbenos — lo gestionamos manualmente.</p></details>
       <details class="faq-item"><summary>¿Funciona desde el móvil?</summary><p>Sí. La plataforma es responsive y los videos están optimizados para móvil. Pero recomendamos tener Claude abierto en un escritorio mientras practicas.</p></details>
-      <details class="faq-item"><summary>¿Puedo pedir un reembolso?</summary><p>Sí. 14 días desde la compra, sin preguntas. Escribe desde el email con el que compraste y te devolvemos el 100% del importe al mismo medio de pago. Ver <a href="/reembolsos">política completa</a>.</p></details>
     </div>
   </div>
 </section>
@@ -743,7 +727,7 @@
 <section class="section dark final-cta">
   <div class="container" style="text-align: center;">
     <h2 class="h-display">Empieza a usar <em>Claude</em> como un profesional</h2>
-    <p>Mañana mismo notarás la diferencia. Pago único, acceso vitalicio, garantía de 14 días.</p>
+    <p>Mañana mismo notarás la diferencia. Pago único, acceso vitalicio.</p>
     <a href="#precio" class="btn btn-primary btn-lg" onclick="track('cta_final_click')">Comprar acceso por 49 €</a>
   </div>
 </section>
@@ -884,6 +868,18 @@ window.addEventListener('scroll', () => {
 
 // Cerrar menú móvil al click en link
 document.querySelectorAll('#navLinks a').forEach(a => a.addEventListener('click', () => document.getElementById('navLinks').classList.remove('open')));
+
+// Hamburguesa: fallback robusto vía addEventListener (por si el onclick inline está bloqueado)
+(function() {
+  const toggle = document.querySelector('.nav-toggle');
+  const links = document.getElementById('navLinks');
+  if (toggle && links) {
+    toggle.addEventListener('click', (e) => {
+      e.preventDefault();
+      links.classList.toggle('open');
+    });
+  }
+})();
 </script>
 
 </body>
