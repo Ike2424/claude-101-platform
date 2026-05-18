@@ -116,7 +116,11 @@ app.use(httpLogger({
 app.use(vhost);
 
 // ============================================================
-// 4) Seguridad — Helmet con CSP relajada para nuestras necesidades
+// 4) Seguridad — Helmet con CSP relajada para nuestras necesidades.
+// IMPORTANTE: 'script-src-attr' y 'style-src-attr' permiten inline event
+// handlers (onsubmit, onclick, oninput) y estilos inline en atributos HTML,
+// que el frontend de la landing usa para los formularios de checkout/login.
+// Sin esto, los formularios no disparan el JS.
 // ============================================================
 app.use(helmet({
   contentSecurityPolicy: {
@@ -124,7 +128,9 @@ app.use(helmet({
     directives: {
       'default-src': ["'self'"],
       'script-src': ["'self'", "'unsafe-inline'"], // inline scripts en HTML
+      'script-src-attr': ["'unsafe-inline'"],      // inline event handlers (onsubmit, onclick, oninput)
       'style-src': ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
+      'style-src-attr': ["'unsafe-inline'"],       // inline style attributes
       'font-src': ["'self'", 'https://fonts.gstatic.com', 'data:'],
       'img-src': ["'self'", 'data:', 'https:'],
       'connect-src': ["'self'", 'https://api.stripe.com'],
