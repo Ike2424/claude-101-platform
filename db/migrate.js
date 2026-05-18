@@ -14,9 +14,27 @@ function loadSchema() {
   if (DRIVER === 'postgres') {
     sql = sql
       .replace(/INTEGER PRIMARY KEY AUTOINCREMENT/g, 'SERIAL PRIMARY KEY')
-      .replace(/\bCURRENT_TIMESTAMP\b/g, 'NOW()::text');
+      // Cast a text para que NOW() encaje en columnas TEXT con DEFAULT
+      .replace(/\bCURRENT_TIMESTAMP\b/g, "NOW()::text");
   }
   return sql;
+}
+
+// Quita comentarios de una sola línea ("-- ..."), preservando el SQL.
+// Necesario porque, sin esto, el split-por-; produce chunks que EMPIEZAN con "--"
+// y el filtro de "no empieza por --" descartaba los CREATE TABLE precedidos por comentario.
+function stripLineComments(text) {
+  return text
+    .split('\n')
+    .map(line => {
+      // Si hay -- en la línea (no dentro de string literal), corta a partir de ahí
+      const idx = line.indexOf('--');
+      if (idx === -1) return line;
+      // No quitamos si está dentro de comillas — para mantenerlo simple asumimos
+      // que schema.sql no tiene comentarios dentro de string literals.
+      return line.slice(0, idx);
+    })
+    .join('\n');
 }
 
 export async function runMigration() {
@@ -24,11 +42,12 @@ export async function runMigration() {
   if (DRIVER === 'sqlite') {
     db.exec(sql);
   } else {
-    // Postgres: split por ;, ignorar líneas vacías y comentarios
-    const stmts = sql
+    // Postgres: limpiar comentarios, split por ;, ignorar vacíos
+    const cleaned = stripLineComments(sql);
+    const stmts = cleaned
       .split(/;\s*(?:\n|$)/)
       .map(s => s.trim())
-      .filter(s => s && !s.startsWith('--'));
+      .filter(s => s.length > 0);
     for (const stmt of stmts) {
       try { await db.query(stmt); }
       catch (err) {

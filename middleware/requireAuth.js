@@ -5,18 +5,22 @@ import { one } from '../lib/db.js';
 // Si no está autenticado:
 //   - peticiones HTML → redirect a /login
 //   - peticiones API   → 401 JSON
-export function requireAuth(req, res, next) {
-  const token = req.cookies?.session;
-  if (!token) return reject(req, res);
+export async function requireAuth(req, res, next) {
+  try {
+    const token = req.cookies?.session;
+    if (!token) return reject(req, res);
 
-  const payload = verifySession(token);
-  if (!payload?.uid) return reject(req, res);
+    const payload = verifySession(token);
+    if (!payload?.uid) return reject(req, res);
 
-  const user = one('SELECT id, email, has_paid, paid_at FROM users WHERE id = ?', [payload.uid]);
-  if (!user) return reject(req, res);
+    const user = await one('SELECT id, email, has_paid, paid_at FROM users WHERE id = ?', [payload.uid]);
+    if (!user) return reject(req, res);
 
-  req.user = user;
-  next();
+    req.user = user;
+    next();
+  } catch (err) {
+    next(err);
+  }
 }
 
 function reject(req, res) {
