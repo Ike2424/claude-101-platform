@@ -8,9 +8,9 @@ const router = Router();
 const PUBLIC_URL = process.env.PUBLIC_URL || 'http://localhost:3000';
 
 // Valida cupón interno y devuelve el descuento aplicable (%)
-function validateCoupon(code) {
+async function validateCoupon(code) {
   if (!code) return null;
-  const c = one(
+  const c = await one(
     `SELECT id, code, discount_pct, max_uses, uses, expires_at, active FROM coupons WHERE code = ?`,
     [code.toUpperCase()]
   );
@@ -30,7 +30,7 @@ router.post('/', async (req, res) => {
     let discountPct = 0;
     let couponId = null;
     if (couponCode) {
-      const v = validateCoupon(couponCode);
+      const v = await validateCoupon(couponCode);
       if (v?.error) return res.status(400).json({ error: v.error });
       discountPct = v.coupon.discount_pct;
       couponId = v.coupon.id;
@@ -80,7 +80,7 @@ router.post('/', async (req, res) => {
 
     // Marcamos uso del cupón (optimista; si la sesión expira, lo descontamos en cron — por ahora suficiente)
     if (couponId) {
-      try { exec('UPDATE coupons SET uses = uses + 1 WHERE id = ?', [couponId]); } catch {}
+      try { await exec('UPDATE coupons SET uses = uses + 1 WHERE id = ?', [couponId]); } catch {}
     }
 
     res.json({ url: session.url, id: session.id, applied_discount_pct: discountPct, final_amount: finalAmount });
@@ -92,10 +92,10 @@ router.post('/', async (req, res) => {
 
 // GET /api/checkout/validate-coupon?code=XXX
 // Para previsualizar en la landing antes de pulsar comprar
-router.get('/validate-coupon', (req, res) => {
+router.get('/validate-coupon', async (req, res) => {
   const code = String(req.query.code || '').trim().toUpperCase();
   if (!code) return res.status(400).json({ error: 'code requerido' });
-  const v = validateCoupon(code);
+  const v = await validateCoupon(code);
   if (v?.error) return res.status(400).json({ error: v.error });
   res.json({ ok: true, discount_pct: v.coupon.discount_pct, code: v.coupon.code });
 });

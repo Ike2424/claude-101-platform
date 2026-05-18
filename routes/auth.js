@@ -28,20 +28,21 @@ router.post('/magic-link', authLimiter, async (req, res) => {
     return res.status(400).json({ error: 'Email inválido' });
   }
 
-  const user = one('SELECT id, has_paid FROM users WHERE email = ?', [email]);
+  const user = await one('SELECT id, has_paid FROM users WHERE email = ?', [email]);
 
   if (user && user.has_paid) {
     const { raw, hash } = makeMagicToken();
     const expires = new Date(Date.now() + MINUTES * 60 * 1000).toISOString();
-    exec(
+    await exec(
       'INSERT INTO magic_tokens (user_id, token_hash, expires_at, ip, user_agent) VALUES (?, ?, ?, ?, ?)',
       [user.id, hash, expires, req.ip || null, req.headers['user-agent'] || null]
     );
     const link = `${PUBLIC_URL}/api/auth/verify?token=${encodeURIComponent(raw)}`;
     try {
       await sendMagicLink({ to: email, link });
+      logger.info({ email }, '[auth] magic-link enviado OK');
     } catch (err) {
-      logger.error({ err: err }, 'Error enviando magic link:');
+      logger.error({ err: err?.message, stack: err?.stack, email }, '[auth] FALLO enviando magic link');
     }
   } else {
     // Si no tiene cuenta o no ha pagado: log silencioso, respondemos OK igual
@@ -53,12 +54,12 @@ router.post('/magic-link', authLimiter, async (req, res) => {
 
 // GET /api/auth/verify?token=...
 // Marca el token como usado, emite cookie de sesión, redirige a /app
-router.get('/verify', authLimiter, (req, res) => {
+router.get('/verify', authLimiter, async (req, res) => {
   const raw = String(req.query.token || '');
   if (!raw) return res.redirect('/login?error=missing');
 
   const hash = hashMagicToken(raw);
-  const row = one(
+  const row = await one(
     `SELECT mt.id, mt.user_id, mt.expires_at, mt.used_at, u.email, u.has_paid
      FROM magic_tokens mt
      JOIN users u ON u.id = mt.user_id
@@ -72,7 +73,7 @@ router.get('/verify', authLimiter, (req, res) => {
   if (!row.has_paid) return res.redirect('/?error=paywall');
 
   // Marcar como usado
-  exec('UPDATE magic_tokens SET used_at = CURRENT_TIMESTAMP WHERE id = ?', [row.id]);
+  await exec('UPDATE magic_tokens SET used_at = CURRENT_TIMESTAMP WHERE id = ?', [row.id]);
 
   // Emitir JWT como cookie HTTP-only
   const token = signSession({ uid: row.user_id, email: row.email });
@@ -94,12 +95,12 @@ router.post('/logout', (req, res) => {
 });
 
 // GET /api/auth/me — útil para el frontend
-router.get('/me', (req, res) => {
+router.get('/me', async (req, res) => {
   const token = req.cookies?.session;
   if (!token) return res.json({ authenticated: false });
   const p = verifySession(token);
   if (!p?.uid) return res.json({ authenticated: false });
-  const u = one('SELECT id, email, has_paid, paid_at FROM users WHERE id = ?', [p.uid]);
+  const u = await one('SELECT id, email, has_paid, paid_at FROM users WHERE id = ?', [p.uid]);
   if (!u) return res.json({ authenticated: false });
   res.json({ authenticated: true, user: { email: u.email, has_paid: !!u.has_paid, paid_at: u.paid_at } });
 });
@@ -147,11 +148,11 @@ router.get('/google/callback', async (req, res) => {
     if (!email) return res.redirect('/login?error=oauth_no_email');
 
     // Buscar user. Si no existe O no ha pagado, redirige a paywall.
-    let user = one('SELECT id, has_paid FROM users WHERE email = ?', [email]);
+    let user = await one('SELECT id, has_paid FROM users WHERE email = ?', [email]);
     if (!user || !user.has_paid) {
       // Si no existe, lo creamos como "registrado pero no pagado" para tracking
       if (!user) {
-        exec(`INSERT INTO users (email, has_paid) VALUES (?, 0)`, [email]);
+        await exec(`INSERT INTO users (email, has_paid) VALUES (?, 0)`, [email]);
       }
       return res.redirect('/?error=paywall&email=' + encodeURIComponent(email));
     }

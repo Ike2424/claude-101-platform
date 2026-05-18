@@ -31,14 +31,14 @@ const trackLimit = rateLimit({
 });
 
 // POST /api/track/page  { path, visitor_id, referrer }
-router.post('/page', trackLimit, (req, res) => {
+router.post('/page', trackLimit, async (req, res) => {
   const path = String(req.body?.path || '').slice(0, 200);
   const visitor = String(req.body?.visitor_id || '').slice(0, 64) || null;
   const referrer = String(req.body?.referrer || '').slice(0, 200) || null;
   if (!path) return res.status(400).json({ error: 'path requerido' });
 
   try {
-    exec(
+    await exec(
       'INSERT INTO page_views (path, user_id, visitor_id, referrer, ip_hash, ua) VALUES (?, ?, ?, ?, ?, ?)',
       [path, userIdFromReq(req), visitor, referrer, hashIp(req.ip), (req.headers['user-agent'] || '').slice(0, 250)]
     );
@@ -49,14 +49,14 @@ router.post('/page', trackLimit, (req, res) => {
 });
 
 // POST /api/track/event  { type, meta, visitor_id }
-router.post('/event', trackLimit, (req, res) => {
+router.post('/event', trackLimit, async (req, res) => {
   const type = String(req.body?.type || '').slice(0, 64);
   const visitor = String(req.body?.visitor_id || '').slice(0, 64) || null;
   const meta = req.body?.meta ? JSON.stringify(req.body.meta).slice(0, 2000) : null;
   if (!type) return res.status(400).json({ error: 'type requerido' });
 
   try {
-    exec(
+    await exec(
       'INSERT INTO events (event_type, user_id, visitor_id, meta_json) VALUES (?, ?, ?, ?)',
       [type, userIdFromReq(req), visitor, meta]
     );
