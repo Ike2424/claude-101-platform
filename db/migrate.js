@@ -14,7 +14,7 @@ function loadSchema() {
   if (DRIVER === 'postgres') {
     sql = sql
       .replace(/INTEGER PRIMARY KEY AUTOINCREMENT/g, 'SERIAL PRIMARY KEY')
-      .replace(/\bCURRENT_TIMESTAMP\b/g, 'NOW()');
+      .replace(/\bCURRENT_TIMESTAMP\b/g, 'NOW()::text');
   }
   return sql;
 }
