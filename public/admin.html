@@ -263,7 +263,7 @@ let CURRENT_DAYS = 30;
 let ANALYTICS = null;
 
 function fmt(n) { return (n || 0).toLocaleString('es-ES'); }
-function eur(c) { return ((c||0)/100).toLocaleString('es-ES', { style: 'currency', currency: 'EUR' }
+function eur(c) { return ((c||0)/100).toLocaleString('es-ES', { style: 'currency', currency: 'EUR' }); }
 
 // --- Date helpers (defensivos para Safari + formato Postgres) ---
 function _toDate(s) {
@@ -294,7 +294,7 @@ function dateTimeFmt(s) {
   if (!d) return '—';
   try { return d.toLocaleString('es-ES'); } catch (e) { return '—'; }
 }
-); }
+
 function escapeHtml(s) { return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
 // ============================================================
