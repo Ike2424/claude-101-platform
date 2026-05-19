@@ -769,7 +769,6 @@
         <a href="#faq">FAQ</a>
         <a href="/terminos">Términos</a>
         <a href="/privacidad">Privacidad</a>
-        <a href="/reembolsos">Reembolsos</a>
       </div>
     </div>
     <div class="foot-bottom">
@@ -869,16 +868,22 @@ window.addEventListener('scroll', () => {
 // Cerrar menú móvil al click en link
 document.querySelectorAll('#navLinks a').forEach(a => a.addEventListener('click', () => document.getElementById('navLinks').classList.remove('open')));
 
-// Hamburguesa: fallback robusto vía addEventListener (por si el onclick inline está bloqueado)
+// Hamburguesa móvil — fallback robusto con event delegation, click + touchstart
 (function() {
-  const toggle = document.querySelector('.nav-toggle');
-  const links = document.getElementById('navLinks');
-  if (toggle && links) {
-    toggle.addEventListener('click', (e) => {
-      e.preventDefault();
-      links.classList.toggle('open');
-    });
+  function toggleMenu(e) {
+    if (e) e.preventDefault();
+    const links = document.getElementById('navLinks');
+    if (links) links.classList.toggle('open');
   }
+  // Event delegation desde document → captura aunque el button no exista al cargar el script
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('.nav-toggle');
+    if (btn) toggleMenu(e);
+  });
+  document.addEventListener('touchstart', (e) => {
+    const btn = e.target.closest('.nav-toggle');
+    if (btn) toggleMenu(e);
+  }, { passive: false });
 })();
 </script>
 
