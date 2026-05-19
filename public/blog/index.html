@@ -44,7 +44,8 @@
 .post-card h2 a { color: var(--ink); text-decoration: none; transition: color .15s; }
 .post-card h2 a:hover { color: var(--accent); }
 .post-card p { font-size: 14px; color: var(--ink-2); line-height: 1.6; flex: 1; }
-.post-card .read { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; color: var(--accent); text-transform: uppercase; }
+.post-card .read { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; color: var(--accent); text-transform: uppercase; text-decoration: none; display: inline-block; transition: transform .15s; cursor: pointer; }
+.post-card .read:hover { transform: translateX(4px); }
 
 .post-card.featured { grid-column: 1 / -1; padding: 40px; background: linear-gradient(135deg, var(--card), var(--bg-2)); }
 .post-card.featured h2 { font-size: 32px; }
@@ -81,28 +82,28 @@
       <div class="meta"><span class="cat">Prompts</span><span>· 8 min · Mayo 2026</span></div>
       <h2><a href="/blog/5-prompts-que-cambian-tu-flujo-de-trabajo">Los 5 prompts que cambian tu flujo de trabajo</a></h2>
       <p>Plantillas reales con contexto, no las típicas listas de "prompts mágicos" de Twitter. Cada uno con su patrón explicado, antes/después medido en minutos ahorrados y cuándo usarlo.</p>
-      <span class="read">Leer →</span>
+      <a class="read" href="/blog/5-prompts-que-cambian-tu-flujo-de-trabajo">Leer →</a>
     </article>
 
     <article class="post-card">
       <div class="meta"><span class="cat">Comparativa</span><span>· 6 min</span></div>
       <h2><a href="/blog/claude-vs-chatgpt-cual-elegir">Claude vs. ChatGPT: cuál usar y para qué</a></h2>
       <p>Comparativa honesta tras un año usando ambos en producción. Spoiler: la respuesta no es "el mejor" — es "el mejor para qué tarea".</p>
-      <span class="read">Leer →</span>
+      <a class="read" href="/blog/claude-vs-chatgpt-cual-elegir">Leer →</a>
     </article>
 
     <article class="post-card">
       <div class="meta"><span class="cat">Empezar</span><span>· 5 min</span></div>
       <h2><a href="/blog/como-empezar-con-claude">Cómo empezar con Claude si nunca has usado IA</a></h2>
       <p>Guía paso a paso para profesionales que oyen hablar de Claude todo el día pero no se atreven a abrirlo. Sin tecnicismos. Tres tareas concretas para hacer hoy.</p>
-      <span class="read">Leer →</span>
+      <a class="read" href="/blog/como-empezar-con-claude">Leer →</a>
     </article>
 
     <article class="post-card">
       <div class="meta"><span class="cat">Privacidad</span><span>· 7 min</span></div>
       <h2><a href="/blog/que-datos-puedo-compartir-con-claude">Qué datos puedes compartir con Claude (y cuáles no)</a></h2>
       <p>La guía operativa que no te dan los términos. Datos personales, confidenciales, regulados — qué hacer caso por caso, con la regla de oro de la anonimización.</p>
-      <span class="read">Leer →</span>
+      <a class="read" href="/blog/que-datos-puedo-compartir-con-claude">Leer →</a>
     </article>
   </div>
 </main>
