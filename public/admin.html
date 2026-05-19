@@ -265,22 +265,34 @@ let ANALYTICS = null;
 function fmt(n) { return (n || 0).toLocaleString('es-ES'); }
 function eur(c) { return ((c||0)/100).toLocaleString('es-ES', { style: 'currency', currency: 'EUR' }
 
-// Postgres devuelve timestamps tipo "2026-05-18 18:19:41.549668+00" (con espacio).
-// Safari es estricto con Date() y lanza SyntaxError. Estos helpers normalizan
-// y devuelven '—' si no se puede parsear.
+// --- Date helpers (defensivos para Safari + formato Postgres) ---
 function _toDate(s) {
   if (!s) return null;
-  var iso = String(s).replace(' ', 'T').replace(/(\.\d{3})\d+/, '$1');
-  var d = new Date(iso);
-  return isNaN(d.getTime()) ? null : d;
+  try {
+    var str = String(s);
+    // Espacio -> T (ISO 8601)
+    str = str.replace(' ', 'T');
+    // Microsegundos -> ms (3 digitos max)
+    str = str.replace(/(\.\d{3})\d+/, '$1');
+    // Timezone "+00" sin colon -> "+00:00" (Safari es estricto)
+    str = str.replace(/([+-]\d{2})$/, '$1:00');
+    // "+00:00" -> "Z" (mas compatible aun)
+    str = str.replace(/[+-]00:00$/, 'Z');
+    var d = new Date(str);
+    return isNaN(d.getTime()) ? null : d;
+  } catch (e) {
+    return null;
+  }
 }
 function dateFmt(s) {
   var d = _toDate(s);
-  return d ? d.toLocaleDateString('es-ES') : '—';
+  if (!d) return '—';
+  try { return d.toLocaleDateString('es-ES'); } catch (e) { return '—'; }
 }
 function dateTimeFmt(s) {
   var d = _toDate(s);
-  return d ? d.toLocaleString('es-ES') : '—';
+  if (!d) return '—';
+  try { return d.toLocaleString('es-ES'); } catch (e) { return '—'; }
 }
 ); }
 function escapeHtml(s) { return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
@@ -289,8 +301,15 @@ function escapeHtml(s) { return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;'
 // Auth
 // ============================================================
 async function bootstrap() {
-  const ok = await checkAuth();
-  if (ok) { showDash(); refresh(); }
+  try {
+    const ok = await checkAuth();
+    if (ok) { showDash(); refresh(); }
+    else { document.getElementById('loginView').style.display = 'flex'; }
+  } catch (err) {
+    console.error('[admin] bootstrap failed:', err);
+    document.getElementById('loginView').style.display = 'flex';
+  }
+}
   else { document.getElementById('loginView').style.display = 'flex'; }
 }
 async function checkAuth() { try { const r = await fetch('/api/admin/stats'); return r.ok; } catch { return false; } }
@@ -325,7 +344,10 @@ document.querySelectorAll('.range-btn').forEach(b => b.onclick = () => {
 // Load all
 // ============================================================
 async function refresh() {
-  await Promise.all([loadStats(), loadAnalytics(), loadUsers(), loadPurchases(), loadCoupons()]);
+  const tasks = [loadStats, loadAnalytics, loadUsers, loadPurchases, loadCoupons];
+  for (const fn of tasks) {
+    try { await fn(); } catch (err) { console.error('[admin] ' + fn.name + ' failed:', err); }
+  }
 }
 
 async function loadStats() {
