@@ -310,8 +310,6 @@ async function bootstrap() {
     document.getElementById('loginView').style.display = 'flex';
   }
 }
-  else { document.getElementById('loginView').style.display = 'flex'; }
-}
 async function checkAuth() { try { const r = await fetch('/api/admin/stats'); return r.ok; } catch { return false; } }
 function showDash() { document.getElementById('loginView').style.display = 'none'; document.getElementById('dashView').style.display = 'block'; }
 async function doLogin(e) {
