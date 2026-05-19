@@ -263,7 +263,26 @@ let CURRENT_DAYS = 30;
 let ANALYTICS = null;
 
 function fmt(n) { return (n || 0).toLocaleString('es-ES'); }
-function eur(c) { return ((c||0)/100).toLocaleString('es-ES', { style: 'currency', currency: 'EUR' }); }
+function eur(c) { return ((c||0)/100).toLocaleString('es-ES', { style: 'currency', currency: 'EUR' }
+
+// Postgres devuelve timestamps tipo "2026-05-18 18:19:41.549668+00" (con espacio).
+// Safari es estricto con Date() y lanza SyntaxError. Estos helpers normalizan
+// y devuelven '—' si no se puede parsear.
+function _toDate(s) {
+  if (!s) return null;
+  var iso = String(s).replace(' ', 'T').replace(/(\.\d{3})\d+/, '$1');
+  var d = new Date(iso);
+  return isNaN(d.getTime()) ? null : d;
+}
+function dateFmt(s) {
+  var d = _toDate(s);
+  return d ? d.toLocaleDateString('es-ES') : '—';
+}
+function dateTimeFmt(s) {
+  var d = _toDate(s);
+  return d ? d.toLocaleString('es-ES') : '—';
+}
+); }
 function escapeHtml(s) { return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
 // ============================================================
@@ -453,8 +472,8 @@ async function loadUsers() {
       <td>${u.id}</td>
       <td>${escapeHtml(u.email)}</td>
       <td><span class="badge ${u.has_paid ? 'badge-paid' : 'badge-unpaid'}">${u.has_paid ? '✓ pagado' : 'pendiente'}</span></td>
-      <td>${u.paid_at ? new Date(u.paid_at).toLocaleDateString('es-ES') : '—'}</td>
-      <td>${new Date(u.created_at).toLocaleDateString('es-ES')}</td>
+      <td>${dateFmt(u.paid_at)}</td>
+      <td>${dateFmt(u.created_at)}</td>
       <td>${u.has_paid ? `<button class="row-action danger" onclick="revoke(${u.id})">Revocar</button>` : `<button class="row-action" onclick="grant(${u.id})">Conceder</button>`}</td>
     </tr>
   `).join('');
@@ -482,7 +501,7 @@ async function loadPurchases() {
   if (!purchases.length) { tbody.innerHTML = '<tr><td colspan="5" class="empty">Sin compras todavía</td></tr>'; return; }
   tbody.innerHTML = purchases.map(p => `
     <tr>
-      <td>${new Date(p.created_at).toLocaleString('es-ES')}</td>
+      <td>${dateTimeFmt(p.created_at)}</td>
       <td>${escapeHtml(p.email)}</td>
       <td>${(p.amount_cents/100).toLocaleString('es-ES', { style: 'currency', currency: p.currency.toUpperCase() })}</td>
       <td><span class="badge badge-${p.status}">${p.status}</span></td>
@@ -505,7 +524,7 @@ async function loadCoupons() {
       <td><code style="font-family:var(--mono); font-size:13px; color:var(--ink); background:var(--bg-2); padding:2px 8px; border-radius:6px;">${escapeHtml(c.code)}</code></td>
       <td><strong>-${c.discount_pct}%</strong></td>
       <td>${c.uses}${c.max_uses ? ` / ${c.max_uses}` : ''}</td>
-      <td>${c.expires_at ? new Date(c.expires_at).toLocaleDateString('es-ES') : '—'}</td>
+      <td>${dateFmt(c.expires_at)}</td>
       <td><span class="badge ${c.active ? 'badge-active' : 'badge-inactive'}">${c.active ? 'activo' : 'inactivo'}</span></td>
       <td>
         <button class="row-action" onclick="toggleCoupon(${c.id})">${c.active ? 'Pausar' : 'Activar'}</button>
