@@ -22,9 +22,7 @@ export function requireAdmin(req, res, next) {
   const got = fromHeader || fromCookie;
 
   if (!safeEq(got, expected)) {
-    const wantsJson = req.path.startsWith('/api/') || req.accepts(['html', 'json']) === 'json';
-    if (wantsJson) return res.status(401).json({ error: 'No autorizado' });
-    return res.redirect('/admin');
+    return res.status(401).json({ error: 'No autorizado' });
   }
   next();
 }
