@@ -2,7 +2,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { db, DRIVER, one, close } from '../lib/db.js';
+import { db, DRIVER, q, one, close } from '../lib/db.js';
 import { logger } from '../lib/logger.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -49,7 +49,7 @@ export async function runMigration() {
       .map(s => s.trim())
       .filter(s => s.length > 0);
     for (const stmt of stmts) {
-      try { await db.query(stmt); }
+      try { await q(stmt); }
       catch (err) {
         // CREATE TABLE IF NOT EXISTS lanza notice no error en pg, pero por si acaso
         if (!/already exists/i.test(err.message)) throw err;
