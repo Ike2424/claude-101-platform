@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import rateLimit from 'express-rate-limit';
 import { logger } from '../lib/logger.js';
 import { stripe, PRICE_CENTS, CURRENCY, PRODUCT_NAME } from '../lib/stripe.js';
 import { one, exec } from '../lib/db.js';

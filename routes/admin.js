@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import rateLimit from 'express-rate-limit';
 import { logger } from '../lib/logger.js';
 import crypto from 'node:crypto';
 import { q, one, exec, sql } from '../lib/db.js';
