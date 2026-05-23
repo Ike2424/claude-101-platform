@@ -2026,7 +2026,17 @@ document.addEventListener('keydown', (e) => {
   }
 });
 
-render();
+// Hidratar progreso desde el servidor (si el usuario cambia de dispositivo, no pierde su progreso)
+fetch('/api/course/progress', { credentials: 'same-origin' })
+  .then(r => r.ok ? r.json() : null)
+  .then(data => {
+    if (data && Array.isArray(data.completed)) {
+      data.completed.forEach(lessonId => { state.completed[lessonId] = true; });
+      saveState();
+    }
+  })
+  .catch(() => {})
+  .finally(() => render());
 </script>
 </body>
 </html>

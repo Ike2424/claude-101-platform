@@ -10,7 +10,10 @@ const limit = rateLimit({ windowMs: 60 * 1000, max: 5, standardHeaders: true, le
 router.post('/', limit, async (req, res) => {
   const name = String(req.body?.name || '').trim().slice(0, 120);
   const email = String(req.body?.email || '').trim().toLowerCase().slice(0, 200);
-  const topic = String(req.body?.topic || '').trim().slice(0, 80);
+  const topicRaw = String(req.body?.topic || '').trim().slice(0, 80);
+  // Whitelist anti-injection: solo aceptamos tópicos predefinidos
+  const ALLOWED_TOPICS = ['general', 'soporte', 'facturacion', 'bug', 'sugerencia', 'newsletter', 'partnership'];
+  const topic = ALLOWED_TOPICS.includes(topicRaw) ? topicRaw : 'general';
   const message = String(req.body?.message || '').trim().slice(0, 4000);
 
   if (!name || !email || !message || !email.includes('@')) {

@@ -70,7 +70,20 @@ router.post('/', express.raw({ type: 'application/json' }), async (req, res) => 
             session.payment_intent || null,
             session.amount_total || 0,
             session.currency || 'eur',
-            JSON.stringify(event).slice(0, 100000), // protección contra payloads gigantes
+            JSON.stringify({
+              // Payload reducido: solo IDs y campos auditables, sin PII completa (GDPR compliance)
+              id: event.id,
+              type: event.type,
+              created: event.created,
+              session_id: session.id,
+              payment_intent: session.payment_intent || null,
+              amount_total: session.amount_total || 0,
+              currency: session.currency || 'eur',
+              customer: session.customer || null,
+              mode: session.mode || null,
+              payment_status: session.payment_status || null,
+              metadata: session.metadata || {},
+            })
           ]
         );
       } catch (err) {
@@ -82,7 +95,7 @@ router.post('/', express.raw({ type: 'application/json' }), async (req, res) => 
       try {
         const couponId = session.metadata?.internal_coupon_id;
         if (couponId && /^\d+$/.test(couponId)) {
-          await exec('UPDATE coupons SET uses = uses + 1 WHERE id = ?', [Number(couponId)]);
+          await exec('UPDATE coupons SET uses = uses + 1 WHERE id = ? AND (max_uses IS NULL OR uses < max_uses)', [Number(couponId)]);
         }
       } catch (err) {
         logger.error({ err }, 'Error incrementando cupón tras pago:');

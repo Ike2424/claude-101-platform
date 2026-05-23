@@ -7,6 +7,16 @@ const router = Router();
 
 const PUBLIC_URL = process.env.PUBLIC_URL || 'http://localhost:3000';
 
+
+// Rate limiter para checkout (anti-abuse de creación de sessions)
+const checkoutLimiter = rateLimit({
+  windowMs: 60_000,
+  max: 10,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Demasiados intentos. Espera 1 minuto.' },
+});
+
 // Valida cupón interno y devuelve el descuento aplicable (%)
 async function validateCoupon(code) {
   if (!code) return null;
@@ -22,7 +32,7 @@ async function validateCoupon(code) {
 }
 
 // POST /api/checkout  { email?, coupon? }
-router.post('/', async (req, res) => {
+router.post('/', checkoutLimiter, async (req, res) => {
   try {
     const email = (req.body?.email || '').trim().toLowerCase() || undefined;
     const couponCode = (req.body?.coupon || '').trim().toUpperCase() || null;
