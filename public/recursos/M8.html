@@ -1,0 +1,1263 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude 101 · Recursos M8 · Siguiente nivel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Geist:wght@300..700&family=Geist+Mono:wght@400..600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #F4EFE3; --bg-2: #EFE9DA; --card: #FBF8F0;
+  --ink: #1C1A16; --ink-2: #3A352D; --muted: #756B5B; --muted-2: #A39782;
+  --line: #E1D8C2; --line-2: #CFC4AA;
+  --accent: #C8542B; --accent-2: #8B3A1E;
+  --olive: #4F5D38; --gold: #B08436;
+  --display: 'Fraunces', Georgia, serif;
+  --body: 'Geist', system-ui, sans-serif;
+  --mono: 'Geist Mono', ui-monospace, monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: var(--bg); color: var(--ink); font-family: var(--body); line-height: 1.55; }
+body {
+  background-image:
+    radial-gradient(circle at 12% 8%, rgba(200,84,43,.06) 0%, transparent 40%),
+    radial-gradient(circle at 88% 92%, rgba(79,93,56,.05) 0%, transparent 40%);
+  min-height: 100vh;
+}
+
+/* === HEADER === */
+.topbar {
+  position: sticky; top: 0; z-index: 50;
+  background: rgba(244,239,227,.85); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+  padding: 14px 32px; display: flex; align-items: center; gap: 20px;
+}
+.back-link {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--muted); text-decoration: none;
+  padding: 8px 14px; border-radius: 100px; border: 1px solid var(--line-2);
+  transition: all .2s;
+}
+.back-link:hover { color: var(--ink); border-color: var(--accent); }
+.topbar-title {
+  font-family: var(--display); font-style: italic; font-size: 22px;
+  font-weight: 400; color: var(--ink); flex: 1;
+}
+.topbar-title em { color: var(--accent); font-style: italic; }
+.topbar-badge {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--muted);
+  padding: 6px 12px; background: var(--card); border: 1px solid var(--line); border-radius: 6px;
+}
+
+/* === HERO === */
+.hero {
+  padding: 80px 32px 40px; max-width: 1100px; margin: 0 auto; text-align: center;
+}
+.hero .eyebrow {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .18em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 18px;
+}
+.hero h1 {
+  font-family: var(--display); font-style: italic; font-weight: 400;
+  font-size: clamp(40px, 6vw, 72px); letter-spacing: -0.025em;
+  color: var(--ink); line-height: 1.05; margin-bottom: 20px;
+}
+.hero h1 em { font-style: normal; color: var(--accent); }
+.hero .lede {
+  font-size: 18px; color: var(--ink-2); max-width: 60ch; margin: 0 auto;
+}
+
+/* === TABS === */
+.tabs-wrap {
+  position: sticky; top: 62px; z-index: 40;
+  background: rgba(244,239,227,.92); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+  padding: 16px 32px; display: flex; justify-content: center; gap: 8px;
+  overflow-x: auto;
+}
+.tab-btn {
+  font-family: var(--mono); font-size: 12px; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--muted);
+  padding: 10px 18px; border-radius: 100px; border: 1px solid var(--line-2);
+  background: var(--card); cursor: pointer; transition: all .2s; white-space: nowrap;
+}
+.tab-btn:hover { color: var(--ink); border-color: var(--accent); }
+.tab-btn.active {
+  color: var(--card); background: var(--ink); border-color: var(--ink);
+}
+
+/* === SECTIONS === */
+.section {
+  padding: 60px 32px 100px; max-width: 1100px; margin: 0 auto; display: none;
+}
+.section.active { display: block; }
+.section-intro {
+  margin-bottom: 40px; max-width: 70ch;
+}
+.section-intro h2 {
+  font-family: var(--display); font-style: italic; font-weight: 400;
+  font-size: 36px; margin-bottom: 12px; color: var(--ink);
+}
+.section-intro h2 em { color: var(--accent); font-style: normal; }
+.section-intro p { color: var(--ink-2); font-size: 16px; }
+
+/* === FLASHCARDS === */
+.flashgrid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;
+}
+.flash {
+  perspective: 1200px; min-height: 320px; cursor: pointer;
+}
+.flash-inner {
+  position: relative; width: 100%; height: 100%; min-height: 320px;
+  transition: transform .6s cubic-bezier(.2,.8,.2,1);
+  transform-style: preserve-3d;
+}
+.flash.flipped .flash-inner { transform: rotateY(180deg); }
+.flash-face {
+  position: absolute; inset: 0; backface-visibility: hidden;
+  background: var(--card); border: 1px solid var(--line); border-radius: 16px;
+  padding: 22px; display: flex; flex-direction: column;
+  overflow-y: auto;
+  box-shadow: 0 2px 12px rgba(28,26,22,.04);
+}
+.flash-face::-webkit-scrollbar { width: 4px; }
+.flash-face::-webkit-scrollbar-thumb { background: var(--line-2); border-radius: 4px; }
+.flash-face.back {
+  transform: rotateY(180deg);
+  background: var(--bg-2); border-color: var(--line-2);
+}
+.flash-num {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 12px;
+}
+.flash-title {
+  font-family: var(--display); font-style: italic; font-size: 24px;
+  font-weight: 400; color: var(--ink); margin-bottom: 10px; line-height: 1.2;
+}
+.flash-hint {
+  margin-top: auto; font-family: var(--mono); font-size: 10px;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--muted-2);
+}
+.flash-def { font-size: 14px; color: var(--ink-2); line-height: 1.6; margin-bottom: 12px; }
+.flash-example {
+  font-family: var(--mono); font-size: 12px; color: var(--olive);
+  background: var(--card); border-left: 2px solid var(--olive);
+  padding: 8px 12px; border-radius: 0 6px 6px 0;
+}
+
+/* === CASE STUDIES === */
+.case {
+  background: var(--card); border: 1px solid var(--line); border-radius: 18px;
+  padding: 32px; margin-bottom: 28px;
+}
+.case-num {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 8px;
+}
+.case-title {
+  font-family: var(--display); font-style: italic; font-size: 28px;
+  font-weight: 400; color: var(--ink); margin-bottom: 12px; line-height: 1.2;
+}
+.case-context { color: var(--ink-2); margin-bottom: 24px; font-size: 15px; }
+.case-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px;
+}
+@media (max-width: 720px) { .case-grid { grid-template-columns: 1fr; } }
+.case-col {
+  background: var(--bg); border-radius: 12px; padding: 20px;
+}
+.case-col.bad { border: 1px solid #e8c4b7; }
+.case-col.good { border: 1px solid #c4d4a8; }
+.case-col-label {
+  font-family: var(--mono); font-size: 10px; letter-spacing: .15em;
+  text-transform: uppercase; margin-bottom: 10px; font-weight: 600;
+}
+.case-col.bad .case-col-label { color: var(--accent-2); }
+.case-col.good .case-col-label { color: var(--olive); }
+.case-prompt {
+  font-family: var(--mono); font-size: 13px; line-height: 1.6;
+  color: var(--ink); white-space: pre-wrap;
+}
+.case-why {
+  background: var(--bg-2); border-left: 3px solid var(--gold);
+  padding: 14px 18px; border-radius: 0 8px 8px 0;
+  font-size: 14px; color: var(--ink-2);
+}
+.case-why strong { color: var(--gold); font-weight: 600; }
+
+/* === EXERCISES === */
+.ex {
+  background: var(--card); border: 1px solid var(--line); border-radius: 18px;
+  padding: 32px; margin-bottom: 28px;
+}
+.ex-num {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 8px;
+}
+.ex-title {
+  font-family: var(--display); font-style: italic; font-size: 28px;
+  font-weight: 400; color: var(--ink); margin-bottom: 12px; line-height: 1.2;
+}
+.ex-task { color: var(--ink-2); margin-bottom: 16px; font-size: 15px; }
+.ex-input {
+  width: 100%; min-height: 120px; resize: vertical;
+  background: var(--bg); border: 1px solid var(--line-2); border-radius: 10px;
+  padding: 14px 16px; font-family: var(--mono); font-size: 13px; color: var(--ink);
+  margin-bottom: 16px;
+}
+.ex-input:focus { outline: 2px solid var(--accent); outline-offset: -2px; }
+.ex-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+.btn {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .12em;
+  text-transform: uppercase; padding: 10px 18px; border-radius: 100px;
+  border: 1px solid var(--line-2); background: var(--card); color: var(--ink-2);
+  cursor: pointer; transition: all .2s;
+}
+.btn:hover { border-color: var(--accent); color: var(--ink); }
+.btn-primary { background: var(--ink); color: var(--card); border-color: var(--ink); }
+.btn-primary:hover { background: var(--accent); border-color: var(--accent); color: var(--card); }
+.ex-solution {
+  margin-top: 20px; padding: 20px; background: var(--bg-2); border-radius: 12px;
+  border-left: 3px solid var(--olive); display: none;
+}
+.ex-solution.show { display: block; }
+.ex-solution-label {
+  font-family: var(--mono); font-size: 10px; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--olive); margin-bottom: 10px; font-weight: 600;
+}
+.ex-solution-text {
+  font-family: var(--mono); font-size: 13px; line-height: 1.7; color: var(--ink);
+  white-space: pre-wrap; margin-bottom: 16px;
+}
+.ex-rubric { margin-top: 16px; }
+.ex-rubric-title {
+  font-size: 13px; color: var(--muted); margin-bottom: 8px; font-weight: 600;
+}
+.ex-rubric ul { list-style: none; padding: 0; }
+.ex-rubric li {
+  padding: 6px 0; font-size: 14px; color: var(--ink-2);
+  display: flex; align-items: flex-start; gap: 10px;
+}
+.ex-rubric li::before {
+  content: "✓"; color: var(--olive); font-weight: 600; margin-top: 1px;
+}
+
+/* === PROMPTS GALLERY === */
+.prompts-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px;
+}
+.prompt-card {
+  background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+  padding: 24px; display: flex; flex-direction: column;
+}
+.prompt-tag {
+  display: inline-block; font-family: var(--mono); font-size: 10px;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--gold);
+  background: var(--bg-2); padding: 4px 10px; border-radius: 100px;
+  margin-bottom: 12px; align-self: flex-start;
+}
+.prompt-title {
+  font-family: var(--display); font-style: italic; font-size: 22px;
+  font-weight: 400; color: var(--ink); margin-bottom: 10px; line-height: 1.2;
+}
+.prompt-desc { font-size: 14px; color: var(--ink-2); margin-bottom: 16px; }
+.prompt-text {
+  font-family: var(--mono); font-size: 12px; line-height: 1.65;
+  color: var(--ink-2); background: var(--bg); border: 1px dashed var(--line-2);
+  border-radius: 8px; padding: 14px; margin-bottom: 14px;
+  white-space: pre-wrap; flex: 1;
+}
+.copy-btn {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .12em;
+  text-transform: uppercase; padding: 10px 16px; border-radius: 8px;
+  border: 1px solid var(--ink); background: transparent; color: var(--ink);
+  cursor: pointer; transition: all .2s; align-self: stretch;
+}
+.copy-btn:hover { background: var(--ink); color: var(--card); }
+.copy-btn.copied { background: var(--olive); border-color: var(--olive); color: var(--card); }
+
+/* === QUIZ === */
+.quiz-q {
+  background: var(--card); border: 1px solid var(--line); border-radius: 16px;
+  padding: 26px; margin-bottom: 20px;
+}
+.quiz-num {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 10px;
+}
+.quiz-question {
+  font-family: var(--display); font-style: italic; font-size: 22px;
+  font-weight: 400; line-height: 1.3; color: var(--ink); margin-bottom: 18px;
+}
+.quiz-opts { display: flex; flex-direction: column; gap: 8px; }
+.quiz-opt {
+  text-align: left; padding: 14px 18px; border: 1px solid var(--line-2);
+  border-radius: 10px; background: var(--bg); color: var(--ink-2);
+  font-family: var(--body); font-size: 15px; cursor: pointer; transition: all .2s;
+}
+.quiz-opt:hover:not(.locked) { border-color: var(--accent); color: var(--ink); }
+.quiz-opt.correct {
+  background: rgba(79,93,56,.12); border-color: var(--olive); color: var(--ink);
+}
+.quiz-opt.wrong {
+  background: rgba(200,84,43,.1); border-color: var(--accent-2); color: var(--ink);
+}
+.quiz-opt.locked { cursor: default; }
+.quiz-feedback {
+  margin-top: 14px; padding: 14px 18px; border-radius: 10px;
+  font-size: 14px; line-height: 1.5; display: none;
+}
+.quiz-feedback.show { display: block; }
+.quiz-feedback.correct { background: rgba(79,93,56,.1); border-left: 3px solid var(--olive); color: var(--ink-2); }
+.quiz-feedback.wrong { background: rgba(200,84,43,.08); border-left: 3px solid var(--accent); color: var(--ink-2); }
+.quiz-result {
+  margin-top: 20px; padding: 28px; background: var(--card);
+  border: 1px solid var(--line); border-radius: 16px; text-align: center;
+  display: none;
+}
+.quiz-result.show { display: block; }
+.quiz-result-score {
+  font-family: var(--display); font-style: italic; font-size: 56px;
+  color: var(--accent); margin-bottom: 8px;
+}
+.quiz-result-msg { font-size: 16px; color: var(--ink-2); margin-bottom: 18px; }
+.quiz-result .btn { display: inline-block; }
+
+/* === GLOSARIO === */
+.glosario-list {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px;
+}
+.gloss-item {
+  background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+  padding: 18px 20px;
+}
+.gloss-term {
+  font-family: var(--display); font-style: italic; font-size: 20px;
+  font-weight: 400; color: var(--accent); margin-bottom: 6px;
+}
+.gloss-def { font-size: 14px; line-height: 1.55; color: var(--ink-2); }
+
+/* === RECURSOS === */
+.recursos-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px;
+}
+.recurso {
+  background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+  padding: 20px; text-decoration: none; color: inherit; transition: all .2s;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.recurso:hover {
+  border-color: var(--accent); transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(28,26,22,.08);
+}
+.recurso-tag {
+  display: inline-block; font-family: var(--mono); font-size: 10px;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--olive);
+  background: var(--bg-2); padding: 4px 10px; border-radius: 100px;
+  align-self: flex-start; margin-bottom: 4px;
+}
+.recurso-title {
+  font-family: var(--display); font-style: italic; font-size: 18px;
+  font-weight: 400; color: var(--ink); line-height: 1.3;
+}
+.recurso-desc { font-size: 13px; color: var(--ink-2); line-height: 1.5; }
+.recurso-meta {
+  font-family: var(--mono); font-size: 11px; color: var(--muted);
+  margin-top: auto; padding-top: 8px;
+}
+
+/* === CHECKLIST === */
+.checklist { display: flex; flex-direction: column; gap: 12px; }
+.check-item {
+  display: flex; align-items: flex-start; gap: 16px;
+  background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+  padding: 18px 22px; cursor: pointer; transition: all .2s;
+}
+.check-item:hover { border-color: var(--line-2); }
+.check-item.done {
+  background: var(--bg-2); border-color: var(--olive); opacity: .75;
+}
+.check-item.done .check-text { text-decoration: line-through; color: var(--muted); }
+.check-box {
+  width: 22px; height: 22px; border: 2px solid var(--line-2);
+  border-radius: 6px; flex-shrink: 0; margin-top: 2px;
+  display: flex; align-items: center; justify-content: center;
+  transition: all .2s;
+}
+.check-item.done .check-box {
+  background: var(--olive); border-color: var(--olive); color: var(--card);
+}
+.check-content { flex: 1; }
+.check-day {
+  font-family: var(--mono); font-size: 10px; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--accent); margin-bottom: 4px;
+}
+.check-text { font-size: 15px; line-height: 1.5; color: var(--ink); }
+.check-detail { font-size: 13px; color: var(--muted); margin-top: 4px; }
+.checklist-progress {
+  margin-top: 24px; padding: 20px; background: var(--bg-2);
+  border-radius: 12px; text-align: center;
+  font-family: var(--mono); font-size: 13px; color: var(--ink-2);
+}
+
+/* === FOOTER NAV === */
+.footer-nav {
+  border-top: 1px solid var(--line); padding: 32px;
+  display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+  max-width: 1100px; margin: 40px auto 0;
+}
+.foot-link {
+  font-family: var(--mono); font-size: 12px; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--muted); text-decoration: none;
+  padding: 12px 18px; border: 1px solid var(--line-2); border-radius: 100px;
+  transition: all .2s;
+}
+.foot-link:hover { color: var(--ink); border-color: var(--accent); }
+
+@media (max-width: 720px) {
+  .topbar { padding: 12px 16px; }
+  .hero { padding: 50px 16px 30px; }
+  .tabs-wrap { padding: 12px 16px; }
+  .section { padding: 40px 16px 80px; }
+  .case, .ex { padding: 22px; }
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <a href="/curso" class="back-link">← Volver al curso</a>
+  <div class="topbar-title">Módulo 8 · <em>Recursos</em></div>
+  <div class="topbar-badge">M8</div>
+</header>
+
+<section class="hero">
+  <div class="eyebrow">Graduación · Ecosistema · Crecer</div>
+  <h1>Siguiente <em>nivel</em></h1>
+  <p class="lede">Has terminado el curso. El chat ya no es el techo: API, Claude Code, MCPs, Skills, Agents, Computer Use. Aquí tienes el mapa del ecosistema y los caminos reales para seguir creciendo desde mañana.</p>
+</section>
+
+<nav class="tabs-wrap">
+  <button class="tab-btn active" data-tab="conceptos">Conceptos</button>
+  <button class="tab-btn" data-tab="casos">Casos de uso</button>
+  <button class="tab-btn" data-tab="ejercicios">Ejercicios</button>
+  <button class="tab-btn" data-tab="prompts">Prompts</button>
+  <button class="tab-btn" data-tab="quiz">Quiz final</button>
+  <button class="tab-btn" data-tab="glosario">Glosario</button>
+  <button class="tab-btn" data-tab="recursos">Recursos</button>
+  <button class="tab-btn" data-tab="checklist">Checklist</button>
+</nav>
+
+<!-- === CONCEPTOS === -->
+<section class="section active" id="sec-conceptos">
+  <div class="section-intro">
+    <h2>Diez <em>piezas</em> del ecosistema</h2>
+    <p>Lo que existe más allá del chat. Pulsa cualquier tarjeta para girarla y ver la definición + un ejemplo concreto.</p>
+  </div>
+  <div class="flashgrid" id="flashgrid"></div>
+</section>
+
+<!-- === CASOS === -->
+<section class="section" id="sec-casos">
+  <div class="section-intro">
+    <h2>De chat manual a <em>workflow</em></h2>
+    <p>Seis escenarios reales donde alguien que se quedaba en claude.ai pasó a una solución automatizada. Mismo problema, distinta escala.</p>
+  </div>
+  <div id="cases"></div>
+</section>
+
+<!-- === EJERCICIOS === -->
+<section class="section" id="sec-ejercicios">
+  <div class="section-intro">
+    <h2>Pasa al <em>otro lado</em></h2>
+    <p>Cinco ejercicios para tocar el ecosistema por primera vez. Ninguno requiere ser developer senior: solo terminal y ganas.</p>
+  </div>
+  <div id="exercises"></div>
+</section>
+
+<!-- === PROMPTS === -->
+<section class="section" id="sec-prompts">
+  <div class="section-intro">
+    <h2>Plantillas para <em>workflows</em></h2>
+    <p>System prompts para agentes, configs de MCP, briefs de eval. Sustituye los <code style="background:var(--bg-2);padding:1px 6px;border-radius:4px;font-family:var(--mono);font-size:.85em">[CORCHETES]</code> y úsalas en tu integración.</p>
+  </div>
+  <div class="prompts-grid" id="prompts"></div>
+</section>
+
+<!-- === QUIZ === -->
+<section class="section" id="sec-quiz">
+  <div class="section-intro">
+    <h2>Quiz <em>final</em></h2>
+    <p>10 preguntas sobre el ecosistema completo. Es el último quiz del curso — si las clavas, estás listo para construir cosas en serio.</p>
+  </div>
+  <div id="quiz"></div>
+  <div id="quiz-result" class="quiz-result"></div>
+</section>
+
+<!-- === GLOSARIO === -->
+<section class="section" id="sec-glosario">
+  <div class="section-intro">
+    <h2>Glosario del <em>ecosistema</em></h2>
+    <p>Los términos que oirás en cualquier conversación seria sobre Claude más allá del chat. Si vas a leer la documentación oficial, tenlos a mano.</p>
+  </div>
+  <div id="glosario" class="glosario-list"></div>
+</section>
+
+<!-- === RECURSOS === -->
+<section class="section" id="sec-recursos">
+  <div class="section-intro">
+    <h2>Para <em>seguir</em></h2>
+    <p>Los ocho enlaces que de verdad importan ahora: documentación oficial, repos para contribuir, comunidad y especificaciones técnicas. Todos reales, todos vivos.</p>
+  </div>
+  <div id="recursos" class="recursos-grid"></div>
+</section>
+
+<!-- === CHECKLIST === -->
+<section class="section" id="sec-checklist">
+  <div class="section-intro">
+    <h2>Tu primera <em>semana</em> después del curso</h2>
+    <p>Siete pasos concretos para que el siguiente nivel no se quede en el vídeo. El día 7 es tu graduación: nos cuentas qué construiste y entras en la galería.</p>
+  </div>
+  <div id="checklist" class="checklist"></div>
+  <div class="checklist-progress" id="checkProgress"></div>
+</section>
+
+<nav class="footer-nav">
+  <a href="/curso" class="foot-link">← Curso</a>
+  <a href="/curso" class="foot-link">Volver al curso →</a>
+</nav>
+
+<script>
+// ============================================
+// CONTENIDO DEL MÓDULO 8
+// ============================================
+const MODULE_DATA = {
+  conceptos: [
+    {
+      title: "API de Anthropic",
+      def: "Endpoint HTTP que permite llamar a Claude desde código. Te identificas con una API key (la sacas en console.anthropic.com), mandas un POST con tus mensajes, y se cobra por tokens de input y output según el modelo. No tiene plan plano: pagas por uso.",
+      example: "curl https://api.anthropic.com/v1/messages -H \"x-api-key: $KEY\" -H \"anthropic-version: 2023-06-01\" -d '{\"model\":\"claude-sonnet-4-5\",\"max_tokens\":1024,\"messages\":[{\"role\":\"user\",\"content\":\"Hola\"}]}'"
+    },
+    {
+      title: "Claude Code",
+      def: "CLI oficial de Anthropic para programar con Claude desde la terminal. Lee tu repo, edita ficheros, ejecuta comandos, corre tests. No es un asistente conversacional con código pegado — opera sobre tu proyecto real.",
+      example: "Ejecutas `claude` en tu repo, le pides 'añade autenticación JWT a esta API', edita los ficheros necesarios y corre los tests. Tú revisas el diff y aceptas."
+    },
+    {
+      title: "MCP (Model Context Protocol)",
+      def: "Estándar abierto que conecta Claude con herramientas externas: bases de datos, APIs, sistemas de ficheros, Slack, GitHub. Un servidor MCP expone capacidades y Claude las usa cuando las necesita. Es 'USB para LLMs'.",
+      example: "Instalas el MCP de GitHub y Claude puede crear PRs, leer issues y comentar — sin que tengas que escribir el código de integración."
+    },
+    {
+      title: "Skills",
+      def: "Paquetes ejecutables que extienden a Claude con instrucciones, scripts y assets. Una skill es una carpeta con SKILL.md y código que Claude carga cuando detecta que el contexto lo requiere. No reentrenas el modelo: le das herramientas.",
+      example: "Una skill 'pptx' enseña a Claude a generar presentaciones con python-pptx. Cuando un usuario pide un deck, Claude carga la skill y ejecuta los scripts."
+    },
+    {
+      title: "Computer Use",
+      def: "Capacidad de Claude de controlar un ordenador como lo haría una persona: capturas de pantalla, clicks, teclas, scroll. Útil para automatizar software sin API. Se ejecuta en un sandbox para que no toque cosas que no debe.",
+      example: "Le pides 'reserva una mesa para 4 mañana a las 21h en TheFork'. Claude abre el navegador, busca, rellena el formulario, confirma. Tú apruebas la acción."
+    },
+    {
+      title: "Agents",
+      def: "Aplicación de Claude que opera en un loop autónomo: planifica, ejecuta una acción, observa el resultado, decide el siguiente paso. No es una respuesta — es un proceso que puede durar minutos u horas hasta cumplir un objetivo.",
+      example: "Un agente de soporte recibe un ticket, busca en docs, mira logs, redacta una respuesta, espera confirmación humana, contesta al cliente. Y lo hace 200 veces al día."
+    },
+    {
+      title: "Claude Agent SDK",
+      def: "Librería oficial (Python y TypeScript) para construir agents sin reimplementar el loop básico. Maneja el ciclo planificar-actuar-observar, conecta tools, gestiona historial. Saltas directamente a la lógica de tu agente.",
+      example: "Importas el SDK, defines tres tools (buscar_logs, leer_docs, enviar_email), le das un system prompt y ya tienes un agente de soporte funcional en 100 líneas."
+    },
+    {
+      title: "Evals",
+      def: "Tests automatizados para medir si tu prompt o tu agente funciona. Defines un dataset de casos, ejecutas el modelo, comparas con la respuesta esperada. Sin evals navegas a ciegas: no sabes si un cambio mejora o empeora.",
+      example: "100 emails clasificados a mano. Cada vez que cambias el prompt, ejecutas la eval y miras si la precisión sube o baja. Sin esto, decides por intuición y te equivocas."
+    },
+    {
+      title: "Anthropic Cookbook",
+      def: "Repo público de Anthropic en GitHub con ejemplos de código listos para usar: RAG, agents, tool use, classification, contextual retrieval. Es el catálogo no oficial de 'esto sí funciona en producción'. Open source, aceptan PRs.",
+      example: "Quieres montar un sistema RAG con Claude. Vas al cookbook, copias el notebook de 'contextual_embeddings', lo adaptas a tus datos. Te ahorra una semana."
+    },
+    {
+      title: "Comunidad",
+      def: "Discord oficial de Anthropic, r/ClaudeAI en Reddit, conferencias (AI Engineer Summit, Anthropic Build Days), comunidades hispanas en Twitter/X. Donde encuentras gente resolviendo los mismos problemas que tú.",
+      example: "Te atascas con un MCP server. En el Discord oficial preguntas, alguien que lo construyó te contesta en 2h. Más rápido que cualquier ticket."
+    }
+  ],
+
+  casos: [
+    {
+      title: "Soporte: de tickets manuales a bot integrado",
+      context: "Marta es responsable de soporte en una SaaS. Recibe 80 tickets diarios, copia/pega contexto en Claude, redacta respuesta, vuelve al panel, contesta. 4h al día.",
+      bad: "Cada ticket, abrir claude.ai en otra pestaña, pegar el ticket + historial del cliente, esperar respuesta, revisar, copiar al panel de soporte, enviar.",
+      good: "Bot de Slack conectado a Claude vía API + MCP del CRM. Cuando entra un ticket, el bot lee historial automáticamente, redacta respuesta con tono de la empresa, la propone en un canal interno. Marta aprueba o edita en 30 segundos. Tiempo total: 45 min/día.",
+      why: "<strong>Por qué funciona:</strong> el modelo no cambió, cambió el flujo. La API + un MCP eliminan los 14 pasos manuales por ticket. Se pasa de 'usar Claude' a 'que Claude se ejecute sin verle'."
+    },
+    {
+      title: "RRHH: de revisar 1 CV a procesar 200",
+      context: "Carlos recluta para una vacante. 200 CVs en LinkedIn Recruiter. Quiere filtrar a 30 finalistas con criterios consistentes.",
+      bad: "Abrir cada CV, copiar texto a Claude, pegar el job description, preguntar 'evalúa este candidato'. 7 min por CV × 200 = 23 horas. Imposible mantener el mismo criterio en el CV 180 que en el CV 5.",
+      good: "Script Python con la API: lee los 200 CVs (PDFs en una carpeta), pasa cada uno a Claude Haiku con un prompt estructurado (puntuar 1-5 en 4 criterios + 2 frases de justificación), guarda CSV ordenado. Coste: 4€. Tiempo: 12 min. Criterio idéntico para todos.",
+      why: "<strong>Por qué funciona:</strong> Haiku es barato y rápido para clasificación. El criterio se aplica igual al CV 1 que al 200. El resultado es un CSV que Carlos revisa de un vistazo, no 200 respuestas dispersas."
+    },
+    {
+      title: "Coding: de copiar/pegar en chat a Claude Code en el repo",
+      context: "Lucía es full-stack solo. Está refactorizando un módulo de pagos en su monorepo Next.js.",
+      bad: "Copia fichero 1 al chat, pide refactor, copia respuesta al editor, descubre que falta importar X, vuelve al chat, le explica el contexto del fichero 2, copia/pega... 40 min para un cambio que afecta a 6 ficheros.",
+      good: "Abre Claude Code en el repo: `claude` en la raíz. Le dice 'refactoriza pagos/* para extraer la lógica de Stripe a un módulo independiente, mantén la API pública intacta'. Claude lee los 6 ficheros, propone diff completo, corre los tests existentes. Lucía revisa el diff, lo acepta. 10 min.",
+      why: "<strong>Por qué funciona:</strong> Claude Code ve el repo entero, ejecuta tests, edita ficheros directamente. Pasa de 'consultor con código pegado' a 'pair programmer que tiene tu repo abierto'."
+    },
+    {
+      title: "Investigación: de buscar manual a agente que recopila",
+      context: "Javier es analista. Cada lunes pasa 3h recopilando precios de competencia de 12 webs distintas.",
+      bad: "Abre 12 pestañas, copia precios, pega en hoja, formatea. Si una web cambia el HTML, se entera tarde y rompe el report.",
+      good: "Agente construido con Claude Agent SDK + Computer Use. Cada lunes a las 8h: abre las 12 webs, extrae precios, los compara con la semana anterior, genera un informe markdown con alertas (subidas >5%, productos discontinuados). Llega un email a las 8:15. Javier revisa en 10 min.",
+      why: "<strong>Por qué funciona:</strong> el agente opera en loop autónomo y Computer Use le permite navegar webs sin API. El humano solo aparece para validar el output, no para ejecutar las tareas mecánicas."
+    },
+    {
+      title: "Generación de contenido: de un post a una pipeline",
+      context: "Sara hace marketing en una startup. Genera 5 posts semanales para LinkedIn, IG, Twitter desde el mismo contenido base.",
+      bad: "Por cada post, abre Claude, pega contenido fuente, pide adaptación al canal X, copia, pega en cada plataforma, ajusta hashtags. 90 min × 5 = 7.5h/semana.",
+      good: "Skill personalizada 'contenido-redes' + script que lee un brief en Notion (vía MCP de Notion) y genera las 5 versiones adaptadas a tono de marca (cargado desde un fichero), las guarda como drafts en Buffer (MCP). Sara revisa los 5 drafts, edita lo necesario. 45 min/semana.",
+      why: "<strong>Por qué funciona:</strong> la skill carga el tono y reglas de marca cada vez. Los MCPs eliminan el copy/paste entre herramientas. Sara hace el trabajo de editora, no el de copista."
+    },
+    {
+      title: "Calidad: de 'creo que funciona' a evals reproducibles",
+      context: "Iván montó un clasificador de tickets con Claude hace 3 meses. Funciona 'más o menos bien' pero no sabe cuánto, ni cómo afecta cada cambio de prompt.",
+      bad: "Cada vez que ajusta el prompt, prueba con 5-10 ejemplos a ojo. Si los 10 'le suenan bien', deploy. Tres meses después: nadie sabe si la calidad ha subido o bajado.",
+      good: "Eval con 200 tickets etiquetados a mano. Cada cambio de prompt corre la eval automáticamente: precisión, recall por categoría, casos donde falla. Antes de cambiar a producción, Iván ve un dashboard con 'prompt v12 vs v11: +3% precisión, regresión en categoría facturación'.",
+      why: "<strong>Por qué funciona:</strong> sin evals decides por intuición y la intuición se equivoca. Con evals tienes un test que dice sí/no antes del deploy. Es la diferencia entre 'producto hobby' y 'producto serio'."
+    }
+  ],
+
+  ejercicios: [
+    {
+      title: "Tu primera llamada a la API",
+      task: "Saca una API key en console.anthropic.com (necesitas registrarte y cargar saldo mínimo, ~5€). Ejecuta una llamada con curl desde tu terminal para que Claude te conteste 'Hola mundo'. Comparte qué modelo usaste, cuántos tokens consumiste según la respuesta, y cuánto te costó la llamada.",
+      solution: "Pasos:\n1. Ir a console.anthropic.com → Settings → API Keys → Create Key. Guardarla como variable de entorno: export ANTHROPIC_API_KEY=sk-ant-...\n\n2. Cargar saldo: Settings → Billing → Add credit (mínimo 5€).\n\n3. Ejecutar:\n\ncurl https://api.anthropic.com/v1/messages \\\n  -H \"x-api-key: $ANTHROPIC_API_KEY\" \\\n  -H \"anthropic-version: 2023-06-01\" \\\n  -H \"content-type: application/json\" \\\n  -d '{\n    \"model\": \"claude-haiku-4-5\",\n    \"max_tokens\": 100,\n    \"messages\": [{\"role\": \"user\", \"content\": \"Hola mundo\"}]\n  }'\n\n4. La respuesta incluye usage.input_tokens y usage.output_tokens. Multiplicas por el precio del modelo (haiku ~0.001€/1K input, ~0.005€/1K output). Una llamada simple = fracciones de céntimo.",
+      rubric: [
+        "API key sacada y guardada como variable de entorno (no en el código)",
+        "Saldo mínimo cargado (sin esto, todas las llamadas devuelven 429)",
+        "Cabeceras correctas: x-api-key, anthropic-version, content-type",
+        "Eliges el modelo más barato (Haiku) para una primera prueba sin coste real",
+        "Sabes leer usage.input_tokens y calcular el coste por llamada"
+      ]
+    },
+    {
+      title: "Instala Claude Code y úsalo en un repo real",
+      task: "Instala Claude Code en tu máquina. Ábrelo en un repo tuyo (cualquier proyecto, aunque sea un sandbox). Pídele dos cosas que no triviales: (1) que explique la arquitectura del proyecto en 5 líneas, (2) que añada un README mínimo si no lo tienes. Comparte qué te ha sorprendido respecto a usar el chat.",
+      solution: "Instalación (macOS/Linux):\n  npm install -g @anthropic-ai/claude-code\n  cd tu-proyecto\n  claude\n\nLa primera vez te pide login (OAuth con tu cuenta Anthropic). A partir de ahí, escribes directamente en la sesión.\n\nPara la tarea (1): 'Explica la arquitectura del proyecto en 5 líneas: qué hace, lenguaje principal, módulos clave, cómo se ejecuta, dónde están los tests'. Claude lee la estructura del repo (package.json, ficheros, imports) y responde con conocimiento real, no inventado.\n\nPara la tarea (2): 'Crea un README.md con secciones: qué es, instalación, uso básico, scripts disponibles. Léelo del package.json y el código real'. Edita el fichero directamente. Tú haces git diff y decides aceptar.\n\nQué sorprende: ya no copias/pegas. Claude tiene contexto persistente, ejecuta comandos (ls, grep, tests), y se equivoca menos porque ve el código real.",
+      rubric: [
+        "Instalación correcta vía npm (requiere Node.js)",
+        "Login OAuth funciona (no hace falta API key separada para Claude Code)",
+        "Ejecutado dentro de un repo real, no en una carpeta vacía",
+        "Has hecho git diff antes de aceptar cambios (siempre revisar)",
+        "Notas el cambio cualitativo respecto al chat: contexto real del proyecto"
+      ]
+    },
+    {
+      title: "Conecta tu primer MCP",
+      task: "Instala un MCP server oficial (filesystem o GitHub son los más sencillos para empezar). Configúralo en Claude Desktop o Claude Code. Haz una operación que demuestre que Claude está usando esa herramienta (ej: listar tus repos de GitHub, leer un fichero específico de tu disco). Cuenta qué configuraste y qué hiciste.",
+      solution: "Ejemplo con MCP de GitHub:\n\n1. Sacar un personal access token en github.com/settings/tokens (con permisos repo, read:user).\n\n2. En Claude Desktop, abrir Settings → Developer → Edit Config. Añadir al JSON:\n\n{\n  \"mcpServers\": {\n    \"github\": {\n      \"command\": \"npx\",\n      \"args\": [\"-y\", \"@modelcontextprotocol/server-github\"],\n      \"env\": {\n        \"GITHUB_PERSONAL_ACCESS_TOKEN\": \"ghp_...\"\n      }\n    }\n  }\n}\n\n3. Reiniciar Claude Desktop. Aparece un icono de herramienta indicando que el MCP está cargado.\n\n4. Probar: 'Lista mis últimos 5 repos públicos con el número de stars'. Claude llama al MCP, recibe los datos reales, los presenta. NO está inventando — está consultando GitHub.\n\nClaves: el config va en ~/Library/Application Support/Claude/claude_desktop_config.json (macOS). Si no aparece el icono, suele ser un error de JSON o token mal copiado.",
+      rubric: [
+        "MCP server instalado vía npx (no requiere setup persistente)",
+        "Token con permisos mínimos necesarios (no uses un token con permisos amplios)",
+        "Config en el fichero correcto según tu OS",
+        "Reinicio de la app tras editar el config (los MCPs se cargan al arrancar)",
+        "Verificas que Claude usa la herramienta real, no datos inventados"
+      ]
+    },
+    {
+      title: "Contribuye al Anthropic Cookbook",
+      task: "Ve a github.com/anthropics/anthropic-cookbook. Lee 2-3 notebooks. Identifica algo que falte, esté desactualizado, o que tú harías distinto. Propón un cambio: puede ser un bugfix, una traducción al español, un ejemplo de un caso de uso que no esté cubierto. Comparte el enlace al PR (aunque sea borrador).",
+      solution: "Pasos realistas para una primera contribución:\n\n1. Hacer fork del repo en tu cuenta.\n\n2. Leer CONTRIBUTING.md si existe, y sino mirar los últimos PRs aceptados para ver el estilo.\n\n3. Empezar pequeño: arreglar un typo en un README, actualizar una versión de modelo obsoleta (claude-2 → claude-sonnet-4-5), añadir un ejemplo en español a una sección, completar un comentario que falta.\n\n4. Branch específico: git checkout -b fix/typo-rag-readme\n\n5. Commit con mensaje claro: 'docs: fix typo in contextual_embeddings README'\n\n6. Abrir PR contra main. En la descripción: qué cambia y por qué. Si dudas, marca el PR como Draft.\n\n7. Esperar review. Si tardan, ping educado en 1 semana.\n\nLo importante: tu primer PR no tiene que ser un notebook nuevo. Una contribución pequeña y útil cuenta como graduación. Y abre la puerta a contribuciones mayores.",
+      rubric: [
+        "Has leído al menos 2-3 notebooks antes de proponer cambios",
+        "Cambio acotado y útil (no PR gigante de tu primera contribución)",
+        "Branch con nombre descriptivo, no main directo",
+        "Commit message convencional (docs:, fix:, feat:)",
+        "PR con descripción clara: contexto + qué cambias + por qué"
+      ]
+    },
+    {
+      title: "Construye tu primera eval mínima",
+      task: "Diseña una eval para algo que ya uses Claude. Pasos: (1) define una tarea concreta y medible, (2) crea un dataset de 20 ejemplos con respuesta esperada, (3) escribe un script (Python o lo que prefieras) que pase cada ejemplo a Claude y compare con lo esperado, (4) calcula precisión y comparte qué te sorprendió.",
+      solution: "Ejemplo: eval para clasificar emails como urgente/normal/spam.\n\n1. Tarea: dado un email, devolver una de tres etiquetas: 'urgente', 'normal', 'spam'.\n\n2. Dataset (CSV con 20 filas): cada fila tiene { email_body, etiqueta_esperada }. Etiquetar a mano.\n\n3. Script (Python, simplificado):\n\nfrom anthropic import Anthropic\nimport csv\n\nclient = Anthropic()\nresults = []\n\nwith open('dataset.csv') as f:\n    for row in csv.DictReader(f):\n        msg = client.messages.create(\n            model=\"claude-haiku-4-5\",\n            max_tokens=10,\n            system=\"Clasifica el email en: urgente, normal, spam. Devuelve solo la etiqueta.\",\n            messages=[{\"role\": \"user\", \"content\": row['email_body']}]\n        )\n        predicted = msg.content[0].text.strip().lower()\n        results.append((row['etiqueta_esperada'], predicted))\n\ncorrect = sum(1 for exp, pred in results if exp == pred)\nprint(f\"Precisión: {correct}/{len(results)} = {correct/len(results)*100:.1f}%\")\n\n4. Lo que suele sorprender: con un prompt naive sale 60-75%. Con tres iteraciones del prompt (añadir ejemplos, definir reglas de cada categoría), llegas a 90%+. SIN la eval, no habrías sabido que el cambio mejoró.",
+      rubric: [
+        "La tarea es objetivamente verificable (no 'escribe mejor', sí 'clasifica en X categorías')",
+        "Dataset de al menos 20 ejemplos etiquetados con cuidado",
+        "Script reproducible: lo puedes correr otra vez con un prompt nuevo",
+        "Métrica clara (precisión, F1, lo que aplique al caso)",
+        "Iteras el prompt y comparas: sin eval no sabes si vas a mejor o peor"
+      ]
+    }
+  ],
+
+  prompts: [
+    {
+      tag: "API",
+      title: "Llamada básica con system prompt",
+      desc: "Estructura mínima de una llamada a la API con system prompt y mensaje de usuario.",
+      text: "POST https://api.anthropic.com/v1/messages\n\nHeaders:\n  x-api-key: [TU_API_KEY]\n  anthropic-version: 2023-06-01\n  content-type: application/json\n\nBody:\n{\n  \"model\": \"claude-sonnet-4-5\",\n  \"max_tokens\": 1024,\n  \"system\": \"[ROL Y REGLAS PERSISTENTES — ej: Eres un revisor crítico de copys. Tono directo, sin paja. Cuando algo no funciona, lo dices y propones alternativa.]\",\n  \"messages\": [\n    {\"role\": \"user\", \"content\": \"[TU PETICIÓN]\"}\n  ]\n}"
+    },
+    {
+      tag: "Agent",
+      title: "System prompt para un agent",
+      desc: "Esqueleto de system prompt para un agente que opera en loop autónomo con herramientas.",
+      text: "Eres un agente [ROL: ej. de soporte de primer nivel] para [EMPRESA/PRODUCTO].\n\nTu objetivo: [OBJETIVO MEDIBLE — ej. resolver tickets de nivel 1 en menos de 5 turnos].\n\nHerramientas disponibles:\n- [TOOL_1]: úsala cuando [CONDICIÓN]\n- [TOOL_2]: úsala cuando [CONDICIÓN]\n- [TOOL_3]: úsala cuando [CONDICIÓN]\n\nReglas:\n1. Antes de actuar, planifica en 2-3 frases qué vas a hacer y por qué.\n2. Si te falta información clave, pide aclaración antes de inventar.\n3. Si una acción puede afectar producción (borrar, escribir, mover dinero), pide confirmación humana explícita.\n4. Cuando termines, resume en 3 bullets: qué hiciste, qué herramientas usaste, qué queda pendiente.\n\nFormato de salida en cada turno:\nPLAN: [una frase]\nACCIÓN: [tool_name(args) o RESPUESTA_AL_USUARIO]\nESPERADO: [qué resultado esperas]"
+    },
+    {
+      tag: "MCP",
+      title: "Config de Claude Desktop con MCP",
+      desc: "JSON de configuración para conectar uno o varios servidores MCP a Claude Desktop.",
+      text: "// Fichero: claude_desktop_config.json\n// macOS: ~/Library/Application Support/Claude/\n// Windows: %APPDATA%\\Claude\\\n\n{\n  \"mcpServers\": {\n    \"[NOMBRE_INTERNO]\": {\n      \"command\": \"npx\",\n      \"args\": [\"-y\", \"[PAQUETE_MCP]\"],\n      \"env\": {\n        \"[VARIABLE_ENV_1]\": \"[VALOR_1]\",\n        \"[VARIABLE_ENV_2]\": \"[VALOR_2]\"\n      }\n    },\n    \"filesystem\": {\n      \"command\": \"npx\",\n      \"args\": [\n        \"-y\",\n        \"@modelcontextprotocol/server-filesystem\",\n        \"/ruta/permitida/1\",\n        \"/ruta/permitida/2\"\n      ]\n    }\n  }\n}\n\n// Reiniciar Claude Desktop tras editar.\n// El icono de herramienta confirma que el MCP se cargó.\n// Si no aparece, revisa el JSON (suele ser un trailing comma)."
+    },
+    {
+      tag: "Skill",
+      title: "Esqueleto de SKILL.md",
+      desc: "Estructura mínima de una Custom Skill que Claude carga cuando detecta el contexto adecuado.",
+      text: "---\nname: [nombre-skill-en-kebab]\ndescription: \"[CUÁNDO DEBE CLAUDE INVOCAR ESTA SKILL. Sé específico: triggers, palabras clave, tipos de fichero. Si la descripción es vaga, Claude no la cargará cuando toca.]\"\n---\n\n# [Título legible de la skill]\n\n## Cuándo usarla\n[Descripción más larga del trigger. Ejemplos concretos de peticiones de usuario que deberían activar esta skill.]\n\n## Cómo funciona\n1. [Paso 1]\n2. [Paso 2]\n3. [Paso 3]\n\n## Scripts disponibles\n- `scripts/[nombre].py` — [qué hace]\n- `scripts/[otro].py` — [qué hace]\n\n## Inputs esperados\n[Qué debe darte el usuario para que funcione]\n\n## Output\n[Qué entrega la skill cuando termina]\n\n## Errores comunes\n- [Error 1]: [cómo resolverlo]\n- [Error 2]: [cómo resolverlo]"
+    },
+    {
+      tag: "Eval",
+      title: "Brief para diseñar una eval",
+      desc: "Plantilla para pedir a Claude que te ayude a diseñar una eval desde una tarea poco estructurada.",
+      text: "Estoy usando Claude para [TAREA] en producción. Quiero diseñar una eval para medir si funciona y poder iterar el prompt con datos.\n\nContexto:\n- Input típico: [DESCRIBE QUÉ ENTRA]\n- Output esperado: [DESCRIBE QUÉ DEBERÍA SALIR]\n- Cómo lo valido hoy: [SI ES MANUAL, AD HOC, ETC.]\n- Volumen: [LLAMADAS/DÍA O TOTAL]\n\nAyúdame a diseñar la eval:\n\n1) ¿Cuál es la métrica más representativa para esta tarea (precisión, F1, exact match, BLEU, evaluación por LLM, otra)? Justifica.\n2) ¿Cuántos ejemplos necesito como mínimo para que la métrica sea significativa y no ruido?\n3) Estructura del dataset: qué campos debería tener cada ejemplo.\n4) Edge cases que debería incluir SÍ O SÍ (no solo los casos felices).\n5) Pseudocódigo del script de eval (Python).\n6) Cómo interpretar resultados: a partir de qué número considero 'aceptable para producción'.\n\nSé práctico. Asume que tengo 2-3h, no 2-3 semanas."
+    },
+    {
+      tag: "Computer Use",
+      title: "Tarea segura para Computer Use",
+      desc: "Plantilla para encargar una tarea de Computer Use con guardrails y confirmaciones.",
+      text: "Tarea de automatización en mi escritorio: [DESCRIBE LA TAREA EN 2-3 LÍNEAS].\n\nReglas obligatorias:\n1. Antes de cada click o teclazo, describe qué ves en pantalla y qué vas a hacer.\n2. Si una acción puede tener efectos secundarios (enviar email, hacer compra, borrar, modificar configuración), PIDE CONFIRMACIÓN explícita antes de ejecutar.\n3. No interactúes con apps ni ventanas que no sean las necesarias para la tarea.\n4. Si encuentras un popup, ventana modal o alerta inesperada, PARA y descríbemela. No la cierres por defecto.\n5. Si la tarea no avanza después de 3 intentos, PARA y reporta qué está fallando.\n\nDatos / credenciales necesarios:\n[LISTA SOLO LO IMPRESCINDIBLE]\n\nResultado esperado:\n[CÓMO SABES QUE LA TAREA TERMINÓ BIEN]\n\nEmpieza tomando una captura de pantalla inicial y describiendo qué ves."
+    },
+    {
+      tag: "Claude Code",
+      title: "Pedir a Claude Code una refactorización",
+      desc: "Cómo formular un cambio significativo en un repo sin que Claude haga estropicio.",
+      text: "Quiero refactorizar [MÓDULO/CARPETA] de este repo.\n\nObjetivo del refactor: [QUÉ QUIERO LOGRAR — ej. extraer la lógica de Stripe a un módulo independiente].\n\nReglas duras:\n1. NO cambies la API pública del módulo (las funciones/exports que usa el resto del código).\n2. Todos los tests existentes deben seguir pasando. Si alguno tiene que cambiar, márcalo explícitamente.\n3. NO añadas dependencias nuevas sin avisar.\n4. NO toques ficheros fuera de [RUTA/PERMITIDA].\n\nPlan que quiero antes de tocar código:\n1. Resume en 5 líneas qué vas a hacer.\n2. Lista los ficheros que vas a modificar y por qué.\n3. Lista los riesgos principales del cambio.\n\nDespués de mi visto bueno al plan, ejecutas los cambios y corres los tests. Si algún test falla, NO sigas: pregunta cómo proceder."
+    },
+    {
+      tag: "RAG",
+      title: "Sistema RAG mínimo con citas",
+      desc: "Prompt para un sistema RAG (Retrieval Augmented Generation) que cita fuentes y reconoce cuando no tiene info.",
+      text: "Eres un asistente que responde preguntas usando EXCLUSIVAMENTE los documentos que te paso en el contexto. No uses conocimiento general.\n\nReglas:\n1. Si la información necesaria NO está en los documentos, di literalmente: \"No tengo información en los documentos para responder a esto.\"\n2. Cuando respondas, cita la fuente entre corchetes después de cada afirmación: [Doc 3, sección \"Pricing\"].\n3. Si los documentos se contradicen, dilo explícitamente: \"Los docs entran en contradicción: el Doc A dice X, el Doc B dice Y.\"\n4. NO inventes citas. NO inventes datos. NO completes con conocimiento de tu entrenamiento.\n\nDocumentos:\n[DOC_1]: [CONTENIDO]\n[DOC_2]: [CONTENIDO]\n[DOC_3]: [CONTENIDO]\n\nPregunta del usuario: [PREGUNTA]"
+    },
+    {
+      tag: "Producción",
+      title: "Auditoría de un agent antes de producción",
+      desc: "Lista de comprobaciones para pasar antes de poner un agent en producción.",
+      text: "Voy a poner en producción un agent que [QUÉ HACE]. Antes de hacer deploy, audítalo con estos criterios. Para cada uno, dime si está cubierto, parcialmente cubierto, o no cubierto. Si falta algo, propón cómo arreglarlo.\n\n1) Manejo de errores: ¿qué pasa si una tool devuelve error, timeout, o respuesta inesperada?\n2) Confirmaciones humanas: ¿qué acciones requieren aprobación manual? ¿están bien identificadas?\n3) Coste por sesión: ¿hay un tope de tokens/llamadas para que no se dispare?\n4) Loops infinitos: ¿hay límite de turnos o de tiempo total?\n5) Datos sensibles: ¿qué información del usuario se pasa al modelo y dónde se guarda?\n6) Observabilidad: ¿se loguea cada llamada con input, output, tools usadas, coste?\n7) Eval: ¿hay un dataset de regresión que se corre antes de cada deploy?\n8) Plan B humano: ¿qué pasa cuando el agente se rinde o falla? ¿cómo escala a una persona?\n\nDevuélveme una tabla y un veredicto: 'listo para deploy', 'listo para piloto controlado', 'no listo, faltan estas X cosas'."
+    },
+    {
+      tag: "Coste",
+      title: "Optimizar coste de una integración",
+      desc: "Análisis estructurado para reducir el coste de una integración con la API sin perder calidad notable.",
+      text: "Tengo una integración con la API de Claude que está costando [X €/mes]. Quiero reducir coste sin perder calidad notable.\n\nDetalles:\n- Modelo actual: [HAIKU / SONNET / OPUS]\n- Llamadas/día: [NÚMERO]\n- Tokens promedio por llamada: input [N], output [N]\n- Tarea principal: [DESCRIBE]\n\nAnaliza y propón en orden de impacto esperado:\n\n1) ¿Estoy en el modelo correcto? Si Sonnet o Opus, ¿podría Haiku hacer esta tarea con calidad aceptable?\n2) ¿Hay tokens redundantes en mis prompts? (repeticiones, instrucciones que no aportan, ejemplos innecesarios)\n3) ¿Puedo activar prompt caching para el system prompt o contextos que se repiten?\n4) ¿Puedo bajar max_tokens del output? ¿estoy generando más de lo que uso?\n5) ¿Puedo procesar en batch en lugar de online (batch API es ~50% más barata)?\n6) ¿Hay casos donde podría no llamar a la API (cache local, reglas heurísticas)?\n\nPara cada propuesta: estimación de ahorro y riesgo de calidad. Termina con un plan priorizado de 3 acciones para esta semana."
+    },
+    {
+      tag: "Comunidad",
+      title: "Pedir ayuda en Discord / Reddit",
+      desc: "Cómo formular una pregunta en la comunidad para que te respondan rápido y bien.",
+      text: "[Título sugerido: descripción concreta del problema, no 'help' ni 'duda rápida']\n\nQué estoy intentando hacer:\n[1-2 frases del objetivo final, no de la herramienta]\n\nCómo lo estoy haciendo ahora:\n[Stack que uso: modelo, lenguaje, librería, MCP, etc.]\n\nCódigo mínimo reproducible (sin secretos):\n```\n[CÓDIGO ACOTADO QUE MUESTRE EL PROBLEMA]\n```\n\nQué espero que pase:\n[OUTPUT ESPERADO]\n\nQué pasa en su lugar:\n[OUTPUT REAL, INCLUYE TRAZA DE ERROR SI HAY]\n\nQué ya he intentado:\n- [Intento 1] → [resultado]\n- [Intento 2] → [resultado]\n\nVersiones:\n- claude-[modelo-version]\n- SDK/librería: [versión]\n- OS: [si aplica]\n\nGracias de antemano. Si necesitas más contexto, dime."
+    },
+    {
+      tag: "Despedida",
+      title: "Brief de tu primer proyecto post-curso",
+      desc: "Plantilla para pedir a Claude que te ayude a definir el alcance de tu primer proyecto serio aplicando lo aprendido.",
+      text: "Acabo de terminar el curso Claude 101. Quiero construir mi primer proyecto real aplicando lo aprendido en el M8 (API, agents, MCPs, evals).\n\nMi contexto:\n- Trabajo en: [SECTOR Y PUESTO]\n- Nivel técnico real: [PRINCIPIANTE / SE DEFENDERSE EN PYTHON / DEV EXPERIMENTADO]\n- Tiempo que puedo dedicar: [HORAS/SEMANA] durante [SEMANAS]\n- Problema real que quiero resolver: [PROBLEMA QUE TENGO YO O MI EQUIPO HOY]\n\nAyúdame a delimitar el proyecto:\n\n1) Reformula el problema en una frase. Si la frase no cabe, está mal acotado.\n2) Propón 3 alcances posibles: mínimo (1 fin de semana), intermedio (2 semanas), ambicioso (1 mes). Para cada uno: qué hace, qué piezas del ecosistema usa, qué entrega.\n3) Para mi nivel y mi tiempo, ¿cuál recomiendas? Justifica.\n4) Lista de las 5 primeras tareas concretas, en orden, para empezar mañana.\n5) Un criterio de éxito medible: cómo sabré que el proyecto está terminado.\n6) Un criterio de rendición honesto: a partir de qué punto debería parar y replantear.\n\nNo me cuides los sentimientos. Si el problema que propongo es mala idea para empezar, dilo y propón uno mejor."
+    }
+  ],
+
+  quiz: [
+    {
+      q: "¿Cómo se autoriza una llamada a la API de Anthropic?",
+      opts: [
+        "Con usuario y contraseña en el body",
+        "Con una cabecera x-api-key que contiene la API key sacada en console.anthropic.com",
+        "Con OAuth 2.0 del navegador",
+        "No requiere autorización si la cuenta es free tier"
+      ],
+      correct: 1,
+      fb: "La API usa la cabecera x-api-key. Sacas la key en console.anthropic.com, la guardas como variable de entorno (nunca en el repo) y la mandas en cada request. Sin saldo cargado, las llamadas devuelven error 429."
+    },
+    {
+      q: "Tu equipo necesita un asistente que opere sobre tu monorepo: lea ficheros, edite código, corra tests. ¿Qué pieza del ecosistema encaja mejor?",
+      opts: [
+        "claude.ai con copy/paste manual",
+        "La API directamente con scripts ad hoc",
+        "Claude Code",
+        "Computer Use sobre VS Code"
+      ],
+      correct: 2,
+      fb: "Claude Code es exactamente eso: CLI oficial que opera sobre tu repo real, edita ficheros y ejecuta comandos. Computer Use sobre VS Code sería muchísimo más lento e impreciso. La API directa exigiría reimplementar el loop."
+    },
+    {
+      q: "¿Qué es un servidor MCP?",
+      opts: [
+        "Un modelo entrenado por Anthropic para tareas específicas",
+        "Un programa que expone herramientas y datos a Claude vía un protocolo estándar abierto",
+        "Un servicio cloud que reemplaza a la API oficial",
+        "Una versión local de Claude que corre offline"
+      ],
+      correct: 1,
+      fb: "MCP (Model Context Protocol) es un estándar abierto. Un servidor MCP expone capacidades (leer ficheros, llamar APIs, consultar BBDD) que Claude puede usar como herramientas. Es 'USB para LLMs': enchufas y funciona."
+    },
+    {
+      q: "Estás construyendo un agente que toma decisiones que afectan a producción. ¿Qué patrón es OBLIGATORIO?",
+      opts: [
+        "Usar siempre Opus, nunca Haiku",
+        "Loop infinito sin límite de turnos para que no se rinda",
+        "Confirmación humana explícita antes de acciones con efectos secundarios",
+        "Desactivar evals para que el agente aprenda en producción"
+      ],
+      correct: 2,
+      fb: "Un agente que escribe, borra, envía dinero o emails NUNCA debe ejecutar acciones críticas sin confirmación humana. Es la primera línea de defensa contra cascadas de errores. Además: límite de turnos, evals y observabilidad."
+    },
+    {
+      q: "¿Qué es una eval y por qué importa?",
+      opts: [
+        "Una evaluación humana del modelo en un panel de Anthropic",
+        "Un test automatizado con dataset etiquetado que mide si tu prompt/agent funciona; sin eval iteras a ciegas",
+        "Una métrica que devuelve la API en cada llamada",
+        "Una herramienta para entrenar un modelo personalizado"
+      ],
+      correct: 1,
+      fb: "Eval = test reproducible con ejemplos etiquetados. Cada cambio de prompt/modelo se ejecuta contra la eval y se compara la métrica. Sin esto, decides por intuición y la intuición se equivoca. Es lo que separa hobby de producción."
+    },
+    {
+      q: "¿Qué es una Skill (Custom Skill) de Claude?",
+      opts: [
+        "Un modelo fine-tuneado con tus datos",
+        "Una habilidad innata del modelo activada por una API key especial",
+        "Un paquete (carpeta con SKILL.md + scripts) que Claude carga cuando el contexto lo requiere",
+        "Una integración cerrada de Anthropic con apps de terceros"
+      ],
+      correct: 2,
+      fb: "Una skill es una carpeta con SKILL.md (instrucciones + descripción de cuándo usarla) y opcionalmente scripts y assets. Claude la carga automáticamente cuando detecta que el contexto encaja con su descripción. No reentrenas: le das herramientas."
+    },
+    {
+      q: "¿Para qué sirve Computer Use?",
+      opts: [
+        "Para que Claude controle un ordenador con clicks, teclas y capturas, automatizando software sin API",
+        "Para acceder a la BIOS del ordenador",
+        "Para que Claude se ejecute más rápido localmente",
+        "Para hacer videollamadas con Claude"
+      ],
+      correct: 0,
+      fb: "Computer Use permite a Claude operar un ordenador como una persona: ver pantalla, mover ratón, escribir, hacer scroll. Útil para apps sin API. Siempre en sandbox y con confirmaciones humanas en acciones críticas."
+    },
+    {
+      q: "¿Cuál es el flujo más razonable para iterar el prompt de una integración en producción?",
+      opts: [
+        "Cambiar el prompt y mirar si los 3 últimos casos 'pintan bien'",
+        "Tener un dataset de 100-500 ejemplos etiquetados; cada cambio corre la eval y compara métricas vs. la versión anterior",
+        "Cambiar el modelo a Opus cuando algo no funcione",
+        "Pedirle a Claude que se evalúe a sí mismo y confiar en su respuesta"
+      ],
+      correct: 1,
+      fb: "Eval con dataset etiquetado + comparación de métricas entre versiones de prompt. Sin esto, cualquier 'parece que va mejor' es sesgo de confirmación. Con esto, sabes con números si cada cambio mejora o empeora."
+    },
+    {
+      q: "¿Qué es el Anthropic Cookbook?",
+      opts: [
+        "Un libro de recetas físico que envía Anthropic",
+        "Una guía de cocina de los empleados de Anthropic",
+        "Un repo público en GitHub con ejemplos de código (RAG, agents, tool use) listos para adaptar",
+        "El nombre interno del modelo Opus"
+      ],
+      correct: 2,
+      fb: "github.com/anthropics/anthropic-cookbook. Repo público, mantenido por Anthropic, con notebooks de patrones que funcionan: contextual retrieval, classification, agents, etc. Aceptan PRs. Es de los mejores sitios para aprender por imitación."
+    },
+    {
+      q: "Acabas el curso. ¿Cuál es la jugada con más impacto para la próxima semana?",
+      opts: [
+        "Ver tres cursos más antes de tocar código",
+        "Esperar al lanzamiento del próximo modelo para empezar",
+        "Hacer una llamada real a la API y construir algo pequeño que resuelva un problema tuyo",
+        "Comprar todos los libros sobre LLMs publicados en el último año"
+      ],
+      correct: 2,
+      fb: "La forma de subir de nivel es construir. Una llamada a la API + un proyecto acotado en un fin de semana enseñan más que 20 horas de teoría adicional. Empieza por un problema real tuyo, no por un proyecto 'porque mola'."
+    }
+  ],
+
+  glosario: [
+    { t: "Agent", d: "Aplicación de Claude que opera en un loop autónomo: planifica, actúa con tools, observa, decide. No una respuesta — un proceso." },
+    { t: "Anthropic Cookbook", d: "Repo público de Anthropic en GitHub con ejemplos de código (RAG, agents, tool use). Open source y aceptan contribuciones." },
+    { t: "API key", d: "Clave secreta que autoriza tus llamadas a la API. Se saca en console.anthropic.com. Nunca se mete en el repo; va en variable de entorno." },
+    { t: "Batch API", d: "Variante de la API para procesar grandes volúmenes asíncronamente con ~50% de descuento. Resultados en hasta 24h." },
+    { t: "Claude Agent SDK", d: "Librería oficial (Python/TS) para construir agentes sin reimplementar el loop básico de planificar-actuar-observar." },
+    { t: "Claude Code", d: "CLI oficial de Anthropic que opera sobre tu repo: lee ficheros, edita código, ejecuta comandos, corre tests." },
+    { t: "Computer Use", d: "Capacidad de Claude de controlar un ordenador con capturas, clicks y teclas. Para automatizar software sin API." },
+    { t: "Embedding", d: "Representación numérica de un texto que captura su significado. Base de la búsqueda semántica y de los sistemas RAG." },
+    { t: "Eval", d: "Test automatizado con dataset etiquetado que mide la calidad de un prompt o agent. Imprescindible para iterar en serio." },
+    { t: "MCP", d: "Model Context Protocol. Estándar abierto que conecta Claude con herramientas externas (ficheros, APIs, BBDD) vía servidores plug-and-play." },
+    { t: "Prompt caching", d: "Mecanismo de la API que cachea partes estables del prompt (system, contexto) para abaratar llamadas repetidas." },
+    { t: "RAG", d: "Retrieval Augmented Generation. Patrón donde recuperas documentos relevantes y los pasas como contexto para que Claude responda con datos reales." },
+    { t: "Rate limit", d: "Tope de llamadas o tokens por minuto/día de tu cuenta de API. Si lo superas, el servidor devuelve 429. Sube con uso y solicitud." },
+    { t: "Sandbox", d: "Entorno aislado donde se ejecutan acciones (Computer Use, código generado) para que no toquen el sistema real del usuario." },
+    { t: "Skill", d: "Paquete (carpeta con SKILL.md + scripts) que extiende a Claude. Se carga automáticamente cuando el contexto encaja con su descripción." },
+    { t: "Tokenization", d: "Proceso de dividir el texto en tokens (~3-4 caracteres) antes de mandarlo al modelo. Determina el coste y la longitud máxima." },
+    { t: "Tool use", d: "Patrón en el que Claude decide llamar a una función externa (búsqueda, BD, cálculo) en lugar de responder solo con texto." },
+    { t: "Workflow", d: "Pipeline automatizado donde Claude es una pieza más, no la interfaz. Lo opuesto a 'usar el chat': que el chat ni aparezca." }
+  ],
+
+  recursos: [
+    {
+      tag: "Documentación",
+      title: "Anthropic Console",
+      desc: "Donde sacas tu API key, cargas saldo, ves tu uso y consultas tus rate limits. Punto de entrada al ecosistema técnico.",
+      url: "https://console.anthropic.com",
+      meta: "console.anthropic.com · gratis hasta usar"
+    },
+    {
+      tag: "Documentación",
+      title: "Docs oficiales (Claude API + Claude Code)",
+      desc: "La documentación técnica completa: API reference, guías de prompt engineering, Claude Code, agents, evals, Computer Use.",
+      url: "https://docs.claude.com",
+      meta: "docs.claude.com · referencia"
+    },
+    {
+      tag: "Open source",
+      title: "Anthropic Cookbook",
+      desc: "Repo público con notebooks de patrones reales: RAG, classification, agents, contextual retrieval. Empieza por aquí para construir.",
+      url: "https://github.com/anthropics/anthropic-cookbook",
+      meta: "github.com · aceptan PRs"
+    },
+    {
+      tag: "Especificación",
+      title: "Model Context Protocol",
+      desc: "Spec oficial de MCP, lista de servidores MCP existentes, guía para construir el tuyo propio. Imprescindible si vas a tocar MCPs.",
+      url: "https://modelcontextprotocol.io",
+      meta: "modelcontextprotocol.io · abierto"
+    },
+    {
+      tag: "Open source",
+      title: "Claude Agent SDK",
+      desc: "Repo del SDK oficial para construir agents en Python y TypeScript. Ejemplos, README detallado, issues activos.",
+      url: "https://github.com/anthropics/claude-agent-sdk-python",
+      meta: "github.com · Python + TS"
+    },
+    {
+      tag: "Comunidad",
+      title: "Discord oficial de Anthropic",
+      desc: "Canal oficial donde están developers de Anthropic y miles de constructores. Donde resuelves dudas técnicas en horas, no días.",
+      url: "https://www.anthropic.com/discord",
+      meta: "discord · ingles principalmente"
+    },
+    {
+      tag: "Comunidad",
+      title: "r/ClaudeAI en Reddit",
+      desc: "Comunidad activa con casos reales, comparativas con otros modelos, trucos y debates. Sirve para tomar la temperatura del ecosistema.",
+      url: "https://www.reddit.com/r/ClaudeAI/",
+      meta: "reddit.com · es/en"
+    },
+    {
+      tag: "Investigación",
+      title: "Anthropic Research",
+      desc: "Papers oficiales: Constitutional AI, interpretabilidad, scaling, sleeper agents. Para entender la dirección a 2-3 años del ecosistema.",
+      url: "https://www.anthropic.com/research",
+      meta: "anthropic.com · técnico"
+    }
+  ],
+
+  checklist: [
+    {
+      day: "Día 1",
+      text: "Saca tu API key en console.anthropic.com y carga 5€ de saldo.",
+      detail: "Sin esto no puedes hacer nada de lo que viene. La barrera no es técnica: es ese paso que llevas posponiendo."
+    },
+    {
+      day: "Día 2",
+      text: "Haz tu primera llamada a la API con curl o un script de 10 líneas.",
+      detail: "El objetivo es ver el JSON de respuesta, los tokens consumidos y el coste real. Una llamada cuesta céntimos."
+    },
+    {
+      day: "Día 3",
+      text: "Instala Claude Code y úsalo en un repo tuyo (aunque sea un sandbox).",
+      detail: "El cambio entre 'pegar código al chat' y 'Claude opera en tu repo' es la diferencia más grande del módulo."
+    },
+    {
+      day: "Día 4",
+      text: "Conecta tu primer MCP server (filesystem o GitHub son los más fáciles).",
+      detail: "Editas el config, reinicias Claude Desktop, pruebas una operación real. Verás Claude usando herramientas externas."
+    },
+    {
+      day: "Día 5",
+      text: "Elige un problema real tuyo y diseña una eval mínima de 20 ejemplos.",
+      detail: "No hace falta script aún: solo dataset etiquetado y la métrica que medirías. Sin esto no iteras nada."
+    },
+    {
+      day: "Día 6",
+      text: "Únete al Discord oficial y haz UNA pregunta técnica concreta.",
+      detail: "Usa la plantilla de 'pedir ayuda' del módulo. La comunidad es tu siguiente clase, después de este curso."
+    },
+    {
+      day: "Día 7",
+      text: "Graduación: construye un proyecto mínimo (1-2 días) y envíanos un email contándolo a hola@academia101.com — entras en la galería del curso.",
+      detail: "Cualquier cosa: un script con la API, un MCP custom, una skill, una eval. Lo que importa es que existe y resuelve algo tuyo. Te respondemos personalmente."
+    }
+  ]
+};
+
+// ============================================
+// RENDERIZADO
+// ============================================
+function renderFlashcards() {
+  const grid = document.getElementById('flashgrid');
+  MODULE_DATA.conceptos.forEach((c, i) => {
+    const card = document.createElement('div');
+    card.className = 'flash';
+    card.innerHTML = `
+      <div class="flash-inner">
+        <div class="flash-face front">
+          <div class="flash-num">Concepto ${String(i+1).padStart(2,'0')}</div>
+          <div class="flash-title">${c.title}</div>
+          <div class="flash-hint">↻ Pulsa para girar</div>
+        </div>
+        <div class="flash-face back">
+          <div class="flash-def">${c.def}</div>
+          <div class="flash-example">${c.example}</div>
+        </div>
+      </div>
+    `;
+    card.addEventListener('click', () => card.classList.toggle('flipped'));
+    grid.appendChild(card);
+  });
+}
+
+function renderCases() {
+  const wrap = document.getElementById('cases');
+  MODULE_DATA.casos.forEach((c, i) => {
+    const el = document.createElement('div');
+    el.className = 'case';
+    el.innerHTML = `
+      <div class="case-num">Caso ${String(i+1).padStart(2,'0')}</div>
+      <div class="case-title">${c.title}</div>
+      <div class="case-context">${c.context}</div>
+      <div class="case-grid">
+        <div class="case-col bad">
+          <div class="case-col-label">✕ Antes (chat manual)</div>
+          <div class="case-prompt">${c.bad}</div>
+        </div>
+        <div class="case-col good">
+          <div class="case-col-label">✓ Después (workflow)</div>
+          <div class="case-prompt">${c.good}</div>
+        </div>
+      </div>
+      <div class="case-why">${c.why}</div>
+    `;
+    wrap.appendChild(el);
+  });
+}
+
+function renderExercises() {
+  const wrap = document.getElementById('exercises');
+  MODULE_DATA.ejercicios.forEach((e, i) => {
+    const el = document.createElement('div');
+    el.className = 'ex';
+    el.innerHTML = `
+      <div class="ex-num">Ejercicio ${String(i+1).padStart(2,'0')}</div>
+      <div class="ex-title">${e.title}</div>
+      <div class="ex-task">${e.task.replace(/\n/g, '<br>')}</div>
+      <textarea class="ex-input" placeholder="Escribe tu respuesta aquí..."></textarea>
+      <div class="ex-btns">
+        <button class="btn btn-primary" data-action="show-solution">Ver solución modelo</button>
+        <button class="btn" data-action="clear">Limpiar</button>
+      </div>
+      <div class="ex-solution">
+        <div class="ex-solution-label">Solución modelo</div>
+        <div class="ex-solution-text">${e.solution}</div>
+        <div class="ex-rubric">
+          <div class="ex-rubric-title">Autoevaluación · ¿tu respuesta cumple?</div>
+          <ul>${e.rubric.map(r => `<li>${r}</li>`).join('')}</ul>
+        </div>
+      </div>
+    `;
+    const textarea = el.querySelector('.ex-input');
+    const solDiv = el.querySelector('.ex-solution');
+    el.querySelector('[data-action="show-solution"]').addEventListener('click', () => {
+      solDiv.classList.toggle('show');
+    });
+    el.querySelector('[data-action="clear"]').addEventListener('click', () => {
+      textarea.value = '';
+      solDiv.classList.remove('show');
+    });
+    wrap.appendChild(el);
+  });
+}
+
+function renderPrompts() {
+  const wrap = document.getElementById('prompts');
+  MODULE_DATA.prompts.forEach((p, i) => {
+    const el = document.createElement('div');
+    el.className = 'prompt-card';
+    el.innerHTML = `
+      <div class="prompt-tag">${p.tag}</div>
+      <div class="prompt-title">${p.title}</div>
+      <div class="prompt-desc">${p.desc}</div>
+      <pre class="prompt-text">${p.text.replace(/</g, '&lt;')}</pre>
+      <button class="copy-btn">Copiar al portapapeles</button>
+    `;
+    const btn = el.querySelector('.copy-btn');
+    btn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(p.text);
+        btn.textContent = '✓ Copiado';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.textContent = 'Copiar al portapapeles';
+          btn.classList.remove('copied');
+        }, 1800);
+      } catch(e) {
+        btn.textContent = 'Selecciona y copia manual';
+      }
+    });
+    wrap.appendChild(el);
+  });
+}
+
+// Tabs
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('sec-' + btn.dataset.tab).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+});
+
+function renderQuiz() {
+  const wrap = document.getElementById('quiz');
+  let answered = 0;
+  let correct = 0;
+  MODULE_DATA.quiz.forEach((q, i) => {
+    const el = document.createElement('div');
+    el.className = 'quiz-q';
+    el.innerHTML = `
+      <div class="quiz-num">Pregunta ${String(i+1).padStart(2,'0')} de ${MODULE_DATA.quiz.length}</div>
+      <div class="quiz-question">${q.q}</div>
+      <div class="quiz-opts">
+        ${q.opts.map((o, j) => `<button class="quiz-opt" data-idx="${j}">${o}</button>`).join('')}
+      </div>
+      <div class="quiz-feedback"></div>
+    `;
+    const opts = el.querySelectorAll('.quiz-opt');
+    const fb = el.querySelector('.quiz-feedback');
+    opts.forEach(opt => {
+      opt.addEventListener('click', () => {
+        if (el.classList.contains('answered')) return;
+        const idx = Number(opt.dataset.idx);
+        const isCorrect = idx === q.correct;
+        opts.forEach((o, j) => {
+          o.classList.add('locked');
+          if (j === q.correct) o.classList.add('correct');
+          else if (j === idx && !isCorrect) o.classList.add('wrong');
+        });
+        fb.classList.add('show', isCorrect ? 'correct' : 'wrong');
+        fb.textContent = (isCorrect ? '✓ Correcto. ' : '✗ Casi. ') + q.fb;
+        el.classList.add('answered');
+        answered++;
+        if (isCorrect) correct++;
+        if (answered === MODULE_DATA.quiz.length) showQuizResult(correct);
+      });
+    });
+    wrap.appendChild(el);
+  });
+}
+
+function showQuizResult(correct) {
+  const total = MODULE_DATA.quiz.length;
+  const pct = Math.round((correct / total) * 100);
+  let msg = '';
+  if (pct >= 90) msg = 'Excelente. Tienes el ecosistema claro. Ahora toca construir — empieza por el checklist.';
+  else if (pct >= 70) msg = 'Muy bien. Repasa las piezas donde fallaste y arranca el checklist de 7 días.';
+  else if (pct >= 50) msg = 'Aceptable. Vuelve a las flashcards de conceptos antes de tirar línea de código.';
+  else msg = 'Vuelve al vídeo del M8. Sin estos conceptos claros, te vas a atascar en cuanto abras la consola.';
+  const el = document.getElementById('quiz-result');
+  el.innerHTML = `
+    <div class="quiz-result-score">${correct} / ${total}</div>
+    <div class="quiz-result-msg">${msg}</div>
+    <button class="btn btn-primary" onclick="location.reload()">Reintentar quiz</button>
+  `;
+  el.classList.add('show');
+  el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function renderGlosario() {
+  const wrap = document.getElementById('glosario');
+  const sorted = [...MODULE_DATA.glosario].sort((a, b) => a.t.localeCompare(b.t, 'es'));
+  sorted.forEach(g => {
+    const el = document.createElement('div');
+    el.className = 'gloss-item';
+    el.innerHTML = `<div class="gloss-term">${g.t}</div><div class="gloss-def">${g.d}</div>`;
+    wrap.appendChild(el);
+  });
+}
+
+function renderRecursos() {
+  const wrap = document.getElementById('recursos');
+  MODULE_DATA.recursos.forEach(r => {
+    const el = document.createElement('a');
+    el.className = 'recurso';
+    el.href = r.url;
+    el.target = '_blank';
+    el.rel = 'noopener noreferrer';
+    el.innerHTML = `
+      <span class="recurso-tag">${r.tag}</span>
+      <div class="recurso-title">${r.title}</div>
+      <div class="recurso-desc">${r.desc}</div>
+      <div class="recurso-meta">${r.meta}</div>
+    `;
+    wrap.appendChild(el);
+  });
+}
+
+function renderChecklist() {
+  const wrap = document.getElementById('checklist');
+  const progressEl = document.getElementById('checkProgress');
+  const STORAGE_KEY = 'm8-checklist-progress';
+  // No usamos localStorage; estado en memoria solo (artefacto standalone)
+  const state = new Set();
+  function updateProgress() {
+    const done = state.size;
+    const total = MODULE_DATA.checklist.length;
+    progressEl.textContent = `${done} / ${total} completadas · ${Math.round((done/total)*100)}%`;
+  }
+  MODULE_DATA.checklist.forEach((c, i) => {
+    const el = document.createElement('div');
+    el.className = 'check-item';
+    el.innerHTML = `
+      <div class="check-box">${state.has(i) ? '✓' : ''}</div>
+      <div class="check-content">
+        <div class="check-day">${c.day}</div>
+        <div class="check-text">${c.text}</div>
+        <div class="check-detail">${c.detail}</div>
+      </div>
+    `;
+    el.addEventListener('click', () => {
+      if (state.has(i)) { state.delete(i); el.classList.remove('done'); el.querySelector('.check-box').textContent = ''; }
+      else { state.add(i); el.classList.add('done'); el.querySelector('.check-box').textContent = '✓'; }
+      updateProgress();
+    });
+    wrap.appendChild(el);
+  });
+  updateProgress();
+}
+
+renderFlashcards();
+renderCases();
+renderExercises();
+renderPrompts();
+renderQuiz();
+renderGlosario();
+renderRecursos();
+renderChecklist();
+</script>
+</body>
+</html>

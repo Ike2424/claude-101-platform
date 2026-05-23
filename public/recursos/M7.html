@@ -1,0 +1,1266 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude 101 · Recursos M7 · Buenas prácticas y límites</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Geist:wght@300..700&family=Geist+Mono:wght@400..600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #F4EFE3; --bg-2: #EFE9DA; --card: #FBF8F0;
+  --ink: #1C1A16; --ink-2: #3A352D; --muted: #756B5B; --muted-2: #A39782;
+  --line: #E1D8C2; --line-2: #CFC4AA;
+  --accent: #C8542B; --accent-2: #8B3A1E;
+  --olive: #4F5D38; --gold: #B08436;
+  --display: 'Fraunces', Georgia, serif;
+  --body: 'Geist', system-ui, sans-serif;
+  --mono: 'Geist Mono', ui-monospace, monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: var(--bg); color: var(--ink); font-family: var(--body); line-height: 1.55; }
+body {
+  background-image:
+    radial-gradient(circle at 12% 8%, rgba(200,84,43,.06) 0%, transparent 40%),
+    radial-gradient(circle at 88% 92%, rgba(79,93,56,.05) 0%, transparent 40%);
+  min-height: 100vh;
+}
+
+/* === HEADER === */
+.topbar {
+  position: sticky; top: 0; z-index: 50;
+  background: rgba(244,239,227,.85); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+  padding: 14px 32px; display: flex; align-items: center; gap: 20px;
+}
+.back-link {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--muted); text-decoration: none;
+  padding: 8px 14px; border-radius: 100px; border: 1px solid var(--line-2);
+  transition: all .2s;
+}
+.back-link:hover { color: var(--ink); border-color: var(--accent); }
+.topbar-title {
+  font-family: var(--display); font-style: italic; font-size: 22px;
+  font-weight: 400; color: var(--ink); flex: 1;
+}
+.topbar-title em { color: var(--accent); font-style: italic; }
+.topbar-badge {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--muted);
+  padding: 6px 12px; background: var(--card); border: 1px solid var(--line); border-radius: 6px;
+}
+
+/* === HERO === */
+.hero {
+  padding: 80px 32px 40px; max-width: 1100px; margin: 0 auto; text-align: center;
+}
+.hero .eyebrow {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .18em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 18px;
+}
+.hero h1 {
+  font-family: var(--display); font-style: italic; font-weight: 400;
+  font-size: clamp(40px, 6vw, 72px); letter-spacing: -0.025em;
+  color: var(--ink); line-height: 1.05; margin-bottom: 20px;
+}
+.hero h1 em { font-style: normal; color: var(--accent); }
+.hero .lede {
+  font-size: 18px; color: var(--ink-2); max-width: 60ch; margin: 0 auto;
+}
+
+/* === TABS === */
+.tabs-wrap {
+  position: sticky; top: 62px; z-index: 40;
+  background: rgba(244,239,227,.92); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+  padding: 16px 32px; display: flex; justify-content: center; gap: 8px;
+  overflow-x: auto;
+}
+.tab-btn {
+  font-family: var(--mono); font-size: 12px; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--muted);
+  padding: 10px 18px; border-radius: 100px; border: 1px solid var(--line-2);
+  background: var(--card); cursor: pointer; transition: all .2s; white-space: nowrap;
+}
+.tab-btn:hover { color: var(--ink); border-color: var(--accent); }
+.tab-btn.active {
+  color: var(--card); background: var(--ink); border-color: var(--ink);
+}
+
+/* === SECTIONS === */
+.section {
+  padding: 60px 32px 100px; max-width: 1100px; margin: 0 auto; display: none;
+}
+.section.active { display: block; }
+.section-intro {
+  margin-bottom: 40px; max-width: 70ch;
+}
+.section-intro h2 {
+  font-family: var(--display); font-style: italic; font-weight: 400;
+  font-size: 36px; margin-bottom: 12px; color: var(--ink);
+}
+.section-intro h2 em { color: var(--accent); font-style: normal; }
+.section-intro p { color: var(--ink-2); font-size: 16px; }
+
+/* === FLASHCARDS === */
+.flashgrid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;
+}
+.flash {
+  perspective: 1200px; min-height: 320px; cursor: pointer;
+}
+.flash-inner {
+  position: relative; width: 100%; height: 100%; min-height: 320px;
+  transition: transform .6s cubic-bezier(.2,.8,.2,1);
+  transform-style: preserve-3d;
+}
+.flash.flipped .flash-inner { transform: rotateY(180deg); }
+.flash-face {
+  position: absolute; inset: 0; backface-visibility: hidden;
+  background: var(--card); border: 1px solid var(--line); border-radius: 16px;
+  padding: 22px; display: flex; flex-direction: column;
+  overflow-y: auto;
+  box-shadow: 0 2px 12px rgba(28,26,22,.04);
+}
+.flash-face::-webkit-scrollbar { width: 4px; }
+.flash-face::-webkit-scrollbar-thumb { background: var(--line-2); border-radius: 4px; }
+.flash-face.back {
+  transform: rotateY(180deg);
+  background: var(--bg-2); border-color: var(--line-2);
+}
+.flash-num {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 12px;
+}
+.flash-title {
+  font-family: var(--display); font-style: italic; font-size: 24px;
+  font-weight: 400; color: var(--ink); margin-bottom: 10px; line-height: 1.2;
+}
+.flash-hint {
+  margin-top: auto; font-family: var(--mono); font-size: 10px;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--muted-2);
+}
+.flash-def { font-size: 14px; color: var(--ink-2); line-height: 1.6; margin-bottom: 12px; }
+.flash-example {
+  font-family: var(--mono); font-size: 12px; color: var(--olive);
+  background: var(--card); border-left: 2px solid var(--olive);
+  padding: 8px 12px; border-radius: 0 6px 6px 0;
+}
+
+/* === CASE STUDIES === */
+.case {
+  background: var(--card); border: 1px solid var(--line); border-radius: 18px;
+  padding: 32px; margin-bottom: 28px;
+}
+.case-num {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 8px;
+}
+.case-title {
+  font-family: var(--display); font-style: italic; font-size: 28px;
+  font-weight: 400; color: var(--ink); margin-bottom: 12px; line-height: 1.2;
+}
+.case-context { color: var(--ink-2); margin-bottom: 24px; font-size: 15px; }
+.case-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px;
+}
+@media (max-width: 720px) { .case-grid { grid-template-columns: 1fr; } }
+.case-col {
+  background: var(--bg); border-radius: 12px; padding: 20px;
+}
+.case-col.bad { border: 1px solid #e8c4b7; }
+.case-col.good { border: 1px solid #c4d4a8; }
+.case-col-label {
+  font-family: var(--mono); font-size: 10px; letter-spacing: .15em;
+  text-transform: uppercase; margin-bottom: 10px; font-weight: 600;
+}
+.case-col.bad .case-col-label { color: var(--accent-2); }
+.case-col.good .case-col-label { color: var(--olive); }
+.case-prompt {
+  font-family: var(--mono); font-size: 13px; line-height: 1.6;
+  color: var(--ink); white-space: pre-wrap;
+}
+.case-why {
+  background: var(--bg-2); border-left: 3px solid var(--gold);
+  padding: 14px 18px; border-radius: 0 8px 8px 0;
+  font-size: 14px; color: var(--ink-2);
+}
+.case-why strong { color: var(--gold); font-weight: 600; }
+
+/* === EXERCISES === */
+.ex {
+  background: var(--card); border: 1px solid var(--line); border-radius: 18px;
+  padding: 32px; margin-bottom: 28px;
+}
+.ex-num {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 8px;
+}
+.ex-title {
+  font-family: var(--display); font-style: italic; font-size: 28px;
+  font-weight: 400; color: var(--ink); margin-bottom: 12px; line-height: 1.2;
+}
+.ex-task { color: var(--ink-2); margin-bottom: 16px; font-size: 15px; }
+.ex-input {
+  width: 100%; min-height: 120px; resize: vertical;
+  background: var(--bg); border: 1px solid var(--line-2); border-radius: 10px;
+  padding: 14px 16px; font-family: var(--mono); font-size: 13px; color: var(--ink);
+  margin-bottom: 16px;
+}
+.ex-input:focus { outline: 2px solid var(--accent); outline-offset: -2px; }
+.ex-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+.btn {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .12em;
+  text-transform: uppercase; padding: 10px 18px; border-radius: 100px;
+  border: 1px solid var(--line-2); background: var(--card); color: var(--ink-2);
+  cursor: pointer; transition: all .2s;
+}
+.btn:hover { border-color: var(--accent); color: var(--ink); }
+.btn-primary { background: var(--ink); color: var(--card); border-color: var(--ink); }
+.btn-primary:hover { background: var(--accent); border-color: var(--accent); color: var(--card); }
+.ex-solution {
+  margin-top: 20px; padding: 20px; background: var(--bg-2); border-radius: 12px;
+  border-left: 3px solid var(--olive); display: none;
+}
+.ex-solution.show { display: block; }
+.ex-solution-label {
+  font-family: var(--mono); font-size: 10px; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--olive); margin-bottom: 10px; font-weight: 600;
+}
+.ex-solution-text {
+  font-family: var(--mono); font-size: 13px; line-height: 1.7; color: var(--ink);
+  white-space: pre-wrap; margin-bottom: 16px;
+}
+.ex-rubric { margin-top: 16px; }
+.ex-rubric-title {
+  font-size: 13px; color: var(--muted); margin-bottom: 8px; font-weight: 600;
+}
+.ex-rubric ul { list-style: none; padding: 0; }
+.ex-rubric li {
+  padding: 6px 0; font-size: 14px; color: var(--ink-2);
+  display: flex; align-items: flex-start; gap: 10px;
+}
+.ex-rubric li::before {
+  content: "✓"; color: var(--olive); font-weight: 600; margin-top: 1px;
+}
+
+/* === PROMPTS GALLERY === */
+.prompts-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px;
+}
+.prompt-card {
+  background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+  padding: 24px; display: flex; flex-direction: column;
+}
+.prompt-tag {
+  display: inline-block; font-family: var(--mono); font-size: 10px;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--gold);
+  background: var(--bg-2); padding: 4px 10px; border-radius: 100px;
+  margin-bottom: 12px; align-self: flex-start;
+}
+.prompt-title {
+  font-family: var(--display); font-style: italic; font-size: 22px;
+  font-weight: 400; color: var(--ink); margin-bottom: 10px; line-height: 1.2;
+}
+.prompt-desc { font-size: 14px; color: var(--ink-2); margin-bottom: 16px; }
+.prompt-text {
+  font-family: var(--mono); font-size: 12px; line-height: 1.65;
+  color: var(--ink-2); background: var(--bg); border: 1px dashed var(--line-2);
+  border-radius: 8px; padding: 14px; margin-bottom: 14px;
+  white-space: pre-wrap; flex: 1;
+}
+.copy-btn {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .12em;
+  text-transform: uppercase; padding: 10px 16px; border-radius: 8px;
+  border: 1px solid var(--ink); background: transparent; color: var(--ink);
+  cursor: pointer; transition: all .2s; align-self: stretch;
+}
+.copy-btn:hover { background: var(--ink); color: var(--card); }
+.copy-btn.copied { background: var(--olive); border-color: var(--olive); color: var(--card); }
+
+/* === QUIZ === */
+.quiz-q {
+  background: var(--card); border: 1px solid var(--line); border-radius: 16px;
+  padding: 26px; margin-bottom: 20px;
+}
+.quiz-num {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 10px;
+}
+.quiz-question {
+  font-family: var(--display); font-style: italic; font-size: 22px;
+  font-weight: 400; line-height: 1.3; color: var(--ink); margin-bottom: 18px;
+}
+.quiz-opts { display: flex; flex-direction: column; gap: 8px; }
+.quiz-opt {
+  text-align: left; padding: 14px 18px; border: 1px solid var(--line-2);
+  border-radius: 10px; background: var(--bg); color: var(--ink-2);
+  font-family: var(--body); font-size: 15px; cursor: pointer; transition: all .2s;
+}
+.quiz-opt:hover:not(.locked) { border-color: var(--accent); color: var(--ink); }
+.quiz-opt.correct {
+  background: rgba(79,93,56,.12); border-color: var(--olive); color: var(--ink);
+}
+.quiz-opt.wrong {
+  background: rgba(200,84,43,.1); border-color: var(--accent-2); color: var(--ink);
+}
+.quiz-opt.locked { cursor: default; }
+.quiz-feedback {
+  margin-top: 14px; padding: 14px 18px; border-radius: 10px;
+  font-size: 14px; line-height: 1.5; display: none;
+}
+.quiz-feedback.show { display: block; }
+.quiz-feedback.correct { background: rgba(79,93,56,.1); border-left: 3px solid var(--olive); color: var(--ink-2); }
+.quiz-feedback.wrong { background: rgba(200,84,43,.08); border-left: 3px solid var(--accent); color: var(--ink-2); }
+.quiz-result {
+  margin-top: 20px; padding: 28px; background: var(--card);
+  border: 1px solid var(--line); border-radius: 16px; text-align: center;
+  display: none;
+}
+.quiz-result.show { display: block; }
+.quiz-result-score {
+  font-family: var(--display); font-style: italic; font-size: 56px;
+  color: var(--accent); margin-bottom: 8px;
+}
+.quiz-result-msg { font-size: 16px; color: var(--ink-2); margin-bottom: 18px; }
+.quiz-result .btn { display: inline-block; }
+
+/* === GLOSARIO === */
+.glosario-list {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px;
+}
+.gloss-item {
+  background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+  padding: 18px 20px;
+}
+.gloss-term {
+  font-family: var(--display); font-style: italic; font-size: 20px;
+  font-weight: 400; color: var(--accent); margin-bottom: 6px;
+}
+.gloss-def { font-size: 14px; line-height: 1.55; color: var(--ink-2); }
+
+/* === RECURSOS === */
+.recursos-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px;
+}
+.recurso {
+  background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+  padding: 20px; text-decoration: none; color: inherit; transition: all .2s;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.recurso:hover {
+  border-color: var(--accent); transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(28,26,22,.08);
+}
+.recurso-tag {
+  display: inline-block; font-family: var(--mono); font-size: 10px;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--olive);
+  background: var(--bg-2); padding: 4px 10px; border-radius: 100px;
+  align-self: flex-start; margin-bottom: 4px;
+}
+.recurso-title {
+  font-family: var(--display); font-style: italic; font-size: 18px;
+  font-weight: 400; color: var(--ink); line-height: 1.3;
+}
+.recurso-desc { font-size: 13px; color: var(--ink-2); line-height: 1.5; }
+.recurso-meta {
+  font-family: var(--mono); font-size: 11px; color: var(--muted);
+  margin-top: auto; padding-top: 8px;
+}
+
+/* === CHECKLIST === */
+.checklist { display: flex; flex-direction: column; gap: 12px; }
+.check-item {
+  display: flex; align-items: flex-start; gap: 16px;
+  background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+  padding: 18px 22px; cursor: pointer; transition: all .2s;
+}
+.check-item:hover { border-color: var(--line-2); }
+.check-item.done {
+  background: var(--bg-2); border-color: var(--olive); opacity: .75;
+}
+.check-item.done .check-text { text-decoration: line-through; color: var(--muted); }
+.check-box {
+  width: 22px; height: 22px; border: 2px solid var(--line-2);
+  border-radius: 6px; flex-shrink: 0; margin-top: 2px;
+  display: flex; align-items: center; justify-content: center;
+  transition: all .2s;
+}
+.check-item.done .check-box {
+  background: var(--olive); border-color: var(--olive); color: var(--card);
+}
+.check-content { flex: 1; }
+.check-day {
+  font-family: var(--mono); font-size: 10px; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--accent); margin-bottom: 4px;
+}
+.check-text { font-size: 15px; line-height: 1.5; color: var(--ink); }
+.check-detail { font-size: 13px; color: var(--muted); margin-top: 4px; }
+.checklist-progress {
+  margin-top: 24px; padding: 20px; background: var(--bg-2);
+  border-radius: 12px; text-align: center;
+  font-family: var(--mono); font-size: 13px; color: var(--ink-2);
+}
+
+/* === FOOTER NAV === */
+.footer-nav {
+  border-top: 1px solid var(--line); padding: 32px;
+  display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+  max-width: 1100px; margin: 40px auto 0;
+}
+.foot-link {
+  font-family: var(--mono); font-size: 12px; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--muted); text-decoration: none;
+  padding: 12px 18px; border: 1px solid var(--line-2); border-radius: 100px;
+  transition: all .2s;
+}
+.foot-link:hover { color: var(--ink); border-color: var(--accent); }
+
+@media (max-width: 720px) {
+  .topbar { padding: 12px 16px; }
+  .hero { padding: 50px 16px 30px; }
+  .tabs-wrap { padding: 12px 16px; }
+  .section { padding: 40px 16px 80px; }
+  .case, .ex { padding: 22px; }
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <a href="/curso" class="back-link">← Volver al curso</a>
+  <div class="topbar-title">Módulo 7 · <em>Recursos</em></div>
+  <div class="topbar-badge">M7</div>
+</header>
+
+<section class="hero">
+  <div class="eyebrow">Profundiza · Practica · Aplica</div>
+  <h1>Buenas prácticas y <em>límites</em></h1>
+  <p class="lede">Claude no es magia y tú no eres una excepción. Aquí están los datos que nunca debes pegar, las situaciones donde el modelo se equivoca con cara de no equivocarse, y los frenos que tienes que poner antes de que un output cómodo se convierta en un problema serio.</p>
+</section>
+
+<nav class="tabs-wrap">
+  <button class="tab-btn active" data-tab="conceptos">Conceptos</button>
+  <button class="tab-btn" data-tab="casos">Casos de uso</button>
+  <button class="tab-btn" data-tab="ejercicios">Ejercicios</button>
+  <button class="tab-btn" data-tab="prompts">Prompts</button>
+  <button class="tab-btn" data-tab="quiz">Quiz final</button>
+  <button class="tab-btn" data-tab="glosario">Glosario</button>
+  <button class="tab-btn" data-tab="recursos">Recursos</button>
+  <button class="tab-btn" data-tab="checklist">Checklist</button>
+</nav>
+
+<!-- === CONCEPTOS === -->
+<section class="section active" id="sec-conceptos">
+  <div class="section-intro">
+    <h2>Diez <em>ideas</em> que tienes que dominar</h2>
+    <p>Pulsa cualquier tarjeta para girarla y ver la definición + un ejemplo concreto.</p>
+  </div>
+  <div class="flashgrid" id="flashgrid"></div>
+</section>
+
+<!-- === CASOS === -->
+<section class="section" id="sec-casos">
+  <div class="section-intro">
+    <h2>Con criterio o a <em>ciegas</em></h2>
+    <p>Seis situaciones reales. En cada una verás qué pasa cuando alguien pega lo que sea y firma el output vs. cuando se aplica un mínimo de criterio.</p>
+  </div>
+  <div id="cases"></div>
+</section>
+
+<!-- === EJERCICIOS === -->
+<section class="section" id="sec-ejercicios">
+  <div class="section-intro">
+    <h2>Practica <em>ahora</em></h2>
+    <p>Escribe tu respuesta, pulsa "Ver solución modelo" y compara con la rúbrica. No hay calificación: el objetivo es que detectes tus propias zonas grises.</p>
+  </div>
+  <div id="exercises"></div>
+</section>
+
+<!-- === PROMPTS === -->
+<section class="section" id="sec-prompts">
+  <div class="section-intro">
+    <h2>Plantillas para <em>copiar</em></h2>
+    <p>Sustituye los <code style="background:var(--bg-2);padding:1px 6px;border-radius:4px;font-family:var(--mono);font-size:.85em">[CORCHETES]</code> por lo tuyo y pega en Claude. Todas incorporan algún tipo de freno: disclaimers, citas, marcar inseguridad, audit log.</p>
+  </div>
+  <div class="prompts-grid" id="prompts"></div>
+</section>
+
+<!-- === QUIZ === -->
+<section class="section" id="sec-quiz">
+  <div class="section-intro">
+    <h2>Quiz <em>final</em></h2>
+    <p>10 preguntas sobre ética, privacidad y límites. Feedback inmediato. Si fallas más de tres, repasa antes de seguir — este módulo es el que más responsabilidad legal te ahorra.</p>
+  </div>
+  <div id="quiz"></div>
+  <div id="quiz-result" class="quiz-result"></div>
+</section>
+
+<!-- === GLOSARIO === -->
+<section class="section" id="sec-glosario">
+  <div class="section-intro">
+    <h2>Glosario del <em>módulo</em></h2>
+    <p>Vocabulario de privacidad, IA responsable y cumplimiento. Si trabajas en empresa, estos términos te van a aparecer en RGPD, compliance, legal y procurement.</p>
+  </div>
+  <div id="glosario" class="glosario-list"></div>
+</section>
+
+<!-- === RECURSOS === -->
+<section class="section" id="sec-recursos">
+  <div class="section-intro">
+    <h2>Para <em>profundizar</em></h2>
+    <p>Documentos oficiales, marcos regulatorios y lecturas que no son opinión: son fuentes con autoridad. Especialmente útiles si tienes que justificar políticas internas de uso de IA.</p>
+  </div>
+  <div id="recursos" class="recursos-grid"></div>
+</section>
+
+<!-- === CHECKLIST === -->
+<section class="section" id="sec-checklist">
+  <div class="section-intro">
+    <h2>Esta <em>semana</em>, haz esto</h2>
+    <p>El módulo no termina en el vídeo. Aquí tienes 7 acciones para auditar tu propio uso de Claude durante los próximos 7 días. Tilda lo que vayas haciendo — se guarda local.</p>
+  </div>
+  <div id="checklist" class="checklist"></div>
+  <div class="checklist-progress" id="checkProgress"></div>
+</section>
+
+<nav class="footer-nav">
+  <a href="/curso" class="foot-link">← Curso</a>
+  <a href="/recursos/M8.html" class="foot-link">Módulo 8 →</a>
+</nav>
+
+<script>
+// ============================================
+// CONTENIDO DEL MÓDULO 7
+// ============================================
+const MODULE_DATA = {
+  conceptos: [
+    {
+      title: "Datos que nunca debes pegar",
+      def: "PII (DNI, emails, teléfonos, direcciones), datos financieros (IBAN, tarjetas, facturación nominal), historiales médicos, contraseñas, claves API, secretos comerciales y cualquier información cubierta por NDA. Aunque el proveedor cumpla RGPD, el riesgo de fuga, retención inesperada o uso para entrenamiento futuro existe siempre.",
+      example: "Mal: 'Resume el contrato de Juan Pérez (DNI 12345678X) sobre 50.000€'. Bien: 'Resume el contrato de [CLIENTE_A] sobre [IMPORTE]'. Anonimiza ANTES de pegar."
+    },
+    {
+      title: "Alucinación con cara de seguridad",
+      def: "Claude (y todo LLM) genera texto plausible incluso cuando no sabe. El problema no es que se equivoque: es que se equivoca con el mismo tono confiado con el que acierta. Zonas calientes: citas, números exactos, jurisprudencia, fechas, nombres propios, APIs reales, doses médicas, leyes específicas.",
+      example: "Le pides 'cita el artículo del RGPD sobre derecho al olvido' y te suelta 'Artículo 17, apartado 3'. Puede ser correcto. Puede no serlo. Verifica antes de citarlo en un informe."
+    },
+    {
+      title: "Sesgo amplificado",
+      def: "Los LLM aprenden de internet, donde hay sesgos sistémicos de género, raza, clase y geografía. Al generar texto, los reproducen y a veces los amplifican. Aparece sobre todo en: descripciones profesionales, decisiones de hiring, recomendaciones financieras, análisis demográficos.",
+      example: "Pides 'descripción del candidato ideal para CEO' y recibes un perfil masculino, blanco, MBA. No porque Claude sea malo: porque los datos lo eran. Tu trabajo es notarlo y corregirlo."
+    },
+    {
+      title: "Propiedad intelectual del output",
+      def: "Quién es dueño de lo que genera Claude es una zona gris jurídica. Anthropic cede al usuario los derechos sobre el output (según sus términos), pero (1) eso no protege contra reclamaciones de terceros si el output parece a algo protegido, (2) en muchas jurisdicciones obras 100% generadas por IA no son protegibles por copyright, (3) puede haber imitación inadvertida de estilo o textos del dataset.",
+      example: "Generas un slogan que casualmente clava uno registrado de una marca rival. Aunque Claude no lo 'copió' a propósito, tú lo publicas y respondes tú."
+    },
+    {
+      title: "RGPD y residencia de datos",
+      def: "Si manejas datos de ciudadanos UE, el RGPD aplica aunque el proveedor sea de fuera. Anthropic ofrece compromisos contractuales (DPA), pero el procesamiento puede ocurrir en EE.UU. Necesitas: base legal para el tratamiento, registro de actividades, evaluación de impacto (DPIA) si el riesgo es alto, y consentimiento informado del titular cuando aplique.",
+      example: "Usar Claude para 'analizar' currículums recibidos sin avisar a los candidatos en la política de privacidad y sin DPIA es exposición legal directa."
+    },
+    {
+      title: "Audit trail",
+      def: "Registro de qué entradas se enviaron a Claude, qué salidas se recibieron, quién lo hizo y cuándo. Imprescindible para cumplimiento, para defensa legal si algo sale mal, y para aprender de tus propios errores. En entornos profesionales, no usar Claude sin loggear es como hacer transferencias bancarias sin extractos.",
+      example: "Guarda prompts + outputs + fecha + usuario para cualquier uso que afecte a clientes, hires, decisiones financieras o documentos legales. Excel o Notion sirven para empezar."
+    },
+    {
+      title: "Cuándo NO usar Claude",
+      def: "Decisiones médicas, legales o financieras concretas para una persona real (siempre con profesional humano). Información en tiempo real (cotizaciones, noticias del día) sin búsqueda web. Cualquier dato sensible sin anonimizar. Decisiones de hiring/firing/promoción como única fuente. Crisis emocionales agudas (Claude no es un terapeuta).",
+      example: "'¿Tengo cáncer según estos síntomas?' → médico. '¿Es legal este contrato?' → abogado. '¿Compro Tesla hoy?' → asesor financiero. Claude puede ayudarte a preparar la conversación, no a sustituirla."
+    },
+    {
+      title: "Transparencia con stakeholders",
+      def: "Si usas IA en trabajo que entregas a otros (cliente, jefe, equipo, lectores), díselo. No por moralismo: porque (1) cambia cómo te evalúan, (2) si descubren que mentiste pierdes credibilidad permanente, (3) en muchos sectores empieza a ser obligatorio declararlo (academia, periodismo, partes de la UE).",
+      example: "En vez de fingir que el informe es 100% tuyo: 'borrador generado con Claude, revisado y editado por mí'. Es honesto y demuestra que dominas la herramienta."
+    },
+    {
+      title: "Dependencia y degradación de skill",
+      def: "Usar Claude para todo, todo el tiempo, atrofia músculos cognitivos: redacción, síntesis, razonamiento, memoria. Es el mismo fenómeno que con GPS y orientación. No es razón para dejar de usar IA, sino para usarla con criterio: hacer tú primero, usar Claude para review o segundo borrador, no para arrancar siempre desde cero.",
+      example: "Mal patrón: 'no sé qué pensar de X, le pregunto a Claude'. Mejor: 'esto pienso yo de X, ahora le pido a Claude que me lo critique'."
+    },
+    {
+      title: "Evaluación crítica del output",
+      def: "Cualquier output de Claude se evalúa contra tres preguntas: (1) ¿es factualmente correcto?, (2) ¿es contextualmente apropiado para mi caso?, (3) ¿es éticamente defendible si alguien me audita? Si fallan las tres preguntas, no lo uses. Si falla una, edita. Si pasan las tres, sigue revisando — confianza calibrada, no ciega.",
+      example: "Output: 'recomendamos despedir al 15% de la plantilla con criterios X'. Factualmente puede ser correcto. Contextualmente quizás. Éticamente defendible solo con criterios legales auditables, no improvisados por un LLM."
+    }
+  ],
+
+  casos: [
+    {
+      title: "Contrato legal entregado sin revisión humana",
+      context: "Una pyme necesita un contrato de prestación de servicios. El gerente lo pide a Claude, copia-pega y lo manda firmado al cliente.",
+      bad: "Hazme un contrato de prestación de servicios entre mi empresa y un cliente para un proyecto de marketing de 6 meses por 30.000€.",
+      good: "Necesito un BORRADOR INICIAL de contrato de prestación de servicios que después revisará un abogado.\n\nContexto: jurisdicción España, prestador autónomo, cliente SL, importe 30.000€ en 6 meses, scope marketing digital.\n\nDevuélveme:\n1) Borrador con las cláusulas habituales (objeto, precio, plazo, propiedad intelectual, confidencialidad, jurisdicción)\n2) Lista numerada de las 5-7 zonas más sensibles donde mi abogado debería detenerse\n3) Para cada zona, qué pregunta concreta le tengo que hacer\n4) Disclaimer explícito al final indicando que esto NO sustituye revisión legal\n\nNo cites artículos específicos del Código Civil ni jurisprudencia — pueden estar mal y el abogado debe ponerlos él.",
+      why: "<strong>Por qué importa:</strong> el primer enfoque produce un documento que parece profesional pero que el gerente firmará sin haber pasado por un abogado. El segundo lo trata como lo que es: un borrador para acelerar el trabajo del profesional, no para sustituirlo."
+    },
+    {
+      title: "Consejo financiero sin disclaimer",
+      context: "Un usuario describe su situación financiera personal y pide a Claude qué hacer con sus ahorros.",
+      bad: "Tengo 50.000€ ahorrados, 38 años, hipoteca de 800€/mes y dos hijos. ¿En qué debería invertir?",
+      good: "Quiero entender mejor MIS OPCIONES de inversión (no recibir una recomendación). Mi situación: 50.000€ ahorrados, 38 años, hipoteca, dos hijos, residencia España.\n\nNO me digas qué hacer. En su lugar:\n1) Lista los 5-6 vehículos de inversión típicos que se considerarían en mi perfil (cuenta remunerada, indexados, planes de pensiones, etc.) con pros/contras\n2) Para cada uno, las 2-3 preguntas que debería responderme antes de elegir\n3) Las 4 preguntas críticas que debería hacerle a un asesor financiero independiente (NO comisionista)\n4) Qué información sobre mi situación NO te he dado y sí necesitaría un asesor real\n\nIncluye disclaimer al final dejando claro que esto es educación financiera, no asesoramiento personalizado, y que las decisiones reales requieren un profesional regulado.",
+      why: "<strong>Por qué importa:</strong> el primer prompt invita a Claude a darte 'la respuesta' a una decisión donde no tiene ni todos los datos ni la certificación legal para opinar. El segundo lo convierte en preparación para hablar con quien sí puede aconsejarte."
+    },
+    {
+      title: "Copy publicitario que imita estilo protegido",
+      context: "Una marca de moda pide a Claude copy 'al estilo de Patagonia' para su campaña de sostenibilidad.",
+      bad: "Escríbeme 10 frases de copy para mi campaña de sostenibilidad. Imita el estilo de Patagonia: directo, comprometido, con un punto activista.",
+      good: "Estoy desarrollando copy para una campaña de sostenibilidad de una marca de moda independiente.\n\nQuiero un tono comprometido y directo, pero NO quiero imitar a ninguna marca concreta (eso me expondría a problemas de IP y a sonar de segunda mano).\n\nHaz lo siguiente:\n1) Identifica 4-5 PRINCIPIOS de redacción que caracterizan el copy 'activista' creíble (sin nombrar marcas específicas)\n2) Para cada principio, escribe 2 ejemplos de copy original aplicado a MI marca: [datos de la marca, productos, valores específicos]\n3) Marca con [REVISAR] cualquier frase que pueda sonar demasiado parecida a slogans existentes — yo lo verifico antes de usar\n\nEvita: claims sin pruebas ('100% sostenible'), greenwashing, frases hechas del sector.",
+      why: "<strong>Por qué importa:</strong> 'imita a X' es ruta directa a problemas de propiedad intelectual y a copy genérico. Trabajar con principios + verificación deja a la marca con voz propia y sin demandas."
+    },
+    {
+      title: "Decisión de hiring con sesgo amplificado",
+      context: "Un equipo de RRHH usa Claude para hacer un primer cribado de 200 currículums para un puesto de ingeniería senior.",
+      bad: "Te paso 200 currículums. Identifica los 30 candidatos más prometedores para un puesto de ingeniería senior y dime cuáles descartar de entrada.",
+      good: "Tengo 200 CVs para un puesto de ingeniería senior. NO quiero que decidas a quién entrevistar — quiero que me ayudes a procesar la información de forma sistemática.\n\nDevuélveme:\n1) Una tabla con campos OBJETIVOS de cada CV: años de experiencia, tecnologías declaradas, certificaciones, idiomas. Sin valoraciones.\n2) Lista de CVs donde la información esencial está incompleta o ambigua (no decides — solo señalas)\n3) Las 5 zonas donde un cribado automatizado típicamente introduce sesgos (nombre extranjero, gaps de empleo por maternidad, edad inferida, universidad, etc.) y cómo neutralizar cada una\n4) Un proceso de 3 pasos para que la decisión final la tomen humanos con criterios escritos antes de mirar los CVs\n\nMi compromiso: las decisiones de descarte las hace una persona, no tú. Tú me das estructura.",
+      why: "<strong>Por qué importa:</strong> delegar cribado de hiring a un LLM amplifica sesgos del dataset y puede ser ilegal según la jurisdicción (AI Act UE clasifica esto como alto riesgo). Usar Claude como apoyo estructural, no como decisor, es la línea correcta."
+    },
+    {
+      title: "Datos sensibles pegados sin pensar",
+      context: "Un analista pega un Excel con datos nominales de empleados (nombres, salarios, evaluaciones) para que Claude saque insights.",
+      bad: "Te paso el Excel con todos los empleados, salarios y evaluaciones de desempeño. Analiza qué patrones hay y qué decisiones de RRHH propones.",
+      good: "Voy a analizar datos de RRHH. ANTES de pegarte nada, vamos a preparar el flujo:\n\n1) ¿Qué análisis necesito? Dame las preguntas concretas que un análisis de este tipo debería responder.\n2) Para responderlas, ¿qué campos del Excel necesitas REALMENTE? (probablemente no necesitas nombres ni IDs personales).\n3) Diséñame un proceso de anonimización: qué columnas eliminar, cómo sustituir nombres por IDs aleatorios, qué hacer con campos que podrían reidentificar.\n4) Una vez anonimizados los datos, qué formato debería pegarte (CSV, tabla) para que el análisis sea limpio.\n\nDespués de esto, pegaré SOLO los datos anonimizados. Confirma que entiendes el flujo antes de empezar.",
+      why: "<strong>Por qué importa:</strong> pegar datos nominales de empleados es violación directa del RGPD y de cualquier política interna sensata. El segundo flujo da el mismo análisis sin exponer datos personales — y deja audit trail de la decisión."
+    },
+    {
+      title: "Informe firmado sin revelar uso de IA",
+      context: "Un consultor entrega un informe estratégico a un cliente. El 80% lo redactó Claude. El cliente cree que lo escribió el consultor de cero.",
+      bad: "Pega el informe completo generado por Claude en la plantilla corporativa, ponle tu firma y mándalo como si fuera trabajo propio.",
+      good: "Workflow para entregar informes con uso transparente de IA:\n\n1) Genero borrador con Claude usando prompts específicos del proyecto\n2) Edito sustancialmente: añado mi análisis, contexto del cliente, opiniones propias, verifico cifras\n3) En la carátula del informe, sección 'Metodología', incluyo: 'Borrador inicial generado con asistencia de IA (Claude, Anthropic), editado, verificado y complementado por [nombre]. Las conclusiones y recomendaciones reflejan el criterio profesional del autor.'\n4) Mantengo audit trail interno: prompts usados + versiones del borrador + cambios humanos. Por si el cliente pregunta o por si hay disputa.\n5) Si el cliente tiene política explícita sobre uso de IA, la consulto ANTES de empezar y la respeto.\n\nEsto no debilita mi trabajo: lo hace defendible.",
+      why: "<strong>Por qué importa:</strong> ocultar el uso de IA cuando se descubre destruye la relación. Declararlo demuestra dominio de la herramienta y deja al cliente decidiendo informado lo que está comprando. En sectores regulados (auditoría, asesoría legal, academia, periodismo) ya empieza a ser obligación, no cortesía."
+    }
+  ],
+
+  ejercicios: [
+    {
+      title: "Audita un output con sesgo",
+      task: "Le has pedido a Claude: 'Describe al candidato ideal para un puesto de jefe de obra'.\n\nRespuesta de Claude (resumida): 'El candidato ideal será un hombre con experiencia mínima de 15 años en construcción, físicamente robusto, capaz de imponer autoridad en obra, con disponibilidad total y carnet de conducir.'\n\nIdentifica al menos 4 problemas del output. Después, reescribe el prompt para evitarlos sin perder la utilidad de la respuesta.",
+      solution: "Problemas detectables:\n1) Sesgo de género explícito ('hombre') — no hay razón técnica para excluir mujeres del puesto.\n2) Sesgo físico ('robusto') — el trabajo de jefe de obra es de gestión, no de carga; este criterio excluye personas con discapacidades sin justificación.\n3) Sesgo autoritario ('imponer autoridad') — confunde liderazgo con masculinidad performativa.\n4) 'Disponibilidad total' — claim ambiguo, potencialmente discriminatorio hacia personas con cuidados familiares (mayoritariamente mujeres).\n5) Mezcla competencias reales (experiencia, carnet) con criterios subjetivos y sesgados.\n\nPrompt mejorado:\n'Necesito definir el perfil profesional para un puesto de jefe de obra. Dame:\n1) Competencias técnicas verificables (formación, experiencia mínima, certificaciones, idiomas necesarios)\n2) Competencias de gestión y liderazgo, descritas sin marcar género ni rasgos físicos\n3) Habilidades blandas relevantes\n4) Una lista explícita de criterios que NO debo usar por ser discriminatorios o no relacionados con el desempeño\n\nObjetivo: poder publicar la oferta cumpliendo legislación laboral española y atrayendo el pool más amplio posible de candidaturas cualificadas.'",
+      rubric: [
+        "Identificar sesgos explícitos de género en el output original",
+        "Detectar criterios físicos o personales no relacionados con el desempeño",
+        "Reescribir el prompt pidiendo competencias verificables, no rasgos",
+        "Solicitar explícitamente a Claude que liste criterios prohibidos",
+        "Anclar el objetivo en cumplimiento legal real, no en intuiciones"
+      ]
+    },
+    {
+      title: "Refactoriza un workflow inseguro",
+      task: "Una abogada describe su uso actual: 'Cuando un cliente me manda un caso por email, copio todo el texto (con nombres, importes, DNIs) en Claude y le pido un análisis preliminar. Después lo edito y se lo paso al cliente como mi análisis.'\n\nIdentifica los riesgos y diseña un workflow alternativo seguro, sin perder el beneficio (acelerar el análisis preliminar).",
+      solution: "Riesgos del workflow actual:\n1) Pegar PII (nombres, DNIs) y datos confidenciales del cliente en un servicio de terceros sin DPA específico ni base legal claríficada.\n2) Posible violación del secreto profesional abogado-cliente (en España, art. 542.3 LOPJ).\n3) Falta de audit trail: si el análisis tiene error, no hay registro de qué se le pidió a Claude.\n4) Falta de disclosure al cliente sobre uso de IA en su asunto.\n5) Riesgo de presentar como propio un análisis con posibles alucinaciones (citas legales, jurisprudencia).\n\nWorkflow alternativo:\n\n1) Antes de cualquier uso: revisar las condiciones del plan Claude (Team/Enterprise no usa inputs para entrenar; planes free podrían) y firmar DPA con Anthropic si aplica.\n\n2) Plantilla de anonimización (la creas una vez y la reutilizas):\n- Sustituir nombres por 'CLIENTE_A', 'PARTE_B'.\n- Sustituir DNIs por '[ID_1]', '[ID_2]'.\n- Sustituir importes específicos por rangos ('entre 50k y 100k').\n- Eliminar fechas exactas si pueden identificar.\n- Eliminar nombres de empresas reales.\n\n3) Prompt con frenos: 'Analiza este caso anónimo. NO cites artículos del Código Civil ni jurisprudencia específica — yo los pondré después con mis fuentes. Identifica las cuestiones jurídicas y posibles líneas argumentales. Marca con [INCERTIDUMBRE] cualquier punto donde no tengas certeza.'\n\n4) Validación humana: la abogada verifica artículos y jurisprudencia con su base de datos profesional (vLex, Aranzadi, etc.), añade su análisis propio.\n\n5) Audit log: en cada expediente, sección con 'IA utilizada para análisis preliminar el [fecha], prompts usados, versiones del análisis'.\n\n6) Disclosure al cliente: cláusula en hoja de encargo donde se informa del uso de IA como herramienta de análisis preliminar.\n\n7) Política firme: información protegida por secreto bancario, sanitario o documentación procesal en curso → nunca a un LLM externo, ni anonimizada.",
+      rubric: [
+        "Identificar la violación de secreto profesional / RGPD",
+        "Diseñar un proceso de anonimización repetible",
+        "Añadir frenos al prompt para reducir alucinaciones legales",
+        "Mantener validación humana en fuentes profesionales",
+        "Incluir audit trail y disclosure al cliente",
+        "Marcar qué tipos de información nunca deberían entrar"
+      ]
+    },
+    {
+      title: "Data inventory de tu uso real",
+      task: "Haz un inventario honesto de los datos que has pegado en Claude (o en otro LLM) durante el último mes. Para cada tipo de dato, clasifica:\n\n- Tipo de dato (email, código, contrato, finanzas personales, comunicaciones internas, etc.)\n- Sensibilidad (pública / interna / confidencial / sensible)\n- Si estaba anonimizado (sí / parcialmente / no)\n- Qué plan de Claude usaste (free / Pro / Team / API)\n- Si lo volverías a hacer igual\n\nMínimo 8 entradas. El objetivo es ver tu propio patrón.",
+      solution: "Ejemplo de inventario (el tuyo será distinto):\n\n1) Borrador de email a cliente — interna — parcial (sin nombre del cliente) — Pro — sí, lo haría igual.\n2) Código JavaScript de un script interno — interna — no (incluía variables con nombres reales) — Pro — debería haber sustituido nombres genéricos.\n3) Resumen de reunión con notas mías — interna — no (nombres de compañeros) — Pro — debería revisar política interna.\n4) Análisis de Excel de ventas (con clientes nombrados) — confidencial — no — Pro — NO, debería anonimizar.\n5) Pedir ayuda con declaración de la renta (datos personales) — sensible — no — Pro — NO, riesgo claro.\n6) Brainstorming nombres de producto — pública — no procede — Pro — sí.\n7) Resumen de paper académico — pública — no procede — Pro — sí.\n8) CV propio para optimizarlo — interna — no — Pro — aceptable (es mi dato), pero consciente.\n9) Email pasivo-agresivo de un compañero para pedir 'cómo responder' — confidencial — no (nombre suyo) — Pro — NO, exposición de tercero sin consentimiento.\n10) Datos médicos propios (analíticas) — sensible — no — Pro — NO, ni siquiera para mí mismo sin entender retención.\n\nConclusiones probables (revisa las tuyas):\n- Pegas más datos sensibles de los que crees.\n- Datos de terceros entran sin que ellos lo sepan.\n- Acción: regla personal 'antes de pegar, pregúntame ¿esto es público, mío o de otra persona?'.\n- Acción: lista negra de datos que nunca pegas (DNIs, salarios concretos, datos médicos, contraseñas, comunicaciones privadas de terceros).",
+      rubric: [
+        "Listar entradas reales, no abstracciones",
+        "Clasificar honestamente sensibilidad y anonimización",
+        "Detectar datos de terceros que entraron sin consentimiento",
+        "Sacar conclusiones accionables (no solo descriptivas)",
+        "Definir reglas personales explícitas para el futuro"
+      ]
+    },
+    {
+      title: "Detecta dependencia",
+      task: "Lee estas cinco situaciones y decide en cuáles hay un patrón de dependencia problemática del LLM y por qué. Para las problemáticas, propón una alternativa más sana.\n\nA) Marta usa Claude para corregir gramática de sus emails antes de mandarlos.\nB) Carlos pide a Claude que decida si rompe con su pareja.\nC) Lucía resume con Claude los papers que tiene que leer para su tesis (sin leerlos ella).\nD) Pedro le pide a Claude un primer borrador de su discurso de boda y luego lo reescribe a su estilo.\nE) Ana, antes de cualquier conversación difícil con su equipo, escribe a Claude pidiéndole exactamente qué decir, palabra por palabra.",
+      solution: "A) NO problemática — es uso de herramienta de productividad estándar. Equivalente a un corrector ortográfico. No degrada skills que importen.\n\nB) PROBLEMÁTICA — delegar decisiones íntimas a un LLM es a la vez ineficaz (no tiene los datos) y deshumanizante. Alternativa: usar Claude para 'ayúdame a hacerme las preguntas que debería responderme yo antes de decidir' (ver caso M1 de decisión personal). La decisión la tomas tú.\n\nC) PROBLEMÁTICA — en una tesis, leer las fuentes ES el trabajo. Resumirlas con IA sin leerlas (1) genera ceguera ante matices que no aparecen en el resumen, (2) propaga errores si el resumen alucina, (3) atrofia tu capacidad crítica. Alternativa: usa Claude para localizar pasajes relevantes ('en este paper, ¿en qué sección discute X?'), pero lee tú los pasajes.\n\nD) NO problemática — está usando Claude como punto de partida y luego adueñándose del resultado con su voz. Es buen patrón.\n\nE) PROBLEMÁTICA — pedir exactamente qué decir, palabra por palabra, te incapacita para responder cuando el otro improvisa. Alternativa: pedir a Claude (1) los 3 puntos clave que tienes que transmitir, (2) las objeciones probables y cómo manejarlas, (3) lo que NO deberías decir. Las palabras concretas las pones tú en directo.\n\nPatrón general: la dependencia problemática aparece cuando el LLM sustituye un músculo cognitivo o emocional que necesitas mantener entrenado para tu vida o profesión.",
+      rubric: [
+        "Distinguir uso productivo de delegación de criterio",
+        "Identificar que decisiones personales íntimas no son delegables",
+        "Detectar que leer las fuentes es parte irreemplazable de aprender",
+        "Reconocer el patrón saludable: Claude arranca, humano se apropia",
+        "Proponer alternativas concretas, no solo críticas"
+      ]
+    },
+    {
+      title: "Construye tu política personal de uso",
+      task: "Redacta tu propia política personal de uso de Claude (o cualquier LLM) en formato de 1 página. Debe cubrir, como mínimo:\n\n- Qué datos NUNCA pegas, por categorías\n- Qué planes/configuraciones usas y por qué\n- Cómo anonimizas cuando hace falta\n- En qué decisiones nunca delegas (mantienes control humano)\n- Cómo declaras el uso de IA a clientes/equipo\n- Tu sistema de audit trail (puede ser muy simple)\n- Cómo revisas y verificas outputs antes de usarlos\n- Tu regla anti-dependencia\n\nNo copies plantillas: escribe la tuya, con tus categorías profesionales reales.",
+      solution: "Ejemplo de política personal (la tuya debe reflejar tu trabajo):\n\nPOLÍTICA PERSONAL DE USO DE IA — [Tu nombre], revisada [fecha]\n\n1. DATOS PROHIBIDOS (nunca pegar, ni anonimizados):\n- DNIs, pasaportes, datos identificativos de cualquier persona.\n- Datos médicos, propios o ajenos.\n- Contraseñas, claves API, tokens, secretos de configuración.\n- Comunicaciones privadas de terceros sin consentimiento.\n- Documentos bajo NDA específico.\n\n2. DATOS QUE SOLO ENTRAN ANONIMIZADOS:\n- Información de clientes (sustituyo nombres por CLIENTE_A, B...).\n- Importes financieros (uso rangos: 'entre 10k y 50k').\n- Datos de empleados (IDs aleatorios, sin nombres).\n\n3. PLANES Y CONFIGURACIÓN:\n- Uso Claude Team (sin entrenamiento sobre mis datos según términos).\n- No subo PDFs sin haber revisado su contenido antes.\n- API solo con DPA firmado con Anthropic.\n\n4. DECISIONES NO DELEGABLES:\n- Hires, despidos, evaluaciones de desempeño finales.\n- Diagnósticos o recomendaciones médicas.\n- Asesoramiento legal o financiero concreto a terceros.\n- Decisiones éticas personales (relaciones, valores).\n\n5. DISCLOSURE:\n- Cualquier entregable a cliente lleva nota de metodología: 'borrador asistido por IA, revisado y editado por mí'.\n- En reuniones, si uso Claude en tiempo real, lo digo.\n\n6. AUDIT TRAIL:\n- Notion con tabla: fecha / proyecto / prompt resumido / verificaciones hechas.\n- Conservar 12 meses mínimo.\n\n7. VERIFICACIÓN PRE-USO:\n- Cifras: verifico en fuente original.\n- Citas/jurisprudencia/papers: verifico que existen.\n- Afirmaciones factuales no triviales: contrasto.\n- Si el output 'suena' demasiado bien, sospecho.\n\n8. ANTI-DEPENDENCIA:\n- Antes de preguntar a Claude, pienso 3 minutos yo.\n- Una vez al mes, hago una tarea sin IA para mantener musculatura.\n- No empiezo todos mis textos con Claude por defecto.\n\nRevisaré esta política cada 6 meses o cuando cambien las condiciones del proveedor.",
+      rubric: [
+        "Lista concreta de categorías de datos prohibidos",
+        "Proceso de anonimización aplicable, no solo enunciado",
+        "Decisiones explícitas que no delegas, con razón",
+        "Mecanismo de disclosure a stakeholders",
+        "Sistema de audit trail proporcional a tu uso",
+        "Reglas anti-dependencia operacionales, no aspiracionales",
+        "Fecha de revisión y mecanismo de actualización"
+      ]
+    }
+  ],
+
+  prompts: [
+    {
+      tag: "Disclaimer",
+      title: "Análisis con disclaimer obligatorio",
+      desc: "Para cualquier análisis en zonas sensibles (legal, médico, financiero). Fuerza a Claude a marcar sus limitaciones.",
+      text: "Quiero un análisis preliminar sobre [TEMA].\n\nReglas obligatorias:\n1) Al final de la respuesta, incluye un disclaimer claro indicando que este análisis no sustituye asesoramiento profesional de [TIPO: abogado/médico/asesor financiero/etc.] y que cualquier decisión real requiere consultarlo con un profesional certificado.\n2) Marca con [INCERTIDUMBRE] cualquier afirmación de la que no tengas certeza alta.\n3) Si te falta información para responder bien, dilo en lugar de adivinar.\n\nContexto: [LO QUE SABES DE TU CASO]\n\nDevuélveme: análisis estructurado + lista de preguntas que un profesional debería revisar + disclaimer."
+    },
+    {
+      tag: "Citas",
+      title: "Fuentes verificables, no alucinadas",
+      desc: "Cuando necesitas citar estudios, artículos o jurisprudencia y no puedes permitirte una referencia inventada.",
+      text: "Necesito información sobre [TEMA] con fuentes verificables.\n\nNo inventes referencias. Si no tienes certeza de que un estudio/artículo/sentencia existe con esos datos exactos, dime claramente 'no tengo certeza de poder citar fuentes con precisión sobre esto' EN VEZ de generarlas.\n\nDevuélveme:\n1) Los conceptos clave del tema con explicación\n2) Los autores o instituciones más reconocidos en el campo (sin inventar títulos)\n3) Una lista de TÉRMINOS DE BÚSQUEDA que yo puedo usar en Google Scholar, PubMed, BOE, o donde corresponda para encontrar las fuentes reales\n4) Si efectivamente conoces algún paper o sentencia con alto grado de confianza, márcalo con [ALTA CONFIANZA] y aún así me comprometo a verificarlo antes de citar"
+    },
+    {
+      tag: "Anonimización",
+      title: "Anonimiza antes de pegar",
+      desc: "Plantilla para pedir a Claude que diseñe la anonimización de tus datos antes de que tú le pegues nada.",
+      text: "Voy a analizar [TIPO DE DATOS: ej. base de empleados / clientes / historiales]. ANTES de pegar nada, diséñame el flujo de anonimización.\n\nObjetivo del análisis: [QUÉ QUIERES SABER].\n\nDevuélveme:\n1) ¿Qué campos del dataset REALMENTE necesitas para responder al objetivo? (probablemente no necesitas nombres ni IDs personales)\n2) Para los campos que sí necesitas, indica si requieren transformación (ej. rangos en vez de valores exactos)\n3) Mecanismo de sustitución para identificadores (IDs aleatorios, hash, codificación) que mantenga consistencia\n4) Lista de campos que debo ELIMINAR antes de pegar\n5) Riesgo residual: ¿queda alguna posibilidad de reidentificación incluso tras anonimizar? Si sí, cómo mitigarla.\n\nConfirma que entiendes el flujo. Cuando estés listo, pegaré los datos YA anonimizados."
+    },
+    {
+      tag: "Audit",
+      title: "Audit log estructurado",
+      desc: "Para generar registro de lo que has pedido y obtenido en una sesión, útil para compliance.",
+      text: "Acabamos de trabajar en [DESCRIBE LA SESIÓN: ej. análisis de contrato, redacción de informe, etc.].\n\nGenérame un audit log de esta sesión en formato markdown con:\n\n1) Fecha y resumen de objetivo (1-2 líneas)\n2) Lista de prompts principales que te hice (resumidos, sin pegar datos sensibles)\n3) Lista de outputs principales que generaste\n4) Decisiones tomadas durante la sesión\n5) Limitaciones reconocidas o zonas de incertidumbre que mencionaste\n6) Acciones de verificación pendientes para el usuario humano\n\nFormato: tabla + listas. Listo para guardar en mi sistema de control documental."
+    },
+    {
+      tag: "Sesgo",
+      title: "Revisión de sesgos en output propio",
+      desc: "Para auditar un texto antes de publicarlo o decidir, buscando sesgos que se te pueden haber colado.",
+      text: "Te paso un [TIPO DE TEXTO: ej. oferta de empleo / informe de evaluación / decisión / artículo]. Revísalo buscando sesgos.\n\nAnaliza en estas dimensiones:\n1) Género (lenguaje, suposiciones implícitas, criterios)\n2) Edad\n3) Origen / nacionalidad / clase\n4) Discapacidad / neurodivergencia\n5) Sesgos sectoriales propios del campo [INDICA TU SECTOR]\n\nPara cada sesgo detectado:\n- Cita la frase exacta\n- Explica por qué es problemático\n- Propón reescritura neutralizada\n\nSi no detectas sesgos significativos, dilo — no inventes problemas por compromiso.\n\nTexto:\n\"\"\"\n[TEXTO]\n\"\"\""
+    },
+    {
+      tag: "Verificación",
+      title: "Marca tu propia incertidumbre",
+      desc: "Pide a Claude que califique cada afirmación que hace según su nivel de confianza. Útil para textos críticos.",
+      text: "Vas a generar [TIPO DE CONTENIDO: ej. resumen técnico, recomendación, análisis].\n\nRegla: al final de cada afirmación importante, añade entre paréntesis tu nivel de confianza:\n[ALTA] — afirmación bien establecida en el campo, baja probabilidad de error\n[MEDIA] — generalmente aceptado, pero hay matices o debate\n[BAJA] — extrapolación o inferencia, debería verificarse\n[INCIERTO] — no tengo base sólida, podría estar equivocado\n\nNo uses [ALTA] por defecto: sé conservador. Es mejor que califiques de menos a que afirmes con confianza algo que podría estar mal.\n\nTema: [TU TEMA]\nContexto: [LO RELEVANTE]"
+    },
+    {
+      tag: "RGPD",
+      title: "Checklist de cumplimiento antes de subir datos",
+      desc: "Plantilla para revisar si lo que estás a punto de hacer es compatible con RGPD y políticas internas.",
+      text: "Voy a usar Claude para [TAREA CONCRETA] con datos [DESCRIBE QUÉ TIPO DE DATOS: personales/financieros/sanitarios/etc].\n\nAyúdame a hacer un checklist de cumplimiento RGPD ANTES de empezar:\n\n1) ¿Qué base legal del art. 6 RGPD justificaría este tratamiento? (consentimiento, contrato, interés legítimo, etc.)\n2) ¿Los datos contienen categorías especiales del art. 9 RGPD? (salud, ideología, biometría, etc.) Si sí, requisitos adicionales.\n3) ¿Tengo registro de actividades de tratamiento donde figure este uso?\n4) ¿Necesito DPIA (evaluación de impacto) por riesgo alto?\n5) ¿Está documentada la transferencia internacional de datos (Anthropic procesa fuera UE)?\n6) ¿Los titulares de los datos han sido informados de este uso en la política de privacidad?\n7) ¿Tengo plazo definido de retención y procedimiento de borrado?\n\nDevuelve checklist con respuestas que YO debo verificar (no las inventes tú) + nivel de riesgo estimado (bajo/medio/alto) + recomendación: ¿procedo, modifico el flujo o consulto a DPO?"
+    },
+    {
+      tag: "Disclosure",
+      title: "Plantilla de disclosure a stakeholders",
+      desc: "Para incluir en entregables, comunicando con claridad qué papel ha tenido la IA en el trabajo.",
+      text: "Redáctame una nota de transparencia para incluir al final de [TIPO DE ENTREGABLE: informe/email/propuesta/etc.] explicando cómo he usado IA.\n\nContexto:\n- Tipo de uso: [GENERACIÓN INICIAL / REVISIÓN / IDEACIÓN / EDICIÓN / TODO]\n- Porcentaje aproximado de contenido tocado por IA: [%]\n- Verificaciones humanas hechas: [LISTA]\n- Modelo usado: Claude (Anthropic)\n\nLa nota debe:\n1) Ser clara, no defensiva\n2) Especificar qué hace la IA y qué hago yo\n3) Dejar claro quién asume responsabilidad por el contenido final\n4) Caber en 3-5 líneas\n5) No prometer infalibilidad ni minimizar el uso\n\nDame 2 variantes: una formal para clientes/contratos, una más conversacional para email interno."
+    },
+    {
+      tag: "Decisión",
+      title: "Marco de decisión sin que decida Claude",
+      desc: "Plantilla para zonas donde NO quieres delegar la decisión sino estructurar mejor tu propio pensamiento.",
+      text: "Tengo que decidir sobre [DESCRIBE LA DECISIÓN]. Es una decisión [LEGAL / MÉDICA / FINANCIERA / ÉTICA / PROFESIONAL CRÍTICA].\n\nNO quiero que decidas por mí. Tu papel es ayudarme a pensar mejor.\n\nHaz lo siguiente:\n1) Identifica los criterios que importan en esta decisión, incluidos los que probablemente estoy pasando por alto\n2) Para cada criterio, ¿qué información ME FALTA para evaluarlo bien?\n3) ¿Qué profesionales debería consultar antes de decidir (con tipo específico, no genérico)?\n4) Lista las 4-5 preguntas concretas para cada profesional\n5) ¿Qué decisión sería irreversible y cuál tiene marcha atrás? (esto cambia la urgencia)\n6) Sesgos cognitivos probables en esta situación (urgencia, miedo, status quo, etc.) y cómo neutralizarlos\n\nNo me digas qué elegir. Termina diciendo: 'la decisión es tuya, aquí tienes mejores herramientas para tomarla'."
+    },
+    {
+      tag: "IP",
+      title: "Originalidad y propiedad intelectual",
+      desc: "Para outputs creativos donde la imitación podría meterte en problemas de copyright.",
+      text: "Voy a generar [TIPO DE CONTENIDO CREATIVO: copy, slogan, nombre de producto, diseño conceptual, etc.] para [PROYECTO].\n\nReglas:\n1) NO imites el estilo de ninguna marca, autor o creador específico. Trabaja desde principios generales del género.\n2) Marca con [VERIFICAR_SIMILITUD] cualquier resultado que pueda parecerse a slogans, nombres o textos conocidos.\n3) Si el resultado se acerca peligrosamente a algo registrado, dilo explícitamente.\n4) Para nombres propios o marcas, recuerda que tendré que verificar disponibilidad en registros oficiales (OEPM, EUIPO, dominios) — no asumas que es libre solo porque suene bien.\n\nContexto del proyecto: [DETALLES]\nObjetivo del contenido: [QUÉ DEBE LOGRAR]\n\nDevuélveme [N] opciones originales, cada una con: la propuesta + la idea detrás + advertencia de similitud si aplica."
+    },
+    {
+      tag: "Revisión",
+      title: "Auto-revisión crítica del propio output",
+      desc: "Pides a Claude que critique lo que él mismo acaba de generar. Sorprendentemente efectivo.",
+      text: "Acabas de generarme [DESCRIBE EL OUTPUT ANTERIOR].\n\nAhora, sé tu propio revisor crítico. Hazte estas preguntas y responde honestamente:\n\n1) ¿Hay alguna afirmación factual en mi output que podría estar mal o sea poco verificable?\n2) ¿He generado nombres, citas, números o referencias que podrían ser alucinaciones?\n3) ¿He pasado por alto algún sesgo (género, cultural, sectorial)?\n4) ¿He sido demasiado conservador o demasiado audaz para el contexto?\n5) ¿Qué información NO tenía y aún así he asumido?\n6) Si fueras un experto del campo revisando esto, ¿qué te haría dudar?\n\nResponde con 3-6 puntos críticos sobre tu propio output. Sé estricto. Si efectivamente no encuentras problemas serios, dilo, pero no fuerces la crítica si todo está bien — eso también es información."
+    },
+    {
+      tag: "Negativa",
+      title: "Pide explícitamente que rechace si no debe",
+      desc: "Útil para tareas en zona gris: das permiso a Claude para negarse si la petición no es apropiada.",
+      text: "Voy a pedirte [DESCRIBE LA TAREA].\n\nAntes de cumplirla, evalúa:\n1) ¿Esta tarea cae en alguna de las zonas donde un LLM no debería operar autónomamente? (decisiones médicas/legales/financieras personalizadas a personas reales, manipulación, contenido que dañe a terceros, evasión legal, etc.)\n2) ¿Hay riesgo de que mi petición esté basada en información incompleta y la respuesta correcta sea pedirme más contexto antes que ejecutar?\n3) ¿La forma en que he planteado la tarea me está cerrando opciones que debería considerar?\n\nSi la tarea es apropiada, ejecútala con los frenos habituales (disclaimers, verificación).\n\nSi NO es apropiada o tienes dudas, dímelo claramente: explica por qué, qué riesgos ves y qué versión alternativa de la tarea SÍ podrías hacer bien.\n\nLa tarea: [TU PETICIÓN REAL]"
+    }
+  ],
+
+  quiz: [
+    {
+      q: "Estás a punto de pegar un Excel con nombres, salarios y evaluaciones de 50 empleados para que Claude te haga un análisis. ¿Qué deberías hacer ANTES?",
+      opts: [
+        "Pegarlo directamente, Claude no guarda tus datos",
+        "Anonimizar los datos sustituyendo nombres por IDs, eliminando campos innecesarios y aplicando rangos a importes",
+        "Pedir permiso a cada empleado por escrito",
+        "Subirlo en PDF para que sea más seguro"
+      ],
+      correct: 1,
+      fb: "Datos nominales de empleados + salarios + evaluaciones son datos personales protegidos. RGPD obliga a minimizar el tratamiento. Anonimiza antes — los IDs aleatorios mantienen consistencia para el análisis sin exponer identidades."
+    },
+    {
+      q: "Claude te ha generado un análisis legal citando 'Artículo 1124 del Código Civil sobre resolución contractual'. ¿Qué riesgo principal tiene esto?",
+      opts: [
+        "Ninguno si suena coherente",
+        "Que la cita pueda ser una alucinación (artículo correcto pero contenido incorrecto, o ambos mal)",
+        "Que el contenido esté desactualizado",
+        "Que se necesite permiso para citar el código civil"
+      ],
+      correct: 1,
+      fb: "Las citas legales específicas son una zona caliente de alucinación. El artículo puede existir pero hablar de otra cosa, o no existir, o estar derogado. Verifica SIEMPRE en BOE o base de datos jurídica antes de usar una cita en un trabajo profesional."
+    },
+    {
+      q: "Tu cliente te encarga un informe estratégico. Usas Claude para el 70% del borrador y editas el resto. ¿Cuál es la práctica responsable?",
+      opts: [
+        "Entregarlo como propio sin mencionar la IA, ya que tú lo has supervisado",
+        "Mencionarlo de pasada si te preguntan directamente",
+        "Incluir una nota de metodología transparente indicando que el borrador inicial se generó con asistencia de IA, fue editado y verificado por ti",
+        "Solo decirlo si el cliente exige declaración de uso de IA"
+      ],
+      correct: 2,
+      fb: "Disclosure proactivo no debilita tu trabajo, lo hace defendible. Si más tarde el cliente descubre uso oculto de IA, pierdes credibilidad permanente. Si lo declaras, demuestras dominio de la herramienta y dejas al cliente decidiendo informado."
+    },
+    {
+      q: "¿Cuál de estos usos de Claude es claramente INADECUADO?",
+      opts: [
+        "Pedir un borrador de email difícil para un cliente",
+        "Resumir un paper académico que vas a citar",
+        "Pedir un diagnóstico médico para un familiar a partir de síntomas, sin consultar médico después",
+        "Hacer brainstorming de nombres para un producto"
+      ],
+      correct: 2,
+      fb: "Decisiones médicas personalizadas sobre personas reales son zona prohibida. Claude no tiene historia clínica, no puede explorar, no está certificado. Puede ayudarte a preparar preguntas para el médico, NO a sustituirlo."
+    },
+    {
+      q: "Pides a Claude descripción del 'candidato ideal para un puesto técnico senior' y te devuelve un perfil masculino con disponibilidad total. ¿Qué pasa?",
+      opts: [
+        "Es el perfil correcto, los datos lo confirman",
+        "Claude está aplicando un sesgo del dataset y debes detectarlo y corregirlo antes de usar el output",
+        "Es un fallo técnico, hay que reiniciar la conversación",
+        "Hay que pedir lo mismo tres veces para obtener una media estadística"
+      ],
+      correct: 1,
+      fb: "Los LLM amplifican sesgos del internet del que se entrenaron. Es tu trabajo detectarlos. Reescribe pidiendo competencias verificables y especifica explícitamente qué criterios NO debe usar (género, edad, etc.) por discriminatorios o no relacionados con desempeño."
+    },
+    {
+      q: "¿Quién es legalmente dueño del output que genera Claude para ti?",
+      opts: [
+        "Anthropic, en todos los casos",
+        "Tú, pero con limitaciones: en algunas jurisdicciones obras 100% generadas por IA no son protegibles por copyright, y eres responsable si el output se parece a obra protegida",
+        "Es de dominio público",
+        "Depende del país pero siempre puedes registrarlo a tu nombre"
+      ],
+      correct: 1,
+      fb: "Anthropic cede derechos al usuario sobre los outputs (según sus términos), pero eso no resuelve dos cosas: (1) en muchas jurisdicciones, obras puramente de IA no son copyrightables, (2) si tu output se parece a obra protegida de tercero, respondes tú. Edita sustancialmente y verifica originalidad."
+    },
+    {
+      q: "Has decidido usar Claude en tu consultoría legal con clientes. ¿Cuál es el paso MÍNIMO de cumplimiento RGPD?",
+      opts: [
+        "Nada especial, RGPD no aplica a herramientas de IA",
+        "Solo informar a los clientes si ellos preguntan",
+        "Identificar base legal del tratamiento, firmar DPA con Anthropic si procede, actualizar política de privacidad y considerar DPIA según riesgo",
+        "Pedir consentimiento por WhatsApp"
+      ],
+      correct: 2,
+      fb: "Manejar datos de clientes en una herramienta IA requiere todo el aparato RGPD: base legal documentada (art. 6), DPA con el procesador, registro de actividades actualizado, evaluación de impacto si el riesgo es alto, y disclosure a los titulares en la política de privacidad."
+    },
+    {
+      q: "Sobre el riesgo de dependencia al usar IA, ¿qué patrón es saludable?",
+      opts: [
+        "Usar Claude para iniciar todos tus textos siempre, así eres más productivo",
+        "Hacer un primer intento tú mismo y luego usar Claude para revisar o complementar",
+        "Pedir a Claude que decida por ti en temas personales importantes",
+        "Dejar que Claude redacte los mensajes a tu pareja"
+      ],
+      correct: 1,
+      fb: "La dependencia atrofia musculatura cognitiva (redacción, síntesis, criterio). Patrón saludable: trabajas tú primero, usas Claude como revisor o para segundo borrador. La IA debe amplificar tu pensamiento, no sustituirlo en zonas que necesitas mantener vivas."
+    },
+    {
+      q: "¿Para qué sirve un audit trail en uso profesional de Claude?",
+      opts: [
+        "Para nada, es burocracia innecesaria",
+        "Para hacer cumplimiento, defenderte si hay disputa, y aprender de tus propios patrones de uso",
+        "Solo para fines fiscales",
+        "Para que Anthropic te dé descuentos"
+      ],
+      correct: 1,
+      fb: "El audit trail (registro de prompts, outputs, verificaciones, fecha, usuario) es imprescindible en entornos profesionales: prueba lo que se pidió y cómo se verificó, defiende ante disputas, ayuda a mejorar tu uso. Excel o Notion sirven para empezar."
+    },
+    {
+      q: "Claude te entrega un análisis muy convincente sobre el mercado de criptomonedas con cifras concretas. ¿Cómo lo tratas?",
+      opts: [
+        "Lo cito tal cual en mi informe, suena profesional",
+        "Verifico cada cifra en fuentes primarias antes de usarla, y trato el análisis como hipótesis a contrastar, no como verdad establecida",
+        "Asumo que está bien porque la fecha de corte de Claude es reciente",
+        "Lo descarto entero por principio"
+      ],
+      correct: 1,
+      fb: "Claude no tiene datos en tiempo real (a menos que use búsqueda web) y aun así las cifras concretas son zona caliente de alucinación. Verifica con fuentes primarias y trata cualquier output cuantitativo como hipótesis: confianza calibrada, no ciega ni paranoica."
+    }
+  ],
+
+  glosario: [
+    { t: "Alignment", d: "Conjunto de técnicas y objetivos para que un modelo de IA se comporte de forma consistente con valores e instrucciones humanas." },
+    { t: "Alucinación", d: "Output plausible pero falso generado por un LLM. Frecuente en citas, números, fechas y nombres específicos." },
+    { t: "Anonimización", d: "Proceso de modificar datos para que no puedan asociarse a una persona identificable, ni siquiera combinándolos con otra información." },
+    { t: "Audit trail", d: "Registro auditable de qué prompts se enviaron, qué outputs se obtuvieron, quién y cuándo. Imprescindible en uso profesional." },
+    { t: "Base legal", d: "Justificación jurídica del tratamiento de datos personales según art. 6 RGPD: consentimiento, contrato, interés legítimo, etc." },
+    { t: "Constitutional AI", d: "Método de entrenamiento de Anthropic donde el modelo aprende a regirse por un conjunto de principios explícitos (una 'constitución')." },
+    { t: "DPA", d: "Data Processing Agreement. Contrato entre responsable y encargado del tratamiento exigido por RGPD cuando un tercero procesa datos personales." },
+    { t: "DPIA", d: "Data Protection Impact Assessment. Evaluación de impacto sobre protección de datos, obligatoria cuando un tratamiento implica alto riesgo para derechos." },
+    { t: "Fair use", d: "Doctrina jurídica (principalmente EE.UU.) que permite usos limitados de obra protegida sin permiso. No es equivalente al sistema europeo de excepciones al copyright." },
+    { t: "GDPR / RGPD", d: "Reglamento General de Protección de Datos. Norma europea que regula tratamiento de datos personales con multas hasta el 4% de facturación global." },
+    { t: "IP / Propiedad Intelectual", d: "Conjunto de derechos sobre creaciones del intelecto: copyright, marcas, patentes. Determina quién puede usar, copiar y monetizar una obra." },
+    { t: "Jailbreak", d: "Intento de eludir las barreras de seguridad de un LLM mediante prompts diseñados para que ignore sus restricciones." },
+    { t: "PII", d: "Personally Identifiable Information. Datos que permiten identificar a una persona: DNI, email, teléfono, dirección, biometría, etc." },
+    { t: "Red flag", d: "Señal de alarma que indica que un uso o output requiere parar y reevaluar antes de continuar." },
+    { t: "Refusal", d: "Negativa de Claude a ejecutar una petición por motivos de seguridad o políticas internas. No es un bug: es alignment funcionando." },
+    { t: "Responsible Scaling Policy", d: "Política de Anthropic que define cómo evalúa y libera modelos según niveles de capacidad y riesgo (ASL)." },
+    { t: "Sesgo", d: "Tendencia sistemática de un modelo a producir outputs que reflejan o amplifican prejuicios presentes en los datos de entrenamiento." },
+    { t: "Transferencia internacional", d: "Envío de datos personales fuera del EEE. Requiere garantías adicionales bajo RGPD (cláusulas tipo, decisión de adecuación)." }
+  ],
+
+  recursos: [
+    {
+      tag: "Política",
+      title: "Anthropic — Usage Policies",
+      desc: "Política oficial de uso aceptable de Claude. Lectura obligada si vas a integrarlo en producto o flujos profesionales: qué está prohibido, en qué sectores hay restricciones especiales.",
+      url: "https://www.anthropic.com/legal/aup",
+      meta: "anthropic.com · ~15 min"
+    },
+    {
+      tag: "Política",
+      title: "Anthropic — Privacy Policy",
+      desc: "Cómo Anthropic maneja tus datos según el plan (free, Pro, Team, API). Aclara qué inputs pueden usarse para entrenamiento y cómo solicitar exclusión.",
+      url: "https://www.anthropic.com/legal/privacy",
+      meta: "anthropic.com · ~10 min"
+    },
+    {
+      tag: "Investigación",
+      title: "Responsible Scaling Policy",
+      desc: "Framework con el que Anthropic evalúa riesgos catastróficos antes de liberar modelos más potentes. Para entender la postura institucional sobre seguridad.",
+      url: "https://www.anthropic.com/news/anthropics-responsible-scaling-policy",
+      meta: "anthropic.com · ~30 min"
+    },
+    {
+      tag: "Regulación",
+      title: "GDPR.eu — Texto completo del RGPD",
+      desc: "Texto oficial del Reglamento Europeo de Protección de Datos en formato navegable. La fuente cuando tienes que comprobar un artículo concreto.",
+      url: "https://gdpr.eu/",
+      meta: "gdpr.eu · referencia"
+    },
+    {
+      tag: "Regulación",
+      title: "AI Act — Texto oficial UE",
+      desc: "Reglamento europeo de IA. Clasifica sistemas por riesgo (prohibidos, alto, limitado, mínimo) y define obligaciones. Aplicable progresivamente desde 2025.",
+      url: "https://artificialintelligenceact.eu/",
+      meta: "UE · obligatorio en empresa"
+    },
+    {
+      tag: "Guía",
+      title: "AEPD — Guía sobre IA y RGPD",
+      desc: "Guía oficial de la Agencia Española de Protección de Datos sobre uso de IA y cumplimiento RGPD. Práctica y orientada a casos reales en España.",
+      url: "https://www.aepd.es/guias/adecuacion-rgpd-ia.pdf",
+      meta: "AEPD · PDF · técnico"
+    },
+    {
+      tag: "Lectura",
+      title: "On the Dangers of Stochastic Parrots",
+      desc: "Paper clásico de Bender, Gebru et al. sobre los riesgos sistémicos de los modelos de lenguaje masivos. Lectura crítica imprescindible.",
+      url: "https://dl.acm.org/doi/10.1145/3442188.3445922",
+      meta: "ACM · académico"
+    },
+    {
+      tag: "Marco",
+      title: "NIST AI Risk Management Framework",
+      desc: "Framework del NIST (EE.UU.) para gestionar riesgos de sistemas de IA. Ampliamente usado como referencia internacional para políticas internas.",
+      url: "https://www.nist.gov/itl/ai-risk-management-framework",
+      meta: "NIST · referencia"
+    }
+  ],
+
+  checklist: [
+    {
+      day: "Día 1",
+      text: "Haz tu inventario de datos del último mes: qué pegaste en Claude y qué nivel de sensibilidad tenía.",
+      detail: "Mínimo 10 entradas reales. El objetivo no es flagelarte, es ver el patrón antes de corregirlo."
+    },
+    {
+      day: "Día 2",
+      text: "Define tus tres categorías personales de datos prohibidos y escríbelas en un sitio donde las veas.",
+      detail: "Por ejemplo: 'nunca subo DNIs, nunca subo datos médicos, nunca subo comunicaciones privadas de terceros'."
+    },
+    {
+      day: "Día 3",
+      text: "Aplica el prompt de anonimización antes de pegar tu próximo dataset en Claude.",
+      detail: "Compara la calidad del análisis antes y después de anonimizar. Suele ser igual de bueno."
+    },
+    {
+      day: "Día 4",
+      text: "En un entregable real, añade tu primera nota de transparencia sobre uso de IA.",
+      detail: "Empieza por email interno o un documento de bajo riesgo. Acostúmbrate a la fricción inicial."
+    },
+    {
+      day: "Día 5",
+      text: "Pide a Claude que critique uno de sus outputs anteriores con el prompt de auto-revisión.",
+      detail: "Te sorprenderá la cantidad de matices y zonas de incertidumbre que aparecen cuando se le pregunta directamente."
+    },
+    {
+      day: "Día 6",
+      text: "Monta tu audit trail mínimo: hoja en Notion o Excel con fecha, proyecto, prompt resumido y verificaciones hechas.",
+      detail: "No tiene que ser perfecto. Tiene que existir y mantenerse. Empieza por los usos profesionales y crece desde ahí."
+    },
+    {
+      day: "Día 7",
+      text: "Escribe tu política personal de uso de IA (1 página) y ponle fecha de revisión a 6 meses vista.",
+      detail: "Sigue la estructura del ejercicio 5 del módulo. Compártela con tu equipo si trabajas con otros — alinea expectativas y reduce sorpresas."
+    }
+  ]
+};
+
+// ============================================
+// RENDERIZADO
+// ============================================
+function renderFlashcards() {
+  const grid = document.getElementById('flashgrid');
+  MODULE_DATA.conceptos.forEach((c, i) => {
+    const card = document.createElement('div');
+    card.className = 'flash';
+    card.innerHTML = `
+      <div class="flash-inner">
+        <div class="flash-face front">
+          <div class="flash-num">Concepto ${String(i+1).padStart(2,'0')}</div>
+          <div class="flash-title">${c.title}</div>
+          <div class="flash-hint">↻ Pulsa para girar</div>
+        </div>
+        <div class="flash-face back">
+          <div class="flash-def">${c.def}</div>
+          <div class="flash-example">${c.example}</div>
+        </div>
+      </div>
+    `;
+    card.addEventListener('click', () => card.classList.toggle('flipped'));
+    grid.appendChild(card);
+  });
+}
+
+function renderCases() {
+  const wrap = document.getElementById('cases');
+  MODULE_DATA.casos.forEach((c, i) => {
+    const el = document.createElement('div');
+    el.className = 'case';
+    el.innerHTML = `
+      <div class="case-num">Caso ${String(i+1).padStart(2,'0')}</div>
+      <div class="case-title">${c.title}</div>
+      <div class="case-context">${c.context}</div>
+      <div class="case-grid">
+        <div class="case-col bad">
+          <div class="case-col-label">✕ Uso a ciegas</div>
+          <div class="case-prompt">${c.bad}</div>
+        </div>
+        <div class="case-col good">
+          <div class="case-col-label">✓ Uso con criterio</div>
+          <div class="case-prompt">${c.good}</div>
+        </div>
+      </div>
+      <div class="case-why">${c.why}</div>
+    `;
+    wrap.appendChild(el);
+  });
+}
+
+function renderExercises() {
+  const wrap = document.getElementById('exercises');
+  MODULE_DATA.ejercicios.forEach((e, i) => {
+    const el = document.createElement('div');
+    el.className = 'ex';
+    el.innerHTML = `
+      <div class="ex-num">Ejercicio ${String(i+1).padStart(2,'0')}</div>
+      <div class="ex-title">${e.title}</div>
+      <div class="ex-task">${e.task.replace(/\n/g, '<br>')}</div>
+      <textarea class="ex-input" placeholder="Escribe tu respuesta aquí..."></textarea>
+      <div class="ex-btns">
+        <button class="btn btn-primary" data-action="show-solution">Ver solución modelo</button>
+        <button class="btn" data-action="clear">Limpiar</button>
+      </div>
+      <div class="ex-solution">
+        <div class="ex-solution-label">Solución modelo</div>
+        <div class="ex-solution-text">${e.solution}</div>
+        <div class="ex-rubric">
+          <div class="ex-rubric-title">Autoevaluación · ¿tu respuesta cumple?</div>
+          <ul>${e.rubric.map(r => `<li>${r}</li>`).join('')}</ul>
+        </div>
+      </div>
+    `;
+    const textarea = el.querySelector('.ex-input');
+    const solDiv = el.querySelector('.ex-solution');
+    el.querySelector('[data-action="show-solution"]').addEventListener('click', () => {
+      solDiv.classList.toggle('show');
+    });
+    el.querySelector('[data-action="clear"]').addEventListener('click', () => {
+      textarea.value = '';
+      solDiv.classList.remove('show');
+    });
+    wrap.appendChild(el);
+  });
+}
+
+function renderPrompts() {
+  const wrap = document.getElementById('prompts');
+  MODULE_DATA.prompts.forEach((p, i) => {
+    const el = document.createElement('div');
+    el.className = 'prompt-card';
+    el.innerHTML = `
+      <div class="prompt-tag">${p.tag}</div>
+      <div class="prompt-title">${p.title}</div>
+      <div class="prompt-desc">${p.desc}</div>
+      <pre class="prompt-text">${p.text.replace(/</g, '&lt;')}</pre>
+      <button class="copy-btn">Copiar al portapapeles</button>
+    `;
+    const btn = el.querySelector('.copy-btn');
+    btn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(p.text);
+        btn.textContent = '✓ Copiado';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.textContent = 'Copiar al portapapeles';
+          btn.classList.remove('copied');
+        }, 1800);
+      } catch(e) {
+        btn.textContent = 'Selecciona y copia manual';
+      }
+    });
+    wrap.appendChild(el);
+  });
+}
+
+// Tabs
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('sec-' + btn.dataset.tab).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+});
+
+function renderQuiz() {
+  const wrap = document.getElementById('quiz');
+  let answered = 0;
+  let correct = 0;
+  MODULE_DATA.quiz.forEach((q, i) => {
+    const el = document.createElement('div');
+    el.className = 'quiz-q';
+    el.innerHTML = `
+      <div class="quiz-num">Pregunta ${String(i+1).padStart(2,'0')} de ${MODULE_DATA.quiz.length}</div>
+      <div class="quiz-question">${q.q}</div>
+      <div class="quiz-opts">
+        ${q.opts.map((o, j) => `<button class="quiz-opt" data-idx="${j}">${o}</button>`).join('')}
+      </div>
+      <div class="quiz-feedback"></div>
+    `;
+    const opts = el.querySelectorAll('.quiz-opt');
+    const fb = el.querySelector('.quiz-feedback');
+    opts.forEach(opt => {
+      opt.addEventListener('click', () => {
+        if (el.classList.contains('answered')) return;
+        const idx = Number(opt.dataset.idx);
+        const isCorrect = idx === q.correct;
+        opts.forEach((o, j) => {
+          o.classList.add('locked');
+          if (j === q.correct) o.classList.add('correct');
+          else if (j === idx && !isCorrect) o.classList.add('wrong');
+        });
+        fb.classList.add('show', isCorrect ? 'correct' : 'wrong');
+        fb.textContent = (isCorrect ? '✓ Correcto. ' : '✗ Casi. ') + q.fb;
+        el.classList.add('answered');
+        answered++;
+        if (isCorrect) correct++;
+        if (answered === MODULE_DATA.quiz.length) showQuizResult(correct);
+      });
+    });
+    wrap.appendChild(el);
+  });
+}
+
+function showQuizResult(correct) {
+  const total = MODULE_DATA.quiz.length;
+  const pct = Math.round((correct / total) * 100);
+  let msg = '';
+  if (pct >= 90) msg = 'Excelente. Tienes claros los límites y el marco ético. Listo para el módulo 8.';
+  else if (pct >= 70) msg = 'Muy bien. Repasa los puntos donde fallaste — en este módulo los errores tienen coste real.';
+  else if (pct >= 50) msg = 'Aceptable. Vuelve a las flashcards y a los casos antes de seguir, especialmente lo de RGPD y alucinaciones.';
+  else msg = 'Para. Este módulo no se acaba aquí — repasa el vídeo y los conceptos antes de aplicar nada en trabajo real.';
+  const el = document.getElementById('quiz-result');
+  el.innerHTML = `
+    <div class="quiz-result-score">${correct} / ${total}</div>
+    <div class="quiz-result-msg">${msg}</div>
+    <button class="btn btn-primary" onclick="location.reload()">Reintentar quiz</button>
+  `;
+  el.classList.add('show');
+  el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function renderGlosario() {
+  const wrap = document.getElementById('glosario');
+  const sorted = [...MODULE_DATA.glosario].sort((a, b) => a.t.localeCompare(b.t, 'es'));
+  sorted.forEach(g => {
+    const el = document.createElement('div');
+    el.className = 'gloss-item';
+    el.innerHTML = `<div class="gloss-term">${g.t}</div><div class="gloss-def">${g.d}</div>`;
+    wrap.appendChild(el);
+  });
+}
+
+function renderRecursos() {
+  const wrap = document.getElementById('recursos');
+  MODULE_DATA.recursos.forEach(r => {
+    const el = document.createElement('a');
+    el.className = 'recurso';
+    el.href = r.url;
+    el.target = '_blank';
+    el.rel = 'noopener noreferrer';
+    el.innerHTML = `
+      <span class="recurso-tag">${r.tag}</span>
+      <div class="recurso-title">${r.title}</div>
+      <div class="recurso-desc">${r.desc}</div>
+      <div class="recurso-meta">${r.meta}</div>
+    `;
+    wrap.appendChild(el);
+  });
+}
+
+function renderChecklist() {
+  const wrap = document.getElementById('checklist');
+  const progressEl = document.getElementById('checkProgress');
+  const STORAGE_KEY = 'm7-checklist-progress';
+  // No usamos localStorage; estado en memoria solo (artefacto standalone)
+  const state = new Set();
+  function updateProgress() {
+    const done = state.size;
+    const total = MODULE_DATA.checklist.length;
+    progressEl.textContent = `${done} / ${total} completadas · ${Math.round((done/total)*100)}%`;
+  }
+  MODULE_DATA.checklist.forEach((c, i) => {
+    const el = document.createElement('div');
+    el.className = 'check-item';
+    el.innerHTML = `
+      <div class="check-box">${state.has(i) ? '✓' : ''}</div>
+      <div class="check-content">
+        <div class="check-day">${c.day}</div>
+        <div class="check-text">${c.text}</div>
+        <div class="check-detail">${c.detail}</div>
+      </div>
+    `;
+    el.addEventListener('click', () => {
+      if (state.has(i)) { state.delete(i); el.classList.remove('done'); el.querySelector('.check-box').textContent = ''; }
+      else { state.add(i); el.classList.add('done'); el.querySelector('.check-box').textContent = '✓'; }
+      updateProgress();
+    });
+    wrap.appendChild(el);
+  });
+  updateProgress();
+}
+
+renderFlashcards();
+renderCases();
+renderExercises();
+renderPrompts();
+renderQuiz();
+renderGlosario();
+renderRecursos();
+renderChecklist();
+</script>
+</body>
+</html>

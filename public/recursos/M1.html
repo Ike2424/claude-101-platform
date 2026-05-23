@@ -1,0 +1,1259 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude 101 · Recursos M1 · Bienvenida y fundamentos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Geist:wght@300..700&family=Geist+Mono:wght@400..600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #F4EFE3; --bg-2: #EFE9DA; --card: #FBF8F0;
+  --ink: #1C1A16; --ink-2: #3A352D; --muted: #756B5B; --muted-2: #A39782;
+  --line: #E1D8C2; --line-2: #CFC4AA;
+  --accent: #C8542B; --accent-2: #8B3A1E;
+  --olive: #4F5D38; --gold: #B08436;
+  --display: 'Fraunces', Georgia, serif;
+  --body: 'Geist', system-ui, sans-serif;
+  --mono: 'Geist Mono', ui-monospace, monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: var(--bg); color: var(--ink); font-family: var(--body); line-height: 1.55; }
+body {
+  background-image:
+    radial-gradient(circle at 12% 8%, rgba(200,84,43,.06) 0%, transparent 40%),
+    radial-gradient(circle at 88% 92%, rgba(79,93,56,.05) 0%, transparent 40%);
+  min-height: 100vh;
+}
+
+/* === HEADER === */
+.topbar {
+  position: sticky; top: 0; z-index: 50;
+  background: rgba(244,239,227,.85); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+  padding: 14px 32px; display: flex; align-items: center; gap: 20px;
+}
+.back-link {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--muted); text-decoration: none;
+  padding: 8px 14px; border-radius: 100px; border: 1px solid var(--line-2);
+  transition: all .2s;
+}
+.back-link:hover { color: var(--ink); border-color: var(--accent); }
+.topbar-title {
+  font-family: var(--display); font-style: italic; font-size: 22px;
+  font-weight: 400; color: var(--ink); flex: 1;
+}
+.topbar-title em { color: var(--accent); font-style: italic; }
+.topbar-badge {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--muted);
+  padding: 6px 12px; background: var(--card); border: 1px solid var(--line); border-radius: 6px;
+}
+
+/* === HERO === */
+.hero {
+  padding: 80px 32px 40px; max-width: 1100px; margin: 0 auto; text-align: center;
+}
+.hero .eyebrow {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .18em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 18px;
+}
+.hero h1 {
+  font-family: var(--display); font-style: italic; font-weight: 400;
+  font-size: clamp(40px, 6vw, 72px); letter-spacing: -0.025em;
+  color: var(--ink); line-height: 1.05; margin-bottom: 20px;
+}
+.hero h1 em { font-style: normal; color: var(--accent); }
+.hero .lede {
+  font-size: 18px; color: var(--ink-2); max-width: 60ch; margin: 0 auto;
+}
+
+/* === TABS === */
+.tabs-wrap {
+  position: sticky; top: 62px; z-index: 40;
+  background: rgba(244,239,227,.92); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+  padding: 16px 32px; display: flex; justify-content: center; gap: 8px;
+  overflow-x: auto;
+}
+.tab-btn {
+  font-family: var(--mono); font-size: 12px; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--muted);
+  padding: 10px 18px; border-radius: 100px; border: 1px solid var(--line-2);
+  background: var(--card); cursor: pointer; transition: all .2s; white-space: nowrap;
+}
+.tab-btn:hover { color: var(--ink); border-color: var(--accent); }
+.tab-btn.active {
+  color: var(--card); background: var(--ink); border-color: var(--ink);
+}
+
+/* === SECTIONS === */
+.section {
+  padding: 60px 32px 100px; max-width: 1100px; margin: 0 auto; display: none;
+}
+.section.active { display: block; }
+.section-intro {
+  margin-bottom: 40px; max-width: 70ch;
+}
+.section-intro h2 {
+  font-family: var(--display); font-style: italic; font-weight: 400;
+  font-size: 36px; margin-bottom: 12px; color: var(--ink);
+}
+.section-intro h2 em { color: var(--accent); font-style: normal; }
+.section-intro p { color: var(--ink-2); font-size: 16px; }
+
+/* === FLASHCARDS === */
+.flashgrid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;
+}
+.flash {
+  perspective: 1200px; min-height: 320px; cursor: pointer;
+}
+.flash-inner {
+  position: relative; width: 100%; height: 100%; min-height: 320px;
+  transition: transform .6s cubic-bezier(.2,.8,.2,1);
+  transform-style: preserve-3d;
+}
+.flash.flipped .flash-inner { transform: rotateY(180deg); }
+.flash-face {
+  position: absolute; inset: 0; backface-visibility: hidden;
+  background: var(--card); border: 1px solid var(--line); border-radius: 16px;
+  padding: 22px; display: flex; flex-direction: column;
+  overflow-y: auto;
+  box-shadow: 0 2px 12px rgba(28,26,22,.04);
+}
+.flash-face::-webkit-scrollbar { width: 4px; }
+.flash-face::-webkit-scrollbar-thumb { background: var(--line-2); border-radius: 4px; }
+.flash-face.back {
+  transform: rotateY(180deg);
+  background: var(--bg-2); border-color: var(--line-2);
+}
+.flash-num {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 12px;
+}
+.flash-title {
+  font-family: var(--display); font-style: italic; font-size: 24px;
+  font-weight: 400; color: var(--ink); margin-bottom: 10px; line-height: 1.2;
+}
+.flash-hint {
+  margin-top: auto; font-family: var(--mono); font-size: 10px;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--muted-2);
+}
+.flash-def { font-size: 14px; color: var(--ink-2); line-height: 1.6; margin-bottom: 12px; }
+.flash-example {
+  font-family: var(--mono); font-size: 12px; color: var(--olive);
+  background: var(--card); border-left: 2px solid var(--olive);
+  padding: 8px 12px; border-radius: 0 6px 6px 0;
+}
+
+/* === CASE STUDIES === */
+.case {
+  background: var(--card); border: 1px solid var(--line); border-radius: 18px;
+  padding: 32px; margin-bottom: 28px;
+}
+.case-num {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 8px;
+}
+.case-title {
+  font-family: var(--display); font-style: italic; font-size: 28px;
+  font-weight: 400; color: var(--ink); margin-bottom: 12px; line-height: 1.2;
+}
+.case-context { color: var(--ink-2); margin-bottom: 24px; font-size: 15px; }
+.case-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px;
+}
+@media (max-width: 720px) { .case-grid { grid-template-columns: 1fr; } }
+.case-col {
+  background: var(--bg); border-radius: 12px; padding: 20px;
+}
+.case-col.bad { border: 1px solid #e8c4b7; }
+.case-col.good { border: 1px solid #c4d4a8; }
+.case-col-label {
+  font-family: var(--mono); font-size: 10px; letter-spacing: .15em;
+  text-transform: uppercase; margin-bottom: 10px; font-weight: 600;
+}
+.case-col.bad .case-col-label { color: var(--accent-2); }
+.case-col.good .case-col-label { color: var(--olive); }
+.case-prompt {
+  font-family: var(--mono); font-size: 13px; line-height: 1.6;
+  color: var(--ink); white-space: pre-wrap;
+}
+.case-why {
+  background: var(--bg-2); border-left: 3px solid var(--gold);
+  padding: 14px 18px; border-radius: 0 8px 8px 0;
+  font-size: 14px; color: var(--ink-2);
+}
+.case-why strong { color: var(--gold); font-weight: 600; }
+
+/* === EXERCISES === */
+.ex {
+  background: var(--card); border: 1px solid var(--line); border-radius: 18px;
+  padding: 32px; margin-bottom: 28px;
+}
+.ex-num {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 8px;
+}
+.ex-title {
+  font-family: var(--display); font-style: italic; font-size: 28px;
+  font-weight: 400; color: var(--ink); margin-bottom: 12px; line-height: 1.2;
+}
+.ex-task { color: var(--ink-2); margin-bottom: 16px; font-size: 15px; }
+.ex-input {
+  width: 100%; min-height: 120px; resize: vertical;
+  background: var(--bg); border: 1px solid var(--line-2); border-radius: 10px;
+  padding: 14px 16px; font-family: var(--mono); font-size: 13px; color: var(--ink);
+  margin-bottom: 16px;
+}
+.ex-input:focus { outline: 2px solid var(--accent); outline-offset: -2px; }
+.ex-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+.btn {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .12em;
+  text-transform: uppercase; padding: 10px 18px; border-radius: 100px;
+  border: 1px solid var(--line-2); background: var(--card); color: var(--ink-2);
+  cursor: pointer; transition: all .2s;
+}
+.btn:hover { border-color: var(--accent); color: var(--ink); }
+.btn-primary { background: var(--ink); color: var(--card); border-color: var(--ink); }
+.btn-primary:hover { background: var(--accent); border-color: var(--accent); color: var(--card); }
+.ex-solution {
+  margin-top: 20px; padding: 20px; background: var(--bg-2); border-radius: 12px;
+  border-left: 3px solid var(--olive); display: none;
+}
+.ex-solution.show { display: block; }
+.ex-solution-label {
+  font-family: var(--mono); font-size: 10px; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--olive); margin-bottom: 10px; font-weight: 600;
+}
+.ex-solution-text {
+  font-family: var(--mono); font-size: 13px; line-height: 1.7; color: var(--ink);
+  white-space: pre-wrap; margin-bottom: 16px;
+}
+.ex-rubric { margin-top: 16px; }
+.ex-rubric-title {
+  font-size: 13px; color: var(--muted); margin-bottom: 8px; font-weight: 600;
+}
+.ex-rubric ul { list-style: none; padding: 0; }
+.ex-rubric li {
+  padding: 6px 0; font-size: 14px; color: var(--ink-2);
+  display: flex; align-items: flex-start; gap: 10px;
+}
+.ex-rubric li::before {
+  content: "✓"; color: var(--olive); font-weight: 600; margin-top: 1px;
+}
+
+/* === PROMPTS GALLERY === */
+.prompts-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px;
+}
+.prompt-card {
+  background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+  padding: 24px; display: flex; flex-direction: column;
+}
+.prompt-tag {
+  display: inline-block; font-family: var(--mono); font-size: 10px;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--gold);
+  background: var(--bg-2); padding: 4px 10px; border-radius: 100px;
+  margin-bottom: 12px; align-self: flex-start;
+}
+.prompt-title {
+  font-family: var(--display); font-style: italic; font-size: 22px;
+  font-weight: 400; color: var(--ink); margin-bottom: 10px; line-height: 1.2;
+}
+.prompt-desc { font-size: 14px; color: var(--ink-2); margin-bottom: 16px; }
+.prompt-text {
+  font-family: var(--mono); font-size: 12px; line-height: 1.65;
+  color: var(--ink-2); background: var(--bg); border: 1px dashed var(--line-2);
+  border-radius: 8px; padding: 14px; margin-bottom: 14px;
+  white-space: pre-wrap; flex: 1;
+}
+.copy-btn {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .12em;
+  text-transform: uppercase; padding: 10px 16px; border-radius: 8px;
+  border: 1px solid var(--ink); background: transparent; color: var(--ink);
+  cursor: pointer; transition: all .2s; align-self: stretch;
+}
+.copy-btn:hover { background: var(--ink); color: var(--card); }
+.copy-btn.copied { background: var(--olive); border-color: var(--olive); color: var(--card); }
+
+/* === QUIZ === */
+.quiz-q {
+  background: var(--card); border: 1px solid var(--line); border-radius: 16px;
+  padding: 26px; margin-bottom: 20px;
+}
+.quiz-num {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 10px;
+}
+.quiz-question {
+  font-family: var(--display); font-style: italic; font-size: 22px;
+  font-weight: 400; line-height: 1.3; color: var(--ink); margin-bottom: 18px;
+}
+.quiz-opts { display: flex; flex-direction: column; gap: 8px; }
+.quiz-opt {
+  text-align: left; padding: 14px 18px; border: 1px solid var(--line-2);
+  border-radius: 10px; background: var(--bg); color: var(--ink-2);
+  font-family: var(--body); font-size: 15px; cursor: pointer; transition: all .2s;
+}
+.quiz-opt:hover:not(.locked) { border-color: var(--accent); color: var(--ink); }
+.quiz-opt.correct {
+  background: rgba(79,93,56,.12); border-color: var(--olive); color: var(--ink);
+}
+.quiz-opt.wrong {
+  background: rgba(200,84,43,.1); border-color: var(--accent-2); color: var(--ink);
+}
+.quiz-opt.locked { cursor: default; }
+.quiz-feedback {
+  margin-top: 14px; padding: 14px 18px; border-radius: 10px;
+  font-size: 14px; line-height: 1.5; display: none;
+}
+.quiz-feedback.show { display: block; }
+.quiz-feedback.correct { background: rgba(79,93,56,.1); border-left: 3px solid var(--olive); color: var(--ink-2); }
+.quiz-feedback.wrong { background: rgba(200,84,43,.08); border-left: 3px solid var(--accent); color: var(--ink-2); }
+.quiz-result {
+  margin-top: 20px; padding: 28px; background: var(--card);
+  border: 1px solid var(--line); border-radius: 16px; text-align: center;
+  display: none;
+}
+.quiz-result.show { display: block; }
+.quiz-result-score {
+  font-family: var(--display); font-style: italic; font-size: 56px;
+  color: var(--accent); margin-bottom: 8px;
+}
+.quiz-result-msg { font-size: 16px; color: var(--ink-2); margin-bottom: 18px; }
+.quiz-result .btn { display: inline-block; }
+
+/* === GLOSARIO === */
+.glosario-list {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px;
+}
+.gloss-item {
+  background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+  padding: 18px 20px;
+}
+.gloss-term {
+  font-family: var(--display); font-style: italic; font-size: 20px;
+  font-weight: 400; color: var(--accent); margin-bottom: 6px;
+}
+.gloss-def { font-size: 14px; line-height: 1.55; color: var(--ink-2); }
+
+/* === RECURSOS === */
+.recursos-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px;
+}
+.recurso {
+  background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+  padding: 20px; text-decoration: none; color: inherit; transition: all .2s;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.recurso:hover {
+  border-color: var(--accent); transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(28,26,22,.08);
+}
+.recurso-tag {
+  display: inline-block; font-family: var(--mono); font-size: 10px;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--olive);
+  background: var(--bg-2); padding: 4px 10px; border-radius: 100px;
+  align-self: flex-start; margin-bottom: 4px;
+}
+.recurso-title {
+  font-family: var(--display); font-style: italic; font-size: 18px;
+  font-weight: 400; color: var(--ink); line-height: 1.3;
+}
+.recurso-desc { font-size: 13px; color: var(--ink-2); line-height: 1.5; }
+.recurso-meta {
+  font-family: var(--mono); font-size: 11px; color: var(--muted);
+  margin-top: auto; padding-top: 8px;
+}
+
+/* === CHECKLIST === */
+.checklist { display: flex; flex-direction: column; gap: 12px; }
+.check-item {
+  display: flex; align-items: flex-start; gap: 16px;
+  background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+  padding: 18px 22px; cursor: pointer; transition: all .2s;
+}
+.check-item:hover { border-color: var(--line-2); }
+.check-item.done {
+  background: var(--bg-2); border-color: var(--olive); opacity: .75;
+}
+.check-item.done .check-text { text-decoration: line-through; color: var(--muted); }
+.check-box {
+  width: 22px; height: 22px; border: 2px solid var(--line-2);
+  border-radius: 6px; flex-shrink: 0; margin-top: 2px;
+  display: flex; align-items: center; justify-content: center;
+  transition: all .2s;
+}
+.check-item.done .check-box {
+  background: var(--olive); border-color: var(--olive); color: var(--card);
+}
+.check-content { flex: 1; }
+.check-day {
+  font-family: var(--mono); font-size: 10px; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--accent); margin-bottom: 4px;
+}
+.check-text { font-size: 15px; line-height: 1.5; color: var(--ink); }
+.check-detail { font-size: 13px; color: var(--muted); margin-top: 4px; }
+.checklist-progress {
+  margin-top: 24px; padding: 20px; background: var(--bg-2);
+  border-radius: 12px; text-align: center;
+  font-family: var(--mono); font-size: 13px; color: var(--ink-2);
+}
+
+/* === FOOTER NAV === */
+.footer-nav {
+  border-top: 1px solid var(--line); padding: 32px;
+  display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+  max-width: 1100px; margin: 40px auto 0;
+}
+.foot-link {
+  font-family: var(--mono); font-size: 12px; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--muted); text-decoration: none;
+  padding: 12px 18px; border: 1px solid var(--line-2); border-radius: 100px;
+  transition: all .2s;
+}
+.foot-link:hover { color: var(--ink); border-color: var(--accent); }
+
+@media (max-width: 720px) {
+  .topbar { padding: 12px 16px; }
+  .hero { padding: 50px 16px 30px; }
+  .tabs-wrap { padding: 12px 16px; }
+  .section { padding: 40px 16px 80px; }
+  .case, .ex { padding: 22px; }
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <a href="/curso" class="back-link">← Volver al curso</a>
+  <div class="topbar-title">Módulo 1 · <em>Recursos</em></div>
+  <div class="topbar-badge">M1</div>
+</header>
+
+<section class="hero">
+  <div class="eyebrow">Profundiza · Practica · Aplica</div>
+  <h1>Bienvenida y <em>fundamentos</em></h1>
+  <p class="lede">El vídeo te dio el mapa. Aquí tienes las herramientas: conceptos clave para fijar lo aprendido, casos reales para ver el contraste entre un prompt mediocre y uno bueno, ejercicios para practicar, y plantillas listas para copiar.</p>
+</section>
+
+<nav class="tabs-wrap">
+  <button class="tab-btn active" data-tab="conceptos">Conceptos</button>
+  <button class="tab-btn" data-tab="casos">Casos de uso</button>
+  <button class="tab-btn" data-tab="ejercicios">Ejercicios</button>
+  <button class="tab-btn" data-tab="prompts">Prompts</button>
+  <button class="tab-btn" data-tab="quiz">Quiz final</button>
+  <button class="tab-btn" data-tab="glosario">Glosario</button>
+  <button class="tab-btn" data-tab="recursos">Recursos</button>
+  <button class="tab-btn" data-tab="checklist">Checklist</button>
+</nav>
+
+<!-- === CONCEPTOS === -->
+<section class="section active" id="sec-conceptos">
+  <div class="section-intro">
+    <h2>Seis <em>ideas</em> que tienes que dominar</h2>
+    <p>Pulsa cualquier tarjeta para girarla y ver la definición + un ejemplo concreto.</p>
+  </div>
+  <div class="flashgrid" id="flashgrid"></div>
+</section>
+
+<!-- === CASOS === -->
+<section class="section" id="sec-casos">
+  <div class="section-intro">
+    <h2>Antes y <em>después</em></h2>
+    <p>Tres situaciones reales. El mismo objetivo, dos formas de pedirlo. Verás por qué la segunda funciona mucho mejor.</p>
+  </div>
+  <div id="cases"></div>
+</section>
+
+<!-- === EJERCICIOS === -->
+<section class="section" id="sec-ejercicios">
+  <div class="section-intro">
+    <h2>Practica <em>ahora</em></h2>
+    <p>Escribe tu respuesta, pulsa "Ver solución modelo" y compara con la rúbrica. No hay calificación: el objetivo es que veas tu progreso.</p>
+  </div>
+  <div id="exercises"></div>
+</section>
+
+<!-- === PROMPTS === -->
+<section class="section" id="sec-prompts">
+  <div class="section-intro">
+    <h2>Plantillas para <em>copiar</em></h2>
+    <p>Sustituye los <code style="background:var(--bg-2);padding:1px 6px;border-radius:4px;font-family:var(--mono);font-size:.85em">[CORCHETES]</code> por lo tuyo y pega en Claude. Diseñadas para los casos de uso más frecuentes del módulo.</p>
+  </div>
+  <div class="prompts-grid" id="prompts"></div>
+</section>
+
+<!-- === QUIZ === -->
+<section class="section" id="sec-quiz">
+  <div class="section-intro">
+    <h2>Quiz <em>final</em></h2>
+    <p>10 preguntas para comprobar que lo entendiste. Feedback inmediato en cada respuesta. Sin nota: el objetivo es que veas qué te falta repasar antes de avanzar.</p>
+  </div>
+  <div id="quiz"></div>
+  <div id="quiz-result" class="quiz-result"></div>
+</section>
+
+<!-- === GLOSARIO === -->
+<section class="section" id="sec-glosario">
+  <div class="section-intro">
+    <h2>Glosario del <em>módulo</em></h2>
+    <p>Los términos que vas a leer y oír en el resto del curso. Tenlos a mano para no perderte cuando aparezcan más adelante.</p>
+  </div>
+  <div id="glosario" class="glosario-list"></div>
+</section>
+
+<!-- === RECURSOS === -->
+<section class="section" id="sec-recursos">
+  <div class="section-intro">
+    <h2>Para <em>profundizar</em></h2>
+    <p>Selección de lecturas, vídeos y herramientas. Ninguna es imprescindible: están aquí si quieres ir más allá de lo que cubre el módulo.</p>
+  </div>
+  <div id="recursos" class="recursos-grid"></div>
+</section>
+
+<!-- === CHECKLIST === -->
+<section class="section" id="sec-checklist">
+  <div class="section-intro">
+    <h2>Esta <em>semana</em>, haz esto</h2>
+    <p>El módulo no termina en el vídeo. Aquí tienes 7 acciones concretas para aplicar lo aprendido durante los próximos 7 días. Tilda lo que vayas haciendo — se guarda local.</p>
+  </div>
+  <div id="checklist" class="checklist"></div>
+  <div class="checklist-progress" id="checkProgress"></div>
+</section>
+
+<nav class="footer-nav">
+  <a href="/curso" class="foot-link">← Curso</a>
+  <a href="/recursos/M2.html" class="foot-link">Módulo 2 →</a>
+</nav>
+
+<script>
+// ============================================
+// CONTENIDO DEL MÓDULO 1
+// ============================================
+const MODULE_DATA = {
+  conceptos: [
+    {
+      title: "¿Qué es un LLM?",
+      def: "Un Large Language Model es un sistema entrenado con miles de millones de palabras que aprende a predecir qué texto sigue dado un contexto. No 'sabe' como una base de datos: razona por probabilidad sobre patrones del lenguaje.",
+      example: "Si escribes 'El gato se subió al…', el LLM predice 'tejado' o 'árbol' porque ha visto esas combinaciones miles de veces."
+    },
+    {
+      title: "La familia Claude",
+      def: "Anthropic ofrece tres modelos: Haiku (rápido, barato, para tareas simples), Sonnet (equilibrado, el más usado), y Opus (el más potente, para razonamiento profundo). Elegir bien ahorra coste y latencia.",
+      example: "Clasificar emails → Haiku. Redactar un artículo → Sonnet. Analizar un contrato de 50 páginas → Opus."
+    },
+    {
+      title: "Tokens y contexto",
+      def: "Claude no lee palabras, lee tokens (trozos de ~3-4 caracteres). La 'ventana de contexto' es cuántos tokens puede manejar a la vez (cientos de miles en Claude). Cuanto más metas, más caro y lento.",
+      example: "'Hola mundo' son ~3 tokens. Un PDF de 30 páginas, ~15.000. Un libro entero, ~150.000."
+    },
+    {
+      title: "Temperatura y creatividad",
+      def: "La 'temperatura' (0 a 1) controla cuán predecible es la respuesta. Baja = respuestas consistentes y conservadoras. Alta = más variadas y creativas. Para datos y código, baja. Para brainstorming, alta.",
+      example: "Generar JSON estructurado → temperatura 0. Escribir un poema → temperatura 0.8."
+    },
+    {
+      title: "Razonamiento extendido",
+      def: "Algunos modelos Claude pueden 'pensar antes de responder': dedican tokens internos a planificar la respuesta. Útil para problemas que requieren varios pasos lógicos. Más lento pero más preciso.",
+      example: "Resolver un problema matemático de varios pasos, o decidir la mejor arquitectura para un sistema."
+    },
+    {
+      title: "Multimodalidad",
+      def: "Claude no solo entiende texto: también lee imágenes, gráficos, capturas de pantalla, PDFs con figuras. Puedes pegar una imagen y pedirle análisis, transcripción o crítica visual.",
+      example: "Subir una captura del dashboard y pedir 'identifica los 3 problemas de UX más graves'."
+    },
+    {
+      title: "System prompt vs user prompt",
+      def: "El system prompt define el rol, las reglas y el contexto persistente de Claude para toda la conversación. El user prompt es cada mensaje individual del usuario. Separarlos da estructura: el system es 'cómo te comportas', el user es 'qué te pido ahora'.",
+      example: "System: 'Eres un revisor crítico de código senior.' User: 'Revisa esta función'. Claude entra al review con el rol ya cargado."
+    },
+    {
+      title: "Honestidad calibrada",
+      def: "Claude está entrenado para reconocer sus límites: dice 'no lo sé' o 'no estoy seguro' cuando corresponde, en lugar de inventar (alucinar). No es perfecto, pero comparado con otros LLM tiende a fabular menos.",
+      example: "Si le preguntas por una persona poco conocida, prefiere decir 'no tengo información fiable sobre esa persona' a inventarse una biografía."
+    },
+    {
+      title: "Fecha de corte de conocimiento",
+      def: "Claude se entrena con datos hasta una fecha concreta. Eventos posteriores no los conoce a menos que se los pegues en el contexto o uses búsqueda web. Es importante decírselo cuando preguntes por algo reciente.",
+      example: "Si preguntas '¿quién ganó las elecciones de 2024?' sin contexto, te dirá lo que sabía en su corte. Si le pegas la noticia, responde basándose en eso."
+    },
+    {
+      title: "Alucinaciones",
+      def: "Cuando un LLM genera información que suena plausible pero es falsa. Pasa más con datos específicos (citas, números, nombres) y menos cuando le das fuentes en el contexto. Verificar siempre cifras y citas, no fiarse al 100%.",
+      example: "Pedirle 'cita 5 estudios sobre X' sin fuentes puede llevar a referencias inventadas. Mejor: pegarle los estudios y pedirle resúmenes."
+    }
+  ],
+
+  casos: [
+    {
+      title: "Brainstorming de ideas para un proyecto",
+      context: "Estás buscando nombre para una marca de café de especialidad. Quieres opciones evocadoras, no genéricas.",
+      bad: "Dame nombres para una marca de café.",
+      good: "Actúa como creativo de naming en una agencia de branding boutique.\n\nMarca: café de especialidad, origen único de altura, tostado claro.\nPúblico: 28-45, urbanitas, ya compran café en cafeterías de tercera ola.\nTono: refinado pero no pretencioso, evocador, fácil de pronunciar.\n\nDame 12 opciones de nombre en 3 grupos:\n1) Geográficos / origen\n2) Sensoriales / sinestesia\n3) Conceptuales / metafóricos\n\nPara cada uno: nombre, en 5 palabras qué transmite, y una posible objeción.",
+      why: "<strong>Por qué funciona:</strong> persona definida + público concreto + tono + estructura de salida. Claude no tiene que adivinar nada y entrega algo accionable."
+    },
+    {
+      title: "Resumen de un documento largo",
+      context: "Tienes un informe de 40 páginas sobre tendencias de IA en educación y necesitas sacar conclusiones para una reunión.",
+      bad: "Resume este informe. [pega el PDF]",
+      good: "Te paso un informe de 40 páginas sobre IA en educación.\n\nMi objetivo: tomar 3 decisiones en una reunión mañana — (1) en qué área pilotar, (2) qué riesgos comunicar al claustro, (3) qué partners externos contactar.\n\nDevuélveme:\n- Resumen ejecutivo en 5 bullets\n- Las 3 áreas con mayor evidencia de éxito (con números si los hay)\n- Los 3 riesgos más mencionados\n- 5 organizaciones citadas que podrían ser partners\n\nCita la página donde encontraste cada dato.",
+      why: "<strong>Por qué funciona:</strong> el resumen está al servicio de una decisión concreta. Pides estructura, números, citas. Claude prioriza lo accionable, no lo bonito."
+    },
+    {
+      title: "Análisis de una imagen",
+      context: "Subes una captura de tu landing page y quieres feedback útil.",
+      bad: "¿Qué opinas de esta página?",
+      good: "Captura de la landing principal de mi SaaS B2B (gestión de inventario para pymes).\n\nAnaliza desde tres ángulos:\n1) Jerarquía visual: ¿qué se ve primero, segundo, tercero? ¿coincide con lo que debería ver el visitante en sus primeros 5 segundos?\n2) Claridad de la propuesta de valor: ¿alguien fuera del sector entendería qué hago?\n3) Llamada a la acción: ¿es evidente el siguiente paso?\n\nSé directo. Si algo está mal, dilo. No me cuides los sentimientos.",
+      why: "<strong>Por qué funciona:</strong> tres ángulos concretos + contexto del negocio + permiso explícito para ser duro. Sin eso, Claude tiende a ser educado y vago."
+    },
+    {
+      title: "Email difícil a un cliente",
+      context: "Tienes que comunicar a un cliente que el proyecto se retrasa 3 semanas por un fallo interno.",
+      bad: "Escribe un email para decirle a un cliente que el proyecto se retrasa.",
+      good: "Actúa como account manager senior.\n\nSituación: cliente B2B, llevamos 4 meses trabajando bien, ahora tenemos que comunicarle que el lanzamiento se retrasa 3 semanas porque un desarrollador clave dejó la empresa.\n\nObjetivo: que el cliente se quede pero con expectativas reseteadas.\n\nEscribe el email (máx 180 palabras) con:\n- Reconocimiento del impacto en ellos primero\n- Causa real (sin esconder pero sin drama)\n- Plan concreto de mitigación con fechas\n- Una propuesta de compensación razonable\n\nTono: firme y profesional. Nada de 'sentimos las molestias'.",
+      why: "<strong>Por qué funciona:</strong> rol + situación + objetivo emocional explícito + estructura del email + restricciones de tono. Claude no improvisa."
+    },
+    {
+      title: "Aprender un tema desde cero",
+      context: "Quieres entender 'transformers' (arquitectura de IA) con base técnica pero sin background en ML.",
+      bad: "Explícame qué son los transformers.",
+      good: "Tengo base técnica (programador 10 años, no ML) y quiero entender la arquitectura transformer al nivel de poder explicársela a otro programador.\n\nProgreso en 4 niveles:\n1) La intuición en una frase\n2) Qué problema resolvía respecto a RNN/LSTM\n3) Los componentes clave (attention, embeddings, positional encoding) en términos de programador\n4) Un pseudo-código mental que pueda visualizar\n\nUsa analogías de programación, no de cocina. Si menciono algo que no entiendo, asume que es porque NO lo entiendo y profundiza.",
+      why: "<strong>Por qué funciona:</strong> declarar nivel actual + nivel deseado + estructura progresiva + restricciones de analogías. Evitas la explicación genérica de manual."
+    },
+    {
+      title: "Decisión técnica con trade-offs",
+      context: "Tienes que elegir entre tres opciones de stack para un proyecto y necesitas argumentos claros, no un 'depende'.",
+      bad: "¿Debería usar Next.js, Remix o SvelteKit?",
+      good: "Proyecto: ecommerce B2C, ~50.000 visitas/mes, equipo de 2 devs, presupuesto limitado, time-to-market crítico.\n\nCompara Next.js, Remix y SvelteKit en mi caso. Para cada uno, puntúa de 1 a 5:\n- Curva de aprendizaje para mi equipo\n- Ecosistema (plugins, hosting, recursos)\n- Performance out-of-the-box\n- Riesgo a 2 años (¿seguirá vigente?)\n\nFormato: tabla + recomendación final en 3 líneas (qué eliges, qué pierdes con esa elección, qué señal te haría cambiar de opinión).",
+      why: "<strong>Por qué funciona:</strong> contexto del proyecto + criterios numéricos + estructura + 'qué te haría cambiar de opinión' fuerza una conclusión accionable."
+    },
+    {
+      title: "Tomar una decisión personal sin que te la tome Claude",
+      context: "Tienes que decidir entre dos ofertas de trabajo. No quieres que Claude elija por ti — quieres pensar mejor tú.",
+      bad: "Ayúdame a decidir entre dos ofertas.",
+      good: "Te paso dos ofertas y mi situación personal. NO quiero que me digas qué elegir. Quiero que me ayudes a estructurar mi pensamiento.\n\nOferta A: [datos].\nOferta B: [datos].\nMi situación: [edad, cargas, prioridades vitales, qué me motiva].\n\nHaz lo siguiente:\n1) Las 5 preguntas que debería responderme yo antes de elegir\n2) Para cada oferta, los 3 'red flags' que no estoy viendo por estar dentro\n3) Un experimento mental: si en 2 años me arrepiento de A, ¿qué habría pasado? Lo mismo con B.\n\nNo me des consejo. Hazme pensar.",
+      why: "<strong>Por qué funciona:</strong> redefine el rol (facilitador no consejero), pide preguntas no respuestas, fuerza ejercicios mentales. Cuando no quieres delegar la decisión sino tener una mejor."
+    }
+  ],
+
+  ejercicios: [
+    {
+      title: "Refactoriza este prompt mediocre",
+      task: "Tienes este prompt: \"Escribe un email para un cliente cabreado.\" Reescríbelo aplicando lo aprendido en el módulo: rol, contexto, objetivo, restricciones, formato de salida.",
+      solution: "Actúa como account manager senior con experiencia en clientes empresariales.\n\nContexto: el cliente (responsable de compras de una cadena hotelera) está cabreado porque hemos retrasado por segunda vez la entrega de su pedido (200 unidades). El primer retraso fue por un problema del proveedor; este segundo es por un error nuestro de planificación.\n\nObjetivo del email: reconocer el error sin excusas, ofrecer una compensación creíble, asegurar que esto no vuelve a pasar.\n\nRestricciones: máximo 150 palabras. Tono firme y profesional, no servil. No prometer fechas que no podamos cumplir. Usar su nombre (Marta López).\n\nDevuélveme: asunto + cuerpo del email + dos asuntos alternativos por si quiero A/B test.",
+      rubric: [
+        "Define un rol claro (no genérico tipo 'asistente')",
+        "Da contexto suficiente para que Claude entienda la situación",
+        "Indica el objetivo, no solo la tarea",
+        "Pone restricciones (longitud, tono, qué evitar)",
+        "Especifica el formato exacto de la salida"
+      ]
+    },
+    {
+      title: "Elige el modelo correcto",
+      task: "Para cada escenario, decide si usarías Haiku, Sonnet u Opus, y justifica en una línea:\n\nA) Clasificar 10.000 tickets de soporte por categoría.\nB) Redactar el guion de un curso online de 8 horas.\nC) Auditar el código de seguridad de una app financiera.\nD) Generar 500 descripciones de producto para un ecommerce.\nE) Diseñar la arquitectura de un sistema de IA multi-agente.",
+      solution: "A) Haiku — clasificación con etiquetas claras, alto volumen, latencia importa más que matiz.\nB) Sonnet — necesitas calidad de escritura y coherencia, pero no razonamiento extremo. Sweet spot.\nC) Opus — razonamiento profundo, identificar vulnerabilidades sutiles, error coste-altísimo justifica el coste.\nD) Haiku — repetitivo, formato fijo, miles de llamadas. Si la calidad falla en algunos, Sonnet selectivo.\nE) Opus — decisión de arquitectura, trade-offs complejos, justifica pagar por el mejor razonamiento.",
+      rubric: [
+        "Haiku para volumen alto + tarea simple + latencia importante",
+        "Sonnet como default razonable para casi todo lo creativo o redactado",
+        "Opus reservado para decisiones donde el error tiene coste alto",
+        "Tener en cuenta el coste total (volumen × precio por llamada)",
+        "No usar Opus por defecto: a veces es matar moscas a cañonazos"
+      ]
+    },
+    {
+      title: "Detecta la alucinación",
+      task: "Le has pedido a Claude: \"Dame 3 estudios académicos sobre el impacto del sueño en la productividad cognitiva, con autor, año y revista.\"\n\nRespuesta de Claude (ficticia, para el ejercicio):\n\n1) Walker, M. (2017). 'Sleep deprivation and decision-making'. Journal of Sleep Research.\n2) Khatri, P. (2019). 'The cognitive cost of partial sleep restriction'. Nature Neuroscience, 22(4), 312-329.\n3) Goldstein, A. (2021). 'Nocturnal recovery and executive function'. Sleep Medicine Reviews, 58.\n\n¿Qué problema tiene este output y cómo deberías validarlo? ¿Cómo habrías formulado el prompt mejor desde el principio para reducir el riesgo?",
+      solution: "El problema: las referencias pueden estar inventadas total o parcialmente. Los LLM son notoriamente malos generando citas exactas (combinan autores reales con títulos plausibles pero falsos, o inventan números de página). \n\nValidar: buscar cada cita en Google Scholar / DOI / la revista. Si una no aparece, descartar todo el output (probablemente las otras también lo sean).\n\nPrompt mejor desde el inicio:\n\"NO inventes referencias. Si no tienes certeza de que un estudio existe con esos datos exactos, dime 'no tengo certeza de poder citar estudios con precisión' en lugar de generarlos. Como alternativa, dime los conceptos clave del tema y propón términos de búsqueda para que yo busque los estudios reales.\"",
+      rubric: [
+        "Reconocer que las citas concretas son una zona de alta alucinación",
+        "Tener un proceso de validación (Scholar, DOI) antes de usar las refs",
+        "En el prompt, dar permiso explícito a Claude para decir 'no sé'",
+        "Pedir conceptos/términos de búsqueda en vez de citas inventadas",
+        "Nunca pegar referencias sin verificar en un trabajo serio (académico, legal, médico)"
+      ]
+    },
+    {
+      title: "Reescribe un prompt que pide algo subjetivo",
+      task: "Prompt original: \"Hazme un logo bonito para mi cafetería.\"\n\nProblemas: (1) Claude no diseña gráficos, (2) 'bonito' es subjetivo, (3) falta TODO el contexto. Reescribe el prompt para sacar el máximo valor posible de Claude sobre ESTE caso, sabiendo lo que SÍ puede hacer (texto, conceptos, briefings).",
+      solution: "Necesito preparar el brief que pasaré a un diseñador para el logo de mi cafetería.\n\nLa cafetería:\n- Nombre: [Nombre]\n- Ubicación: barrio residencial de Madrid, calle peatonal\n- Concepto: cafés de especialidad + bollería artesanal + ambiente para trabajar con portátil\n- Público: 28-45, gente que valora la calidad y no le importa pagar 3,50€ por un café\n- Competencia local: dos cadenas grandes y una boutique\n\nDevuélveme:\n1) Tres direcciones conceptuales posibles para el logo (con nombre, ej: 'Direccion Tipográfica', 'Dirección Ilustrativa', 'Dirección Símbolo'). Para cada una: qué transmite, ejemplos de marcas similares en otro sector, ventaja y desventaja.\n2) Para mi caso, cuál recomiendas y por qué (en 3 líneas).\n3) Un brief de 200 palabras que pueda pasarle al diseñador con la dirección elegida.",
+      rubric: [
+        "Reconocer qué SÍ puede hacer Claude (texto, brief, conceptos) vs qué no (diseñar imagen)",
+        "Convertir la petición vaga en una entregable concreto (un brief)",
+        "Dar contexto del negocio: público, competencia, concepto",
+        "Pedir alternativas con trade-offs, no una solución única",
+        "Acabar con un artefacto que se pueda pasar al diseñador real"
+      ]
+    },
+    {
+      title: "Estructura una conversación larga",
+      task: "Vas a usar Claude durante una sesión de 2 horas para planificar el lanzamiento de un producto. Es la primera vez que lo usas para esto. \n\n¿Cómo organizarías la conversación para no perderte y sacarle el máximo? Diseña la estructura: qué le pones en el primer mensaje (system + context), cómo divides la sesión en fases, cuándo le pides resumir o consolidar.",
+      solution: "Mensaje inicial (system prompt + contexto compartido):\n\"Vas a ser mi colaborador estratégico durante esta sesión de planificación. Producto: [X]. Lanzamiento previsto: [fecha]. Estado actual: [Y]. Objetivo de hoy: terminar con un plan de lanzamiento de 4 semanas que pueda ejecutar mi equipo de 3 personas. Regla: cuando algo es ambiguo, pregúntame antes de asumir. Cuando una decisión depende de información que no tengo, dímelo en lugar de inventar.\"\n\nFase 1 (30 min): contexto. Le paso datos del mercado, competencia, recursos. Le pido que me resuma de vuelta para verificar comprensión.\n\nFase 2 (30 min): generar opciones. \"Dame 3 estrategias de lanzamiento muy distintas con sus pros/contras.\"\n\nFase 3 (30 min): elegir y profundizar la elegida en plan semanal.\n\nFase 4 (30 min): pedir un resumen final consolidado en markdown que pueda compartir con el equipo. Le pido que liste también las 5 decisiones pendientes que NO tomamos hoy.",
+      rubric: [
+        "Empezar con system prompt + contexto + objetivo de la sesión",
+        "Pedir explícitamente preguntas ante ambigüedad (reducir alucinación)",
+        "Dividir la sesión en fases con objetivo claro cada una",
+        "Generar opciones antes de elegir, no comprometerse rápido",
+        "Cerrar con resumen consolidado y lista de pendientes"
+      ]
+    }
+  ],
+
+  prompts: [
+    {
+      tag: "Resumir",
+      title: "Resumen accionable de documento largo",
+      desc: "Cuando necesitas extraer lo útil de un PDF/artículo para una decisión concreta.",
+      text: "Te paso un documento sobre [TEMA].\n\nMi objetivo: [DECISIÓN O ACCIÓN CONCRETA].\n\nDevuélveme:\n- Resumen ejecutivo en 5 bullets\n- Los 3 puntos más relevantes para mi objetivo (con cita de página)\n- Las 2 preguntas que el documento no responde y debería investigar aparte\n\nEvita generalidades. Sé concreto."
+    },
+    {
+      tag: "Brainstorming",
+      title: "Lluvia de ideas estructurada",
+      desc: "Para generar opciones diversas y no quedarte con la primera que aparezca.",
+      text: "Actúa como [PERFIL PROFESIONAL: ej. director creativo / estratega / etc.].\n\nNecesito ideas para: [OBJETIVO ESPECÍFICO].\nPúblico: [QUIÉN].\nRestricciones: [PRESUPUESTO, TIEMPO, TONO].\n\nDame 10 ideas en 3 grupos:\n1) Lo obvio bien hecho\n2) Lo lateral / inesperado\n3) Lo polémico / arriesgado\n\nPara cada idea: una frase qué es, una frase por qué podría funcionar, una frase qué podría salir mal."
+    },
+    {
+      tag: "Comparar",
+      title: "Comparativa con criterios explícitos",
+      desc: "Para elegir entre opciones sin caer en 'depende' inútil.",
+      text: "Compara [OPCIÓN A], [OPCIÓN B] y [OPCIÓN C] para mi caso: [SITUACIÓN].\n\nUsa estos criterios y puntúa cada opción de 1 a 5:\n1) [CRITERIO 1 — ej. coste]\n2) [CRITERIO 2 — ej. facilidad de aprendizaje]\n3) [CRITERIO 3 — ej. escalabilidad]\n\nFormato: tabla con puntuaciones + una recomendación final en 3 líneas (cuál elegir, por qué, qué pierdes con esa elección)."
+    },
+    {
+      tag: "Explicar",
+      title: "Explicar a nivel objetivo",
+      desc: "Para entender algo nuevo sin caer ni en lo infantil ni en lo opaco.",
+      text: "Explícame [CONCEPTO] al nivel de alguien que [NIVEL: ej. 'sabe programar pero nunca ha tocado machine learning'].\n\nEstructura:\n1) La idea en una frase\n2) Por qué se inventó (qué problema resolvía)\n3) Cómo funciona en términos simples\n4) Un ejemplo concreto que pueda visualizar\n5) Qué errores comunes comete la gente al pensar en esto\n\nNo uses analogías de cocina ni de coches. Estoy harto de ellas."
+    },
+    {
+      tag: "Traducir",
+      title: "Traducción con adaptación de tono",
+      desc: "Cuando no quieres traducción literal sino que suene nativo en el otro idioma.",
+      text: "Traduce este texto de [IDIOMA ORIGEN] a [IDIOMA DESTINO].\n\nContexto: es para [TIPO DE USO: ej. 'una newsletter B2B dirigida a fundadores tech']. El tono debe sentirse nativo, no traducido.\n\nTexto:\n\"\"\"\n[TEXTO]\n\"\"\"\n\nDevuelve:\n1) La traducción adaptada\n2) 2-3 decisiones de traducción que tomaste y por qué (palabras donde la equivalencia literal habría sonado raro)"
+    },
+    {
+      tag: "Extraer",
+      title: "Extracción de datos estructurados",
+      desc: "Cuando tienes texto desordenado y necesitas pasarlo a tabla o JSON.",
+      text: "Del siguiente texto, extrae todos los [TIPO DE ENTIDAD: ej. 'eventos mencionados con fecha'] y devuélvelos como JSON.\n\nSchema:\n{\n  \"nombre\": string,\n  \"fecha\": string (formato YYYY-MM-DD si es posible),\n  \"lugar\": string o null,\n  \"fuente_cita\": string (la frase exacta del texto)\n}\n\nReglas:\n- Si un dato no aparece, pon null. No inventes.\n- Si una fecha está ambigua (\"el martes\"), déjala como string literal.\n- Devuelve solo el array JSON, sin texto adicional.\n\nTexto:\n\"\"\"\n[TEXTO]\n\"\"\""
+    },
+    {
+      tag: "Revisar",
+      title: "Review crítica de un texto",
+      desc: "Para que Claude haga de editor brutalmente honesto sin caer en cortesía vacía.",
+      text: "Voy a pasarte un [TIPO DE TEXTO: ej. 'email a un cliente'] que he escrito.\n\nContexto: [PARA QUÉ ES, A QUIÉN VA, QUÉ QUIERO CONSEGUIR].\n\nQuiero una review brutalmente honesta. No me cuides los sentimientos.\n\nDevuélveme:\n1) Lo que está bien (máximo 2 cosas, sé estricto)\n2) Los 3 problemas más importantes, en orden de gravedad. Para cada uno: cita la frase exacta + por qué falla + cómo lo reescribirías\n3) Una versión final reescrita\n\nSi el texto entero no merece la pena salvar, dilo. No me hagas perder el tiempo retocando algo que debería empezar de cero.\n\nTexto:\n\"\"\"\n[TEXTO]\n\"\"\""
+    },
+    {
+      tag: "Planificar",
+      title: "Convertir un objetivo en plan ejecutable",
+      desc: "Cuando tienes una meta vaga y necesitas convertirla en pasos concretos con fechas.",
+      text: "Objetivo: [DESCRIBE TU META EN UNA FRASE].\n\nMi situación actual: [DÓNDE ESTOY, QUÉ TENGO, QUÉ ME FALTA].\nDeadline: [FECHA O 'NO FIJO'].\nRecursos disponibles: [TIEMPO/SEMANA, DINERO, GENTE].\n\nGenérame un plan ejecutable con:\n1) Las 5-8 fases principales (no más). Para cada fase: nombre, semana en la que se hace, output concreto al final.\n2) Las 3 dependencias críticas (cosas que si fallan, todo el plan se viene abajo)\n3) Los 2 riesgos más probables y un plan B para cada uno\n4) El primer paso accionable que puedo hacer HOY en menos de 1 hora\n\nFormato: tabla para las fases, listas para los demás puntos."
+    },
+    {
+      tag: "Decidir",
+      title: "Decisión con marco de pros/contras",
+      desc: "Para decidir entre opciones cuando ya estás dando vueltas en círculo.",
+      text: "Tengo que decidir entre estas opciones:\nA) [OPCIÓN A]\nB) [OPCIÓN B]\n(C) [OPCIÓN C si la hay])\n\nMi situación: [LO QUE TE IMPORTA PARA ESTA DECISIÓN].\n\nNo me digas qué elegir. Haz lo siguiente:\n\n1) Identifica los 3-4 criterios que REALMENTE importan en esta decisión (no los obvios — los que probablemente estoy pasando por alto)\n2) Para cada opción, evalúala contra esos criterios (con texto, no con números)\n3) Dame los 'sesgos cognitivos' que probablemente están afectando mi pensamiento ahora mismo (urgencia, miedo, fatiga de decisión, sesgo de status quo, etc.) y cómo neutralizarlos\n4) Termina con: \"si quisieras estar seguro de tu elección, ¿qué información te falta? ¿qué pequeño experimento podrías hacer para conseguirla en menos de 1 semana?\""
+    },
+    {
+      tag: "Aprender",
+      title: "Tutor socrático",
+      desc: "Para aprender algo a fondo en lugar de que te lo cuenten. Claude te hace pensar, no te explica.",
+      text: "Quiero entender [TEMA] a fondo.\n\nMi nivel actual: [QUÉ SÉ YA, QUÉ HE LEÍDO O ESTUDIADO].\nObjetivo: poder [QUÉ QUIERO PODER HACER CUANDO TERMINE].\n\nNo me expliques el tema. Hazme de tutor socrático:\n\n1) Empieza preguntándome qué creo que sé sobre [PRIMER SUBTEMA]\n2) Cuando responda, identifica qué entiendo bien, qué entiendo mal, y qué malinterpreto\n3) Hazme preguntas que me obliguen a llegar a la conclusión yo solo. Solo da la respuesta si fallo 2 veces seguidas.\n4) Después de cada concepto, dame UN ejercicio práctico de aplicación\n5) Lleva tú la ruta: avanzamos cuando estoy listo, no antes\n\nEmpieza ahora. Pregúntame por [PRIMER SUBTEMA]."
+    },
+    {
+      tag: "Generar",
+      title: "Variantes con criterios distintos",
+      desc: "Cuando necesitas opciones diversas (titulares, slogans, nombres) y no que te repita la misma idea con otras palabras.",
+      text: "Necesito [TIPO DE OUTPUT: ej. titulares para un artículo, slogans para una campaña, nombres para un producto] sobre:\n[CONTEXTO/TEMA EN 1-2 LÍNEAS].\n\nDame 10 opciones, pero NO 10 variantes parecidas. Quiero diversidad real. Estructura:\n\n1-2: optimizando para CLARIDAD máxima (que se entienda en 1 segundo)\n3-4: optimizando para CURIOSIDAD (que dé ganas de saber más)\n5-6: optimizando para EMOCIÓN (que apele a sentir, no a pensar)\n7-8: optimizando para CONTROVERSIA (que provoque reacción)\n9-10: el camino opuesto a lo obvio (anti-cliché del sector)\n\nPara cada opción: la frase + 5 palabras sobre la sensación que transmite + un riesgo o crítica que se le podría hacer."
+    }
+  ],
+
+  quiz: [
+    {
+      q: "¿Qué hace un LLM cuando genera texto?",
+      opts: [
+        "Busca en una base de datos y recupera la información",
+        "Predice qué tokens siguen al contexto basándose en patrones aprendidos",
+        "Razona lógicamente como un sistema experto programado a mano",
+        "Genera texto aleatorio y luego lo filtra por relevancia"
+      ],
+      correct: 1,
+      fb: "Un LLM aprende patrones probabilísticos del lenguaje. No 'sabe' como una BD: predice qué viene después dado lo anterior. Eso explica tanto su potencia (creatividad) como sus límites (alucinaciones)."
+    },
+    {
+      q: "Tienes que clasificar 100.000 reseñas como positivas o negativas. ¿Qué modelo eliges?",
+      opts: ["Claude Haiku", "Claude Sonnet", "Claude Opus", "Da igual, los tres rinden igual aquí"],
+      correct: 0,
+      fb: "Tarea simple + volumen alto + latencia importa = Haiku. Sonnet sería pagar de más por la misma calidad de clasificación. Opus sería matar moscas a cañonazos."
+    },
+    {
+      q: "¿Qué es un token en el contexto de Claude?",
+      opts: [
+        "Una palabra completa, siempre",
+        "Una unidad de texto de ~3-4 caracteres en la que Claude divide el input",
+        "Una clave de autenticación de la API",
+        "Un carácter individual"
+      ],
+      correct: 1,
+      fb: "Los tokens son trozos de ~3-4 caracteres. 'Hola mundo' son ~3 tokens, no 2 palabras. El precio y la latencia se calculan en tokens, no en palabras."
+    },
+    {
+      q: "¿Cuándo deberías subir la temperatura por encima de 0?",
+      opts: [
+        "Cuando generas JSON estructurado",
+        "Cuando extraes datos de un texto",
+        "Cuando haces brainstorming creativo o quieres variedad",
+        "Cuando programas código de producción"
+      ],
+      correct: 2,
+      fb: "Temperatura alta = más creatividad y variedad. Para JSON, datos y código necesitas determinismo (temp baja, idealmente 0). Para brainstorming, ideas de marketing, ficción, sube a 0.7-0.9."
+    },
+    {
+      q: "Estás escribiendo un prompt para que Claude te haga un email. ¿Cuál de estos es más importante?",
+      opts: [
+        "Que el prompt sea muy corto",
+        "Dar contexto sobre el destinatario, el objetivo del email y el tono deseado",
+        "Empezar con 'Por favor' para ser educado",
+        "Usar lenguaje técnico para que Claude entienda mejor"
+      ],
+      correct: 1,
+      fb: "La especificidad gana sobre la longitud. Claude no necesita cortesía ni lenguaje técnico — necesita saber a QUIÉN va, PARA QUÉ, y con QUÉ tono. Eso convierte una respuesta vaga en una accionable."
+    },
+    {
+      q: "¿Qué diferencia hay entre system prompt y user prompt?",
+      opts: [
+        "Ninguna, son sinónimos",
+        "El system prompt es solo para desarrolladores avanzados",
+        "El system prompt define el rol y reglas persistentes; el user prompt es cada mensaje individual",
+        "El user prompt es más caro de procesar"
+      ],
+      correct: 2,
+      fb: "System prompt = 'quién eres y cómo te comportas' (estable durante toda la conversación). User prompt = cada petición individual. Separarlos da estructura y consistencia a sesiones largas."
+    },
+    {
+      q: "Claude te da una lista de '5 estudios académicos' con autores y referencias. ¿Cuál es el riesgo más probable?",
+      opts: [
+        "Que sean demasiado antiguos",
+        "Que estén bien pero en idioma incorrecto",
+        "Que algunas referencias estén inventadas (alucinadas)",
+        "Que sean confidenciales y no se puedan citar"
+      ],
+      correct: 2,
+      fb: "Citas concretas + datos específicos (autores, años, páginas) es una zona de alta alucinación. SIEMPRE verifica referencias en Scholar o el DOI antes de usarlas. Mejor: pega tú los estudios y pide resúmenes."
+    },
+    {
+      q: "¿Cuándo se justifica usar Opus en lugar de Sonnet?",
+      opts: [
+        "Siempre, por si acaso",
+        "Cuando el error tiene coste alto y la tarea requiere razonamiento profundo",
+        "Solo para tareas creativas",
+        "Cuando tienes prisa"
+      ],
+      correct: 1,
+      fb: "Opus es el más potente pero también el más caro y lento. Reservado para decisiones de alto impacto: arquitectura, auditoría de seguridad, análisis legal/médico. Para el día a día, Sonnet es suficiente."
+    },
+    {
+      q: "Subes una imagen del dashboard de tu producto y pides feedback. ¿Qué prompt funciona mejor?",
+      opts: [
+        "'¿Qué opinas?'",
+        "'Hazme un análisis exhaustivo'",
+        "'Dame 3 problemas de UX en orden de gravedad, citando elementos específicos de la imagen'",
+        "'¿Está bien o mal?'"
+      ],
+      correct: 2,
+      fb: "Pedir UN número concreto (3 problemas), una jerarquía (gravedad) y una referencia (elementos específicos) convierte una respuesta educada y vaga en una respuesta accionable y verificable."
+    },
+    {
+      q: "¿Cuál es el mejor primer mensaje para una sesión de planificación larga con Claude?",
+      opts: [
+        "'Ayúdame a planificar mi semana'",
+        "Un mensaje con rol + contexto del proyecto + objetivo de la sesión + regla de pedir aclaración antes de asumir",
+        "'Hola Claude'",
+        "Pegarle directamente el primer problema sin más"
+      ],
+      correct: 1,
+      fb: "Una sesión larga rinde mucho mejor con un 'briefing inicial' que establece rol, contexto y reglas. Especialmente la regla 'pregúntame antes de asumir' reduce alucinaciones y mantiene el foco."
+    }
+  ],
+
+  glosario: [
+    { t: "Alucinación", d: "Cuando un LLM genera información que suena plausible pero es falsa. Frecuente con citas, números y nombres específicos." },
+    { t: "API", d: "Interfaz programática para usar Claude desde código. Permite integraciones automatizadas y aplicaciones a escala." },
+    { t: "Claude", d: "Familia de modelos de IA conversacional de Anthropic. Conocidos por escritura natural y honestidad calibrada." },
+    { t: "Context window", d: "Cantidad máxima de tokens que un modelo puede procesar a la vez. Claude maneja cientos de miles." },
+    { t: "Determinismo", d: "Grado en que la misma entrada produce la misma salida. Bajo a temperatura 0, alto a temperatura 0.8+." },
+    { t: "Embedding", d: "Representación numérica de un texto que captura su significado. Base de la búsqueda semántica." },
+    { t: "Haiku", d: "Modelo Claude más rápido y económico. Ideal para tareas simples a alto volumen." },
+    { t: "Honestidad calibrada", d: "Capacidad de un modelo para reconocer sus límites ('no lo sé') en lugar de inventar." },
+    { t: "LLM", d: "Large Language Model. Modelo de lenguaje entrenado sobre miles de millones de palabras." },
+    { t: "Multimodal", d: "Que entiende más de un tipo de input. Claude lee texto e imágenes (PDFs, capturas, gráficos)." },
+    { t: "Opus", d: "Modelo Claude más potente. Para razonamiento profundo y decisiones de alto impacto." },
+    { t: "Prompt", d: "Instrucción que le das al modelo. Buena calidad de prompt = buena calidad de respuesta." },
+    { t: "Razonamiento extendido", d: "Capacidad de algunos modelos de 'pensar antes de responder', dedicando tokens internos a planificar." },
+    { t: "Sonnet", d: "Modelo Claude equilibrado. El más usado para tareas creativas y redactadas del día a día." },
+    { t: "System prompt", d: "Instrucción persistente que define el rol, reglas y contexto del modelo para toda la conversación." },
+    { t: "Temperatura", d: "Parámetro (0 a 1) que controla la creatividad de la respuesta. Baja = consistente, alta = variada." },
+    { t: "Token", d: "Unidad de texto de ~3-4 caracteres en la que Claude divide el input. El precio se calcula por tokens." },
+    { t: "User prompt", d: "Cada mensaje individual del usuario en una conversación, frente al system prompt persistente." }
+  ],
+
+  recursos: [
+    {
+      tag: "Documentación",
+      title: "Documentación oficial de Anthropic",
+      desc: "El punto de partida para usar Claude vía API. Conceptos, guías y referencia técnica.",
+      url: "https://docs.claude.com",
+      meta: "docs.claude.com · ~30 min"
+    },
+    {
+      tag: "Guía",
+      title: "Prompt engineering — Anthropic",
+      desc: "Las técnicas oficiales recomendadas por Anthropic para escribir prompts eficaces. Lectura obligatoria.",
+      url: "https://docs.claude.com/en/docs/build-with-claude/prompt-engineering/overview",
+      meta: "docs.claude.com · ~45 min"
+    },
+    {
+      tag: "Herramienta",
+      title: "Claude.ai (interfaz web)",
+      desc: "La interfaz oficial para chatear con Claude. La forma más rápida de empezar sin escribir código.",
+      url: "https://claude.ai",
+      meta: "claude.ai · gratis y plus"
+    },
+    {
+      tag: "Vídeo",
+      title: "How LLMs work — 3Blue1Brown",
+      desc: "Serie de YouTube increíblemente visual sobre cómo funcionan los transformers por dentro. Para los curiosos.",
+      url: "https://www.youtube.com/playlist?list=PLZHQObOWTQDNU6R1_67000Dx_ZCJB-3pi",
+      meta: "YouTube · ~3h en total"
+    },
+    {
+      tag: "Paper",
+      title: "Constitutional AI (Anthropic)",
+      desc: "Cómo Anthropic entrena Claude para ser útil, honesto e inofensivo. Para entender la filosofía del modelo.",
+      url: "https://www.anthropic.com/research/constitutional-ai-harmlessness-from-ai-feedback",
+      meta: "anthropic.com · técnico"
+    },
+    {
+      tag: "Comunidad",
+      title: "r/ClaudeAI en Reddit",
+      desc: "Comunidad activa con casos reales, comparativas y trucos. Útil para ver qué hace la gente con Claude.",
+      url: "https://www.reddit.com/r/ClaudeAI/",
+      meta: "reddit.com · español/inglés"
+    },
+    {
+      tag: "Lectura",
+      title: "The Bitter Lesson — Rich Sutton",
+      desc: "Ensayo corto sobre por qué los modelos generales con datos masivos ganan siempre. Contexto filosófico de los LLM.",
+      url: "http://www.incompleteideas.net/IncIdeas/BitterLesson.html",
+      meta: "ensayo · ~10 min"
+    },
+    {
+      tag: "Herramienta",
+      title: "Anthropic Tokenizer",
+      desc: "Herramienta oficial para contar tokens de cualquier texto. Útil para estimar coste antes de mandar a la API.",
+      url: "https://platform.anthropic.com/tokenizer",
+      meta: "anthropic.com · gratis"
+    }
+  ],
+
+  checklist: [
+    {
+      day: "Día 1",
+      text: "Abre claude.ai y haz 3 preguntas usando lo aprendido sobre rol + contexto + objetivo.",
+      detail: "El cambio entre 'pregunta vaga' y 'pregunta estructurada' es lo más impactante que vas a notar."
+    },
+    {
+      day: "Día 2",
+      text: "Compara el mismo prompt en Haiku y Sonnet (o Sonnet y Opus).",
+      detail: "Si tienes acceso a la API o a Claude.ai Plus, verás la diferencia en calidad y velocidad."
+    },
+    {
+      day: "Día 3",
+      text: "Aplica una plantilla del módulo a una tarea real que tengas pendiente.",
+      detail: "Elige la que más te encaje (resumir, planificar, decidir...) y úsala con tus datos."
+    },
+    {
+      day: "Día 4",
+      text: "Pídele a Claude que te critique brutalmente un texto tuyo (email, post, propuesta).",
+      detail: "Usa la plantilla de 'Review crítica'. Compara con la opinión de un humano para calibrar."
+    },
+    {
+      day: "Día 5",
+      text: "Diseña un system prompt para un caso recurrente tuyo y guárdalo.",
+      detail: "Ejemplo: 'Eres mi editor para newsletters semanales. Tono: directo, sin paja, máximo 300 palabras.'"
+    },
+    {
+      day: "Día 6",
+      text: "Sube una imagen (gráfico, captura, foto) y prueba la multimodalidad.",
+      detail: "Pídele que la analice con un ángulo concreto. Verás que ve mucho más de lo que esperas."
+    },
+    {
+      day: "Día 7",
+      text: "Repasa el quiz final. Si fallaste alguna, vuelve al concepto correspondiente.",
+      detail: "Antes de pasar al módulo 2, asegúrate de tener clavada la diferencia entre Haiku/Sonnet/Opus y el concepto de tokens."
+    }
+  ]
+};
+
+// ============================================
+// RENDERIZADO
+// ============================================
+function renderFlashcards() {
+  const grid = document.getElementById('flashgrid');
+  MODULE_DATA.conceptos.forEach((c, i) => {
+    const card = document.createElement('div');
+    card.className = 'flash';
+    card.innerHTML = `
+      <div class="flash-inner">
+        <div class="flash-face front">
+          <div class="flash-num">Concepto ${String(i+1).padStart(2,'0')}</div>
+          <div class="flash-title">${c.title}</div>
+          <div class="flash-hint">↻ Pulsa para girar</div>
+        </div>
+        <div class="flash-face back">
+          <div class="flash-def">${c.def}</div>
+          <div class="flash-example">${c.example}</div>
+        </div>
+      </div>
+    `;
+    card.addEventListener('click', () => card.classList.toggle('flipped'));
+    grid.appendChild(card);
+  });
+}
+
+function renderCases() {
+  const wrap = document.getElementById('cases');
+  MODULE_DATA.casos.forEach((c, i) => {
+    const el = document.createElement('div');
+    el.className = 'case';
+    el.innerHTML = `
+      <div class="case-num">Caso ${String(i+1).padStart(2,'0')}</div>
+      <div class="case-title">${c.title}</div>
+      <div class="case-context">${c.context}</div>
+      <div class="case-grid">
+        <div class="case-col bad">
+          <div class="case-col-label">✕ Prompt mediocre</div>
+          <div class="case-prompt">${c.bad}</div>
+        </div>
+        <div class="case-col good">
+          <div class="case-col-label">✓ Prompt bueno</div>
+          <div class="case-prompt">${c.good}</div>
+        </div>
+      </div>
+      <div class="case-why">${c.why}</div>
+    `;
+    wrap.appendChild(el);
+  });
+}
+
+function renderExercises() {
+  const wrap = document.getElementById('exercises');
+  MODULE_DATA.ejercicios.forEach((e, i) => {
+    const el = document.createElement('div');
+    el.className = 'ex';
+    el.innerHTML = `
+      <div class="ex-num">Ejercicio ${String(i+1).padStart(2,'0')}</div>
+      <div class="ex-title">${e.title}</div>
+      <div class="ex-task">${e.task.replace(/\n/g, '<br>')}</div>
+      <textarea class="ex-input" placeholder="Escribe tu respuesta aquí..."></textarea>
+      <div class="ex-btns">
+        <button class="btn btn-primary" data-action="show-solution">Ver solución modelo</button>
+        <button class="btn" data-action="clear">Limpiar</button>
+      </div>
+      <div class="ex-solution">
+        <div class="ex-solution-label">Solución modelo</div>
+        <div class="ex-solution-text">${e.solution}</div>
+        <div class="ex-rubric">
+          <div class="ex-rubric-title">Autoevaluación · ¿tu respuesta cumple?</div>
+          <ul>${e.rubric.map(r => `<li>${r}</li>`).join('')}</ul>
+        </div>
+      </div>
+    `;
+    const textarea = el.querySelector('.ex-input');
+    const solDiv = el.querySelector('.ex-solution');
+    el.querySelector('[data-action="show-solution"]').addEventListener('click', () => {
+      solDiv.classList.toggle('show');
+    });
+    el.querySelector('[data-action="clear"]').addEventListener('click', () => {
+      textarea.value = '';
+      solDiv.classList.remove('show');
+    });
+    wrap.appendChild(el);
+  });
+}
+
+function renderPrompts() {
+  const wrap = document.getElementById('prompts');
+  MODULE_DATA.prompts.forEach((p, i) => {
+    const el = document.createElement('div');
+    el.className = 'prompt-card';
+    el.innerHTML = `
+      <div class="prompt-tag">${p.tag}</div>
+      <div class="prompt-title">${p.title}</div>
+      <div class="prompt-desc">${p.desc}</div>
+      <pre class="prompt-text">${p.text.replace(/</g, '&lt;')}</pre>
+      <button class="copy-btn">Copiar al portapapeles</button>
+    `;
+    const btn = el.querySelector('.copy-btn');
+    btn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(p.text);
+        btn.textContent = '✓ Copiado';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.textContent = 'Copiar al portapapeles';
+          btn.classList.remove('copied');
+        }, 1800);
+      } catch(e) {
+        btn.textContent = 'Selecciona y copia manual';
+      }
+    });
+    wrap.appendChild(el);
+  });
+}
+
+// Tabs
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('sec-' + btn.dataset.tab).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+});
+
+function renderQuiz() {
+  const wrap = document.getElementById('quiz');
+  let answered = 0;
+  let correct = 0;
+  MODULE_DATA.quiz.forEach((q, i) => {
+    const el = document.createElement('div');
+    el.className = 'quiz-q';
+    el.innerHTML = `
+      <div class="quiz-num">Pregunta ${String(i+1).padStart(2,'0')} de ${MODULE_DATA.quiz.length}</div>
+      <div class="quiz-question">${q.q}</div>
+      <div class="quiz-opts">
+        ${q.opts.map((o, j) => `<button class="quiz-opt" data-idx="${j}">${o}</button>`).join('')}
+      </div>
+      <div class="quiz-feedback"></div>
+    `;
+    const opts = el.querySelectorAll('.quiz-opt');
+    const fb = el.querySelector('.quiz-feedback');
+    opts.forEach(opt => {
+      opt.addEventListener('click', () => {
+        if (el.classList.contains('answered')) return;
+        const idx = Number(opt.dataset.idx);
+        const isCorrect = idx === q.correct;
+        opts.forEach((o, j) => {
+          o.classList.add('locked');
+          if (j === q.correct) o.classList.add('correct');
+          else if (j === idx && !isCorrect) o.classList.add('wrong');
+        });
+        fb.classList.add('show', isCorrect ? 'correct' : 'wrong');
+        fb.textContent = (isCorrect ? '✓ Correcto. ' : '✗ Casi. ') + q.fb;
+        el.classList.add('answered');
+        answered++;
+        if (isCorrect) correct++;
+        if (answered === MODULE_DATA.quiz.length) showQuizResult(correct);
+      });
+    });
+    wrap.appendChild(el);
+  });
+}
+
+function showQuizResult(correct) {
+  const total = MODULE_DATA.quiz.length;
+  const pct = Math.round((correct / total) * 100);
+  let msg = '';
+  if (pct >= 90) msg = 'Excelente. Tienes los fundamentos clavados, listo para el módulo 2.';
+  else if (pct >= 70) msg = 'Muy bien. Repasa los conceptos donde fallaste y avanza al módulo siguiente.';
+  else if (pct >= 50) msg = 'Aceptable. Te recomiendo revisar el vídeo y las flashcards antes de seguir.';
+  else msg = 'Vuelve al vídeo. Sin estos fundamentos claros, lo que viene se complica.';
+  const el = document.getElementById('quiz-result');
+  el.innerHTML = `
+    <div class="quiz-result-score">${correct} / ${total}</div>
+    <div class="quiz-result-msg">${msg}</div>
+    <button class="btn btn-primary" onclick="location.reload()">Reintentar quiz</button>
+  `;
+  el.classList.add('show');
+  el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function renderGlosario() {
+  const wrap = document.getElementById('glosario');
+  const sorted = [...MODULE_DATA.glosario].sort((a, b) => a.t.localeCompare(b.t, 'es'));
+  sorted.forEach(g => {
+    const el = document.createElement('div');
+    el.className = 'gloss-item';
+    el.innerHTML = `<div class="gloss-term">${g.t}</div><div class="gloss-def">${g.d}</div>`;
+    wrap.appendChild(el);
+  });
+}
+
+function renderRecursos() {
+  const wrap = document.getElementById('recursos');
+  MODULE_DATA.recursos.forEach(r => {
+    const el = document.createElement('a');
+    el.className = 'recurso';
+    el.href = r.url;
+    el.target = '_blank';
+    el.rel = 'noopener noreferrer';
+    el.innerHTML = `
+      <span class="recurso-tag">${r.tag}</span>
+      <div class="recurso-title">${r.title}</div>
+      <div class="recurso-desc">${r.desc}</div>
+      <div class="recurso-meta">${r.meta}</div>
+    `;
+    wrap.appendChild(el);
+  });
+}
+
+function renderChecklist() {
+  const wrap = document.getElementById('checklist');
+  const progressEl = document.getElementById('checkProgress');
+  const STORAGE_KEY = 'm1-checklist-progress';
+  // No usamos localStorage; estado en memoria solo (artefacto standalone)
+  const state = new Set();
+  function updateProgress() {
+    const done = state.size;
+    const total = MODULE_DATA.checklist.length;
+    progressEl.textContent = `${done} / ${total} completadas · ${Math.round((done/total)*100)}%`;
+  }
+  MODULE_DATA.checklist.forEach((c, i) => {
+    const el = document.createElement('div');
+    el.className = 'check-item';
+    el.innerHTML = `
+      <div class="check-box">${state.has(i) ? '✓' : ''}</div>
+      <div class="check-content">
+        <div class="check-day">${c.day}</div>
+        <div class="check-text">${c.text}</div>
+        <div class="check-detail">${c.detail}</div>
+      </div>
+    `;
+    el.addEventListener('click', () => {
+      if (state.has(i)) { state.delete(i); el.classList.remove('done'); el.querySelector('.check-box').textContent = ''; }
+      else { state.add(i); el.classList.add('done'); el.querySelector('.check-box').textContent = '✓'; }
+      updateProgress();
+    });
+    wrap.appendChild(el);
+  });
+  updateProgress();
+}
+
+renderFlashcards();
+renderCases();
+renderExercises();
+renderPrompts();
+renderQuiz();
+renderGlosario();
+renderRecursos();
+renderChecklist();
+</script>
+</body>
+</html>

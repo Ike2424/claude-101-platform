@@ -1,0 +1,1263 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude 101 · Recursos M2 · Primeros pasos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Geist:wght@300..700&family=Geist+Mono:wght@400..600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #F4EFE3; --bg-2: #EFE9DA; --card: #FBF8F0;
+  --ink: #1C1A16; --ink-2: #3A352D; --muted: #756B5B; --muted-2: #A39782;
+  --line: #E1D8C2; --line-2: #CFC4AA;
+  --accent: #C8542B; --accent-2: #8B3A1E;
+  --olive: #4F5D38; --gold: #B08436;
+  --display: 'Fraunces', Georgia, serif;
+  --body: 'Geist', system-ui, sans-serif;
+  --mono: 'Geist Mono', ui-monospace, monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: var(--bg); color: var(--ink); font-family: var(--body); line-height: 1.55; }
+body {
+  background-image:
+    radial-gradient(circle at 12% 8%, rgba(200,84,43,.06) 0%, transparent 40%),
+    radial-gradient(circle at 88% 92%, rgba(79,93,56,.05) 0%, transparent 40%);
+  min-height: 100vh;
+}
+
+/* === HEADER === */
+.topbar {
+  position: sticky; top: 0; z-index: 50;
+  background: rgba(244,239,227,.85); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+  padding: 14px 32px; display: flex; align-items: center; gap: 20px;
+}
+.back-link {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--muted); text-decoration: none;
+  padding: 8px 14px; border-radius: 100px; border: 1px solid var(--line-2);
+  transition: all .2s;
+}
+.back-link:hover { color: var(--ink); border-color: var(--accent); }
+.topbar-title {
+  font-family: var(--display); font-style: italic; font-size: 22px;
+  font-weight: 400; color: var(--ink); flex: 1;
+}
+.topbar-title em { color: var(--accent); font-style: italic; }
+.topbar-badge {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--muted);
+  padding: 6px 12px; background: var(--card); border: 1px solid var(--line); border-radius: 6px;
+}
+
+/* === HERO === */
+.hero {
+  padding: 80px 32px 40px; max-width: 1100px; margin: 0 auto; text-align: center;
+}
+.hero .eyebrow {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .18em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 18px;
+}
+.hero h1 {
+  font-family: var(--display); font-style: italic; font-weight: 400;
+  font-size: clamp(40px, 6vw, 72px); letter-spacing: -0.025em;
+  color: var(--ink); line-height: 1.05; margin-bottom: 20px;
+}
+.hero h1 em { font-style: normal; color: var(--accent); }
+.hero .lede {
+  font-size: 18px; color: var(--ink-2); max-width: 60ch; margin: 0 auto;
+}
+
+/* === TABS === */
+.tabs-wrap {
+  position: sticky; top: 62px; z-index: 40;
+  background: rgba(244,239,227,.92); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+  padding: 16px 32px; display: flex; justify-content: center; gap: 8px;
+  overflow-x: auto;
+}
+.tab-btn {
+  font-family: var(--mono); font-size: 12px; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--muted);
+  padding: 10px 18px; border-radius: 100px; border: 1px solid var(--line-2);
+  background: var(--card); cursor: pointer; transition: all .2s; white-space: nowrap;
+}
+.tab-btn:hover { color: var(--ink); border-color: var(--accent); }
+.tab-btn.active {
+  color: var(--card); background: var(--ink); border-color: var(--ink);
+}
+
+/* === SECTIONS === */
+.section {
+  padding: 60px 32px 100px; max-width: 1100px; margin: 0 auto; display: none;
+}
+.section.active { display: block; }
+.section-intro {
+  margin-bottom: 40px; max-width: 70ch;
+}
+.section-intro h2 {
+  font-family: var(--display); font-style: italic; font-weight: 400;
+  font-size: 36px; margin-bottom: 12px; color: var(--ink);
+}
+.section-intro h2 em { color: var(--accent); font-style: normal; }
+.section-intro p { color: var(--ink-2); font-size: 16px; }
+
+/* === FLASHCARDS === */
+.flashgrid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;
+}
+.flash {
+  perspective: 1200px; min-height: 320px; cursor: pointer;
+}
+.flash-inner {
+  position: relative; width: 100%; height: 100%; min-height: 320px;
+  transition: transform .6s cubic-bezier(.2,.8,.2,1);
+  transform-style: preserve-3d;
+}
+.flash.flipped .flash-inner { transform: rotateY(180deg); }
+.flash-face {
+  position: absolute; inset: 0; backface-visibility: hidden;
+  background: var(--card); border: 1px solid var(--line); border-radius: 16px;
+  padding: 22px; display: flex; flex-direction: column;
+  overflow-y: auto;
+  box-shadow: 0 2px 12px rgba(28,26,22,.04);
+}
+.flash-face::-webkit-scrollbar { width: 4px; }
+.flash-face::-webkit-scrollbar-thumb { background: var(--line-2); border-radius: 4px; }
+.flash-face.back {
+  transform: rotateY(180deg);
+  background: var(--bg-2); border-color: var(--line-2);
+}
+.flash-num {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 12px;
+}
+.flash-title {
+  font-family: var(--display); font-style: italic; font-size: 24px;
+  font-weight: 400; color: var(--ink); margin-bottom: 10px; line-height: 1.2;
+}
+.flash-hint {
+  margin-top: auto; font-family: var(--mono); font-size: 10px;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--muted-2);
+}
+.flash-def { font-size: 14px; color: var(--ink-2); line-height: 1.6; margin-bottom: 12px; }
+.flash-example {
+  font-family: var(--mono); font-size: 12px; color: var(--olive);
+  background: var(--card); border-left: 2px solid var(--olive);
+  padding: 8px 12px; border-radius: 0 6px 6px 0;
+}
+
+/* === CASE STUDIES === */
+.case {
+  background: var(--card); border: 1px solid var(--line); border-radius: 18px;
+  padding: 32px; margin-bottom: 28px;
+}
+.case-num {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 8px;
+}
+.case-title {
+  font-family: var(--display); font-style: italic; font-size: 28px;
+  font-weight: 400; color: var(--ink); margin-bottom: 12px; line-height: 1.2;
+}
+.case-context { color: var(--ink-2); margin-bottom: 24px; font-size: 15px; }
+.case-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px;
+}
+@media (max-width: 720px) { .case-grid { grid-template-columns: 1fr; } }
+.case-col {
+  background: var(--bg); border-radius: 12px; padding: 20px;
+}
+.case-col.bad { border: 1px solid #e8c4b7; }
+.case-col.good { border: 1px solid #c4d4a8; }
+.case-col-label {
+  font-family: var(--mono); font-size: 10px; letter-spacing: .15em;
+  text-transform: uppercase; margin-bottom: 10px; font-weight: 600;
+}
+.case-col.bad .case-col-label { color: var(--accent-2); }
+.case-col.good .case-col-label { color: var(--olive); }
+.case-prompt {
+  font-family: var(--mono); font-size: 13px; line-height: 1.6;
+  color: var(--ink); white-space: pre-wrap;
+}
+.case-why {
+  background: var(--bg-2); border-left: 3px solid var(--gold);
+  padding: 14px 18px; border-radius: 0 8px 8px 0;
+  font-size: 14px; color: var(--ink-2);
+}
+.case-why strong { color: var(--gold); font-weight: 600; }
+
+/* === EXERCISES === */
+.ex {
+  background: var(--card); border: 1px solid var(--line); border-radius: 18px;
+  padding: 32px; margin-bottom: 28px;
+}
+.ex-num {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 8px;
+}
+.ex-title {
+  font-family: var(--display); font-style: italic; font-size: 28px;
+  font-weight: 400; color: var(--ink); margin-bottom: 12px; line-height: 1.2;
+}
+.ex-task { color: var(--ink-2); margin-bottom: 16px; font-size: 15px; }
+.ex-input {
+  width: 100%; min-height: 120px; resize: vertical;
+  background: var(--bg); border: 1px solid var(--line-2); border-radius: 10px;
+  padding: 14px 16px; font-family: var(--mono); font-size: 13px; color: var(--ink);
+  margin-bottom: 16px;
+}
+.ex-input:focus { outline: 2px solid var(--accent); outline-offset: -2px; }
+.ex-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+.btn {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .12em;
+  text-transform: uppercase; padding: 10px 18px; border-radius: 100px;
+  border: 1px solid var(--line-2); background: var(--card); color: var(--ink-2);
+  cursor: pointer; transition: all .2s;
+}
+.btn:hover { border-color: var(--accent); color: var(--ink); }
+.btn-primary { background: var(--ink); color: var(--card); border-color: var(--ink); }
+.btn-primary:hover { background: var(--accent); border-color: var(--accent); color: var(--card); }
+.ex-solution {
+  margin-top: 20px; padding: 20px; background: var(--bg-2); border-radius: 12px;
+  border-left: 3px solid var(--olive); display: none;
+}
+.ex-solution.show { display: block; }
+.ex-solution-label {
+  font-family: var(--mono); font-size: 10px; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--olive); margin-bottom: 10px; font-weight: 600;
+}
+.ex-solution-text {
+  font-family: var(--mono); font-size: 13px; line-height: 1.7; color: var(--ink);
+  white-space: pre-wrap; margin-bottom: 16px;
+}
+.ex-rubric { margin-top: 16px; }
+.ex-rubric-title {
+  font-size: 13px; color: var(--muted); margin-bottom: 8px; font-weight: 600;
+}
+.ex-rubric ul { list-style: none; padding: 0; }
+.ex-rubric li {
+  padding: 6px 0; font-size: 14px; color: var(--ink-2);
+  display: flex; align-items: flex-start; gap: 10px;
+}
+.ex-rubric li::before {
+  content: "✓"; color: var(--olive); font-weight: 600; margin-top: 1px;
+}
+
+/* === PROMPTS GALLERY === */
+.prompts-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px;
+}
+.prompt-card {
+  background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+  padding: 24px; display: flex; flex-direction: column;
+}
+.prompt-tag {
+  display: inline-block; font-family: var(--mono); font-size: 10px;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--gold);
+  background: var(--bg-2); padding: 4px 10px; border-radius: 100px;
+  margin-bottom: 12px; align-self: flex-start;
+}
+.prompt-title {
+  font-family: var(--display); font-style: italic; font-size: 22px;
+  font-weight: 400; color: var(--ink); margin-bottom: 10px; line-height: 1.2;
+}
+.prompt-desc { font-size: 14px; color: var(--ink-2); margin-bottom: 16px; }
+.prompt-text {
+  font-family: var(--mono); font-size: 12px; line-height: 1.65;
+  color: var(--ink-2); background: var(--bg); border: 1px dashed var(--line-2);
+  border-radius: 8px; padding: 14px; margin-bottom: 14px;
+  white-space: pre-wrap; flex: 1;
+}
+.copy-btn {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .12em;
+  text-transform: uppercase; padding: 10px 16px; border-radius: 8px;
+  border: 1px solid var(--ink); background: transparent; color: var(--ink);
+  cursor: pointer; transition: all .2s; align-self: stretch;
+}
+.copy-btn:hover { background: var(--ink); color: var(--card); }
+.copy-btn.copied { background: var(--olive); border-color: var(--olive); color: var(--card); }
+
+/* === QUIZ === */
+.quiz-q {
+  background: var(--card); border: 1px solid var(--line); border-radius: 16px;
+  padding: 26px; margin-bottom: 20px;
+}
+.quiz-num {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 10px;
+}
+.quiz-question {
+  font-family: var(--display); font-style: italic; font-size: 22px;
+  font-weight: 400; line-height: 1.3; color: var(--ink); margin-bottom: 18px;
+}
+.quiz-opts { display: flex; flex-direction: column; gap: 8px; }
+.quiz-opt {
+  text-align: left; padding: 14px 18px; border: 1px solid var(--line-2);
+  border-radius: 10px; background: var(--bg); color: var(--ink-2);
+  font-family: var(--body); font-size: 15px; cursor: pointer; transition: all .2s;
+}
+.quiz-opt:hover:not(.locked) { border-color: var(--accent); color: var(--ink); }
+.quiz-opt.correct {
+  background: rgba(79,93,56,.12); border-color: var(--olive); color: var(--ink);
+}
+.quiz-opt.wrong {
+  background: rgba(200,84,43,.1); border-color: var(--accent-2); color: var(--ink);
+}
+.quiz-opt.locked { cursor: default; }
+.quiz-feedback {
+  margin-top: 14px; padding: 14px 18px; border-radius: 10px;
+  font-size: 14px; line-height: 1.5; display: none;
+}
+.quiz-feedback.show { display: block; }
+.quiz-feedback.correct { background: rgba(79,93,56,.1); border-left: 3px solid var(--olive); color: var(--ink-2); }
+.quiz-feedback.wrong { background: rgba(200,84,43,.08); border-left: 3px solid var(--accent); color: var(--ink-2); }
+.quiz-result {
+  margin-top: 20px; padding: 28px; background: var(--card);
+  border: 1px solid var(--line); border-radius: 16px; text-align: center;
+  display: none;
+}
+.quiz-result.show { display: block; }
+.quiz-result-score {
+  font-family: var(--display); font-style: italic; font-size: 56px;
+  color: var(--accent); margin-bottom: 8px;
+}
+.quiz-result-msg { font-size: 16px; color: var(--ink-2); margin-bottom: 18px; }
+.quiz-result .btn { display: inline-block; }
+
+/* === GLOSARIO === */
+.glosario-list {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px;
+}
+.gloss-item {
+  background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+  padding: 18px 20px;
+}
+.gloss-term {
+  font-family: var(--display); font-style: italic; font-size: 20px;
+  font-weight: 400; color: var(--accent); margin-bottom: 6px;
+}
+.gloss-def { font-size: 14px; line-height: 1.55; color: var(--ink-2); }
+
+/* === RECURSOS === */
+.recursos-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px;
+}
+.recurso {
+  background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+  padding: 20px; text-decoration: none; color: inherit; transition: all .2s;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.recurso:hover {
+  border-color: var(--accent); transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(28,26,22,.08);
+}
+.recurso-tag {
+  display: inline-block; font-family: var(--mono); font-size: 10px;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--olive);
+  background: var(--bg-2); padding: 4px 10px; border-radius: 100px;
+  align-self: flex-start; margin-bottom: 4px;
+}
+.recurso-title {
+  font-family: var(--display); font-style: italic; font-size: 18px;
+  font-weight: 400; color: var(--ink); line-height: 1.3;
+}
+.recurso-desc { font-size: 13px; color: var(--ink-2); line-height: 1.5; }
+.recurso-meta {
+  font-family: var(--mono); font-size: 11px; color: var(--muted);
+  margin-top: auto; padding-top: 8px;
+}
+
+/* === CHECKLIST === */
+.checklist { display: flex; flex-direction: column; gap: 12px; }
+.check-item {
+  display: flex; align-items: flex-start; gap: 16px;
+  background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+  padding: 18px 22px; cursor: pointer; transition: all .2s;
+}
+.check-item:hover { border-color: var(--line-2); }
+.check-item.done {
+  background: var(--bg-2); border-color: var(--olive); opacity: .75;
+}
+.check-item.done .check-text { text-decoration: line-through; color: var(--muted); }
+.check-box {
+  width: 22px; height: 22px; border: 2px solid var(--line-2);
+  border-radius: 6px; flex-shrink: 0; margin-top: 2px;
+  display: flex; align-items: center; justify-content: center;
+  transition: all .2s;
+}
+.check-item.done .check-box {
+  background: var(--olive); border-color: var(--olive); color: var(--card);
+}
+.check-content { flex: 1; }
+.check-day {
+  font-family: var(--mono); font-size: 10px; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--accent); margin-bottom: 4px;
+}
+.check-text { font-size: 15px; line-height: 1.5; color: var(--ink); }
+.check-detail { font-size: 13px; color: var(--muted); margin-top: 4px; }
+.checklist-progress {
+  margin-top: 24px; padding: 20px; background: var(--bg-2);
+  border-radius: 12px; text-align: center;
+  font-family: var(--mono); font-size: 13px; color: var(--ink-2);
+}
+
+/* === FOOTER NAV === */
+.footer-nav {
+  border-top: 1px solid var(--line); padding: 32px;
+  display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+  max-width: 1100px; margin: 40px auto 0;
+}
+.foot-link {
+  font-family: var(--mono); font-size: 12px; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--muted); text-decoration: none;
+  padding: 12px 18px; border: 1px solid var(--line-2); border-radius: 100px;
+  transition: all .2s;
+}
+.foot-link:hover { color: var(--ink); border-color: var(--accent); }
+
+@media (max-width: 720px) {
+  .topbar { padding: 12px 16px; }
+  .hero { padding: 50px 16px 30px; }
+  .tabs-wrap { padding: 12px 16px; }
+  .section { padding: 40px 16px 80px; }
+  .case, .ex { padding: 22px; }
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <a href="/curso" class="back-link">← Volver al curso</a>
+  <div class="topbar-title">Módulo 2 · <em>Recursos</em></div>
+  <div class="topbar-badge">M2</div>
+</header>
+
+<section class="hero">
+  <div class="eyebrow">Profundiza · Practica · Aplica</div>
+  <h1>Primeros <em>pasos</em></h1>
+  <p class="lede">Abrir claude.ai y mirar el cursor parpadeando no enseña a usar la herramienta. Aquí tienes el recorrido por la interfaz, los ajustes que de verdad importan, las herramientas integradas que la mayoría ignora, y cómo organizar tus conversaciones para no perder el trabajo de la semana pasada.</p>
+</section>
+
+<nav class="tabs-wrap">
+  <button class="tab-btn active" data-tab="conceptos">Conceptos</button>
+  <button class="tab-btn" data-tab="casos">Casos de uso</button>
+  <button class="tab-btn" data-tab="ejercicios">Ejercicios</button>
+  <button class="tab-btn" data-tab="prompts">Prompts</button>
+  <button class="tab-btn" data-tab="quiz">Quiz final</button>
+  <button class="tab-btn" data-tab="glosario">Glosario</button>
+  <button class="tab-btn" data-tab="recursos">Recursos</button>
+  <button class="tab-btn" data-tab="checklist">Checklist</button>
+</nav>
+
+<!-- === CONCEPTOS === -->
+<section class="section active" id="sec-conceptos">
+  <div class="section-intro">
+    <h2>Diez <em>cosas</em> de la interfaz que vas a usar cada día</h2>
+    <p>Pulsa cualquier tarjeta para girarla y ver la definición + un ejemplo concreto.</p>
+  </div>
+  <div class="flashgrid" id="flashgrid"></div>
+</section>
+
+<!-- === CASOS === -->
+<section class="section" id="sec-casos">
+  <div class="section-intro">
+    <h2>Antes y <em>después</em></h2>
+    <p>Seis situaciones reales de los primeros días con Claude. La misma intención, dos formas de aprovechar la herramienta. La segunda te ahorra horas la próxima semana.</p>
+  </div>
+  <div id="cases"></div>
+</section>
+
+<!-- === EJERCICIOS === -->
+<section class="section" id="sec-ejercicios">
+  <div class="section-intro">
+    <h2>Practica <em>ahora</em></h2>
+    <p>Cinco tareas accionables dentro de claude.ai. Sin código. Escribe tu respuesta, pulsa "Ver solución modelo" y compara con la rúbrica.</p>
+  </div>
+  <div id="exercises"></div>
+</section>
+
+<!-- === PROMPTS === -->
+<section class="section" id="sec-prompts">
+  <div class="section-intro">
+    <h2>Plantillas para <em>arrancar</em></h2>
+    <p>Sustituye los <code style="background:var(--bg-2);padding:1px 6px;border-radius:4px;font-family:var(--mono);font-size:.85em">[CORCHETES]</code> por lo tuyo y pega en Claude. Pensadas para tus primeras sesiones: presentarte, fijar reglas, configurar tono, organizar el trabajo.</p>
+  </div>
+  <div class="prompts-grid" id="prompts"></div>
+</section>
+
+<!-- === QUIZ === -->
+<section class="section" id="sec-quiz">
+  <div class="section-intro">
+    <h2>Quiz <em>final</em></h2>
+    <p>10 preguntas para comprobar que conoces la interfaz, los planes y las herramientas integradas. Feedback inmediato en cada respuesta. Sin nota.</p>
+  </div>
+  <div id="quiz"></div>
+  <div id="quiz-result" class="quiz-result"></div>
+</section>
+
+<!-- === GLOSARIO === -->
+<section class="section" id="sec-glosario">
+  <div class="section-intro">
+    <h2>Glosario del <em>módulo</em></h2>
+    <p>Los términos de la interfaz, los planes y las herramientas. Tenlos a mano para no perderte cuando aparezcan en los próximos módulos.</p>
+  </div>
+  <div id="glosario" class="glosario-list"></div>
+</section>
+
+<!-- === RECURSOS === -->
+<section class="section" id="sec-recursos">
+  <div class="section-intro">
+    <h2>Para <em>profundizar</em></h2>
+    <p>Enlaces oficiales y vídeos para apretar tornillos. Ninguno es imprescindible: están aquí si quieres ir más allá del módulo.</p>
+  </div>
+  <div id="recursos" class="recursos-grid"></div>
+</section>
+
+<!-- === CHECKLIST === -->
+<section class="section" id="sec-checklist">
+  <div class="section-intro">
+    <h2>Esta <em>semana</em>, haz esto</h2>
+    <p>Siete acciones concretas dentro de claude.ai durante los próximos 7 días. Tilda lo que vayas haciendo — se guarda en memoria mientras tengas la pestaña abierta.</p>
+  </div>
+  <div id="checklist" class="checklist"></div>
+  <div class="checklist-progress" id="checkProgress"></div>
+</section>
+
+<nav class="footer-nav">
+  <a href="/curso" class="foot-link">← Curso</a>
+  <a href="/recursos/M3.html" class="foot-link">Módulo 3 →</a>
+</nav>
+
+<script>
+// ============================================
+// CONTENIDO DEL MÓDULO 2
+// ============================================
+const MODULE_DATA = {
+  conceptos: [
+    {
+      title: "La interfaz claude.ai",
+      def: "La web oficial de Anthropic para hablar con Claude. Sidebar izquierdo con tus chats e historial, área central de conversación, selector de modelo arriba a la derecha. Todo lo que haces aquí queda asociado a tu cuenta.",
+      example: "claude.ai/new abre directamente un chat en blanco. claude.ai/chats te lleva al listado de conversaciones."
+    },
+    {
+      title: "Planes Free, Pro, Max y Team",
+      def: "Free da acceso limitado con uso diario restringido. Pro (20$/mes) sube los límites y desbloquea Projects. Max (100$/mes y 200$/mes) da 5x o 20x más uso. Team (25$/usuario/mes) añade administración, facturación centralizada y modo de despliegue empresarial.",
+      example: "Si usas Claude 1h al día, Pro sobra. Si trabajas con él 4-5h en sesiones largas, Max evita los cortes."
+    },
+    {
+      title: "Projects",
+      def: "Espacios persistentes con instrucciones (system prompt) y archivos compartidos para todos los chats dentro del proyecto. Lo más parecido a un 'workspace' para un cliente, un proyecto o un rol. Disponible en Pro y superior.",
+      example: "Proyecto 'Newsletter semanal': system prompt con tono y estructura + PDF con número anterior + archivo de marca. Cada chat dentro arranca con todo cargado."
+    },
+    {
+      title: "Artifacts",
+      def: "Panel lateral que aparece cuando Claude genera código, HTML, SVG o documentos largos. Se puede iterar sobre el artefacto sin perder el resto del chat. Salida visible y editable a la vez.",
+      example: "Pides una landing en HTML y a la derecha se abre una vista previa renderizada. Iteras 'cambia el botón a olivo' y se actualiza."
+    },
+    {
+      title: "Búsqueda web integrada",
+      def: "Toggle en la barra del prompt que permite a Claude consultar la web en tiempo real para responder. Útil para eventos posteriores al corte de entrenamiento, precios actuales, noticias y comprobación de datos. Cita las fuentes que usa.",
+      example: "Activas la búsqueda y preguntas '¿precio actual de la entrada al Reina Sofía?' — devuelve la cifra con el enlace al museo."
+    },
+    {
+      title: "Ejecución de código (Analysis tool)",
+      def: "Claude puede ejecutar JavaScript en un sandbox para hacer cálculos, validar lógica o procesar datos pequeños. No es Python ni acceso a internet desde el código: es para verificar resultados numéricos sin alucinar.",
+      example: "Le pasas una tabla de ventas y pides 'calcula el margen medio ponderado'. Lo computa de verdad en vez de adivinarlo."
+    },
+    {
+      title: "Computer Use",
+      def: "Capacidad de Claude (vía API o Claude for Chrome) para mover el cursor, hacer clic y escribir en una pantalla, como un humano. Está en beta. Útil para tareas repetitivas en webs sin API. Requiere supervisión: aún se equivoca.",
+      example: "'Abre Gmail, archiva todos los correos de promoción de la última semana' — Claude clica, lee, archiva. Despacio, pero lo hace."
+    },
+    {
+      title: "Historial y starred",
+      def: "Todas tus conversaciones se guardan automáticamente en el sidebar. Puedes marcar las importantes con estrella (icono al pasar el ratón) para que aparezcan arriba. También puedes renombrarlas para encontrarlas después.",
+      example: "'Borrador discurso boda Marta' renombrado y con estrella aparece arriba durante semanas sin perderse entre los 200 chats nuevos."
+    },
+    {
+      title: "Settings de privacidad",
+      def: "En Settings → Privacy decides si tus conversaciones pueden usarse para entrenar futuros modelos. Por defecto en Free está activado; en Pro/Team está desactivado salvo opt-in. Las cuentas de empresa nunca se usan para entrenar.",
+      example: "Antes de pegar un contrato con datos sensibles, revisa este toggle. Es uno de los primeros sitios donde mirar."
+    },
+    {
+      title: "Atajos de teclado",
+      def: "Cmd/Ctrl + K abre el comando rápido (saltar entre chats, nuevo proyecto). Cmd/Ctrl + Shift + O nuevo chat. Cmd/Ctrl + / lista todos los atajos. Aprenderlos ahorra minutos al día.",
+      example: "Cmd+K → escribes 'newsletter' → entras al chat sin tocar el ratón. Si trabajas mucho con Claude, esto se nota."
+    }
+  ],
+
+  casos: [
+    {
+      title: "Primera vez que abres claude.ai",
+      context: "Te has registrado, te abre un chat en blanco con el cursor parpadeando. No sabes qué escribir y cierras la pestaña con la sensación de que esto no es para ti.",
+      bad: "hola",
+      good: "Soy [PROFESIÓN], llevo 0 minutos usando Claude. Esta semana tengo que hacer estas 3 cosas:\n1) [TAREA 1]\n2) [TAREA 2]\n3) [TAREA 3]\n\nPara cada una, dime: ¿es algo en lo que puedes ayudarme realmente? ¿Qué información necesitarías de mí para hacerlo bien? Si no es buen caso de uso para ti, dilo claramente.",
+      why: "<strong>Por qué funciona:</strong> Claude no necesita saludo, necesita contexto y un encargo. Convertir 'estoy mirando una caja vacía' en 'aquí tienes mi semana real' te da algo accionable en el primer minuto."
+    },
+    {
+      title: "Configurar Claude para que recuerde tu rol",
+      context: "Cada vez que abres un chat tienes que explicar quién eres, qué haces y qué tono quieres. Pierdes 5 minutos por sesión y nunca queda igual.",
+      bad: "Hazme un email para un cliente. Soy comercial de software B2B, tono profesional pero cercano, ya sabes...",
+      good: "[Hecho una vez en Projects → instrucciones del proyecto:]\n\nEres mi colaborador para todo lo relacionado con ventas B2B.\n\nMi rol: comercial sénior de software de logística, vendo a directores de operaciones de empresas de 50-500 empleados.\nMi estilo: directo, sin jerga corporativa, máximo 150 palabras en emails. Nada de 'espero que esta encuentre bien'.\nIdioma: español de España.\nRegla: si te pido algo y no tengo claro un dato (sector del cliente, tamaño, etapa del deal), pregúntame antes de inventar.",
+      why: "<strong>Por qué funciona:</strong> el proyecto carga estas instrucciones en cada chat nuevo dentro de él. No vuelves a explicarlo. La diferencia se nota a la cuarta sesión: Claude ya entra con el contexto puesto."
+    },
+    {
+      title: "Buscar algo que comentaste hace dos semanas",
+      context: "Hablaste con Claude sobre la estrategia de precios y ahora no recuerdas dónde quedó. Llevas 5 minutos haciendo scroll en el sidebar.",
+      bad: "[Haces scroll buscando 'algo de precios' entre 80 chats con nombres tipo 'Nuevo chat' o títulos auto-generados parecidos]",
+      good: "Hábito desde el día 1: cuando una conversación dé un resultado útil, click en el título del chat → renombrar con un formato consistente. Ejemplo:\n\n[Pricing] Análisis competidores Q2\n[Newsletter] Borrador #14\n[Cliente Marta] Email retraso entrega\n\nLas importantes: clic en la estrella para que floten arriba. Cmd+K + 'pricing' las encuentra en 2 segundos.",
+      why: "<strong>Por qué funciona:</strong> el historial es tu memoria a largo plazo con Claude. Si no lo organizas desde el principio, en un mes tienes 200 chats indistinguibles y dejas de aprovechar lo que ya has hecho."
+    },
+    {
+      title: "Pegar un PDF de 80 páginas en el chat",
+      context: "Tienes un informe que quieres analizar. Lo arrastras al chat y empiezas a preguntar de cualquier manera.",
+      bad: "[Arrastra el PDF]\n\nResume esto.",
+      good: "[Arrastra el PDF]\n\nEs el informe anual 2025 de mi sector (retail moda). Antes de resumir, hazme esta secuencia:\n\n1) Confirma que has procesado el documento entero (cuántas páginas detectas).\n2) Dime la estructura del documento (índice o secciones principales).\n3) Pregúntame qué tres preguntas concretas quiero resolver con este informe antes de leerlo entero.\n\nNo resumas hasta que respondamos esos tres pasos.",
+      why: "<strong>Por qué funciona:</strong> primero verificas que Claude ha leído de verdad lo que esperabas (los PDFs grandes a veces se cortan), después orientas el análisis a una pregunta concreta en vez de a un resumen genérico inútil."
+    },
+    {
+      title: "Activar búsqueda web sin pensarlo",
+      context: "Le preguntas a Claude por una noticia reciente y te responde con datos desactualizados o un 'no tengo información posterior a...'.",
+      bad: "¿Cuánto cuesta ahora un alquiler medio en Malasaña, Madrid?",
+      good: "[Activa el toggle de búsqueda web en la barra del prompt]\n\nBusca el precio medio de alquiler en Malasaña (Madrid) en los últimos 30 días. Quiero:\n- Cifra de €/m² según al menos 2 portales (Idealista, Fotocasa o similares)\n- Fecha exacta del dato\n- Enlaces a las fuentes\n\nSi solo encuentras datos de hace más de 60 días, dímelo y no inventes una cifra actualizada.",
+      why: "<strong>Por qué funciona:</strong> el toggle de búsqueda web no se activa solo. Si no lo pulsas, Claude responde con lo que sabe hasta su corte. Acuérdate cada vez que preguntes por precios, noticias o cualquier cosa que cambie con el tiempo."
+    },
+    {
+      title: "Exportar una conversación útil",
+      context: "Habéis trabajado 2 horas y has llegado a un documento que quieres guardar fuera de Claude. Copias y pegas a mano párrafo a párrafo.",
+      bad: "[Selecciona texto con el ratón, copia, pega en Word, repite 12 veces porque el formato se rompe]",
+      good: "Al final de la sesión:\n\n\"Consolida todo lo trabajado hoy en un único documento markdown. Estructura:\n1) Contexto y objetivo (3 líneas)\n2) Las 5 decisiones tomadas\n3) Los entregables (textos, listas, tablas) en su versión final\n4) Las 3 preguntas abiertas que dejamos sin resolver\n\nDevuélvelo dentro de un bloque de código markdown para que pueda copiarlo entero de una vez.\"\n\nDespués: botón de copia del bloque de código → pegar en tu editor.",
+      why: "<strong>Por qué funciona:</strong> en lugar de exportar la conversación tal cual (con todas las idas y vueltas), le pides a Claude que genere el documento final consolidado. Es lo único que necesitas guardar."
+    }
+  ],
+
+  ejercicios: [
+    {
+      title: "Diseña tu primer Project",
+      task: "Piensa en una actividad recurrente tuya (escribir emails comerciales, redactar actas, preparar clases, generar copys para Instagram...). Escribe las instrucciones del Project: quién eres, qué hace Claude para ti, qué tono usar, qué evitar, qué preguntar antes de asumir.",
+      solution: "Project: Newsletter semanal de divulgación tech\n\nINSTRUCCIONES:\n\nEres mi editor para una newsletter semanal de tecnología dirigida a no-técnicos curiosos (3.200 suscriptores, mayoría 30-50 años, sector no-tech).\n\nMi estilo:\n- Español de España, tuteo, registro coloquial pero cuidado\n- Máximo 600 palabras por edición\n- Una idea central por edición, no tres\n- Analogías de la vida diaria, NUNCA de coches ni de cocina (sobreusadas)\n- Cero anglicismos innecesarios (sí 'CEO', no 'ownership')\n\nQué hace cada chat dentro de este proyecto:\n- Le paso el tema y un par de fuentes\n- Me devuelves: ángulo propuesto, esqueleto en bullets, primer borrador\n- Iteramos hasta versión final\n\nRegla clave: cuando una fuente que te paso esté en inglés con jerga técnica, NO la traduzcas literal. Reescríbela en mis términos.\n\nQué evitar:\n- 'En el mundo actual...' y similares clichés de entrada\n- Cierres tipo 'el futuro nos dirá'\n- Listas de 7 puntos cuando 3 bastan\n\nSi tengo dudas sobre el ángulo o las fuentes, pregúntamelas antes de empezar a escribir.",
+      rubric: [
+        "Rol claro y específico (no genérico tipo 'asistente')",
+        "Público y contexto del trabajo definidos",
+        "Restricciones de tono y formato concretas",
+        "Una regla de 'qué hacer ante ambigüedad' (preguntar vs asumir)",
+        "Lista de qué evitar (clichés, anglicismos, formato malo) si aplica"
+      ]
+    },
+    {
+      title: "Decide qué plan necesitas",
+      task: "Para cada perfil, decide qué plan recomendarías (Free, Pro, Max 5x, Max 20x, Team) y justifica en una línea:\n\nA) Estudiante de máster que usa Claude 30 min/día para resumir papers.\nB) Consultora freelance que pasa 3-4h diarias en sesiones largas y trabaja en 5 clientes distintos.\nC) Equipo de 6 personas en una agencia de marketing que comparte instrucciones y necesita facturación centralizada.\nD) Periodista que escribe artículos largos con PDFs de 100+ páginas cada día.\nE) Curiosa que quiere probar Claude un mes antes de decidir.",
+      solution: "A) Free — uso ligero, no necesita Projects. Si llega al límite diario en algún paper denso, sube a Pro temporal.\n\nB) Pro o Max 5x — Pro si los chats son cortos; Max 5x si trabaja con documentos largos y quiere no preocuparse por límites. Projects es imprescindible (5 clientes = 5 espacios).\n\nC) Team — facturación centralizada, gestión de usuarios, instrucciones compartidas. Por 25$/usuario/mes vs 20$ de Pro individual, sale a cuenta por administración.\n\nD) Max 20x o Max 5x — PDFs grandes consumen contexto y uso. Max 5x suele bastar; Max 20x solo si encadena varios diarios.\n\nE) Free — primero. Si nota el techo, salta a Pro. Pagar un mes antes de saber qué necesitas es tirar el dinero.",
+      rubric: [
+        "Distinguir entre uso ligero y uso intensivo",
+        "Tener en cuenta si Projects es necesario (>1 contexto recurrente)",
+        "Team se justifica por administración, no por uso individual",
+        "Max solo cuando el techo de Pro se nota de verdad",
+        "Recomendar empezar bajo y subir cuando se note el límite"
+      ]
+    },
+    {
+      title: "Decide cuándo activar la búsqueda web",
+      task: "Para cada pregunta, di SÍ o NO al toggle de búsqueda web y justifica en una línea:\n\nA) \"Explícame qué es una API REST.\"\nB) \"¿Quién ha ganado la Champions League este año?\"\nC) \"Reescribe este párrafo en un tono más formal.\"\nD) \"¿Cuál es el precio actual del Bitcoin?\"\nE) \"¿Cómo se llama el último libro de Sally Rooney?\"\nF) \"Resume este PDF que te pego.\"\nG) \"Compárame Notion, Obsidian y Bear como gestores de notas en 2026.\"",
+      solution: "A) NO — concepto estable, Claude lo sabe sin buscar.\nB) SÍ — evento reciente, depende del año actual.\nC) NO — tarea de reescritura sobre texto dado, no necesita información externa.\nD) SÍ — precio en tiempo real, cambia cada segundo.\nE) SÍ — los libros nuevos pueden ser posteriores al corte de entrenamiento.\nF) NO — la información está en el PDF que le has pegado, no fuera.\nG) SÍ — el panorama de apps cambia constantemente; sin búsqueda, datos posiblemente desactualizados.",
+      rubric: [
+        "Búsqueda OFF para conceptos estables y tareas sobre texto dado",
+        "Búsqueda ON para precios, noticias, lanzamientos y comparativas de apps",
+        "Búsqueda ON cuando la pregunta tiene 'actual', 'último', 'este año'",
+        "Búsqueda OFF cuando le has pegado el material que necesita",
+        "La búsqueda ralentiza: úsala solo cuando aporta valor"
+      ]
+    },
+    {
+      title: "Organiza tu sidebar",
+      task: "Llevas dos semanas con Claude y tienes ~30 chats con nombres auto-generados parecidos. Diseña un sistema de nombres y starred que te permita encontrar cualquier conversación en menos de 5 segundos. Explica el formato, qué marcas con estrella y qué borras.",
+      solution: "FORMATO DE NOMBRES — siempre prefijo entre corchetes + descripción corta:\n\n[Cliente-X] Tipo de tarea — fecha o ID\n[Personal] Tema\n[Newsletter] Edición ##\n[Aprendizaje] Tema\n[Borrador-Idea] Concepto\n\nCRITERIO STARRED (estrella):\n- Plantillas reutilizables que valdrán dentro de 3 meses\n- Conversaciones que llevaron a una decisión importante (las consulto para ver el razonamiento)\n- Briefings tipo de proyectos largos\n\nLO QUE NO LLEVA ESTRELLA Y BORRO al cabo de 1 mes:\n- Pruebas rápidas, juegos, traducciones puntuales\n- Chats donde acabé re-empezando porque la primera línea era mala\n- Cualquier conversación con título sin renombrar (señal de que no era importante)\n\nRITUAL VIERNES (5 min):\n1) Cmd+K → reviso los 5 chats más recientes\n2) Los renombro si valen la pena, los borro si no\n3) Pongo estrella a lo recurrente\n\nEn 3 semanas tienes un sidebar de 15-20 chats útiles en vez de 80 ruido.",
+      rubric: [
+        "Formato consistente de prefijo + descripción",
+        "Criterio claro y aplicable para usar la estrella",
+        "Práctica de borrado periódico (no acumular ruido)",
+        "Ritual recurrente (no improvisar)",
+        "Resultado verificable: encontrar cualquier chat en pocos segundos"
+      ]
+    },
+    {
+      title: "Decide cuándo NO usar Claude para algo",
+      task: "Claude es potente pero no es la herramienta correcta para todo. Para cada situación, di SÍ Claude / NO Claude / DEPENDE y justifica:\n\nA) Rellenar tu declaración de la renta en 2026.\nB) Generar el borrador de la introducción de tu TFM.\nC) Decidir si despedir a un empleado.\nD) Resumir las 50 reseñas que han dejado en tu hotel este mes.\nE) Diagnosticar el dolor de barriga que tienes desde el lunes.\nF) Comparar 4 ofertas de hipoteca que ya has descargado en PDF.",
+      solution: "A) NO — datos fiscales sensibles, normativa cambia anualmente, error fiscal te cuesta dinero. Gestor humano.\n\nB) SÍ — borrador, no versión final. Claude da ángulo y estructura; tú escribes con tu voz.\n\nC) NO Claude (al menos para decidir) — la decisión es tuya y de RR.HH. Claude puede ayudarte a estructurar la conversación o el documento, pero no a decidir.\n\nD) SÍ — análisis de texto masivo es donde mejor rinde Claude. Pídele temas, sentimiento, quejas recurrentes con ejemplos citados.\n\nE) NO — síntoma médico personal. Médico, no LLM. Claude puede ayudarte a preparar las preguntas para la consulta.\n\nF) SÍ — comparar documentos estructurados con criterios objetivos (TAE, comisiones, plazos) es exactamente para esto. Pero verifica tú las cifras antes de firmar nada.",
+      rubric: [
+        "Reconocer cuando hay datos sensibles que no convienen pegar",
+        "Distinguir entre 'ayudar a pensar' y 'tomar la decisión por ti'",
+        "Reservar lo médico, legal y fiscal para profesionales humanos",
+        "Identificar las tareas de alto valor para Claude: texto, estructura, comparación",
+        "Verificar cifras y datos críticos manualmente aunque Claude los procese"
+      ]
+    }
+  ],
+
+  prompts: [
+    {
+      tag: "Inicio",
+      title: "Primer mensaje al abrir un chat nuevo",
+      desc: "Para no empezar con un 'hola' que pide a Claude adivinar tu intención. Establece rol, objetivo y reglas en una línea.",
+      text: "Voy a usar este chat para [OBJETIVO CONCRETO].\n\nContexto rápido:\n- Mi rol: [PROFESIÓN]\n- Mi nivel en [TEMA]: [PRINCIPIANTE / INTERMEDIO / EXPERTO]\n- Lo que necesito conseguir hoy: [ENTREGABLE CONCRETO]\n\nRegla: si algo de lo que te diga es ambiguo o te falta información para responder bien, pregúntamelo antes de asumir.\n\nVamos a empezar por [PRIMERA TAREA]."
+    },
+    {
+      tag: "Project",
+      title: "Instrucciones para crear un Project",
+      desc: "Plantilla para las instrucciones que se pegan al crear un Project nuevo en claude.ai (Pro o superior).",
+      text: "Eres mi colaborador para [ÁREA DE TRABAJO].\n\nMI ROL Y CONTEXTO:\n- Profesión: [PROFESIÓN]\n- Sector: [SECTOR]\n- A quién le hablo: [PÚBLICO / CLIENTES]\n\nESTILO Y FORMATO:\n- Idioma: español de España\n- Tono: [DIRECTO Y BREVE / CERCANO Y CÁLIDO / FORMAL]\n- Longitud por defecto: [Nº PALABRAS / BULLETS / TABLA]\n- Evita: [CLICHÉS, JERGA, ESTILOS QUE NO QUIERES]\n\nCÓMO TRABAJAMOS:\n- Cuando algo sea ambiguo, pregúntame antes de inventar\n- Si te pido un dato y no estás seguro, dime \"no tengo certeza\" en lugar de adivinar\n- Antes de dar la respuesta larga, propón el enfoque en 3 líneas para que confirme\n\nQUÉ EVITAR SIEMPRE:\n- [REGLA NEGATIVA 1]\n- [REGLA NEGATIVA 2]"
+    },
+    {
+      tag: "Tono",
+      title: "Calibrar el tono de Claude en 3 líneas",
+      desc: "Cuando quieres que ajuste el registro sin tener que reescribirlo cada vez.",
+      text: "A partir de ahora, ajusta tu tono a esto:\n\n- Registro: [DIRECTO / CERCANO / FORMAL / IRÓNICO LIGERO]\n- Longitud: [BREVE — máx 3 párrafos / MEDIA / DETALLADA]\n- Lo que NO quiero: [CORTESÍAS VACÍAS / ANGLICISMOS / EMOJIS / EXCESO DE BULLETS]\n- Lo que sí quiero: [EJEMPLOS CONCRETOS / NÚMEROS / OPINIÓN DIRECTA CUANDO TE LA PIDA]\n\nConfírmame que lo has entendido reescribiendo en este nuevo tono la última respuesta que me diste."
+    },
+    {
+      tag: "Reglas",
+      title: "Reglas de sesión al iniciar un trabajo largo",
+      desc: "Para sesiones de >1h. Reduce los \"errores tontos\" del medio: inventarse datos, perder hilo, no preguntar.",
+      text: "Vamos a trabajar juntos durante 1-2 horas en [PROYECTO].\n\nReglas para esta sesión:\n\n1) Cuando te falte información, PREGUNTA. No asumas. No inventes números, nombres ni fechas.\n2) Cada 4-5 intercambios, hazme un mini-resumen (3 líneas) de dónde estamos y qué queda.\n3) Si te pido algo que requiere búsqueda web o ejecutar código, propón usar esas herramientas antes de responder a ciegas.\n4) Cuando una respuesta sea larga (>500 palabras), empieza con un \"qué voy a darte\" de 3 líneas antes del contenido.\n5) Al final de la sesión, te pediré un documento consolidado. Ve tomando nota mental de lo decidido vs lo pendiente.\n\nResponde con \"Reglas entendidas\" + el resumen de tu rol en una línea, y empezamos."
+    },
+    {
+      tag: "Onboarding",
+      title: "Pídele a Claude que se onboarde a ti",
+      desc: "Invierte la relación: en vez de explicarle a Claude cada vez, le dices que te entreviste para que se entere de cómo trabajas.",
+      text: "Quiero que aprendas a trabajar conmigo.\n\nHazme 8 preguntas para entender:\n1) Mi profesión y a qué dedico la mayor parte del tiempo\n2) Para qué tareas concretas voy a usarte tú\n3) Mi estilo preferido al escribir (tono, longitud, formato)\n4) Lo que NO quiero leer nunca de ti\n5) Mi nivel de tolerancia a la crítica directa\n6) Si trabajo en varios idiomas y en cuál prefiero que respondas\n\nHazme las preguntas DE UNA EN UNA. Espera mi respuesta. No avances hasta tenerla.\n\nAl terminar las 8 preguntas, genérame un bloque de \"instrucciones de Project\" que pueda copiar y pegar en claude.ai → Projects."
+    },
+    {
+      tag: "Privacidad",
+      title: "Auditoría rápida antes de pegar algo sensible",
+      desc: "Antes de pegar un contrato, un CV o datos de clientes, vale la pena pensar 30 segundos.",
+      text: "Voy a pegarte [TIPO DE DOCUMENTO]. Antes, dime:\n\n1) ¿Qué datos personales o sensibles típicamente tiene este tipo de documento?\n2) ¿Cuáles de esos datos podría yo eliminar / anonimizar antes de pegártelo y aun así obtener un buen análisis?\n3) ¿Para qué partes del documento NECESITAS los datos reales y para cuáles podrías trabajar igual con placeholders?\n\nNo me hagas un sermón sobre privacidad. Dame una lista práctica de qué tachar antes de pegar."
+    },
+    {
+      tag: "Búsqueda",
+      title: "Forzar búsqueda web con criterio",
+      desc: "Para que la búsqueda no sea \"a ver qué encuentra\" sino orientada a tu pregunta concreta.",
+      text: "Con búsqueda web ACTIVADA, encuéntrame información sobre [TEMA].\n\nCriterios:\n- Fuentes preferidas: [DOMINIOS / TIPOS DE FUENTE: ej. \"sitios oficiales\", \"medios .es\", \"papers académicos\"]\n- Antigüedad máxima: [Nº DÍAS / MESES]\n- Idioma de las fuentes: [ES / EN / AMBOS]\n- Cantidad: mínimo [N] fuentes distintas\n\nDevuélveme:\n1) Síntesis en 5 bullets\n2) Tabla con cada fuente: título, dominio, fecha, en 1 línea qué aporta\n3) Lo que NO has encontrado o solo aparece en una fuente única (señalado como \"baja confianza\")"
+    },
+    {
+      tag: "Artifact",
+      title: "Forzar generación de artifact",
+      desc: "Cuando quieres que algo se abra en el panel lateral (HTML, código, documento largo) en lugar de en el chat.",
+      text: "Genera [TIPO DE OUTPUT: HTML / SVG / componente React / documento markdown largo / plan en tabla] sobre [TEMA].\n\nQuiero que abra en un artifact (panel lateral) para poder iterar sobre él sin perder el resto del chat.\n\nEspecificaciones:\n- [REQUISITOS TÉCNICOS O DE CONTENIDO]\n- [ESTILO]\n- [LIMITACIONES]\n\nDespués de generarlo, sugiéreme 3 iteraciones posibles que podríamos probar (cambios de tono, estructura o diseño)."
+    },
+    {
+      tag: "Resumen",
+      title: "Cerrar sesión con resumen consolidado",
+      desc: "Para no perder el trabajo de 2h en una conversación que pronto se hundirá entre 50 chats nuevos.",
+      text: "Hemos terminado la sesión de hoy. Antes de cerrar, dame:\n\n1) RESUMEN EN 5 LÍNEAS de qué hemos hecho.\n\n2) ENTREGABLES FINALES (todo el output útil) en versión limpia. Si son varios, sepáralos en bloques claramente etiquetados.\n\n3) DECISIONES TOMADAS (3-5 bullets): qué hemos elegido y por qué.\n\n4) PENDIENTES: qué quedó sin resolver, qué información me falta, qué necesito decidir yo antes de seguir.\n\n5) PROPUESTA DE NOMBRE para este chat (formato: \"[Categoría] Título corto\") para que lo renombre y no se pierda en el historial.\n\nTodo en markdown, dentro de un único bloque de código para que pueda copiarlo de una vez."
+    },
+    {
+      tag: "Imagen",
+      title: "Subir una captura y analizar la interfaz",
+      desc: "Aprovechar la multimodalidad para auditar UI, presentaciones o cualquier cosa visual.",
+      text: "[Sube una imagen]\n\nEsta captura es de [QUÉ ES: tu landing / un dashboard / una slide / un email]. Su objetivo: [QUÉ TIENE QUE CONSEGUIR EL USUARIO QUE LA VE].\n\nAnaliza:\n1) ¿Qué es lo primero que el ojo ve? ¿Coincide con lo más importante?\n2) ¿Qué elementos sobran o distraen?\n3) Si tuvieras 5 segundos para entenderlo, ¿lo entenderías?\n4) Las 3 mejoras concretas que harías, en orden de impacto.\n\nSé directo. No me cuides los sentimientos."
+    },
+    {
+      tag: "Atajos",
+      title: "Pregúntale a Claude por sus atajos",
+      desc: "Truco rápido cuando dudes de un atajo de teclado o flujo en claude.ai sin tener que salir a buscar la documentación.",
+      text: "En la interfaz actual de claude.ai (web, navegador):\n\n1) Dame los 10 atajos de teclado más útiles para [MAC / WINDOWS], con descripción en una línea cada uno.\n2) Para cada uno, dime un caso de uso en el que ahorraría tiempo de verdad.\n3) Si no estás seguro de algún atajo (puede haber cambiado), dilo en lugar de inventarlo y recomiéndame dónde mirar.\n\nFormato: tabla."
+    },
+    {
+      tag: "Comparar",
+      title: "Cuándo usar claude.ai vs API",
+      desc: "Para decidir si lo tuyo se hace mejor desde la web o desde la API. Útil al pensar tu primer flujo automatizado.",
+      text: "Voy a describirte un caso de uso. Dime si lo haría mejor desde claude.ai (interfaz web) o desde la API.\n\nCaso: [DESCRIBE TU CASO EN 3-5 LÍNEAS: ¿Es puntual o recurrente? ¿Volumen? ¿Quién lo usa?]\n\nAnaliza estos criterios:\n1) Frecuencia (¿se hace una vez, cada semana o cientos de veces al día?)\n2) Quién lo ejecuta (¿tú a mano o un sistema?)\n3) Necesidad de integración con otras herramientas\n4) Coste estimado por mes en cada opción\n\nDame una recomendación con justificación en 3 líneas + qué pasaría si me equivoco eligiendo la opción que NO recomiendas."
+    }
+  ],
+
+  quiz: [
+    {
+      q: "¿Qué diferencia clave hay entre el plan Free y el plan Pro de claude.ai?",
+      opts: [
+        "El plan Free no tiene acceso a Claude, solo a GPT",
+        "Pro desbloquea Projects, sube los límites de uso y por defecto desactiva el opt-in al entrenamiento",
+        "Pro solo cambia el color del logo",
+        "Free solo permite hablar en inglés"
+      ],
+      correct: 1,
+      fb: "Pro (20$/mes) es el primer escalón útil: aparecen los Projects, los límites diarios suben varias veces y la configuración de privacidad cambia. Free está bien para probar; en cuanto trabajas a diario, Pro deja de ser opcional."
+    },
+    {
+      q: "¿Para qué sirve un Project en claude.ai?",
+      opts: [
+        "Para guardar tus chats antiguos en una carpeta visual",
+        "Para que Anthropic te facture aparte cada tarea",
+        "Para definir instrucciones persistentes (rol, tono, reglas) y archivos compartidos que se cargan en cada chat nuevo del proyecto",
+        "Para encriptar tus conversaciones"
+      ],
+      correct: 2,
+      fb: "Projects es lo más parecido a un workspace: instrucciones + archivos compartidos para todos los chats del proyecto. Si tienes una actividad recurrente (newsletter, un cliente, una asignatura), montar un Project se nota a la cuarta sesión."
+    },
+    {
+      q: "Tienes que preguntarle a Claude por el resultado de un partido de la Champions de ayer. ¿Qué haces?",
+      opts: [
+        "Le preguntas tal cual: Claude lo sabrá",
+        "Activas el toggle de búsqueda web en la barra del prompt antes de preguntar",
+        "Esperas a que Anthropic actualice el modelo",
+        "Le pasas un PDF con el resultado"
+      ],
+      correct: 1,
+      fb: "Claude tiene una fecha de corte de entrenamiento. Para eventos recientes, precios actuales o noticias, hay que activar la búsqueda web. Si no, te dará información posiblemente desactualizada o un \"no tengo información de esa fecha\"."
+    },
+    {
+      q: "Le pides a Claude que te genere una landing en HTML. ¿Dónde aparece el resultado?",
+      opts: [
+        "En un email que te envía Anthropic",
+        "En un panel lateral llamado Artifact, donde puedes ver el HTML renderizado e iterar sin perder el chat",
+        "Solo dentro del chat, como bloque de texto",
+        "Se descarga automáticamente a tu carpeta de Descargas"
+      ],
+      correct: 1,
+      fb: "Cuando Claude genera código, HTML, SVG o documentos largos, abre un Artifact al lado del chat. Puedes ver la salida renderizada y pedir cambios sobre ella sin que el chat principal se llene de versiones."
+    },
+    {
+      q: "¿Para qué sirve la herramienta de ejecución de código (analysis tool) en claude.ai?",
+      opts: [
+        "Para ejecutar Python en tu ordenador",
+        "Para que Claude corra JavaScript en un sandbox y verifique cálculos, sin alucinar los números",
+        "Para hackear sistemas externos",
+        "Para acceder a internet desde el código"
+      ],
+      correct: 1,
+      fb: "Es un sandbox de JavaScript dentro de claude.ai. Sirve para que Claude haga cálculos de verdad en lugar de adivinarlos. Útil cuando le pasas una tabla y quieres una métrica calculada con precisión."
+    },
+    {
+      q: "Tienes 80 chats en el sidebar con nombres tipo \"Nuevo chat\" o auto-generados. ¿Qué hábito te ahorra más tiempo a medio plazo?",
+      opts: [
+        "Borrar todo cada lunes y empezar de cero",
+        "Renombrar con un formato consistente (prefijo + descripción) y poner estrella a los importantes",
+        "Esperar a que Claude organice solo el historial",
+        "Cerrar sesión cada noche para limpiar"
+      ],
+      correct: 1,
+      fb: "El sidebar es tu memoria a largo plazo. Sin un sistema de nombres consistente y starred, en un mes tienes 200 chats indistinguibles. Cinco minutos cada viernes renombrando y poniendo estrellas evita ese caos."
+    },
+    {
+      q: "¿Qué es Computer Use en el ecosistema de Claude?",
+      opts: [
+        "Un programa para enseñarte a usar el ordenador",
+        "Una capacidad de Claude para mover el cursor, hacer clic y escribir en una pantalla, en beta y disponible vía API o Claude for Chrome",
+        "Un curso online de Anthropic",
+        "El nombre del plan más caro"
+      ],
+      correct: 1,
+      fb: "Computer Use permite a Claude controlar una pantalla como un humano: cursor, clics, teclado. Está en beta, se equivoca, y requiere supervisión. Útil para tareas repetitivas en webs sin API. No es magia: aún hay que vigilarlo."
+    },
+    {
+      q: "¿Dónde se configura si tus conversaciones se usan para entrenar futuros modelos?",
+      opts: [
+        "En el código fuente de Claude",
+        "En Settings → Privacy, dentro de claude.ai",
+        "En el correo de bienvenida de Anthropic",
+        "No se puede configurar"
+      ],
+      correct: 1,
+      fb: "Settings → Privacy es uno de los primeros sitios donde mirar tras crear la cuenta. En Free el opt-in suele estar activo; en Pro/Team está desactivado por defecto. Las cuentas de empresa (Team/Enterprise) nunca se usan para entrenar."
+    },
+    {
+      q: "¿Cuál es la forma más rápida de saltar entre chats sin tocar el ratón en claude.ai?",
+      opts: [
+        "Recargar la página",
+        "Cmd/Ctrl + K para abrir el comando rápido y escribir el nombre del chat",
+        "Cerrar sesión y volver a entrar",
+        "Pulsar F5 varias veces"
+      ],
+      correct: 1,
+      fb: "Cmd+K (Mac) o Ctrl+K (Windows) abre el comando rápido. Empiezas a escribir el nombre del chat o de un Project y saltas en un par de segundos. Si trabajas con Claude varias horas al día, este atajo solo te ahorra minutos diarios."
+    },
+    {
+      q: "Has trabajado 2 horas con Claude y has llegado a un documento útil. ¿Cómo lo guardas fuera con menos fricción?",
+      opts: [
+        "Copias párrafo a párrafo a mano en Word",
+        "Le pides un \"resumen consolidado en markdown dentro de un bloque de código\" y copias ese bloque entero",
+        "Haces capturas de pantalla del chat",
+        "Imprimes el chat en PDF"
+      ],
+      correct: 1,
+      fb: "Pedir un documento final consolidado al cerrar la sesión (en markdown, dentro de un bloque de código) es lo más eficiente. Copias todo de una vez con el botón del bloque y lo pegas donde toque. No exportas la conversación, exportas el resultado."
+    }
+  ],
+
+  glosario: [
+    { t: "Artifact", d: "Panel lateral en claude.ai donde se abren outputs largos (HTML, código, SVG, documentos) para iterar sin saturar el chat principal." },
+    { t: "Búsqueda web", d: "Toggle en la barra del prompt que permite a Claude consultar la web en tiempo real y citar fuentes. Útil para noticias, precios y datos recientes." },
+    { t: "Chat", d: "Una conversación individual con Claude. Cada una se guarda en el sidebar y puede renombrarse, marcarse con estrella o borrarse." },
+    { t: "claude.ai", d: "Interfaz web oficial de Anthropic para hablar con Claude sin necesidad de código. La forma más rápida de empezar." },
+    { t: "Computer Use", d: "Capacidad en beta para que Claude mueva el cursor, haga clic y escriba en una pantalla, como un humano. Disponible vía API y Claude for Chrome." },
+    { t: "Custom Style", d: "Configuración de estilo persistente que aplicas a una conversación o cuenta para fijar tono, formato y restricciones de salida." },
+    { t: "Exportar", d: "Sacar el contenido útil de un chat a un formato externo. Lo más práctico: pedirle a Claude un resumen consolidado en markdown y copiarlo." },
+    { t: "Free / Pro / Max / Team", d: "Los planes principales de Claude.ai. Free gratis con límites, Pro 20$/mes, Max 100/200$/mes con uso intensivo, Team 25$/usuario con administración." },
+    { t: "Herramientas integradas", d: "Capacidades activables en claude.ai: búsqueda web, ejecución de código, lectura de PDFs e imágenes. No vienen activas por defecto en todos los casos." },
+    { t: "Historial", d: "Listado en el sidebar izquierdo con todas tus conversaciones guardadas. Buscable, renombrable y filtrable por estrella." },
+    { t: "Imagen / multimodal", d: "Capacidad de Claude de procesar imágenes pegadas o subidas: capturas, gráficos, fotos, slides. Disponible en todos los planes." },
+    { t: "Instrucciones del Project", d: "El system prompt persistente que se aplica a todos los chats dentro de un Project. Define rol, tono y reglas estables." },
+    { t: "Knowledge / archivos del Project", d: "Documentos PDF, txt o markdown que se suben al Project y quedan disponibles como contexto en cada chat del proyecto." },
+    { t: "Modelo", d: "El cerebro concreto que responde: Haiku, Sonnet u Opus. Se selecciona en el desplegable arriba a la derecha de la conversación." },
+    { t: "Projects", d: "Workspaces en Pro/Team con instrucciones + archivos compartidos. Lo más parecido a tener un colaborador con contexto persistente." },
+    { t: "Settings de privacidad", d: "Sección en Settings donde decides si tus chats se usan para entrenamiento futuro. Por defecto desactivado en Pro y superiores." },
+    { t: "Starred", d: "Marca de favorito que se pone con una estrella al pasar el ratón sobre el chat en el sidebar. Los starred quedan flotando arriba." },
+    { t: "Toggle", d: "Interruptor visual en la barra del prompt. Los principales en claude.ai son búsqueda web y herramientas extendidas. Mirarlos antes de cada prompt importa." }
+  ],
+
+  recursos: [
+    {
+      tag: "Herramienta",
+      title: "Claude.ai — la interfaz oficial",
+      desc: "La web donde vas a vivir las próximas semanas. Empieza una cuenta Free, prueba tres días y decide si subes a Pro.",
+      url: "https://claude.ai",
+      meta: "claude.ai · gratis para empezar"
+    },
+    {
+      tag: "Documentación",
+      title: "Centro de ayuda de Claude (Anthropic)",
+      desc: "Artículos oficiales sobre la interfaz, los planes, Projects, Artifacts y resolución de problemas comunes. El sitio que más vas a consultar el primer mes.",
+      url: "https://support.claude.com",
+      meta: "support.claude.com"
+    },
+    {
+      tag: "Planes",
+      title: "Comparativa oficial de planes",
+      desc: "Tabla detallada con Free, Pro, Max y Team: precio, límites de uso, qué incluye cada uno. Lectura obligatoria antes de pagar.",
+      url: "https://www.anthropic.com/pricing",
+      meta: "anthropic.com · 5 min"
+    },
+    {
+      tag: "Documentación",
+      title: "Guía de Projects",
+      desc: "Cómo montar un Project: instrucciones, archivos compartidos, gestión y trucos para sacarle partido. La feature más infrautilizada de claude.ai.",
+      url: "https://support.claude.com/en/articles/9517075-what-are-projects",
+      meta: "support.claude.com"
+    },
+    {
+      tag: "Documentación",
+      title: "Cómo usar Artifacts",
+      desc: "Qué son, cuándo se abren automáticamente, cómo forzar su apertura y cómo iterar sin perder el chat principal.",
+      url: "https://support.claude.com/en/articles/9487310-what-are-artifacts-and-how-do-i-use-them",
+      meta: "support.claude.com"
+    },
+    {
+      tag: "Privacidad",
+      title: "Política de privacidad y opt-out de entrenamiento",
+      desc: "Qué hace Anthropic con tus datos, qué planes tienen opt-out por defecto, cómo desactivar el uso para entrenamiento.",
+      url: "https://privacy.anthropic.com",
+      meta: "privacy.anthropic.com · 10 min"
+    },
+    {
+      tag: "Vídeo",
+      title: "Canal oficial de Anthropic en YouTube",
+      desc: "Demos cortas de features nuevas (Artifacts, búsqueda, Computer Use). Las versiones de 3-5 min son las que más enseñan.",
+      url: "https://www.youtube.com/@anthropic-ai",
+      meta: "YouTube · vídeos cortos"
+    },
+    {
+      tag: "Comunidad",
+      title: "r/ClaudeAI — flujos reales de usuarios",
+      desc: "Hilos donde la gente comparte sus Projects, system prompts y trucos de organización. Útil para ver cómo otros usan la interfaz en serio.",
+      url: "https://www.reddit.com/r/ClaudeAI/",
+      meta: "reddit.com · activo a diario"
+    }
+  ],
+
+  checklist: [
+    {
+      day: "Día 1",
+      text: "Crea tu cuenta en claude.ai y revisa Settings → Privacy.",
+      detail: "Comprueba el toggle de opt-in al entrenamiento, configura idioma de interfaz y nombre. 5 minutos que evitan dolores futuros."
+    },
+    {
+      day: "Día 2",
+      text: "Lanza tu primer Project con instrucciones claras.",
+      detail: "Elige una actividad recurrente tuya (newsletter, emails de venta, preparar clases). Pega las instrucciones del Project usando la plantilla del módulo."
+    },
+    {
+      day: "Día 3",
+      text: "Sube un PDF y prueba la lectura de documentos.",
+      detail: "Coge un informe de 20-80 páginas que tengas pendiente. Hazle las 3 preguntas que de verdad necesitas resolver, no un resumen genérico."
+    },
+    {
+      day: "Día 4",
+      text: "Activa la búsqueda web para una pregunta real de hoy.",
+      detail: "Una noticia, un precio, una comparativa de apps de 2026. Comprueba que cita fuentes y compara con lo que sabías sin búsqueda."
+    },
+    {
+      day: "Día 5",
+      text: "Genera un Artifact: una mini-landing en HTML o un componente.",
+      detail: "Pídelo aunque no programes. Aprende a iterar sobre el panel lateral: \"cambia el botón a olivo\", \"hazlo más compacto\". Notarás de qué va Artifacts."
+    },
+    {
+      day: "Día 6",
+      text: "Organiza el sidebar: renombra, pon estrella, borra basura.",
+      detail: "Aplica el formato consistente del ejercicio 4. Revisa todos los chats de la semana, deja solo los que valgan la pena, marca con estrella las plantillas reutilizables."
+    },
+    {
+      day: "Día 7",
+      text: "Repasa el quiz y aprende los 5 atajos de teclado que más usarás.",
+      detail: "Cmd/Ctrl + K (saltar entre chats), Cmd/Ctrl + Shift + O (nuevo chat), y los 3 que descubras tú al pulsar Cmd/Ctrl + /. Antes de pasar al módulo 3, esto tiene que estar interiorizado."
+    }
+  ]
+};
+
+// ============================================
+// RENDERIZADO
+// ============================================
+function renderFlashcards() {
+  const grid = document.getElementById('flashgrid');
+  MODULE_DATA.conceptos.forEach((c, i) => {
+    const card = document.createElement('div');
+    card.className = 'flash';
+    card.innerHTML = `
+      <div class="flash-inner">
+        <div class="flash-face front">
+          <div class="flash-num">Concepto ${String(i+1).padStart(2,'0')}</div>
+          <div class="flash-title">${c.title}</div>
+          <div class="flash-hint">↻ Pulsa para girar</div>
+        </div>
+        <div class="flash-face back">
+          <div class="flash-def">${c.def}</div>
+          <div class="flash-example">${c.example}</div>
+        </div>
+      </div>
+    `;
+    card.addEventListener('click', () => card.classList.toggle('flipped'));
+    grid.appendChild(card);
+  });
+}
+
+function renderCases() {
+  const wrap = document.getElementById('cases');
+  MODULE_DATA.casos.forEach((c, i) => {
+    const el = document.createElement('div');
+    el.className = 'case';
+    el.innerHTML = `
+      <div class="case-num">Caso ${String(i+1).padStart(2,'0')}</div>
+      <div class="case-title">${c.title}</div>
+      <div class="case-context">${c.context}</div>
+      <div class="case-grid">
+        <div class="case-col bad">
+          <div class="case-col-label">✕ Prompt mediocre</div>
+          <div class="case-prompt">${c.bad}</div>
+        </div>
+        <div class="case-col good">
+          <div class="case-col-label">✓ Prompt bueno</div>
+          <div class="case-prompt">${c.good}</div>
+        </div>
+      </div>
+      <div class="case-why">${c.why}</div>
+    `;
+    wrap.appendChild(el);
+  });
+}
+
+function renderExercises() {
+  const wrap = document.getElementById('exercises');
+  MODULE_DATA.ejercicios.forEach((e, i) => {
+    const el = document.createElement('div');
+    el.className = 'ex';
+    el.innerHTML = `
+      <div class="ex-num">Ejercicio ${String(i+1).padStart(2,'0')}</div>
+      <div class="ex-title">${e.title}</div>
+      <div class="ex-task">${e.task.replace(/\n/g, '<br>')}</div>
+      <textarea class="ex-input" placeholder="Escribe tu respuesta aquí..."></textarea>
+      <div class="ex-btns">
+        <button class="btn btn-primary" data-action="show-solution">Ver solución modelo</button>
+        <button class="btn" data-action="clear">Limpiar</button>
+      </div>
+      <div class="ex-solution">
+        <div class="ex-solution-label">Solución modelo</div>
+        <div class="ex-solution-text">${e.solution}</div>
+        <div class="ex-rubric">
+          <div class="ex-rubric-title">Autoevaluación · ¿tu respuesta cumple?</div>
+          <ul>${e.rubric.map(r => `<li>${r}</li>`).join('')}</ul>
+        </div>
+      </div>
+    `;
+    const textarea = el.querySelector('.ex-input');
+    const solDiv = el.querySelector('.ex-solution');
+    el.querySelector('[data-action="show-solution"]').addEventListener('click', () => {
+      solDiv.classList.toggle('show');
+    });
+    el.querySelector('[data-action="clear"]').addEventListener('click', () => {
+      textarea.value = '';
+      solDiv.classList.remove('show');
+    });
+    wrap.appendChild(el);
+  });
+}
+
+function renderPrompts() {
+  const wrap = document.getElementById('prompts');
+  MODULE_DATA.prompts.forEach((p, i) => {
+    const el = document.createElement('div');
+    el.className = 'prompt-card';
+    el.innerHTML = `
+      <div class="prompt-tag">${p.tag}</div>
+      <div class="prompt-title">${p.title}</div>
+      <div class="prompt-desc">${p.desc}</div>
+      <pre class="prompt-text">${p.text.replace(/</g, '&lt;')}</pre>
+      <button class="copy-btn">Copiar al portapapeles</button>
+    `;
+    const btn = el.querySelector('.copy-btn');
+    btn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(p.text);
+        btn.textContent = '✓ Copiado';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.textContent = 'Copiar al portapapeles';
+          btn.classList.remove('copied');
+        }, 1800);
+      } catch(e) {
+        btn.textContent = 'Selecciona y copia manual';
+      }
+    });
+    wrap.appendChild(el);
+  });
+}
+
+// Tabs
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('sec-' + btn.dataset.tab).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+});
+
+function renderQuiz() {
+  const wrap = document.getElementById('quiz');
+  let answered = 0;
+  let correct = 0;
+  MODULE_DATA.quiz.forEach((q, i) => {
+    const el = document.createElement('div');
+    el.className = 'quiz-q';
+    el.innerHTML = `
+      <div class="quiz-num">Pregunta ${String(i+1).padStart(2,'0')} de ${MODULE_DATA.quiz.length}</div>
+      <div class="quiz-question">${q.q}</div>
+      <div class="quiz-opts">
+        ${q.opts.map((o, j) => `<button class="quiz-opt" data-idx="${j}">${o}</button>`).join('')}
+      </div>
+      <div class="quiz-feedback"></div>
+    `;
+    const opts = el.querySelectorAll('.quiz-opt');
+    const fb = el.querySelector('.quiz-feedback');
+    opts.forEach(opt => {
+      opt.addEventListener('click', () => {
+        if (el.classList.contains('answered')) return;
+        const idx = Number(opt.dataset.idx);
+        const isCorrect = idx === q.correct;
+        opts.forEach((o, j) => {
+          o.classList.add('locked');
+          if (j === q.correct) o.classList.add('correct');
+          else if (j === idx && !isCorrect) o.classList.add('wrong');
+        });
+        fb.classList.add('show', isCorrect ? 'correct' : 'wrong');
+        fb.textContent = (isCorrect ? '✓ Correcto. ' : '✗ Casi. ') + q.fb;
+        el.classList.add('answered');
+        answered++;
+        if (isCorrect) correct++;
+        if (answered === MODULE_DATA.quiz.length) showQuizResult(correct);
+      });
+    });
+    wrap.appendChild(el);
+  });
+}
+
+function showQuizResult(correct) {
+  const total = MODULE_DATA.quiz.length;
+  const pct = Math.round((correct / total) * 100);
+  let msg = '';
+  if (pct >= 90) msg = 'Excelente. Conoces la interfaz al dedillo, listo para el módulo 3.';
+  else if (pct >= 70) msg = 'Muy bien. Repasa los conceptos donde fallaste y avanza al módulo siguiente.';
+  else if (pct >= 50) msg = 'Aceptable. Vuelve a las flashcards y a la checklist antes de seguir.';
+  else msg = 'Vuelve al vídeo y reabre claude.ai con esto en la otra pantalla. Tienes que tocar la interfaz mientras estudias.';
+  const el = document.getElementById('quiz-result');
+  el.innerHTML = `
+    <div class="quiz-result-score">${correct} / ${total}</div>
+    <div class="quiz-result-msg">${msg}</div>
+    <button class="btn btn-primary" onclick="location.reload()">Reintentar quiz</button>
+  `;
+  el.classList.add('show');
+  el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function renderGlosario() {
+  const wrap = document.getElementById('glosario');
+  const sorted = [...MODULE_DATA.glosario].sort((a, b) => a.t.localeCompare(b.t, 'es'));
+  sorted.forEach(g => {
+    const el = document.createElement('div');
+    el.className = 'gloss-item';
+    el.innerHTML = `<div class="gloss-term">${g.t}</div><div class="gloss-def">${g.d}</div>`;
+    wrap.appendChild(el);
+  });
+}
+
+function renderRecursos() {
+  const wrap = document.getElementById('recursos');
+  MODULE_DATA.recursos.forEach(r => {
+    const el = document.createElement('a');
+    el.className = 'recurso';
+    el.href = r.url;
+    el.target = '_blank';
+    el.rel = 'noopener noreferrer';
+    el.innerHTML = `
+      <span class="recurso-tag">${r.tag}</span>
+      <div class="recurso-title">${r.title}</div>
+      <div class="recurso-desc">${r.desc}</div>
+      <div class="recurso-meta">${r.meta}</div>
+    `;
+    wrap.appendChild(el);
+  });
+}
+
+function renderChecklist() {
+  const wrap = document.getElementById('checklist');
+  const progressEl = document.getElementById('checkProgress');
+  const STORAGE_KEY = 'm2-checklist-progress';
+  // No usamos localStorage; estado en memoria solo (artefacto standalone)
+  const state = new Set();
+  function updateProgress() {
+    const done = state.size;
+    const total = MODULE_DATA.checklist.length;
+    progressEl.textContent = `${done} / ${total} completadas · ${Math.round((done/total)*100)}%`;
+  }
+  MODULE_DATA.checklist.forEach((c, i) => {
+    const el = document.createElement('div');
+    el.className = 'check-item';
+    el.innerHTML = `
+      <div class="check-box">${state.has(i) ? '✓' : ''}</div>
+      <div class="check-content">
+        <div class="check-day">${c.day}</div>
+        <div class="check-text">${c.text}</div>
+        <div class="check-detail">${c.detail}</div>
+      </div>
+    `;
+    el.addEventListener('click', () => {
+      if (state.has(i)) { state.delete(i); el.classList.remove('done'); el.querySelector('.check-box').textContent = ''; }
+      else { state.add(i); el.classList.add('done'); el.querySelector('.check-box').textContent = '✓'; }
+      updateProgress();
+    });
+    wrap.appendChild(el);
+  });
+  updateProgress();
+}
+
+renderFlashcards();
+renderCases();
+renderExercises();
+renderPrompts();
+renderQuiz();
+renderGlosario();
+renderRecursos();
+renderChecklist();
+</script>
+</body>
+</html>
