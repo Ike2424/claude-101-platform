@@ -29,7 +29,7 @@ body {
 .scene {
   position: absolute; inset: 0;
   display: flex; align-items: center; justify-content: center; flex-direction: column;
-  padding: 80px 56px 200px;
+  padding: 80px 56px 280px;
   overflow-y: auto;
   opacity: 0; transform: translateY(20px);
   transition: opacity .8s cubic-bezier(.2,.8,.2,1), transform .8s cubic-bezier(.2,.8,.2,1);
@@ -249,18 +249,18 @@ body {
   .plans-grid { grid-template-columns: repeat(2, 1fr); }
   .proj-grid { grid-template-columns: 1fr; }
   .mock-claude { grid-template-columns: 1fr; height: auto; }
-  .scene { padding: 90px 20px 220px; }
+  .scene { padding: 90px 20px 260px; }
 }
 
 /* Anti-solape fixes */
 @media (max-height: 720px) {
-  .scene { padding-top: 70px; padding-bottom: 180px; }
+  .scene { padding-top: 70px; padding-bottom: 260px; }
   .captions { bottom: 96px; }
   .scene-title h1 { font-size: clamp(32px, 5vw, 60px); }
 }
 @media (max-width: 600px) {
   .captions { font-size: 14px; padding: 10px 14px; bottom: 100px; }
-  .scene { padding: 90px 16px 200px; }
+  .scene { padding: 90px 16px 260px; }
   .scene-title h1 { font-size: clamp(28px, 8vw, 48px); }
   .s-title { font-size: clamp(22px, 6vw, 36px); }
   .s-sub { font-size: 13px; margin-bottom: 22px; }
