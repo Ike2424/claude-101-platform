@@ -1,0 +1,1256 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude 101 · Recursos M4 · Técnicas avanzadas de prompting</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Geist:wght@300..700&family=Geist+Mono:wght@400..600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #F4EFE3; --bg-2: #EFE9DA; --card: #FBF8F0;
+  --ink: #1C1A16; --ink-2: #3A352D; --muted: #756B5B; --muted-2: #A39782;
+  --line: #E1D8C2; --line-2: #CFC4AA;
+  --accent: #C8542B; --accent-2: #8B3A1E;
+  --olive: #4F5D38; --gold: #B08436;
+  --display: 'Fraunces', Georgia, serif;
+  --body: 'Geist', system-ui, sans-serif;
+  --mono: 'Geist Mono', ui-monospace, monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: var(--bg); color: var(--ink); font-family: var(--body); line-height: 1.55; }
+body {
+  background-image:
+    radial-gradient(circle at 12% 8%, rgba(200,84,43,.06) 0%, transparent 40%),
+    radial-gradient(circle at 88% 92%, rgba(79,93,56,.05) 0%, transparent 40%);
+  min-height: 100vh;
+}
+
+/* === HEADER === */
+.topbar {
+  position: sticky; top: 0; z-index: 50;
+  background: rgba(244,239,227,.85); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+  padding: 14px 32px; display: flex; align-items: center; gap: 20px;
+}
+.back-link {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--muted); text-decoration: none;
+  padding: 8px 14px; border-radius: 100px; border: 1px solid var(--line-2);
+  transition: all .2s;
+}
+.back-link:hover { color: var(--ink); border-color: var(--accent); }
+.topbar-title {
+  font-family: var(--display); font-style: italic; font-size: 22px;
+  font-weight: 400; color: var(--ink); flex: 1;
+}
+.topbar-title em { color: var(--accent); font-style: italic; }
+.topbar-badge {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--muted);
+  padding: 6px 12px; background: var(--card); border: 1px solid var(--line); border-radius: 6px;
+}
+
+/* === HERO === */
+.hero {
+  padding: 80px 32px 40px; max-width: 1100px; margin: 0 auto; text-align: center;
+}
+.hero .eyebrow {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .18em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 18px;
+}
+.hero h1 {
+  font-family: var(--display); font-style: italic; font-weight: 400;
+  font-size: clamp(40px, 6vw, 72px); letter-spacing: -0.025em;
+  color: var(--ink); line-height: 1.05; margin-bottom: 20px;
+}
+.hero h1 em { font-style: normal; color: var(--accent); }
+.hero .lede {
+  font-size: 18px; color: var(--ink-2); max-width: 60ch; margin: 0 auto;
+}
+
+/* === TABS === */
+.tabs-wrap {
+  position: sticky; top: 62px; z-index: 40;
+  background: rgba(244,239,227,.92); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+  padding: 16px 32px; display: flex; justify-content: center; gap: 8px;
+  overflow-x: auto;
+}
+.tab-btn {
+  font-family: var(--mono); font-size: 12px; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--muted);
+  padding: 10px 18px; border-radius: 100px; border: 1px solid var(--line-2);
+  background: var(--card); cursor: pointer; transition: all .2s; white-space: nowrap;
+}
+.tab-btn:hover { color: var(--ink); border-color: var(--accent); }
+.tab-btn.active {
+  color: var(--card); background: var(--ink); border-color: var(--ink);
+}
+
+/* === SECTIONS === */
+.section {
+  padding: 60px 32px 100px; max-width: 1100px; margin: 0 auto; display: none;
+}
+.section.active { display: block; }
+.section-intro {
+  margin-bottom: 40px; max-width: 70ch;
+}
+.section-intro h2 {
+  font-family: var(--display); font-style: italic; font-weight: 400;
+  font-size: 36px; margin-bottom: 12px; color: var(--ink);
+}
+.section-intro h2 em { color: var(--accent); font-style: normal; }
+.section-intro p { color: var(--ink-2); font-size: 16px; }
+
+/* === FLASHCARDS === */
+.flashgrid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;
+}
+.flash {
+  perspective: 1200px; min-height: 320px; cursor: pointer;
+}
+.flash-inner {
+  position: relative; width: 100%; height: 100%; min-height: 320px;
+  transition: transform .6s cubic-bezier(.2,.8,.2,1);
+  transform-style: preserve-3d;
+}
+.flash.flipped .flash-inner { transform: rotateY(180deg); }
+.flash-face {
+  position: absolute; inset: 0; backface-visibility: hidden;
+  background: var(--card); border: 1px solid var(--line); border-radius: 16px;
+  padding: 22px; display: flex; flex-direction: column;
+  overflow-y: auto;
+  box-shadow: 0 2px 12px rgba(28,26,22,.04);
+}
+.flash-face::-webkit-scrollbar { width: 4px; }
+.flash-face::-webkit-scrollbar-thumb { background: var(--line-2); border-radius: 4px; }
+.flash-face.back {
+  transform: rotateY(180deg);
+  background: var(--bg-2); border-color: var(--line-2);
+}
+.flash-num {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 12px;
+}
+.flash-title {
+  font-family: var(--display); font-style: italic; font-size: 24px;
+  font-weight: 400; color: var(--ink); margin-bottom: 10px; line-height: 1.2;
+}
+.flash-hint {
+  margin-top: auto; font-family: var(--mono); font-size: 10px;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--muted-2);
+}
+.flash-def { font-size: 14px; color: var(--ink-2); line-height: 1.6; margin-bottom: 12px; }
+.flash-example {
+  font-family: var(--mono); font-size: 12px; color: var(--olive);
+  background: var(--card); border-left: 2px solid var(--olive);
+  padding: 8px 12px; border-radius: 0 6px 6px 0;
+}
+
+/* === CASE STUDIES === */
+.case {
+  background: var(--card); border: 1px solid var(--line); border-radius: 18px;
+  padding: 32px; margin-bottom: 28px;
+}
+.case-num {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 8px;
+}
+.case-title {
+  font-family: var(--display); font-style: italic; font-size: 28px;
+  font-weight: 400; color: var(--ink); margin-bottom: 12px; line-height: 1.2;
+}
+.case-context { color: var(--ink-2); margin-bottom: 24px; font-size: 15px; }
+.case-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px;
+}
+@media (max-width: 720px) { .case-grid { grid-template-columns: 1fr; } }
+.case-col {
+  background: var(--bg); border-radius: 12px; padding: 20px;
+}
+.case-col.bad { border: 1px solid #e8c4b7; }
+.case-col.good { border: 1px solid #c4d4a8; }
+.case-col-label {
+  font-family: var(--mono); font-size: 10px; letter-spacing: .15em;
+  text-transform: uppercase; margin-bottom: 10px; font-weight: 600;
+}
+.case-col.bad .case-col-label { color: var(--accent-2); }
+.case-col.good .case-col-label { color: var(--olive); }
+.case-prompt {
+  font-family: var(--mono); font-size: 13px; line-height: 1.6;
+  color: var(--ink); white-space: pre-wrap;
+}
+.case-why {
+  background: var(--bg-2); border-left: 3px solid var(--gold);
+  padding: 14px 18px; border-radius: 0 8px 8px 0;
+  font-size: 14px; color: var(--ink-2);
+}
+.case-why strong { color: var(--gold); font-weight: 600; }
+
+/* === EXERCISES === */
+.ex {
+  background: var(--card); border: 1px solid var(--line); border-radius: 18px;
+  padding: 32px; margin-bottom: 28px;
+}
+.ex-num {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 8px;
+}
+.ex-title {
+  font-family: var(--display); font-style: italic; font-size: 28px;
+  font-weight: 400; color: var(--ink); margin-bottom: 12px; line-height: 1.2;
+}
+.ex-task { color: var(--ink-2); margin-bottom: 16px; font-size: 15px; }
+.ex-input {
+  width: 100%; min-height: 120px; resize: vertical;
+  background: var(--bg); border: 1px solid var(--line-2); border-radius: 10px;
+  padding: 14px 16px; font-family: var(--mono); font-size: 13px; color: var(--ink);
+  margin-bottom: 16px;
+}
+.ex-input:focus { outline: 2px solid var(--accent); outline-offset: -2px; }
+.ex-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+.btn {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .12em;
+  text-transform: uppercase; padding: 10px 18px; border-radius: 100px;
+  border: 1px solid var(--line-2); background: var(--card); color: var(--ink-2);
+  cursor: pointer; transition: all .2s;
+}
+.btn:hover { border-color: var(--accent); color: var(--ink); }
+.btn-primary { background: var(--ink); color: var(--card); border-color: var(--ink); }
+.btn-primary:hover { background: var(--accent); border-color: var(--accent); color: var(--card); }
+.ex-solution {
+  margin-top: 20px; padding: 20px; background: var(--bg-2); border-radius: 12px;
+  border-left: 3px solid var(--olive); display: none;
+}
+.ex-solution.show { display: block; }
+.ex-solution-label {
+  font-family: var(--mono); font-size: 10px; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--olive); margin-bottom: 10px; font-weight: 600;
+}
+.ex-solution-text {
+  font-family: var(--mono); font-size: 13px; line-height: 1.7; color: var(--ink);
+  white-space: pre-wrap; margin-bottom: 16px;
+}
+.ex-rubric { margin-top: 16px; }
+.ex-rubric-title {
+  font-size: 13px; color: var(--muted); margin-bottom: 8px; font-weight: 600;
+}
+.ex-rubric ul { list-style: none; padding: 0; }
+.ex-rubric li {
+  padding: 6px 0; font-size: 14px; color: var(--ink-2);
+  display: flex; align-items: flex-start; gap: 10px;
+}
+.ex-rubric li::before {
+  content: "✓"; color: var(--olive); font-weight: 600; margin-top: 1px;
+}
+
+/* === PROMPTS GALLERY === */
+.prompts-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px;
+}
+.prompt-card {
+  background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+  padding: 24px; display: flex; flex-direction: column;
+}
+.prompt-tag {
+  display: inline-block; font-family: var(--mono); font-size: 10px;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--gold);
+  background: var(--bg-2); padding: 4px 10px; border-radius: 100px;
+  margin-bottom: 12px; align-self: flex-start;
+}
+.prompt-title {
+  font-family: var(--display); font-style: italic; font-size: 22px;
+  font-weight: 400; color: var(--ink); margin-bottom: 10px; line-height: 1.2;
+}
+.prompt-desc { font-size: 14px; color: var(--ink-2); margin-bottom: 16px; }
+.prompt-text {
+  font-family: var(--mono); font-size: 12px; line-height: 1.65;
+  color: var(--ink-2); background: var(--bg); border: 1px dashed var(--line-2);
+  border-radius: 8px; padding: 14px; margin-bottom: 14px;
+  white-space: pre-wrap; flex: 1;
+}
+.copy-btn {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .12em;
+  text-transform: uppercase; padding: 10px 16px; border-radius: 8px;
+  border: 1px solid var(--ink); background: transparent; color: var(--ink);
+  cursor: pointer; transition: all .2s; align-self: stretch;
+}
+.copy-btn:hover { background: var(--ink); color: var(--card); }
+.copy-btn.copied { background: var(--olive); border-color: var(--olive); color: var(--card); }
+
+/* === QUIZ === */
+.quiz-q {
+  background: var(--card); border: 1px solid var(--line); border-radius: 16px;
+  padding: 26px; margin-bottom: 20px;
+}
+.quiz-num {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 10px;
+}
+.quiz-question {
+  font-family: var(--display); font-style: italic; font-size: 22px;
+  font-weight: 400; line-height: 1.3; color: var(--ink); margin-bottom: 18px;
+}
+.quiz-opts { display: flex; flex-direction: column; gap: 8px; }
+.quiz-opt {
+  text-align: left; padding: 14px 18px; border: 1px solid var(--line-2);
+  border-radius: 10px; background: var(--bg); color: var(--ink-2);
+  font-family: var(--body); font-size: 15px; cursor: pointer; transition: all .2s;
+}
+.quiz-opt:hover:not(.locked) { border-color: var(--accent); color: var(--ink); }
+.quiz-opt.correct {
+  background: rgba(79,93,56,.12); border-color: var(--olive); color: var(--ink);
+}
+.quiz-opt.wrong {
+  background: rgba(200,84,43,.1); border-color: var(--accent-2); color: var(--ink);
+}
+.quiz-opt.locked { cursor: default; }
+.quiz-feedback {
+  margin-top: 14px; padding: 14px 18px; border-radius: 10px;
+  font-size: 14px; line-height: 1.5; display: none;
+}
+.quiz-feedback.show { display: block; }
+.quiz-feedback.correct { background: rgba(79,93,56,.1); border-left: 3px solid var(--olive); color: var(--ink-2); }
+.quiz-feedback.wrong { background: rgba(200,84,43,.08); border-left: 3px solid var(--accent); color: var(--ink-2); }
+.quiz-result {
+  margin-top: 20px; padding: 28px; background: var(--card);
+  border: 1px solid var(--line); border-radius: 16px; text-align: center;
+  display: none;
+}
+.quiz-result.show { display: block; }
+.quiz-result-score {
+  font-family: var(--display); font-style: italic; font-size: 56px;
+  color: var(--accent); margin-bottom: 8px;
+}
+.quiz-result-msg { font-size: 16px; color: var(--ink-2); margin-bottom: 18px; }
+.quiz-result .btn { display: inline-block; }
+
+/* === GLOSARIO === */
+.glosario-list {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px;
+}
+.gloss-item {
+  background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+  padding: 18px 20px;
+}
+.gloss-term {
+  font-family: var(--display); font-style: italic; font-size: 20px;
+  font-weight: 400; color: var(--accent); margin-bottom: 6px;
+}
+.gloss-def { font-size: 14px; line-height: 1.55; color: var(--ink-2); }
+
+/* === RECURSOS === */
+.recursos-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px;
+}
+.recurso {
+  background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+  padding: 20px; text-decoration: none; color: inherit; transition: all .2s;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.recurso:hover {
+  border-color: var(--accent); transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(28,26,22,.08);
+}
+.recurso-tag {
+  display: inline-block; font-family: var(--mono); font-size: 10px;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--olive);
+  background: var(--bg-2); padding: 4px 10px; border-radius: 100px;
+  align-self: flex-start; margin-bottom: 4px;
+}
+.recurso-title {
+  font-family: var(--display); font-style: italic; font-size: 18px;
+  font-weight: 400; color: var(--ink); line-height: 1.3;
+}
+.recurso-desc { font-size: 13px; color: var(--ink-2); line-height: 1.5; }
+.recurso-meta {
+  font-family: var(--mono); font-size: 11px; color: var(--muted);
+  margin-top: auto; padding-top: 8px;
+}
+
+/* === CHECKLIST === */
+.checklist { display: flex; flex-direction: column; gap: 12px; }
+.check-item {
+  display: flex; align-items: flex-start; gap: 16px;
+  background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+  padding: 18px 22px; cursor: pointer; transition: all .2s;
+}
+.check-item:hover { border-color: var(--line-2); }
+.check-item.done {
+  background: var(--bg-2); border-color: var(--olive); opacity: .75;
+}
+.check-item.done .check-text { text-decoration: line-through; color: var(--muted); }
+.check-box {
+  width: 22px; height: 22px; border: 2px solid var(--line-2);
+  border-radius: 6px; flex-shrink: 0; margin-top: 2px;
+  display: flex; align-items: center; justify-content: center;
+  transition: all .2s;
+}
+.check-item.done .check-box {
+  background: var(--olive); border-color: var(--olive); color: var(--card);
+}
+.check-content { flex: 1; }
+.check-day {
+  font-family: var(--mono); font-size: 10px; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--accent); margin-bottom: 4px;
+}
+.check-text { font-size: 15px; line-height: 1.5; color: var(--ink); }
+.check-detail { font-size: 13px; color: var(--muted); margin-top: 4px; }
+.checklist-progress {
+  margin-top: 24px; padding: 20px; background: var(--bg-2);
+  border-radius: 12px; text-align: center;
+  font-family: var(--mono); font-size: 13px; color: var(--ink-2);
+}
+
+/* === FOOTER NAV === */
+.footer-nav {
+  border-top: 1px solid var(--line); padding: 32px;
+  display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+  max-width: 1100px; margin: 40px auto 0;
+}
+.foot-link {
+  font-family: var(--mono); font-size: 12px; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--muted); text-decoration: none;
+  padding: 12px 18px; border: 1px solid var(--line-2); border-radius: 100px;
+  transition: all .2s;
+}
+.foot-link:hover { color: var(--ink); border-color: var(--accent); }
+
+@media (max-width: 720px) {
+  .topbar { padding: 12px 16px; }
+  .hero { padding: 50px 16px 30px; }
+  .tabs-wrap { padding: 12px 16px; }
+  .section { padding: 40px 16px 80px; }
+  .case, .ex { padding: 22px; }
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <a href="/curso" class="back-link">← Volver al curso</a>
+  <div class="topbar-title">Módulo 4 · <em>Recursos</em></div>
+  <div class="topbar-badge">M4</div>
+</header>
+
+<section class="hero">
+  <div class="eyebrow">Profundiza · Practica · Aplica</div>
+  <h1>Técnicas <em>avanzadas</em></h1>
+  <p class="lede">Hasta aquí escribías prompts. A partir de ahora los diseñas. Few-shot, chain of thought, XML, chaining, prefill: las técnicas que separan a quien usa Claude del que lo exprime. Menos magia, más ingeniería.</p>
+</section>
+
+<nav class="tabs-wrap">
+  <button class="tab-btn active" data-tab="conceptos">Conceptos</button>
+  <button class="tab-btn" data-tab="casos">Casos de uso</button>
+  <button class="tab-btn" data-tab="ejercicios">Ejercicios</button>
+  <button class="tab-btn" data-tab="prompts">Prompts</button>
+  <button class="tab-btn" data-tab="quiz">Quiz final</button>
+  <button class="tab-btn" data-tab="glosario">Glosario</button>
+  <button class="tab-btn" data-tab="recursos">Recursos</button>
+  <button class="tab-btn" data-tab="checklist">Checklist</button>
+</nav>
+
+<!-- === CONCEPTOS === -->
+<section class="section active" id="sec-conceptos">
+  <div class="section-intro">
+    <h2>Diez <em>técnicas</em> que cambian el juego</h2>
+    <p>Pulsa cualquier tarjeta para girarla y ver la definición + un ejemplo concreto.</p>
+  </div>
+  <div class="flashgrid" id="flashgrid"></div>
+</section>
+
+<!-- === CASOS === -->
+<section class="section" id="sec-casos">
+  <div class="section-intro">
+    <h2>Antes y <em>después</em></h2>
+    <p>Seis escenarios reales. Mismo objetivo, prompt básico vs prompt con técnica avanzada. El efecto se nota a la primera.</p>
+  </div>
+  <div id="cases"></div>
+</section>
+
+<!-- === EJERCICIOS === -->
+<section class="section" id="sec-ejercicios">
+  <div class="section-intro">
+    <h2>Practica <em>ahora</em></h2>
+    <p>Escribe tu respuesta, pulsa "Ver solución modelo" y compara con la rúbrica. No hay calificación: el objetivo es que veas tu progreso.</p>
+  </div>
+  <div id="exercises"></div>
+</section>
+
+<!-- === PROMPTS === -->
+<section class="section" id="sec-prompts">
+  <div class="section-intro">
+    <h2>Plantillas <em>avanzadas</em></h2>
+    <p>Sustituye los <code style="background:var(--bg-2);padding:1px 6px;border-radius:4px;font-family:var(--mono);font-size:.85em">[CORCHETES]</code> por lo tuyo. Todas usan al menos una técnica avanzada del módulo: few-shot, XML, CoT, chaining o prefill.</p>
+  </div>
+  <div class="prompts-grid" id="prompts"></div>
+</section>
+
+<!-- === QUIZ === -->
+<section class="section" id="sec-quiz">
+  <div class="section-intro">
+    <h2>Quiz <em>final</em></h2>
+    <p>10 preguntas para comprobar que lo entendiste. Feedback inmediato en cada respuesta. Sin nota: el objetivo es que veas qué te falta repasar antes de avanzar.</p>
+  </div>
+  <div id="quiz"></div>
+  <div id="quiz-result" class="quiz-result"></div>
+</section>
+
+<!-- === GLOSARIO === -->
+<section class="section" id="sec-glosario">
+  <div class="section-intro">
+    <h2>Glosario del <em>módulo</em></h2>
+    <p>Vocabulario técnico de prompt engineering. Los términos que vas a ver en papers, docs y conversaciones serias sobre LLMs.</p>
+  </div>
+  <div id="glosario" class="glosario-list"></div>
+</section>
+
+<!-- === RECURSOS === -->
+<section class="section" id="sec-recursos">
+  <div class="section-intro">
+    <h2>Para <em>profundizar</em></h2>
+    <p>Documentación oficial, papers seminales y herramientas. Si vas a especializarte en prompt engineering, empieza por aquí.</p>
+  </div>
+  <div id="recursos" class="recursos-grid"></div>
+</section>
+
+<!-- === CHECKLIST === -->
+<section class="section" id="sec-checklist">
+  <div class="section-intro">
+    <h2>Esta <em>semana</em>, una técnica por día</h2>
+    <p>Una técnica avanzada cada día durante 7 días. Aplicar una a fondo es mejor que conocer las 10 en superficial. Tilda lo que vayas haciendo.</p>
+  </div>
+  <div id="checklist" class="checklist"></div>
+  <div class="checklist-progress" id="checkProgress"></div>
+</section>
+
+<nav class="footer-nav">
+  <a href="/curso" class="foot-link">← Curso</a>
+  <a href="/recursos/M5.html" class="foot-link">Módulo 5 →</a>
+</nav>
+
+<script>
+// ============================================
+// CONTENIDO DEL MÓDULO 4
+// ============================================
+const MODULE_DATA = {
+  conceptos: [
+    {
+      title: "Few-shot prompting",
+      def: "En lugar de describir lo que quieres, le enseñas a Claude con ejemplos. 2-5 demostraciones de input → output bien hechas suelen rendir mejor que cualquier descripción larga. El modelo extrapola el patrón.",
+      example: "Para clasificar emails como 'urgente / normal / spam', dale 3 ejemplos resueltos antes de pedir el cuarto. El acierto sube notablemente."
+    },
+    {
+      title: "Chain of thought (CoT)",
+      def: "Pides a Claude que razone paso a paso antes de dar la respuesta final. 'Piensa en voz alta'. Para problemas con varios pasos lógicos (matemáticas, decisiones complejas, clasificación con criterios), la precisión sube mucho.",
+      example: "En lugar de 'cuánto cuestan 17 cajas a 12,50€ con 7% IVA', añade 'razona paso a paso antes de dar el número'. Errores -70%."
+    },
+    {
+      title: "Self-consistency",
+      def: "Pides la misma respuesta varias veces (con temperatura alta) y te quedas con la respuesta mayoritaria. Útil para tareas donde el razonamiento puede tomar caminos distintos pero converger en lo correcto. Más caro pero más fiable.",
+      example: "Para clasificar un caso ambiguo, generas 5 respuestas independientes y aceptas la categoría que aparece 3 o más veces."
+    },
+    {
+      title: "Prompt chaining",
+      def: "Descompones una tarea compleja en una cadena de prompts pequeños, donde el output de uno alimenta al siguiente. Mucho mejor que un mega-prompt: cada paso se puede revisar, optimizar y reusar.",
+      example: "Paso 1: extraer datos de la reunión. Paso 2: identificar decisiones. Paso 3: generar action items con responsables. Tres prompts limpios > uno monstruoso."
+    },
+    {
+      title: "XML tags estructurados",
+      def: "Claude está entrenado para reconocer etiquetas tipo XML (<context>, <task>, <examples>, <output_format>) como delimitadores. Separar partes del prompt con tags reduce ambigüedad y mejora consistencia, sobre todo con prompts largos.",
+      example: "<contexto>Eres editor</contexto><tarea>Revisa el texto</tarea><texto>...</texto>. Claude sabe exactamente qué es cada cosa."
+    },
+    {
+      title: "Output estructurado",
+      def: "Pides la respuesta en JSON, CSV, Markdown o XML específico. Combina con XML schema en el prompt y temperatura baja. Indispensable cuando el output va a ser consumido por código.",
+      example: "'Devuelve solo JSON válido con campos: nombre, fecha (YYYY-MM-DD), prioridad (alta|media|baja). Sin texto extra.' Parseable directo."
+    },
+    {
+      title: "Prefill de la respuesta",
+      def: "En la API, puedes empezar la respuesta de Claude tú mismo. Si pones '{' al principio, garantizas que devolverá JSON. Si pones '<analysis>', forzarás esa estructura. Truco silencioso pero muy potente.",
+      example: "Para que jamás se salga del rol de 'crítico literario', empiezas su respuesta con: 'Como crítico literario, mi análisis es:'. Bloquea desvíos."
+    },
+    {
+      title: "Role consistency",
+      def: "En sesiones largas o agentes, el rol se diluye. Refuérzalo: reitera la persona en cada turno crítico, usa system prompt fuerte, recuerda restricciones explícitas. Si Claude se desliza, no es por capricho: el contexto largo lo arrastra.",
+      example: "Cada 5-6 turnos en una sesión larga, repetir 'recuerda: eres mi editor brutal, no me cuidas los sentimientos'. Mantiene el rol."
+    },
+    {
+      title: "Temperatura como herramienta",
+      def: "No solo creatividad vs determinismo. Es una palanca consciente: 0 para datos y código, 0.3-0.5 para escritura técnica, 0.7-0.9 para brainstorming, 1.0 para máxima diversidad en self-consistency. Elegir mal cuesta calidad y dinero.",
+      example: "Para extraer entidades de un texto: temp 0. Para generar 10 titulares distintos: temp 0.9. Mismo modelo, resultados radicalmente distintos."
+    },
+    {
+      title: "Reflexión recursiva",
+      def: "Le pides a Claude que genere algo, luego que critique su propia respuesta, luego que la reescriba mejorada. Dos o tres pasadas extraen calidad que un solo prompt no consigue. Variante: pedirle que se ponga en otro rol al revisarse.",
+      example: "1) Genera un email. 2) Critícate como si fueras el cliente al recibirlo. 3) Reescribe corrigiendo las críticas. El email final es 2 niveles mejor."
+    }
+  ],
+
+  casos: [
+    {
+      title: "Clasificar tickets de soporte",
+      context: "Tienes un montón de tickets entrantes y quieres clasificarlos por tipo (bug, feature request, billing, otros). Mismo modelo, dos prompts.",
+      bad: "Clasifica este ticket en una de estas categorías: bug, feature request, billing, otros.\n\nTicket: \"No me llega el email de confirmación cuando me registro. He probado tres veces.\"",
+      good: "Clasifica el ticket en una categoría: bug, feature_request, billing, otros.\n\n<ejemplos>\nTicket: \"La app se cierra sola al subir una foto desde galería en Android 14.\"\nCategoría: bug\n\nTicket: \"Me encantaría poder exportar mis datos a CSV. ¿Lo tenéis previsto?\"\nCategoría: feature_request\n\nTicket: \"Me habéis cobrado dos veces este mes. Adjunto captura del extracto.\"\nCategoría: billing\n\nTicket: \"¿Tenéis política de devolución?\"\nCategoría: otros\n</ejemplos>\n\nTicket a clasificar: \"No me llega el email de confirmación cuando me registro. He probado tres veces.\"\nCategoría:",
+      why: "<strong>Por qué funciona:</strong> few-shot con 4 ejemplos cubriendo cada categoría. Claude ve el patrón y la frontera entre categorías. Sin ejemplos, podría clasificar este como 'otros' o dudar. Con ejemplos, ve que 'no funciona X' encaja en bug."
+    },
+    {
+      title: "Decisión con muchas variables",
+      context: "Tienes que decidir si aceptar un cliente nuevo con riesgo financiero medio. Hay 6 variables. Pides análisis a Claude.",
+      bad: "¿Debería aceptar como cliente a una empresa con estos datos: facturación 200K, antigüedad 2 años, retraso medio en pagos 18 días, sector retail, tamaño contrato 15K, garantía bancaria no?",
+      good: "Tengo que decidir si aceptar un cliente. Razona paso a paso antes de dar la recomendación final.\n\nDatos:\n- Facturación anual: 200K\n- Antigüedad de la empresa: 2 años\n- Retraso medio en pagos a proveedores: 18 días\n- Sector: retail\n- Tamaño del contrato propuesto: 15K\n- Garantía bancaria: no\n\nProceso:\n1) Evalúa cada variable: ¿es señal positiva, negativa o neutra?\n2) Identifica qué variables tienen más peso para este tipo de decisión\n3) Detecta combinaciones de variables que en conjunto sean preocupantes\n4) Da una recomendación: aceptar / aceptar con condiciones / rechazar\n5) Indica qué información extra te tranquilizaría\n\nRazona antes, recomienda al final.",
+      why: "<strong>Por qué funciona:</strong> chain of thought explícito. Sin él, Claude tiende a saltar a la conclusión (lo más probable: 'aceptar con condiciones' por defecto). Forzándole a evaluar variable por variable y combinaciones, detecta que 'antigüedad 2 años + retraso 18 días + sin garantía' es un patrón de riesgo real."
+    },
+    {
+      title: "Extraer datos de un email desestructurado",
+      context: "Tienes un email del proveedor con datos mezclados en prosa y necesitas convertirlo a JSON para tu sistema.",
+      bad: "Extrae los datos importantes de este email y dámelos estructurados:\n\n\"Hola, te confirmo el pedido. Salen mañana 23 de mayo las 50 cajas de café molido (referencia CM-2024-A) al precio acordado de 7,80€ unidad, total 390 más IVA. Llegan a vuestro almacén central de Getafe el 27 por la tarde.\"",
+      good: "<tarea>Extrae los datos del email a JSON.</tarea>\n\n<schema>\n{\n  \"referencia\": string,\n  \"cantidad\": number,\n  \"unidad\": string,\n  \"precio_unidad\": number,\n  \"total_sin_iva\": number,\n  \"fecha_salida\": string (YYYY-MM-DD),\n  \"fecha_entrega\": string (YYYY-MM-DD),\n  \"destino\": string\n}\n</schema>\n\n<reglas>\n- Asume año en curso si no se indica explícitamente.\n- Si un campo no aparece, ponlo a null. No inventes.\n- Devuelve solo el JSON, sin texto adicional ni markdown.\n</reglas>\n\n<email>\nHola, te confirmo el pedido. Salen mañana 23 de mayo las 50 cajas de café molido (referencia CM-2024-A) al precio acordado de 7,80€ unidad, total 390 más IVA. Llegan a vuestro almacén central de Getafe el 27 por la tarde.\n</email>",
+      why: "<strong>Por qué funciona:</strong> XML separa tarea, schema, reglas y datos. Claude no confunde el contenido del email con las instrucciones. El schema explícito + reglas anti-alucinación garantizan JSON parseable. Sin XML, en emails largos Claude a veces mezcla instrucciones del prompt con texto del email."
+    },
+    {
+      title: "Análisis estratégico completo: ¿chain o mega-prompt?",
+      context: "Quieres que Claude analice tu mercado, identifique competidores, genere posicionamiento y proponga 3 campañas de marketing. Lo intentas todo en un prompt vs en una cadena.",
+      bad: "Analiza el mercado de yoga online en España: identifica los 5 competidores principales, sus puntos fuertes y débiles, propón un posicionamiento diferencial para mi marca (clases para mayores de 50), genera 3 campañas de marketing con titulares, canales y presupuesto orientativo, y dame un plan de ejecución a 90 días.",
+      good: "Paso 1 — Mapa del mercado:\n\"Identifica los 5 competidores principales de yoga online dirigido al mercado español. Para cada uno: nombre, propuesta de valor en una frase, público principal, precio. Tabla.\"\n\nPaso 2 — Análisis de huecos (usa el output del paso 1):\n\"Dado el mapa anterior, identifica 3 huecos de mercado infrautilizados. Para cada hueco: descripción, evidencia de demanda no atendida, riesgos de entrar ahí.\"\n\nPaso 3 — Posicionamiento (usa los huecos del paso 2):\n\"Mi marca quiere atacar el hueco de 'yoga online para 50+'. Genera 3 posicionamientos diferentes (más médico, más comunitario, más estético-bienestar). Para cada uno: tagline, 3 pilares de mensaje, qué evita.\"\n\nPaso 4 — Campañas (usa el posicionamiento elegido del paso 3):\n\"Sobre el posicionamiento '[X]', genera 3 campañas: objetivo, canal principal, titular, KPI a 30 días, presupuesto orientativo.\"",
+      why: "<strong>Por qué funciona:</strong> el mega-prompt produce un mejunje superficial donde Claude resume todo. El chain permite revisar y corregir cada paso, reutilizar outputs, y profundizar donde importa. Además: cada prompt aislado da mejor calidad porque Claude se centra en una tarea bien definida en lugar de hacer malabares con cinco."
+    },
+    {
+      title: "Generar variantes con criterio",
+      context: "Necesitas 10 titulares para un artículo, pero no quieres 10 variantes del mismo. Quieres diversidad real.",
+      bad: "Dame 10 titulares para un artículo sobre 'cómo el sueño afecta la productividad'.",
+      good: "Genera 10 titulares para un artículo sobre 'cómo el sueño afecta la productividad'.\n\nReglas anti-repetición:\n- Cada titular debe optimizar para un eje DISTINTO. Después de generar cada uno, escribe en una línea aparte (eje: X) — donde X es uno de: claridad, curiosidad, dato concreto, contradicción, pregunta directa, urgencia, identificación, autoridad, humor seco, controversia.\n- No repitas eje. Si ya generaste un titular de 'curiosidad', el siguiente no puede ser de curiosidad.\n- No empieces dos titulares con la misma palabra.\n- Evita: 'descubre', '5 maneras de', signos de exclamación.\n\nDespués de los 10, dame un análisis breve: ¿cuál tiene más potencia para mi caso si el público objetivo son profesionales 30-45? ¿por qué?",
+      why: "<strong>Por qué funciona:</strong> sin restricciones explícitas, Claude regresa a la media — 10 titulares parecidos. Forzar ejes distintos + meta-criterio (no repetir palabra, evitar clichés) + reflexión final sobre cuál encaja con el público real produce variedad genuina. Es el patrón 'diversidad por restricción'."
+    },
+    {
+      title: "Reflexión recursiva para subir el nivel",
+      context: "Has pedido a Claude que escriba la introducción de un post. Está bien, pero no destaca. Lo intentas con una pasada vs con reflexión recursiva.",
+      bad: "Escribe una introducción de 120 palabras para un post titulado 'Por qué el 80% de los planes estratégicos no se ejecutan'.",
+      good: "Fase 1 — Escribe:\n\"Escribe una introducción de 120 palabras para un post titulado 'Por qué el 80% de los planes estratégicos no se ejecutan'.\"\n\nFase 2 — Critícate sin piedad (mismo chat, después de recibir la fase 1):\n\"Ahora ponte el sombrero de editor jefe de Harvard Business Review. Critica brutalmente la introducción que acabas de escribir. Identifica los 3 problemas más graves: ¿es predecible? ¿la primera frase atrapa o suena a manual? ¿hay alguna palabra de relleno que sobra? Sé despiadado. Sin elogios.\"\n\nFase 3 — Reescribe:\n\"Reescribe la introducción corrigiendo cada una de las críticas. Conserva el mensaje pero sube dos niveles la calidad. Misma longitud.\"",
+      why: "<strong>Por qué funciona:</strong> la primera versión tiende a la media de lo que Claude ha visto en miles de blog posts. La crítica fuerza a Claude a aplicar estándares más exigentes que los implícitos en 'escribe'. La reescritura con críticas concretas a corregir produce un texto 2 niveles por encima del original — sin que tú tengas que editarlo a mano."
+    }
+  ],
+
+  ejercicios: [
+    {
+      title: "Convierte zero-shot a few-shot",
+      task: "Tienes este prompt zero-shot:\n\n\"Clasifica esta opinión de cliente como 'positiva', 'negativa' o 'mixta':\n'Llegó rápido, pero el embalaje estaba dañado y faltaban accesorios.'\"\n\nReescríbelo aplicando few-shot prompting: añade 3-4 ejemplos resueltos antes del caso a clasificar, asegurándote de cubrir los tres tipos y especialmente el caso 'mixta' (que suele ser donde fallan los modelos sin ejemplos).",
+      solution: "Clasifica la opinión del cliente como 'positiva', 'negativa' o 'mixta'.\n\n<ejemplos>\nOpinión: \"Excelente producto, llegó antes de tiempo y funciona perfecto. Repetiré.\"\nClasificación: positiva\n\nOpinión: \"No vuelvo a comprar aquí. Producto defectuoso y atención al cliente nefasta.\"\nClasificación: negativa\n\nOpinión: \"El producto es buenísimo, pero tardó 3 semanas en llegar y nadie respondía mis emails.\"\nClasificación: mixta\n\nOpinión: \"Funciona, pero por el precio esperaba más calidad de materiales.\"\nClasificación: mixta\n</ejemplos>\n\nOpinión a clasificar: \"Llegó rápido, pero el embalaje estaba dañado y faltaban accesorios.\"\nClasificación:",
+      rubric: [
+        "Incluye 3-4 ejemplos resueltos (no solo 1)",
+        "Cubre las 3 categorías posibles, no solo los extremos",
+        "Incluye al menos 2 ejemplos 'mixta' (la categoría más difícil)",
+        "Usa formato consistente: mismo patrón en todos los ejemplos",
+        "El caso final sigue el mismo formato que los ejemplos, sin clasificación dada"
+      ]
+    },
+    {
+      title: "Añade chain of thought a un prompt de razonamiento",
+      task: "Prompt original:\n\n\"Un cliente quiere devolver un producto comprado hace 47 días. Nuestra política es 30 días para devolución completa, 60 días para crédito en tienda, pero hay excepciones por defectos de fábrica. El cliente dice que el producto falló a los 40 días. ¿Qué hacemos?\"\n\nReescríbelo añadiendo chain of thought: fuerza a Claude a razonar paso a paso antes de dar la decisión final, y a considerar las excepciones aplicables.",
+      solution: "Resuelve esta consulta de devolución. Razona paso a paso antes de dar la decisión final.\n\n<contexto>\nPolítica de devolución de la empresa:\n- 0-30 días: devolución completa con reintegro.\n- 31-60 días: crédito en tienda, no reintegro.\n- 60+ días: no se acepta devolución.\n- EXCEPCIÓN: defecto de fábrica documentable → devolución completa hasta 90 días desde la compra.\n</contexto>\n\n<caso>\nCliente compró hace 47 días. Reporta que el producto falló a los 40 días. Pide devolución.\n</caso>\n\nProceso de razonamiento (escríbelo explícitamente):\n1) ¿En qué franja temporal cae la solicitud según la política base?\n2) ¿Se aplica alguna excepción? ¿qué evidencia se necesita para activarla?\n3) ¿Qué información falta para resolver con certeza?\n4) ¿Cuál es la decisión: aceptar devolución completa / crédito en tienda / pedir más datos / rechazar?\n5) Redacta el mensaje al cliente (3 líneas, tono profesional y resolutivo).\n\nRazonamiento:",
+      rubric: [
+        "Incluye instrucción explícita: 'razona paso a paso antes de decidir'",
+        "Descompone el razonamiento en pasos numerados, no genérico",
+        "Reproduce la política completa en el contexto (no deja a Claude adivinar)",
+        "Considera explícitamente las excepciones",
+        "Pide la decisión al final, no antes del razonamiento"
+      ]
+    },
+    {
+      title: "Estructura un prompt largo con XML",
+      task: "Tienes este prompt sin estructurar (mal):\n\n\"Eres redactor de marketing. Aquí tienes información sobre el producto: zapatillas running ligeras, peso 220g, drop 6mm, suela carbono, precio 180€. El público es runners amateur que llevan corriendo 2+ años. La competencia es Nike Vaporfly y Saucony Endorphin. Escríbeme un email de lanzamiento al newsletter. Tono entusiasta pero técnico. Máximo 200 palabras. No menciones nunca el precio en el cuerpo, solo en CTA.\"\n\nReescríbelo separando claramente las partes con XML tags. Identifica qué partes son rol, producto, público, competencia, tarea, restricciones.",
+      solution: "<rol>\nEres redactor senior de email marketing especializado en marcas deportivas.\n</rol>\n\n<producto>\nZapatillas de running.\n- Peso: 220g\n- Drop: 6mm\n- Tecnología: placa de carbono en mediasuela\n- Precio: 180€\n</producto>\n\n<publico>\nRunners amateur con 2+ años de experiencia. Saben de drop, peso y tipos de pisada. No son novatos. Compran por especificaciones, no por marketing emocional.\n</publico>\n\n<competencia>\n- Nike Vaporfly (referencia premium, ~280€)\n- Saucony Endorphin (alternativa técnica, ~200€)\n</competencia>\n\n<tarea>\nEscribe un email de lanzamiento al newsletter de la marca.\n</tarea>\n\n<restricciones>\n- Máximo 200 palabras (cuerpo, sin contar asunto ni firma)\n- Tono: entusiasta pero técnico. Habla a alguien que entiende el deporte.\n- NO mencionar el precio en el cuerpo del email. Solo en el CTA final.\n- Incluir al menos 2 datos técnicos diferenciales\n- Asunto del email + cuerpo + CTA con precio\n</restricciones>",
+      rubric: [
+        "Separa rol, producto, público, competencia, tarea y restricciones en tags distintos",
+        "Los tags tienen nombres claros y descriptivos",
+        "El contenido dentro de cada tag está bien delimitado (no mezcla con otros)",
+        "Las restricciones están en lista, no en prosa",
+        "Mantiene toda la información del original, sin perder detalles"
+      ]
+    },
+    {
+      title: "Descompón un mega-prompt en chain",
+      task: "Tienes este mega-prompt:\n\n\"Analiza estos 50 comentarios de clientes sobre nuestra app, identifica los 5 problemas más mencionados, agrúpalos por urgencia, propón soluciones para cada uno con esfuerzo estimado, y redacta un email para el equipo de producto comunicando los hallazgos y prioridades.\"\n\nDescompónlo en 4 prompts encadenados donde el output de cada uno alimenta al siguiente. Indica claramente qué se le pasa entre pasos.",
+      solution: "PASO 1 — Extraer problemas de los comentarios:\n\"Te paso 50 comentarios de clientes sobre nuestra app. Identifica todos los problemas mencionados (cualquiera, no filtres por importancia todavía). Devuelve una lista plana: 'problema (mencionado N veces)'. Ignora elogios y peticiones de funcionalidad nueva — solo problemas reales.\"\n\nPASO 2 — Agrupar y priorizar (recibe lista del paso 1):\n\"Sobre esta lista de problemas reportados:\n[OUTPUT_PASO_1]\n\nAgrupa los semánticamente similares en 5 categorías como máximo. Para cada categoría devuélveme: nombre, número total de menciones agregadas, severidad (crítica / alta / media / baja) y una frase descriptiva.\"\n\nPASO 3 — Proponer soluciones (recibe categorías del paso 2):\n\"Sobre estas 5 categorías de problemas:\n[OUTPUT_PASO_2]\n\nPara cada una, propone una solución concreta con: descripción técnica en 2 líneas, esfuerzo estimado (1 día / 1 semana / 1 mes / +1 mes), dependencias internas, riesgo de no resolverla.\"\n\nPASO 4 — Redactar email al equipo de producto (recibe paso 3):\n\"Con los siguientes hallazgos:\n[OUTPUT_PASO_3]\n\nRedacta un email al equipo de producto (máx 250 palabras): contexto, hallazgos principales, propuesta de priorización, decisión que necesitamos del equipo en la próxima reunión. Tono profesional, sin paja.\"",
+      rubric: [
+        "Divide en al menos 3 pasos (mejor 4) con outputs separados",
+        "Cada paso tiene una tarea bien definida y atómica",
+        "Indica explícitamente que el output del paso N entra como input del paso N+1",
+        "Los pasos progresan de 'extraer' → 'agrupar' → 'transformar' → 'comunicar'",
+        "Cada paso es revisable: puedes corregir el output antes de pasarlo al siguiente"
+      ]
+    },
+    {
+      title: "Diseña un prompt con prefill",
+      task: "Quieres que Claude SIEMPRE devuelva un JSON válido con esta estructura, sin texto adicional, sin markdown alrededor, sin disculparse ni explicar:\n\n{\n  \"sentimiento\": \"positivo|negativo|neutro\",\n  \"confianza\": 0.0-1.0,\n  \"razon\": \"...\"\n}\n\nEscribe (a) el prompt y (b) el prefill que pondrías al principio de la respuesta de Claude (en la API, campo 'assistant' que se envía precargado). Explica por qué el prefill cierra la posibilidad de que Claude se desvíe.",
+      solution: "(a) PROMPT (mensaje del usuario):\n\n\"Analiza el sentimiento de este texto y devuelve el resultado como JSON.\n\n<schema>\n{\n  \\\"sentimiento\\\": \\\"positivo\\\" | \\\"negativo\\\" | \\\"neutro\\\",\n  \\\"confianza\\\": número entre 0.0 y 1.0,\n  \\\"razon\\\": string breve (máximo 15 palabras)\n}\n</schema>\n\n<reglas>\n- Devuelve SOLO el JSON, sin texto antes ni después.\n- Sin markdown, sin bloques de código.\n- Si el sentimiento es ambiguo, usa 'neutro' con confianza baja.\n</reglas>\n\n<texto>\n[TEXTO_A_ANALIZAR]\n</texto>\"\n\n(b) PREFILL (mensaje del assistant precargado):\n\n{\n\nPor qué funciona: al precargar la respuesta con '{', Claude está obligado a continuar desde ahí. No puede empezar con 'Claro, aquí tienes el análisis:' ni con '```json' ni con explicaciones. Solo puede continuar el JSON. Es la forma más fiable de garantizar output parseable. En producción, además se suele añadir 'stop_sequence' = '}' final para cerrar limpio.",
+      rubric: [
+        "El prompt usa XML para separar schema, reglas y texto",
+        "Especifica formato exacto del JSON con tipos",
+        "Da regla explícita: 'solo JSON, sin texto extra'",
+        "El prefill es '{' (la apertura del JSON)",
+        "Explica que el prefill impide a Claude empezar con texto/disculpas/markdown"
+      ]
+    }
+  ],
+
+  prompts: [
+    {
+      tag: "Few-shot",
+      title: "Clasificador con ejemplos",
+      desc: "Para clasificar texto en categorías estables. Few-shot con 4-5 ejemplos rinde casi como un modelo fine-tuned.",
+      text: "Clasifica el [TIPO DE INPUT] en una de estas categorías: [CAT_A], [CAT_B], [CAT_C], [CAT_D].\n\n<ejemplos>\nInput: \"[EJEMPLO 1]\"\nCategoría: [CAT_X]\n\nInput: \"[EJEMPLO 2]\"\nCategoría: [CAT_Y]\n\nInput: \"[EJEMPLO 3]\"\nCategoría: [CAT_Z]\n\nInput: \"[EJEMPLO 4 — caso borderline importante]\"\nCategoría: [CAT_W]\n</ejemplos>\n\nInput a clasificar: \"[INPUT_REAL]\"\nCategoría:"
+    },
+    {
+      tag: "XML",
+      title: "Extractor estructurado con XML",
+      desc: "Para sacar datos limpios de texto desestructurado y devolverlos como JSON parseable.",
+      text: "<tarea>Extrae los datos del texto y devuélvelos como JSON.</tarea>\n\n<schema>\n{\n  \"[CAMPO_1]\": string,\n  \"[CAMPO_2]\": number,\n  \"[CAMPO_3]\": string (formato YYYY-MM-DD),\n  \"[CAMPO_4]\": string | null\n}\n</schema>\n\n<reglas>\n- Si un campo no aparece, ponlo a null. NO inventes.\n- Cita la frase exacta del texto si tienes que justificar un valor ambiguo.\n- Devuelve solo el JSON, sin markdown ni explicación.\n</reglas>\n\n<texto>\n[PEGAR_TEXTO_AQUI]\n</texto>"
+    },
+    {
+      tag: "CoT",
+      title: "Decisor con chain of thought",
+      desc: "Cuando la decisión depende de varias variables y necesitas que Claude no salte directo a la conclusión.",
+      text: "Tengo que decidir: [DESCRIPCIÓN DE LA DECISIÓN].\n\n<datos>\n[VARIABLE 1: valor]\n[VARIABLE 2: valor]\n[VARIABLE 3: valor]\n[VARIABLE 4: valor]\n</datos>\n\nRazona paso a paso antes de recomendar. Sigue este proceso:\n1) Para cada variable, indica si es señal positiva, negativa o neutra para la decisión.\n2) Identifica las 2-3 variables con más peso para este tipo de caso.\n3) Detecta combinaciones de variables que en conjunto cambien el cuadro.\n4) Lista la información que falta y que reduciría la incertidumbre.\n5) Da una recomendación final con un nivel de confianza (alta / media / baja).\n\nNo te saltes pasos. Quiero ver tu razonamiento."
+    },
+    {
+      tag: "Chaining",
+      title: "Cadena de análisis en 4 pasos",
+      desc: "Plantilla para descomponer un análisis complejo en una cadena. Copia los 4 mensajes uno tras otro.",
+      text: "PASO 1 (extracción):\n\"Te paso [MATERIAL: comentarios / transcripción / documento]. Extrae todos los [ELEMENTO A EXTRAER] que aparezcan. Lista plana, sin filtrar por importancia todavía.\"\n[PEGAR MATERIAL]\n\nPASO 2 (agrupación):\n\"Sobre esta lista del paso anterior, agrupa los elementos semánticamente similares en máximo 5 categorías. Para cada categoría: nombre, frecuencia, severidad/importancia, descripción en 1 línea.\"\n\nPASO 3 (transformación):\n\"Sobre las 5 categorías, propón [OUTPUT INTERMEDIO: soluciones / acciones / decisiones] con esfuerzo estimado y dependencias.\"\n\nPASO 4 (comunicación):\n\"Con los hallazgos anteriores, redacta [ENTREGABLE FINAL: email / informe / presentación de 1 slide] dirigido a [DESTINATARIO], máximo [N] palabras, tono [TONO]. Incluye la decisión que necesitas que tomen.\""
+    },
+    {
+      tag: "Self-consistency",
+      title: "Decisión por mayoría (5 pasadas)",
+      desc: "Para clasificaciones o decisiones críticas donde un solo intento te da miedo. Generas 5 respuestas independientes y te quedas con la mayoría.",
+      text: "Voy a hacerte la misma pregunta 5 veces en mensajes separados. NO me digas 'ya te he respondido antes'. Cada vez, responde como si fuera la primera vez, con razonamiento independiente.\n\nPregunta: [PREGUNTA / CASO A EVALUAR]\n\nFormato de respuesta cada vez:\n1) Razonamiento breve (3-4 líneas)\n2) Conclusión: [OPCIÓN A / OPCIÓN B / OPCIÓN C]\n3) Confianza: alta / media / baja\n\n(Después de las 5 respuestas, en un sexto mensaje pediré: \"Resume las 5 respuestas en tabla y dame la decisión por mayoría.\")\n\nPrimera pasada:"
+    },
+    {
+      tag: "Reflexión",
+      title: "Generar, criticar, reescribir",
+      desc: "Tres pasadas en el mismo chat para sacar un texto 2 niveles mejor que en una sola.",
+      text: "Vamos a trabajar este texto en 3 fases.\n\nFASE 1 (escribir):\n\"Escribe [TIPO DE TEXTO: introducción / email / pitch] sobre [TEMA]. Longitud: [N] palabras. Tono: [TONO]. Contexto: [CONTEXTO BREVE].\"\n\n(Espera mi siguiente mensaje)\n\nFASE 2 (criticar) — lo que escribiré después de tu primera respuesta:\n\"Ponte ahora el sombrero de [PERFIL EDITOR EXIGENTE: ej. 'editor jefe de The Economist']. Critica brutalmente lo que acabas de escribir. Identifica los 3 problemas más graves: ¿es predecible? ¿la apertura atrapa o suena a manual? ¿hay palabras de relleno? Sé despiadado. Sin elogios.\"\n\nFASE 3 (reescribir):\n\"Reescribe el texto corrigiendo cada crítica de la fase 2. Conserva el mensaje pero sube dos niveles la calidad. Misma longitud.\"\n\nEmpezamos. Genera la fase 1 ahora."
+    },
+    {
+      tag: "Variantes",
+      title: "Generador de variantes con diversidad forzada",
+      desc: "Para titulares, slogans, asuntos de email, nombres. Fuerza diversidad real en lugar de variaciones de lo mismo.",
+      text: "Genera [N=10] [TIPO: titulares / asuntos / slogans / nombres] sobre [TEMA].\n\nReglas anti-repetición:\n- Cada opción debe optimizar para un eje DIFERENTE. Tras cada opción, escribe en una línea (eje: X), donde X es uno de:\n  · claridad máxima\n  · curiosidad\n  · dato concreto / número\n  · contradicción / contraste\n  · pregunta directa\n  · urgencia\n  · identificación\n  · autoridad\n  · humor seco\n  · controversia\n- No repitas eje. Si ya usaste 'curiosidad', la siguiente debe ser otra cosa.\n- No empieces dos opciones con la misma palabra.\n- Evita clichés del sector: [LISTA DE PALABRAS PROHIBIDAS].\n\nTras las [N] opciones, dime cuál tiene más potencia para mi público real ([PÚBLICO]) y por qué."
+    },
+    {
+      tag: "Role",
+      title: "Agente con role consistency reforzado",
+      desc: "Para sesiones largas donde necesitas que Claude no se desvíe del rol asignado. Refuerza la persona y las reglas en cada turno crítico.",
+      text: "<rol>\nEres [PERFIL CONCRETO: ej. 'consultor estratégico senior con 15 años en retail B2C, especializado en pricing y posicionamiento'].\n</rol>\n\n<reglas_persistentes>\n1) Antes de responder, recuerda mentalmente tu rol y experiencia.\n2) Si yo pregunto algo fuera de tu especialidad, dilo explícitamente: \"Esto se sale de mi expertise, te respondo con prudencia.\"\n3) NUNCA des respuestas genéricas tipo blog post. Habla como hablaría alguien con experiencia real.\n4) Si una pregunta es ambigua, haz UNA pregunta de clarificación antes de responder. No varias, una.\n5) Si yo me desvío del proyecto, recuérdame el objetivo: [OBJETIVO DE LA SESIÓN].\n</reglas_persistentes>\n\n<contexto_proyecto>\n[INFORMACIÓN PERSISTENTE DEL PROYECTO]\n</contexto_proyecto>\n\nCada 5 mensajes te recordaré: \"Recuerda rol y reglas\". Si yo lo olvido, recuérdamelas tú.\n\nPrimera pregunta: [TU_PREGUNTA]"
+    },
+    {
+      tag: "Rúbrica",
+      title: "Evaluación con rúbrica explícita",
+      desc: "Cuando quieres que Claude evalúe algo (un texto, una decisión, un código) de forma consistente y verificable, no con opiniones vagas.",
+      text: "Evalúa [OBJETO A EVALUAR: texto / propuesta / código / diseño].\n\n<criterios>\n1) [CRITERIO 1] — qué significa: [DEFINICIÓN]. Escala: 1 (mal) a 5 (excelente).\n2) [CRITERIO 2] — qué significa: [DEFINICIÓN]. Escala: 1 a 5.\n3) [CRITERIO 3] — qué significa: [DEFINICIÓN]. Escala: 1 a 5.\n4) [CRITERIO 4] — qué significa: [DEFINICIÓN]. Escala: 1 a 5.\n</criterios>\n\n<formato_salida>\nTabla:\n| Criterio | Nota /5 | Justificación (1 frase) | Evidencia concreta del texto |\n\nDespués de la tabla:\n- Nota global ponderada (di cómo la calculaste)\n- 3 acciones de mejora priorizadas\n- Una decisión final: aprobado / aprobado con cambios / rehacer\n</formato_salida>\n\n<objeto>\n[PEGAR AQUI]\n</objeto>"
+    },
+    {
+      tag: "Prefill",
+      title: "JSON garantizado con prefill (API)",
+      desc: "Patrón para API: prompt + prefill. Garantiza JSON parseable sin texto extra. Usar en producción.",
+      text: "PROMPT (mensaje user):\n\nExtrae datos del siguiente texto.\n\n<schema>\n{\n  \"[CAMPO_1]\": string,\n  \"[CAMPO_2]\": number,\n  \"[CAMPO_3]\": boolean\n}\n</schema>\n\n<reglas>\n- Si un campo no aparece, devuélvelo como null.\n- NO añadas texto, markdown ni explicación.\n- Devuelve un único objeto JSON.\n</reglas>\n\n<texto>\n[TEXTO]\n</texto>\n\n---\nPREFILL (mensaje assistant precargado en la API):\n\n{\n\n---\nSTOP SEQUENCE recomendada: }\n\n(Nota: en la API de Anthropic, el prefill se envía como el inicio del mensaje del assistant. Garantiza que el output empiece exactamente por '{' y no por 'Aquí tienes el JSON:' u otro preámbulo.)"
+    },
+    {
+      tag: "Mega",
+      title: "Sistema de agente con XML completo",
+      desc: "Plantilla para system prompt de un agente especializado. Combina rol, contexto, reglas, ejemplos y formato de salida en una estructura XML cerrada.",
+      text: "<persona>\nNombre: [NOMBRE_AGENTE]\nFunción: [FUNCIÓN ESPECÍFICA EN UNA FRASE]\nEstilo: [3-4 ADJETIVOS DEL TONO]\n</persona>\n\n<contexto_persistente>\n[INFORMACIÓN QUE VALE PARA TODA LA SESIÓN: producto, empresa, usuario tipo]\n</contexto_persistente>\n\n<capacidades>\n- Puede hacer: [LISTA DE COSAS QUE SÍ]\n- NO puede hacer: [LISTA DE COSAS QUE NO]\n- Si le piden algo fuera de capacidades: [QUÉ HACER, ej. \"derivar a un humano\"]\n</capacidades>\n\n<reglas>\n1) [REGLA OPERATIVA 1]\n2) [REGLA OPERATIVA 2]\n3) [REGLA SOBRE INCERTIDUMBRE: ej. \"si no estás seguro, dilo explícitamente, no inventes\"]\n</reglas>\n\n<ejemplos>\nUsuario: [INPUT TÍPICO 1]\nAgente: [RESPUESTA MODELO 1]\n\nUsuario: [INPUT TÍPICO 2]\nAgente: [RESPUESTA MODELO 2]\n</ejemplos>\n\n<formato_respuesta>\n[ESTRUCTURA QUE DEBE SEGUIR CADA RESPUESTA]\n</formato_respuesta>\n\nResponde al siguiente mensaje del usuario manteniendo persona, reglas y formato."
+    },
+    {
+      tag: "Debug",
+      title: "Auto-debug de prompts",
+      desc: "Cuando un prompt tuyo no funciona y no sabes por qué. Le pides a Claude que diagnostique tu propio prompt y proponga mejoras concretas.",
+      text: "Tengo este prompt que NO está dando buenos resultados con Claude:\n\n<prompt_actual>\n[PEGAR TU PROMPT AQUÍ TAL CUAL]\n</prompt_actual>\n\n<respuesta_que_recibo>\n[PEGAR UN EJEMPLO DE RESPUESTA MALA QUE OBTIENES]\n</respuesta_que_recibo>\n\n<lo_que_quería_obtener>\n[DESCRIBE QUÉ OUTPUT IDEAL ESPERABAS]\n</lo_que_quería_obtener>\n\nDiagnóstica el prompt actual:\n1) ¿Qué le falta? (contexto, rol, restricciones, formato de salida, ejemplos...)\n2) ¿Qué partes son ambiguas o contradictorias?\n3) ¿Qué técnica avanzada aplicaría aquí: few-shot, XML, CoT, chaining, prefill, role consistency?\n4) Reescríbelo aplicando esas técnicas.\n5) Explica en 3 líneas qué cambió y por qué eso mejora el resultado.\n\nSé concreto, no me des consejos genéricos."
+    }
+  ],
+
+  quiz: [
+    {
+      q: "¿Cuál es la principal ventaja de few-shot prompting frente a zero-shot?",
+      opts: [
+        "Es más rápido en respuesta",
+        "Permite a Claude inferir el patrón deseado desde ejemplos en lugar de descripciones",
+        "Reduce el coste por llamada a la API",
+        "Funciona solo con Claude Opus"
+      ],
+      correct: 1,
+      fb: "Few-shot enseña por ejemplos. Para clasificación, extracción y tareas con formato fijo, 3-5 ejemplos suelen rendir mejor que cualquier descripción larga. Cuesta más tokens, pero la precisión sube mucho."
+    },
+    {
+      q: "¿Cuándo debería usar chain of thought (CoT)?",
+      opts: [
+        "Para clasificar texto en categorías simples",
+        "Para extraer datos a JSON",
+        "En problemas con varios pasos lógicos donde Claude tiende a saltar a la conclusión",
+        "Siempre, para todo tipo de prompt"
+      ],
+      correct: 2,
+      fb: "CoT brilla en razonamiento multi-paso: decisiones con varias variables, matemáticas, clasificaciones con criterios complejos. Para tareas simples (extraer un dato, clasificar binario) es overhead innecesario."
+    },
+    {
+      q: "¿Qué hace el prefill en la API de Anthropic?",
+      opts: [
+        "Acelera la respuesta del modelo",
+        "Permite empezar la respuesta del assistant con un texto fijado, forzando el formato del output",
+        "Aumenta la ventana de contexto",
+        "Es una técnica para entrenar modelos personalizados"
+      ],
+      correct: 1,
+      fb: "Prefill = precargar el inicio del mensaje del assistant. Si pones '{', Claude está obligado a continuar el JSON. Si pones '<analysis>', forzarás esa estructura. Garantiza output parseable sin preámbulos como 'Aquí tienes el JSON:'."
+    },
+    {
+      q: "Estás analizando 200 comentarios y quieres categorizar, priorizar y proponer soluciones. ¿Qué enfoque rinde mejor?",
+      opts: [
+        "Un mega-prompt que pida todo a la vez",
+        "Prompt chaining: extraer → agrupar → priorizar → proponer en pasos separados",
+        "Usar temperatura 1.0 en un solo prompt",
+        "Pedir a Claude que invente categorías sobre la marcha"
+      ],
+      correct: 1,
+      fb: "El mega-prompt produce análisis superficial. El chaining permite revisar y corregir cada paso, reutilizar outputs, y Claude da más calidad porque se centra en una tarea atómica cada vez. Más control, menos errores."
+    },
+    {
+      q: "¿Por qué Anthropic recomienda usar XML tags en prompts complejos?",
+      opts: [
+        "Porque Claude solo procesa XML internamente",
+        "Es una convención estética sin efecto técnico",
+        "Claude está entrenado para reconocer tags como delimitadores, reduce ambigüedad entre instrucciones y contenido",
+        "Solo funciona con la API, no con claude.ai"
+      ],
+      correct: 2,
+      fb: "Claude reconoce <tags> como límites semánticos. En prompts largos con contexto + datos + instrucciones, los tags evitan que Claude confunda un email pegado con instrucciones del prompt. Especialmente útil con prefill y output estructurado."
+    },
+    {
+      q: "Self-consistency consiste en:",
+      opts: [
+        "Pedir a Claude que sea coherente con su personalidad",
+        "Generar varias respuestas independientes a la misma pregunta y tomar la mayoría",
+        "Reducir la temperatura a 0",
+        "Usar siempre el mismo modelo en una conversación"
+      ],
+      correct: 1,
+      fb: "Self-consistency = N respuestas independientes con temperatura alta + voto mayoritario. Útil en clasificaciones ambiguas o decisiones críticas. Más caro (N llamadas) pero mucho más fiable que una sola respuesta."
+    },
+    {
+      q: "¿Qué temperatura usarías para extraer entidades a JSON con consistencia?",
+      opts: ["1.0", "0.7", "0.3-0.5", "0"],
+      correct: 3,
+      fb: "Para extracción de datos, JSON estructurado y código, temperatura 0 (o muy cercano). Necesitas determinismo: misma entrada → misma salida. Subir la temperatura aquí solo introduce variabilidad indeseada."
+    },
+    {
+      q: "La técnica de 'reflexión recursiva' consiste en:",
+      opts: [
+        "Pedir a Claude que repita la misma respuesta varias veces",
+        "Pedir a Claude que genere, luego critique su propio output, luego lo reescriba mejorado",
+        "Usar el output de Claude para entrenar otro modelo",
+        "Hacer que Claude pregunte por sí mismo"
+      ],
+      correct: 1,
+      fb: "Generar → criticar (desde otro rol, exigente) → reescribir. Dos o tres pasadas extraen calidad que un solo prompt no consigue, porque la crítica fuerza estándares más exigentes que los implícitos en 'escribe'."
+    },
+    {
+      q: "En un agente con sesión larga, ¿qué hacer para mantener la consistencia del rol?",
+      opts: [
+        "Nada, Claude lo recuerda perfectamente todo el tiempo",
+        "Reiterar el rol y las reglas cada cierto número de turnos, sobre todo en momentos críticos",
+        "Bajar la temperatura a 0 al final",
+        "Cambiar a Opus en cada turno"
+      ],
+      correct: 1,
+      fb: "En contextos muy largos, el rol se diluye: nuevas instrucciones, ejemplos no rol, deriva. Reiterar persona + reglas cada 5-6 turnos críticos, o usar system prompt fuerte + role consistency explícito en cada output."
+    },
+    {
+      q: "Quieres garantizar 100% que Claude devuelva JSON parseable sin texto extra. ¿Qué combinación es la más fiable?",
+      opts: [
+        "Solo pedirlo amablemente en el prompt",
+        "Pedirlo + temperatura 0 + schema explícito + prefill con '{' + stop sequence en '}'",
+        "Usar exclusivamente Claude Haiku",
+        "Cambiar el idioma del prompt a inglés"
+      ],
+      correct: 1,
+      fb: "Para producción: prompt claro con schema + temp 0 + prefill con '{' + stop sequence en '}'. Cada elemento cierra una vía de error: el prefill impide preámbulos, el stop impide texto posterior, el schema guía los campos, temp 0 da determinismo."
+    }
+  ],
+
+  glosario: [
+    { t: "Chain of thought (CoT)", d: "Técnica que pide al modelo razonar paso a paso antes de dar la respuesta final. Mejora precisión en tareas multi-paso." },
+    { t: "Chaining", d: "Descomposición de una tarea en cadena de prompts donde el output de uno alimenta al siguiente. Mejor control y calidad que un mega-prompt." },
+    { t: "Decoding", d: "Proceso por el cual el modelo elige qué token generar a continuación a partir de la distribución de probabilidades. Influido por temperatura, top-p y top-k." },
+    { t: "Embedding", d: "Representación numérica (vector) de un texto que captura su significado. Base de la búsqueda semántica y RAG." },
+    { t: "Few-shot", d: "Estrategia de prompting que incluye varios ejemplos resueltos (típicamente 2-5) antes del caso a procesar. Enseña por demostración." },
+    { t: "Greedy decoding", d: "Estrategia de generación que elige siempre el token de mayor probabilidad. Equivale a temperatura 0. Máximo determinismo, mínima creatividad." },
+    { t: "In-context learning", d: "Capacidad del modelo de aprender de los ejemplos dados en el prompt sin re-entrenamiento. Es lo que hace funcionar el few-shot." },
+    { t: "Prefill", d: "En la API, técnica de precargar el inicio de la respuesta del assistant para forzar formato u orientar el output." },
+    { t: "Prompt chaining", d: "Sinónimo de chaining. Encadenar prompts cuyo output alimenta al siguiente, para tareas complejas." },
+    { t: "Prompt engineering", d: "Disciplina de diseñar prompts que extraigan el mejor output posible del modelo. Mezcla de claridad, estructura y técnicas como few-shot, CoT o XML." },
+    { t: "ReAct", d: "Patrón Reason + Act: el modelo razona, decide una acción (llamar a una tool), observa el resultado y vuelve a razonar. Base de los agentes." },
+    { t: "Role consistency", d: "Mantener el rol asignado al modelo estable a lo largo de una sesión larga. Se logra con system prompt fuerte y refuerzo periódico." },
+    { t: "Sampling", d: "Familia de estrategias para seleccionar el siguiente token a generar. Incluye temperatura, top-p (nucleus) y top-k." },
+    { t: "Self-consistency", d: "Técnica que genera N respuestas independientes con temperatura alta y se queda con la mayoritaria. Reduce errores en tareas con razonamiento variable." },
+    { t: "Stop sequence", d: "Secuencia de caracteres que, cuando el modelo la genera, detiene la respuesta. Útil con prefill para delimitar outputs estructurados." },
+    { t: "System prompt", d: "Instrucción persistente que define rol, reglas y contexto del modelo para toda la conversación. Distinto del user prompt individual." },
+    { t: "Tokenization", d: "Proceso de dividir el texto en tokens. Influye en coste (precio por token) y en cómo el modelo 've' el input." },
+    { t: "Zero-shot", d: "Prompt sin ejemplos resueltos. Solo descripción de la tarea. Funciona en tareas simples; en complejas, few-shot suele rendir mucho mejor." }
+  ],
+
+  recursos: [
+    {
+      tag: "Documentación",
+      title: "Prompt engineering overview — Anthropic",
+      desc: "Guía oficial de Anthropic sobre prompt engineering. Cubre todas las técnicas avanzadas: chain of thought, XML, prefilling, role.",
+      url: "https://docs.claude.com/en/docs/build-with-claude/prompt-engineering/overview",
+      meta: "docs.claude.com · ~60 min"
+    },
+    {
+      tag: "Documentación",
+      title: "Use XML tags — Anthropic",
+      desc: "Guía específica sobre cómo estructurar prompts con XML tags. Imprescindible para prompts complejos.",
+      url: "https://docs.claude.com/en/docs/build-with-claude/prompt-engineering/use-xml-tags",
+      meta: "docs.claude.com · ~15 min"
+    },
+    {
+      tag: "Documentación",
+      title: "Chain of thought prompting — Anthropic",
+      desc: "Cómo aplicar CoT con Claude. Cuándo usarlo, cuándo no, y variantes (zero-shot CoT vs guided).",
+      url: "https://docs.claude.com/en/docs/build-with-claude/prompt-engineering/chain-of-thought",
+      meta: "docs.claude.com · ~15 min"
+    },
+    {
+      tag: "Paper",
+      title: "Chain-of-Thought Prompting Elicits Reasoning in LLMs",
+      desc: "El paper original de Google que introdujo CoT en 2022. Lectura fundacional para entender por qué funciona.",
+      url: "https://arxiv.org/abs/2201.11903",
+      meta: "arxiv · técnico · 40 min"
+    },
+    {
+      tag: "Paper",
+      title: "Self-Consistency Improves Chain of Thought",
+      desc: "Paper que introduce la técnica de self-consistency. Cómo y cuándo aplicarla, con benchmarks.",
+      url: "https://arxiv.org/abs/2203.11171",
+      meta: "arxiv · técnico · 30 min"
+    },
+    {
+      tag: "Documentación",
+      title: "Multishot prompting — Anthropic",
+      desc: "Guía oficial sobre few-shot / multishot. Cómo elegir ejemplos, cuántos usar, errores comunes.",
+      url: "https://docs.claude.com/en/docs/build-with-claude/prompt-engineering/multishot-prompting",
+      meta: "docs.claude.com · ~12 min"
+    },
+    {
+      tag: "Documentación",
+      title: "Prefill Claude's response — Anthropic",
+      desc: "Documentación oficial sobre prefilling. Casos de uso, ejemplos con JSON y XML, errores a evitar.",
+      url: "https://docs.claude.com/en/docs/build-with-claude/prompt-engineering/prefill-claudes-response",
+      meta: "docs.claude.com · ~10 min"
+    },
+    {
+      tag: "Guía",
+      title: "Prompt engineering interactive tutorial — Anthropic",
+      desc: "Tutorial oficial interactivo en Jupyter notebooks. Aplicas cada técnica con ejercicios reales contra la API.",
+      url: "https://github.com/anthropics/prompt-eng-interactive-tutorial",
+      meta: "github · ~4h en total"
+    }
+  ],
+
+  checklist: [
+    {
+      day: "Día 1 · Few-shot",
+      text: "Coge una tarea de clasificación o extracción que hagas a menudo y conviértela en un prompt con 4 ejemplos resueltos.",
+      detail: "Mide la diferencia: corre 5 inputs con tu prompt antiguo y 5 con el nuevo. Cuenta aciertos."
+    },
+    {
+      day: "Día 2 · Chain of thought",
+      text: "Coge una decisión que tienes pendiente y pide a Claude que razone paso a paso antes de recomendar.",
+      detail: "Añade explícitamente: 'antes de decidir, evalúa cada variable y luego dame la recomendación final'."
+    },
+    {
+      day: "Día 3 · XML tags",
+      text: "Reescribe tu mejor prompt actual usando XML para separar rol, contexto, tarea y restricciones.",
+      detail: "Si el prompt tenía más de 200 palabras en prosa, casi seguro mejora con tags."
+    },
+    {
+      day: "Día 4 · Chaining",
+      text: "Identifica una tarea compleja donde sueles pedir todo a la vez. Descompónla en 3-4 prompts encadenados.",
+      detail: "Análisis + agrupación + propuesta + comunicación. Compara la calidad con el mega-prompt anterior."
+    },
+    {
+      day: "Día 5 · Reflexión recursiva",
+      text: "Genera un texto importante (email, propuesta) y haz 2 pasadas: críticate como editor exigente y reescribe.",
+      detail: "El truco: el editor que critica debe ser MUY exigente. 'Editor jefe de The Economist', no 'amigo bondadoso'."
+    },
+    {
+      day: "Día 6 · Output estructurado + prefill",
+      text: "Diseña un prompt que devuelva JSON parseable, con schema explícito y, si usas API, prefill con '{'.",
+      detail: "Verifica que el output se pueda pasar directo a JSON.parse() sin limpieza manual."
+    },
+    {
+      day: "Día 7 · Variantes con diversidad forzada",
+      text: "Pide 10 titulares/asuntos/nombres forzando que cada uno optimice un eje distinto.",
+      detail: "Compara contra 'dame 10 opciones' a secas. Verás que sin restricciones, las 10 se parecen entre sí."
+    }
+  ]
+};
+
+// ============================================
+// RENDERIZADO
+// ============================================
+function renderFlashcards() {
+  const grid = document.getElementById('flashgrid');
+  MODULE_DATA.conceptos.forEach((c, i) => {
+    const card = document.createElement('div');
+    card.className = 'flash';
+    card.innerHTML = `
+      <div class="flash-inner">
+        <div class="flash-face front">
+          <div class="flash-num">Concepto ${String(i+1).padStart(2,'0')}</div>
+          <div class="flash-title">${c.title}</div>
+          <div class="flash-hint">↻ Pulsa para girar</div>
+        </div>
+        <div class="flash-face back">
+          <div class="flash-def">${c.def}</div>
+          <div class="flash-example">${c.example}</div>
+        </div>
+      </div>
+    `;
+    card.addEventListener('click', () => card.classList.toggle('flipped'));
+    grid.appendChild(card);
+  });
+}
+
+function renderCases() {
+  const wrap = document.getElementById('cases');
+  MODULE_DATA.casos.forEach((c, i) => {
+    const el = document.createElement('div');
+    el.className = 'case';
+    el.innerHTML = `
+      <div class="case-num">Caso ${String(i+1).padStart(2,'0')}</div>
+      <div class="case-title">${c.title}</div>
+      <div class="case-context">${c.context}</div>
+      <div class="case-grid">
+        <div class="case-col bad">
+          <div class="case-col-label">✕ Prompt básico</div>
+          <div class="case-prompt">${c.bad.replace(/</g, '&lt;')}</div>
+        </div>
+        <div class="case-col good">
+          <div class="case-col-label">✓ Con técnica avanzada</div>
+          <div class="case-prompt">${c.good.replace(/</g, '&lt;')}</div>
+        </div>
+      </div>
+      <div class="case-why">${c.why}</div>
+    `;
+    wrap.appendChild(el);
+  });
+}
+
+function renderExercises() {
+  const wrap = document.getElementById('exercises');
+  MODULE_DATA.ejercicios.forEach((e, i) => {
+    const el = document.createElement('div');
+    el.className = 'ex';
+    el.innerHTML = `
+      <div class="ex-num">Ejercicio ${String(i+1).padStart(2,'0')}</div>
+      <div class="ex-title">${e.title}</div>
+      <div class="ex-task">${e.task.replace(/</g, '&lt;').replace(/\n/g, '<br>')}</div>
+      <textarea class="ex-input" placeholder="Escribe tu respuesta aquí..."></textarea>
+      <div class="ex-btns">
+        <button class="btn btn-primary" data-action="show-solution">Ver solución modelo</button>
+        <button class="btn" data-action="clear">Limpiar</button>
+      </div>
+      <div class="ex-solution">
+        <div class="ex-solution-label">Solución modelo</div>
+        <div class="ex-solution-text">${e.solution.replace(/</g, '&lt;')}</div>
+        <div class="ex-rubric">
+          <div class="ex-rubric-title">Autoevaluación · ¿tu respuesta cumple?</div>
+          <ul>${e.rubric.map(r => `<li>${r}</li>`).join('')}</ul>
+        </div>
+      </div>
+    `;
+    const textarea = el.querySelector('.ex-input');
+    const solDiv = el.querySelector('.ex-solution');
+    el.querySelector('[data-action="show-solution"]').addEventListener('click', () => {
+      solDiv.classList.toggle('show');
+    });
+    el.querySelector('[data-action="clear"]').addEventListener('click', () => {
+      textarea.value = '';
+      solDiv.classList.remove('show');
+    });
+    wrap.appendChild(el);
+  });
+}
+
+function renderPrompts() {
+  const wrap = document.getElementById('prompts');
+  MODULE_DATA.prompts.forEach((p, i) => {
+    const el = document.createElement('div');
+    el.className = 'prompt-card';
+    el.innerHTML = `
+      <div class="prompt-tag">${p.tag}</div>
+      <div class="prompt-title">${p.title}</div>
+      <div class="prompt-desc">${p.desc}</div>
+      <pre class="prompt-text">${p.text.replace(/</g, '&lt;')}</pre>
+      <button class="copy-btn">Copiar al portapapeles</button>
+    `;
+    const btn = el.querySelector('.copy-btn');
+    btn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(p.text);
+        btn.textContent = '✓ Copiado';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.textContent = 'Copiar al portapapeles';
+          btn.classList.remove('copied');
+        }, 1800);
+      } catch(e) {
+        btn.textContent = 'Selecciona y copia manual';
+      }
+    });
+    wrap.appendChild(el);
+  });
+}
+
+// Tabs
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('sec-' + btn.dataset.tab).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+});
+
+function renderQuiz() {
+  const wrap = document.getElementById('quiz');
+  let answered = 0;
+  let correct = 0;
+  MODULE_DATA.quiz.forEach((q, i) => {
+    const el = document.createElement('div');
+    el.className = 'quiz-q';
+    el.innerHTML = `
+      <div class="quiz-num">Pregunta ${String(i+1).padStart(2,'0')} de ${MODULE_DATA.quiz.length}</div>
+      <div class="quiz-question">${q.q}</div>
+      <div class="quiz-opts">
+        ${q.opts.map((o, j) => `<button class="quiz-opt" data-idx="${j}">${o}</button>`).join('')}
+      </div>
+      <div class="quiz-feedback"></div>
+    `;
+    const opts = el.querySelectorAll('.quiz-opt');
+    const fb = el.querySelector('.quiz-feedback');
+    opts.forEach(opt => {
+      opt.addEventListener('click', () => {
+        if (el.classList.contains('answered')) return;
+        const idx = Number(opt.dataset.idx);
+        const isCorrect = idx === q.correct;
+        opts.forEach((o, j) => {
+          o.classList.add('locked');
+          if (j === q.correct) o.classList.add('correct');
+          else if (j === idx && !isCorrect) o.classList.add('wrong');
+        });
+        fb.classList.add('show', isCorrect ? 'correct' : 'wrong');
+        fb.textContent = (isCorrect ? '✓ Correcto. ' : '✗ Casi. ') + q.fb;
+        el.classList.add('answered');
+        answered++;
+        if (isCorrect) correct++;
+        if (answered === MODULE_DATA.quiz.length) showQuizResult(correct);
+      });
+    });
+    wrap.appendChild(el);
+  });
+}
+
+function showQuizResult(correct) {
+  const total = MODULE_DATA.quiz.length;
+  const pct = Math.round((correct / total) * 100);
+  let msg = '';
+  if (pct >= 90) msg = 'Excelente. Dominas las técnicas avanzadas. Listo para el módulo 5.';
+  else if (pct >= 70) msg = 'Muy bien. Repasa las técnicas donde fallaste y avanza al módulo siguiente.';
+  else if (pct >= 50) msg = 'Aceptable. Te recomiendo volver a casos y plantillas antes de seguir.';
+  else msg = 'Vuelve al vídeo y a los conceptos. Sin dominar estas técnicas, lo siguiente se complica.';
+  const el = document.getElementById('quiz-result');
+  el.innerHTML = `
+    <div class="quiz-result-score">${correct} / ${total}</div>
+    <div class="quiz-result-msg">${msg}</div>
+    <button class="btn btn-primary" onclick="location.reload()">Reintentar quiz</button>
+  `;
+  el.classList.add('show');
+  el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function renderGlosario() {
+  const wrap = document.getElementById('glosario');
+  const sorted = [...MODULE_DATA.glosario].sort((a, b) => a.t.localeCompare(b.t, 'es'));
+  sorted.forEach(g => {
+    const el = document.createElement('div');
+    el.className = 'gloss-item';
+    el.innerHTML = `<div class="gloss-term">${g.t}</div><div class="gloss-def">${g.d}</div>`;
+    wrap.appendChild(el);
+  });
+}
+
+function renderRecursos() {
+  const wrap = document.getElementById('recursos');
+  MODULE_DATA.recursos.forEach(r => {
+    const el = document.createElement('a');
+    el.className = 'recurso';
+    el.href = r.url;
+    el.target = '_blank';
+    el.rel = 'noopener noreferrer';
+    el.innerHTML = `
+      <span class="recurso-tag">${r.tag}</span>
+      <div class="recurso-title">${r.title}</div>
+      <div class="recurso-desc">${r.desc}</div>
+      <div class="recurso-meta">${r.meta}</div>
+    `;
+    wrap.appendChild(el);
+  });
+}
+
+function renderChecklist() {
+  const wrap = document.getElementById('checklist');
+  const progressEl = document.getElementById('checkProgress');
+  const state = new Set();
+  function updateProgress() {
+    const done = state.size;
+    const total = MODULE_DATA.checklist.length;
+    progressEl.textContent = `${done} / ${total} completadas · ${Math.round((done/total)*100)}%`;
+  }
+  MODULE_DATA.checklist.forEach((c, i) => {
+    const el = document.createElement('div');
+    el.className = 'check-item';
+    el.innerHTML = `
+      <div class="check-box">${state.has(i) ? '✓' : ''}</div>
+      <div class="check-content">
+        <div class="check-day">${c.day}</div>
+        <div class="check-text">${c.text}</div>
+        <div class="check-detail">${c.detail}</div>
+      </div>
+    `;
+    el.addEventListener('click', () => {
+      if (state.has(i)) { state.delete(i); el.classList.remove('done'); el.querySelector('.check-box').textContent = ''; }
+      else { state.add(i); el.classList.add('done'); el.querySelector('.check-box').textContent = '✓'; }
+      updateProgress();
+    });
+    wrap.appendChild(el);
+  });
+  updateProgress();
+}
+
+renderFlashcards();
+renderCases();
+renderExercises();
+renderPrompts();
+renderQuiz();
+renderGlosario();
+renderRecursos();
+renderChecklist();
+</script>
+</body>
+</html>

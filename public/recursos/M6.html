@@ -1,0 +1,1264 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude 101 · Recursos M6 · Casos de uso prácticos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Geist:wght@300..700&family=Geist+Mono:wght@400..600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #F4EFE3; --bg-2: #EFE9DA; --card: #FBF8F0;
+  --ink: #1C1A16; --ink-2: #3A352D; --muted: #756B5B; --muted-2: #A39782;
+  --line: #E1D8C2; --line-2: #CFC4AA;
+  --accent: #C8542B; --accent-2: #8B3A1E;
+  --olive: #4F5D38; --gold: #B08436;
+  --display: 'Fraunces', Georgia, serif;
+  --body: 'Geist', system-ui, sans-serif;
+  --mono: 'Geist Mono', ui-monospace, monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: var(--bg); color: var(--ink); font-family: var(--body); line-height: 1.55; }
+body {
+  background-image:
+    radial-gradient(circle at 12% 8%, rgba(200,84,43,.06) 0%, transparent 40%),
+    radial-gradient(circle at 88% 92%, rgba(79,93,56,.05) 0%, transparent 40%);
+  min-height: 100vh;
+}
+
+/* === HEADER === */
+.topbar {
+  position: sticky; top: 0; z-index: 50;
+  background: rgba(244,239,227,.85); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+  padding: 14px 32px; display: flex; align-items: center; gap: 20px;
+}
+.back-link {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--muted); text-decoration: none;
+  padding: 8px 14px; border-radius: 100px; border: 1px solid var(--line-2);
+  transition: all .2s;
+}
+.back-link:hover { color: var(--ink); border-color: var(--accent); }
+.topbar-title {
+  font-family: var(--display); font-style: italic; font-size: 22px;
+  font-weight: 400; color: var(--ink); flex: 1;
+}
+.topbar-title em { color: var(--accent); font-style: italic; }
+.topbar-badge {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--muted);
+  padding: 6px 12px; background: var(--card); border: 1px solid var(--line); border-radius: 6px;
+}
+
+/* === HERO === */
+.hero {
+  padding: 80px 32px 40px; max-width: 1100px; margin: 0 auto; text-align: center;
+}
+.hero .eyebrow {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .18em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 18px;
+}
+.hero h1 {
+  font-family: var(--display); font-style: italic; font-weight: 400;
+  font-size: clamp(40px, 6vw, 72px); letter-spacing: -0.025em;
+  color: var(--ink); line-height: 1.05; margin-bottom: 20px;
+}
+.hero h1 em { font-style: normal; color: var(--accent); }
+.hero .lede {
+  font-size: 18px; color: var(--ink-2); max-width: 60ch; margin: 0 auto;
+}
+
+/* === TABS === */
+.tabs-wrap {
+  position: sticky; top: 62px; z-index: 40;
+  background: rgba(244,239,227,.92); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+  padding: 16px 32px; display: flex; justify-content: center; gap: 8px;
+  overflow-x: auto;
+}
+.tab-btn {
+  font-family: var(--mono); font-size: 12px; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--muted);
+  padding: 10px 18px; border-radius: 100px; border: 1px solid var(--line-2);
+  background: var(--card); cursor: pointer; transition: all .2s; white-space: nowrap;
+}
+.tab-btn:hover { color: var(--ink); border-color: var(--accent); }
+.tab-btn.active {
+  color: var(--card); background: var(--ink); border-color: var(--ink);
+}
+
+/* === SECTIONS === */
+.section {
+  padding: 60px 32px 100px; max-width: 1100px; margin: 0 auto; display: none;
+}
+.section.active { display: block; }
+.section-intro {
+  margin-bottom: 40px; max-width: 70ch;
+}
+.section-intro h2 {
+  font-family: var(--display); font-style: italic; font-weight: 400;
+  font-size: 36px; margin-bottom: 12px; color: var(--ink);
+}
+.section-intro h2 em { color: var(--accent); font-style: normal; }
+.section-intro p { color: var(--ink-2); font-size: 16px; }
+
+/* === FLASHCARDS === */
+.flashgrid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;
+}
+.flash {
+  perspective: 1200px; min-height: 320px; cursor: pointer;
+}
+.flash-inner {
+  position: relative; width: 100%; height: 100%; min-height: 320px;
+  transition: transform .6s cubic-bezier(.2,.8,.2,1);
+  transform-style: preserve-3d;
+}
+.flash.flipped .flash-inner { transform: rotateY(180deg); }
+.flash-face {
+  position: absolute; inset: 0; backface-visibility: hidden;
+  background: var(--card); border: 1px solid var(--line); border-radius: 16px;
+  padding: 22px; display: flex; flex-direction: column;
+  overflow-y: auto;
+  box-shadow: 0 2px 12px rgba(28,26,22,.04);
+}
+.flash-face::-webkit-scrollbar { width: 4px; }
+.flash-face::-webkit-scrollbar-thumb { background: var(--line-2); border-radius: 4px; }
+.flash-face.back {
+  transform: rotateY(180deg);
+  background: var(--bg-2); border-color: var(--line-2);
+}
+.flash-num {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 12px;
+}
+.flash-title {
+  font-family: var(--display); font-style: italic; font-size: 24px;
+  font-weight: 400; color: var(--ink); margin-bottom: 10px; line-height: 1.2;
+}
+.flash-hint {
+  margin-top: auto; font-family: var(--mono); font-size: 10px;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--muted-2);
+}
+.flash-def { font-size: 14px; color: var(--ink-2); line-height: 1.6; margin-bottom: 12px; }
+.flash-example {
+  font-family: var(--mono); font-size: 12px; color: var(--olive);
+  background: var(--card); border-left: 2px solid var(--olive);
+  padding: 8px 12px; border-radius: 0 6px 6px 0;
+}
+
+/* === CASE STUDIES === */
+.case {
+  background: var(--card); border: 1px solid var(--line); border-radius: 18px;
+  padding: 32px; margin-bottom: 28px;
+}
+.case-num {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 8px;
+}
+.case-title {
+  font-family: var(--display); font-style: italic; font-size: 28px;
+  font-weight: 400; color: var(--ink); margin-bottom: 12px; line-height: 1.2;
+}
+.case-context { color: var(--ink-2); margin-bottom: 24px; font-size: 15px; }
+.case-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px;
+}
+@media (max-width: 720px) { .case-grid { grid-template-columns: 1fr; } }
+.case-col {
+  background: var(--bg); border-radius: 12px; padding: 20px;
+}
+.case-col.bad { border: 1px solid #e8c4b7; }
+.case-col.good { border: 1px solid #c4d4a8; }
+.case-col-label {
+  font-family: var(--mono); font-size: 10px; letter-spacing: .15em;
+  text-transform: uppercase; margin-bottom: 10px; font-weight: 600;
+}
+.case-col.bad .case-col-label { color: var(--accent-2); }
+.case-col.good .case-col-label { color: var(--olive); }
+.case-prompt {
+  font-family: var(--mono); font-size: 13px; line-height: 1.6;
+  color: var(--ink); white-space: pre-wrap;
+}
+.case-why {
+  background: var(--bg-2); border-left: 3px solid var(--gold);
+  padding: 14px 18px; border-radius: 0 8px 8px 0;
+  font-size: 14px; color: var(--ink-2);
+}
+.case-why strong { color: var(--gold); font-weight: 600; }
+
+/* === EXERCISES === */
+.ex {
+  background: var(--card); border: 1px solid var(--line); border-radius: 18px;
+  padding: 32px; margin-bottom: 28px;
+}
+.ex-num {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 8px;
+}
+.ex-title {
+  font-family: var(--display); font-style: italic; font-size: 28px;
+  font-weight: 400; color: var(--ink); margin-bottom: 12px; line-height: 1.2;
+}
+.ex-task { color: var(--ink-2); margin-bottom: 16px; font-size: 15px; }
+.ex-input {
+  width: 100%; min-height: 120px; resize: vertical;
+  background: var(--bg); border: 1px solid var(--line-2); border-radius: 10px;
+  padding: 14px 16px; font-family: var(--mono); font-size: 13px; color: var(--ink);
+  margin-bottom: 16px;
+}
+.ex-input:focus { outline: 2px solid var(--accent); outline-offset: -2px; }
+.ex-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+.btn {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .12em;
+  text-transform: uppercase; padding: 10px 18px; border-radius: 100px;
+  border: 1px solid var(--line-2); background: var(--card); color: var(--ink-2);
+  cursor: pointer; transition: all .2s;
+}
+.btn:hover { border-color: var(--accent); color: var(--ink); }
+.btn-primary { background: var(--ink); color: var(--card); border-color: var(--ink); }
+.btn-primary:hover { background: var(--accent); border-color: var(--accent); color: var(--card); }
+.ex-solution {
+  margin-top: 20px; padding: 20px; background: var(--bg-2); border-radius: 12px;
+  border-left: 3px solid var(--olive); display: none;
+}
+.ex-solution.show { display: block; }
+.ex-solution-label {
+  font-family: var(--mono); font-size: 10px; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--olive); margin-bottom: 10px; font-weight: 600;
+}
+.ex-solution-text {
+  font-family: var(--mono); font-size: 13px; line-height: 1.7; color: var(--ink);
+  white-space: pre-wrap; margin-bottom: 16px;
+}
+.ex-rubric { margin-top: 16px; }
+.ex-rubric-title {
+  font-size: 13px; color: var(--muted); margin-bottom: 8px; font-weight: 600;
+}
+.ex-rubric ul { list-style: none; padding: 0; }
+.ex-rubric li {
+  padding: 6px 0; font-size: 14px; color: var(--ink-2);
+  display: flex; align-items: flex-start; gap: 10px;
+}
+.ex-rubric li::before {
+  content: "✓"; color: var(--olive); font-weight: 600; margin-top: 1px;
+}
+
+/* === PROMPTS GALLERY === */
+.prompts-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px;
+}
+.prompt-card {
+  background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+  padding: 24px; display: flex; flex-direction: column;
+}
+.prompt-tag {
+  display: inline-block; font-family: var(--mono); font-size: 10px;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--gold);
+  background: var(--bg-2); padding: 4px 10px; border-radius: 100px;
+  margin-bottom: 12px; align-self: flex-start;
+}
+.prompt-title {
+  font-family: var(--display); font-style: italic; font-size: 22px;
+  font-weight: 400; color: var(--ink); margin-bottom: 10px; line-height: 1.2;
+}
+.prompt-desc { font-size: 14px; color: var(--ink-2); margin-bottom: 16px; }
+.prompt-text {
+  font-family: var(--mono); font-size: 12px; line-height: 1.65;
+  color: var(--ink-2); background: var(--bg); border: 1px dashed var(--line-2);
+  border-radius: 8px; padding: 14px; margin-bottom: 14px;
+  white-space: pre-wrap; flex: 1;
+}
+.copy-btn {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .12em;
+  text-transform: uppercase; padding: 10px 16px; border-radius: 8px;
+  border: 1px solid var(--ink); background: transparent; color: var(--ink);
+  cursor: pointer; transition: all .2s; align-self: stretch;
+}
+.copy-btn:hover { background: var(--ink); color: var(--card); }
+.copy-btn.copied { background: var(--olive); border-color: var(--olive); color: var(--card); }
+
+/* === QUIZ === */
+.quiz-q {
+  background: var(--card); border: 1px solid var(--line); border-radius: 16px;
+  padding: 26px; margin-bottom: 20px;
+}
+.quiz-num {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 10px;
+}
+.quiz-question {
+  font-family: var(--display); font-style: italic; font-size: 22px;
+  font-weight: 400; line-height: 1.3; color: var(--ink); margin-bottom: 18px;
+}
+.quiz-opts { display: flex; flex-direction: column; gap: 8px; }
+.quiz-opt {
+  text-align: left; padding: 14px 18px; border: 1px solid var(--line-2);
+  border-radius: 10px; background: var(--bg); color: var(--ink-2);
+  font-family: var(--body); font-size: 15px; cursor: pointer; transition: all .2s;
+}
+.quiz-opt:hover:not(.locked) { border-color: var(--accent); color: var(--ink); }
+.quiz-opt.correct {
+  background: rgba(79,93,56,.12); border-color: var(--olive); color: var(--ink);
+}
+.quiz-opt.wrong {
+  background: rgba(200,84,43,.1); border-color: var(--accent-2); color: var(--ink);
+}
+.quiz-opt.locked { cursor: default; }
+.quiz-feedback {
+  margin-top: 14px; padding: 14px 18px; border-radius: 10px;
+  font-size: 14px; line-height: 1.5; display: none;
+}
+.quiz-feedback.show { display: block; }
+.quiz-feedback.correct { background: rgba(79,93,56,.1); border-left: 3px solid var(--olive); color: var(--ink-2); }
+.quiz-feedback.wrong { background: rgba(200,84,43,.08); border-left: 3px solid var(--accent); color: var(--ink-2); }
+.quiz-result {
+  margin-top: 20px; padding: 28px; background: var(--card);
+  border: 1px solid var(--line); border-radius: 16px; text-align: center;
+  display: none;
+}
+.quiz-result.show { display: block; }
+.quiz-result-score {
+  font-family: var(--display); font-style: italic; font-size: 56px;
+  color: var(--accent); margin-bottom: 8px;
+}
+.quiz-result-msg { font-size: 16px; color: var(--ink-2); margin-bottom: 18px; }
+.quiz-result .btn { display: inline-block; }
+
+/* === GLOSARIO === */
+.glosario-list {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px;
+}
+.gloss-item {
+  background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+  padding: 18px 20px;
+}
+.gloss-term {
+  font-family: var(--display); font-style: italic; font-size: 20px;
+  font-weight: 400; color: var(--accent); margin-bottom: 6px;
+}
+.gloss-def { font-size: 14px; line-height: 1.55; color: var(--ink-2); }
+
+/* === RECURSOS === */
+.recursos-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px;
+}
+.recurso {
+  background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+  padding: 20px; text-decoration: none; color: inherit; transition: all .2s;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.recurso:hover {
+  border-color: var(--accent); transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(28,26,22,.08);
+}
+.recurso-tag {
+  display: inline-block; font-family: var(--mono); font-size: 10px;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--olive);
+  background: var(--bg-2); padding: 4px 10px; border-radius: 100px;
+  align-self: flex-start; margin-bottom: 4px;
+}
+.recurso-title {
+  font-family: var(--display); font-style: italic; font-size: 18px;
+  font-weight: 400; color: var(--ink); line-height: 1.3;
+}
+.recurso-desc { font-size: 13px; color: var(--ink-2); line-height: 1.5; }
+.recurso-meta {
+  font-family: var(--mono); font-size: 11px; color: var(--muted);
+  margin-top: auto; padding-top: 8px;
+}
+
+/* === CHECKLIST === */
+.checklist { display: flex; flex-direction: column; gap: 12px; }
+.check-item {
+  display: flex; align-items: flex-start; gap: 16px;
+  background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+  padding: 18px 22px; cursor: pointer; transition: all .2s;
+}
+.check-item:hover { border-color: var(--line-2); }
+.check-item.done {
+  background: var(--bg-2); border-color: var(--olive); opacity: .75;
+}
+.check-item.done .check-text { text-decoration: line-through; color: var(--muted); }
+.check-box {
+  width: 22px; height: 22px; border: 2px solid var(--line-2);
+  border-radius: 6px; flex-shrink: 0; margin-top: 2px;
+  display: flex; align-items: center; justify-content: center;
+  transition: all .2s;
+}
+.check-item.done .check-box {
+  background: var(--olive); border-color: var(--olive); color: var(--card);
+}
+.check-content { flex: 1; }
+.check-day {
+  font-family: var(--mono); font-size: 10px; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--accent); margin-bottom: 4px;
+}
+.check-text { font-size: 15px; line-height: 1.5; color: var(--ink); }
+.check-detail { font-size: 13px; color: var(--muted); margin-top: 4px; }
+.checklist-progress {
+  margin-top: 24px; padding: 20px; background: var(--bg-2);
+  border-radius: 12px; text-align: center;
+  font-family: var(--mono); font-size: 13px; color: var(--ink-2);
+}
+
+/* === FOOTER NAV === */
+.footer-nav {
+  border-top: 1px solid var(--line); padding: 32px;
+  display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+  max-width: 1100px; margin: 40px auto 0;
+}
+.foot-link {
+  font-family: var(--mono); font-size: 12px; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--muted); text-decoration: none;
+  padding: 12px 18px; border: 1px solid var(--line-2); border-radius: 100px;
+  transition: all .2s;
+}
+.foot-link:hover { color: var(--ink); border-color: var(--accent); }
+
+@media (max-width: 720px) {
+  .topbar { padding: 12px 16px; }
+  .hero { padding: 50px 16px 30px; }
+  .tabs-wrap { padding: 12px 16px; }
+  .section { padding: 40px 16px 80px; }
+  .case, .ex { padding: 22px; }
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <a href="/curso" class="back-link">← Volver al curso</a>
+  <div class="topbar-title">Módulo 6 · <em>Recursos</em></div>
+  <div class="topbar-badge">M6</div>
+</header>
+
+<section class="hero">
+  <div class="eyebrow">Profundiza · Practica · Aplica</div>
+  <h1>Casos de uso <em>prácticos</em></h1>
+  <p class="lede">Ya sabes prompts, herramientas y límites. Toca bajar a tierra: ocho profesiones, casos reales de cómo Claude entra en el día a día, plantillas listas para tu sector y un quiz para saber cuándo aporta valor y cuándo no.</p>
+</section>
+
+<nav class="tabs-wrap">
+  <button class="tab-btn active" data-tab="conceptos">Conceptos</button>
+  <button class="tab-btn" data-tab="casos">Casos de uso</button>
+  <button class="tab-btn" data-tab="ejercicios">Ejercicios</button>
+  <button class="tab-btn" data-tab="prompts">Prompts</button>
+  <button class="tab-btn" data-tab="quiz">Quiz final</button>
+  <button class="tab-btn" data-tab="glosario">Glosario</button>
+  <button class="tab-btn" data-tab="recursos">Recursos</button>
+  <button class="tab-btn" data-tab="checklist">Checklist</button>
+</nav>
+
+<!-- === CONCEPTOS === -->
+<section class="section active" id="sec-conceptos">
+  <div class="section-intro">
+    <h2>Diez <em>casos de uso</em> por profesión</h2>
+    <p>Cada tarjeta es un escenario real donde Claude rinde. Pulsa para ver cómo se aplica y un ejemplo concreto.</p>
+  </div>
+  <div class="flashgrid" id="flashgrid"></div>
+</section>
+
+<!-- === CASOS === -->
+<section class="section" id="sec-casos">
+  <div class="section-intro">
+    <h2>Antes y <em>después</em></h2>
+    <p>Seis profesionales reales, seis tareas concretas. Cómo se hacía antes y cómo se hace con Claude. Sin venta humo: con números.</p>
+  </div>
+  <div id="cases"></div>
+</section>
+
+<!-- === EJERCICIOS === -->
+<section class="section" id="sec-ejercicios">
+  <div class="section-intro">
+    <h2>Aplícalo a <em>tu trabajo</em></h2>
+    <p>Cinco retos. En cada uno eliges UN caso de uso del módulo y lo trasladas a tu profesión real. No hay solución única: la rúbrica te dice si lo has aterrizado bien.</p>
+  </div>
+  <div id="exercises"></div>
+</section>
+
+<!-- === PROMPTS === -->
+<section class="section" id="sec-prompts">
+  <div class="section-intro">
+    <h2>Plantillas por <em>profesión</em></h2>
+    <p>12 prompts, uno por caso de uso profesional concreto. Sustituye los <code style="background:var(--bg-2);padding:1px 6px;border-radius:4px;font-family:var(--mono);font-size:.85em">[CORCHETES]</code> con tus datos y pega en Claude.</p>
+  </div>
+  <div class="prompts-grid" id="prompts"></div>
+</section>
+
+<!-- === QUIZ === -->
+<section class="section" id="sec-quiz">
+  <div class="section-intro">
+    <h2>Quiz <em>final</em></h2>
+    <p>10 preguntas para distinguir cuándo Claude aporta valor real y cuándo es solo ruido. Saber cuándo NO usarlo es tan importante como saber cuándo sí.</p>
+  </div>
+  <div id="quiz"></div>
+  <div id="quiz-result" class="quiz-result"></div>
+</section>
+
+<!-- === GLOSARIO === -->
+<section class="section" id="sec-glosario">
+  <div class="section-intro">
+    <h2>Glosario del <em>módulo</em></h2>
+    <p>Jerga de los casos de uso: marketing, ventas, producto, RRHH, legal. Si trabajas en un sector, las otras siglas también te van a sonar.</p>
+  </div>
+  <div id="glosario" class="glosario-list"></div>
+</section>
+
+<!-- === RECURSOS === -->
+<section class="section" id="sec-recursos">
+  <div class="section-intro">
+    <h2>Para <em>profundizar</em></h2>
+    <p>Casos de uso documentados de empresas reales, cookbooks por industria y guías sectoriales. Para ir más allá del módulo.</p>
+  </div>
+  <div id="recursos" class="recursos-grid"></div>
+</section>
+
+<!-- === CHECKLIST === -->
+<section class="section" id="sec-checklist">
+  <div class="section-intro">
+    <h2>Esta <em>semana</em>, haz esto</h2>
+    <p>7 días, 7 casos de uso distintos aplicados a TU trabajo real. No teoría: producir algo cada día con Claude. Tilda lo que vayas haciendo.</p>
+  </div>
+  <div id="checklist" class="checklist"></div>
+  <div class="checklist-progress" id="checkProgress"></div>
+</section>
+
+<nav class="footer-nav">
+  <a href="/curso" class="foot-link">← Curso</a>
+  <a href="/recursos/M7.html" class="foot-link">Módulo 7 →</a>
+</nav>
+
+<script>
+// ============================================
+// CONTENIDO DEL MÓDULO 6
+// ============================================
+const MODULE_DATA = {
+  conceptos: [
+    {
+      title: "Generación de contenido SEO",
+      def: "Producir posts, descripciones de producto y meta tags optimizados para búsqueda en escala. Claude entiende intención de búsqueda, semántica y estructura H1/H2/H3 sin caer en el relleno típico de contenido SEO de los 2010.",
+      example: "Marketer pide 30 posts sobre un cluster temático con keyword principal, secundarias, meta description y enlaces internos sugeridos. Lo que antes era semana de freelance, hoy es una tarde."
+    },
+    {
+      title: "Análisis de feedback de clientes",
+      def: "Procesar miles de reseñas, tickets o respuestas de NPS y sacar patrones, sentiment y temas recurrentes. Claude clasifica, agrupa y prioriza por gravedad sin perder matiz.",
+      example: "CX manager pega 800 tickets de un mes y obtiene: top 5 quejas con frecuencia, sentiment por categoría y 3 fixes accionables priorizados por impacto estimado."
+    },
+    {
+      title: "Pair programming con Claude",
+      def: "Programar a dos: tú diriges, Claude propone implementación, refactoriza o explica. No reemplaza al dev, multiplica su velocidad en boilerplate, tests y exploración de librerías nuevas.",
+      example: "Backend dev refactoriza una función legacy de 400 líneas: Claude propone separación en módulos, tests unitarios y migración progresiva en 20 minutos."
+    },
+    {
+      title: "Diseño de cursos online",
+      def: "Estructurar contenido formativo: objetivos pedagógicos, módulos, ejercicios, evaluaciones. Claude conoce taxonomías (Bloom, ADDIE) y adapta el nivel al público objetivo.",
+      example: "Formadora monta un curso de 8 horas sobre Excel avanzado: outline, objetivos por módulo, ejercicios progresivos y rúbrica de evaluación. Antes: 2 semanas. Ahora: 2 días."
+    },
+    {
+      title: "Screening de CVs",
+      def: "Filtrar candidaturas contra un perfil objetivo, identificar señales fuertes y red flags, generar preguntas personalizadas para la entrevista. Importante: Claude asiste, no decide. La responsabilidad de equidad es humana.",
+      example: "RRHH revisa 200 CVs para un rol de data engineer: Claude clasifica en 4 grupos (top fit, fit parcial, no-fit, dudosos) con justificación por candidato."
+    },
+    {
+      title: "Resumen de contratos",
+      def: "Extraer cláusulas críticas, identificar riesgos legales, comparar versiones. Útil como primer pase, nunca como sustituto del abogado en decisiones vinculantes.",
+      example: "Founder revisa un NDA antes de una reunión: Claude marca cláusulas inusuales (jurisdicción rara, duración excesiva, definición ambigua de información confidencial) en 90 segundos."
+    },
+    {
+      title: "Modelado financiero rápido",
+      def: "Crear modelos de proyección, análisis de sensibilidad y resumen de informes financieros. Claude no reemplaza un CFO pero acelera el primer borrador del modelo."
+      ,
+      example: "Founder valida una hipótesis de pricing: pide a Claude un modelo con 3 escenarios (conservador/base/optimista), supuestos explícitos y break-even point. Lo pasa a Excel después."
+    },
+    {
+      title: "Brainstorming de productos",
+      def: "Generar ideas de producto, features, posicionamientos o naming con criterios diversos. Claude es bueno proponiendo variedad real, no diez versiones de la misma idea.",
+      example: "Product manager necesita ideas para una v2: Claude entrega 15 features agrupadas por job-to-be-done, con esfuerzo estimado y argumento contrario para cada una."
+    },
+    {
+      title: "Traducción técnica",
+      def: "Traducir documentación, manuales, contratos o UI manteniendo terminología técnica consistente y tono apropiado al sector. No es traducción literal: es localización.",
+      example: "Equipo de producto traduce la doc técnica de inglés a español + portugués brasileño manteniendo glosario consistente y registro formal-técnico."
+    },
+    {
+      title: "Email marketing personalizado",
+      def: "Generar variantes de emails segmentados por persona, momento del funnel o comportamiento. Claude no manda los emails: prepara el contenido para tu ESP.",
+      example: "Marketing produce 12 variantes de un email de re-engagement: 3 segmentos (frío/tibio/abandonado) × 4 ángulos (precio, urgencia, social proof, nuevo feature)."
+    }
+  ],
+
+  casos: [
+    {
+      title: "Marketer haciendo 30 posts de blog",
+      context: "Content manager de una SaaS B2B. Tiene que producir 30 posts en un mes para un nuevo cluster de keywords. Presupuesto para freelance limitado, calendario apretado.",
+      bad: "Antes (sin Claude): Brief al freelance, 2 semanas de espera, 12 posts entregados, revisión, ronda 2 de correcciones. Coste: 4.800€. Tiempo: 6 semanas para los 30. Calidad: irregular.",
+      good: "Con Claude: outline de los 30 posts en 1 sesión (cluster, keyword principal/secundarias, ángulo, meta description). Primer borrador de cada post en 15 min con plantilla. Edición humana de 45 min/post para añadir caso real y tono propio. Coste: 0€ de freelance + 30h propias. Tiempo: 2 semanas. Calidad: consistente porque el editor humano controla todo.",
+      why: "<strong>Por qué funciona:</strong> Claude no reemplaza al editor humano, le quita el 70% del trabajo de partida en blanco. La voz de marca, los casos reales y el matiz seguen siendo del marketer."
+    },
+    {
+      title: "Programador refactorizando legacy code",
+      context: "Backend dev senior. Heredó un servicio en Python 3.6 de 12.000 líneas, sin tests, con funciones de 300+ líneas. Tiene que migrar a Python 3.11 y añadir cobertura.",
+      bad: "Antes (sin Claude): Leer función, entenderla, escribir tests retroactivos, refactorizar, probar manualmente. Estimación: 6-8 semanas a tiempo completo. Riesgo: introducir bugs durante el refactor.",
+      good: "Con Claude (modo agente con acceso al repo): pega función legacy, pide tests primero contra el comportamiento actual, luego refactor incremental. Claude propone partición en clases, dev valida arquitectura, ejecuta tests entre cambios. Tiempo real: 3 semanas. Cobertura final: 78%.",
+      why: "<strong>Por qué funciona:</strong> el dev mantiene control de las decisiones arquitectónicas. Claude se come la parte tediosa (escribir tests, separar funciones grandes, sugerir naming). El humano valida cada paso."
+    },
+    {
+      title: "RRHH revisando 200 CVs",
+      context: "Recruiter en una scale-up. Vacante de Senior Data Engineer. 200 CVs recibidos en 5 días. Tiene que hacer shortlist de 15 para entrevistas técnicas esta semana.",
+      bad: "Antes (sin Claude): 3-5 min por CV × 200 = 10-15h de lectura. Sesgo de fatiga: los últimos 80 reciben menos atención. Riesgo de descartar buenos perfiles por palabras clave que no están en negrita.",
+      good: "Con Claude: pasa el job description + criterios explícitos (years exp en Spark, cloud preferred, sector fintech un plus). Claude clasifica los 200 en 4 grupos con justificación de 2 líneas por CV. Recruiter revisa solo los 'top fit' y 'dudosos' (60 CVs ~ 3h). Decisión final SIEMPRE humana.",
+      why: "<strong>Por qué funciona:</strong> reduce 200 a 60 sin perder candidatos relevantes (porque los criterios están explícitos). El humano sigue decidiendo. Ojo: requiere revisar sesgos del propio criterio (Claude amplifica lo que pidas)."
+    },
+    {
+      title: "Customer Support de fin de semana",
+      context: "Equipo de soporte de 4 personas. Lunes a las 9:00 hay 180 tickets acumulados del finde. Mezcla de bugs reales, dudas básicas y quejas. SLA en peligro.",
+      bad: "Antes (sin Claude): triage manual del ticket, asignación, respuesta. 8-12 min por ticket de baja complejidad × 120 tickets simples = 16h del equipo solo en lo trivial. Los bugs reales esperan.",
+      good: "Con Claude (en el ticketing): clasifica automáticamente por categoría y severity, redacta borrador de respuesta para los Tier 1 (90% de los simples), marca los Tier 2/3 para humano. El agente humano revisa el borrador y envía. Tiempo medio Tier 1: 90 segundos. El equipo se enfoca en los 60 tickets que sí requieren cabeza.",
+      why: "<strong>Por qué funciona:</strong> Claude no responde al cliente directamente sin supervisión (cuidado con eso, ver caso Air Canada chatbot). Es asistente del agente humano, no su reemplazo. El humano firma siempre."
+    },
+    {
+      title: "Founder validando una hipótesis financiera",
+      context: "Founder solo (no técnico, no CFO). Quiere subir el pricing de 49€ a 79€/mes. No sabe si tiene sentido. No tiene tiempo de un consultor.",
+      bad: "Antes (sin Claude): bajar a Excel, pelearse 3h con fórmulas, dudar de los supuestos, posponer la decisión otra semana. O peor: decidir por intuición.",
+      good: "Con Claude: pega métricas actuales (MRR, CAC, LTV, churn, ARPU). Pide modelo con 3 escenarios de subida de precio (+30%, +60%, +90%) y churn estimado para cada uno, basado en benchmarks del sector SaaS. Output: tabla + 5 supuestos críticos + qué métricas vigilar las primeras 4 semanas. Tiempo: 25 min. Decisión: subir a 69€ con grandfathering.",
+      why: "<strong>Por qué funciona:</strong> Claude no toma la decisión, estructura el pensamiento. Los supuestos son explícitos, así que el founder puede cuestionarlos. El modelo es un primer borrador, no un evangelio."
+    },
+    {
+      title: "Profesora diseñando un curso de bootcamp",
+      context: "Formadora freelance. Le encargan un curso de 'introducción a Python para no-programadores' de 16 horas. Tiene que tenerlo listo en 3 semanas con material, ejercicios y evaluación.",
+      bad: "Antes (sin Claude): buscar referencias de otros cursos, hacer outline a mano, escribir cada lección, inventar ejercicios desde cero, montar evaluación. ~80h de trabajo. Material inconsistente entre lecciones.",
+      good: "Con Claude: define objetivos pedagógicos (Bloom: comprender → aplicar → analizar). Outline de 8 módulos × 2h en una sesión. Por cada módulo: contenido teórico + 3 ejercicios progresivos + 1 mini-proyecto. Genera también la rúbrica de evaluación. Total: ~30h de trabajo (60% diseño humano, 40% generación Claude + edición). Material consistente.",
+      why: "<strong>Por qué funciona:</strong> el diseño pedagógico (qué enseñar y por qué) sigue siendo de la profesora. Claude acelera la producción del material y mantiene consistencia entre módulos (algo que cuesta cuando trabajas solo)."
+    }
+  ],
+
+  ejercicios: [
+    {
+      title: "Aplica UN caso de uso a tu trabajo de esta semana",
+      task: "Mira los 10 conceptos de la pestaña Conceptos. Elige UNO que sea relevante para algo que tengas que hacer esta semana. Describe:\n\n1) Qué tarea concreta tienes pendiente\n2) Cuánto tiempo te llevaría hacerla 'a mano' (estimación honesta)\n3) Cómo aplicarías el caso de uso de Claude\n4) Qué parte del trabajo NO delegarías a Claude y por qué",
+      solution: "Ejemplo (marketer):\n\n1) Tarea: escribir 8 descripciones de producto nuevas para el catálogo de Q4. Cada una con SEO básico y tono de marca.\n2) Tiempo a mano: ~6h (45 min por producto entre research, redacción y revisión).\n3) Aplicación con Claude: caso 'Generación de contenido SEO'. Le paso ficha técnica + keyword objetivo + 2 ejemplos de descripciones existentes que me gustan (para tono). Pido 8 descripciones en formato H1 + bullet de features + párrafo de beneficios + meta description. Tiempo estimado: 2h totales (1h Claude + 1h edición humana).\n4) NO delego: la decisión de qué producto destacar, las claims regulatorias (cosmética = ojo con afirmaciones de salud), la voz de marca en frases clave del hero. Eso lo escribo yo después de tener el borrador.",
+      rubric: [
+        "Elegir un caso de uso REAL de tu semana, no uno hipotético",
+        "Estimar tiempo honesto de la versión 'a mano' (sin Claude)",
+        "Describir aplicación concreta: qué inputs, qué outputs, qué formato",
+        "Identificar qué NO delegar (sesgo, voz, decisiones críticas, compliance)",
+        "Quedarte con un proceso reproducible para la próxima vez"
+      ]
+    },
+    {
+      title: "Calcula el ROI de tiempo de un caso de uso recurrente",
+      task: "Piensa en una tarea que hagas a menudo (al menos una vez a la semana). Calcula:\n\n1) Cuánto tiempo te lleva ahora cada vez (en minutos)\n2) Cuántas veces a la semana / mes la haces\n3) Estimación de tiempo con Claude (sé conservador: incluye el tiempo de escribir el prompt y editar el output)\n4) Ahorro mensual en horas\n5) En qué vas a invertir ese tiempo ahorrado (sin esto, el ahorro se evapora)",
+      solution: "Ejemplo (CX manager):\n\n1) Tarea: resumir tickets de soporte de la semana para reporte interno. 90 min cada vez.\n2) Frecuencia: 1 vez/semana = 4 al mes.\n3) Con Claude: pego los tickets en un prompt estructurado (caso 'Análisis de feedback'). Estimación: 25 min total (10 min preparar input + 5 min Claude + 10 min editar/validar).\n4) Ahorro: (90 - 25) × 4 = 260 min/mes = 4,3h/mes.\n5) Inversión: dedicar esa hora-y-pico a contactar 5 clientes del último mes para entrevistas cualitativas. Eso sí mueve la aguja.",
+      rubric: [
+        "Tarea real y recurrente (no algo que solo hiciste una vez)",
+        "Estimación conservadora del tiempo con Claude (no caer en el 'todo lo hago en 5 min')",
+        "Incluir el coste de preparar input y editar output, no solo el tiempo de Claude",
+        "Definir qué harás con el tiempo ahorrado (si no, se pierde)",
+        "Si el ahorro es < 30 min/semana, quizá ese caso no merece la pena automatizar"
+      ]
+    },
+    {
+      title: "Identifica un caso donde Claude NO debe entrar",
+      task: "Lista 1 tarea de tu trabajo donde, aunque podrías técnicamente usar Claude, NO deberías. Explica:\n\n1) Cuál es la tarea\n2) Por qué Claude técnicamente podría ayudar\n3) Por qué NO deberías delegarla (riesgo, compliance, ética, valor único humano)\n4) Dónde está la línea: ¿puede Claude ayudar EN PARTE de esa tarea sin cruzar la línea?",
+      solution: "Ejemplo (terapeuta):\n\n1) Tarea: redactar la nota clínica de una sesión con un paciente con ideación suicida.\n2) Podría: Claude redacta notas clínicas técnicamente bien estructuradas y con jerga adecuada.\n3) No debería: (a) confidencialidad (datos clínicos sensibles que NO deben salir de mi sistema seguro), (b) responsabilidad profesional indelegable, (c) el matiz subjetivo de mi observación clínica es parte del valor del registro, (d) en caso de revisión legal o ética, el registro debe reflejar MI juicio, no el de un LLM.\n4) Línea: puedo usar Claude para mejorar PLANTILLAS de notas clínicas (sin datos de paciente), para repasar TERMINOLOGÍA del DSM-5, o para preparar PSICOEDUCACIÓN para entregar al paciente. La nota concreta de la sesión específica, no.",
+      rubric: [
+        "Tarea donde la responsabilidad profesional es indelegable (médico, legal, financiero asesor)",
+        "Tarea donde hay datos confidenciales que no deben salir de tu sistema",
+        "Tarea donde el valor único es tu juicio humano (no la velocidad)",
+        "Identificar la línea: qué partes SÍ son delegables aunque la tarea entera no",
+        "Tener este principio claro ANTES de empezar a usar Claude en tu sector"
+      ]
+    },
+    {
+      title: "Diseña tu propio system prompt para un caso recurrente",
+      task: "Toma un caso de uso de tu profesión que harás muchas veces (ej: clasificar leads, escribir emails de seguimiento, revisar código de juniors). Diseña el system prompt que vas a guardar y reutilizar:\n\n- Rol (qué experto encarna Claude)\n- Reglas de comportamiento (qué SIEMPRE hace, qué NUNCA hace)\n- Formato de entrada (qué le pasarás cada vez)\n- Formato de salida (qué devuelve)\n- Edge cases (qué hace si falta información, si hay ambigüedad)",
+      solution: "Ejemplo (sales manager, clasificación de leads):\n\nROL: Eres un SDR senior con 8 años en B2B SaaS, especializado en cualificación de leads MEDDIC.\n\nREGLAS:\n- Clasifica cada lead en 4 categorías: HOT, WARM, COLD, NO-FIT.\n- Si falta info crítica (presupuesto, decisor, timing), no asumas: marca como 'INSUFICIENTE_INFO' y especifica qué falta.\n- NUNCA inventes datos del lead. Si una pregunta no se contestó, dilo.\n- No hagas recomendaciones de pricing (eso lo decide el AE).\n\nINPUT: pegaré el formulario completado por el lead + transcript de la discovery call (si hay).\n\nOUTPUT (JSON):\n{\n  \"categoria\": \"HOT|WARM|COLD|NO-FIT|INSUFICIENTE_INFO\",\n  \"score_meddic\": { \"M\": 0-5, \"E\": 0-5, \"D\": 0-5, \"D2\": 0-5, \"I\": 0-5, \"C\": 0-5 },\n  \"justificacion\": \"3 líneas máx\",\n  \"siguiente_accion\": \"propuesta concreta para el SDR\",\n  \"red_flags\": [\"lista de señales de alarma si las hay\"]\n}\n\nEDGE CASES:\n- Lead que pide solo info de pricing sin más contexto → COLD + sugerir secuencia de nurturing.\n- Empresa muy grande pero contacto júnior → WARM + sugerir mapeo de stakeholders.",
+      rubric: [
+        "Rol específico de tu sector (no genérico tipo 'asistente útil')",
+        "Reglas explícitas de qué NUNCA hacer (más importantes que las de qué hacer)",
+        "Formato de salida estructurado (JSON, tabla, formato fijo) para que sea procesable",
+        "Edge cases pensados: qué hacer cuando falta información o hay ambigüedad",
+        "Guardable y reutilizable: copia y pega cada vez que tengas un nuevo input"
+      ]
+    },
+    {
+      title: "Mide el resultado real durante 5 días",
+      task: "Elige UN caso de uso de los 10 conceptos. Aplícalo a tu trabajo durante 5 días laborables seguidos. Cada día, anota:\n\n- Qué hiciste exactamente\n- Tiempo real (cronómetro, no estimación)\n- Calidad del output (en una escala 1-5, comparando con tu output habitual sin Claude)\n- Una cosa que aprendiste sobre cómo prompteas mejor\n\nAl final de los 5 días, decisión: ¿integro este caso en mi workflow permanente, lo afino, o lo descarto?",
+      solution: "Ejemplo (legal in-house, resumen de contratos):\n\nDía 1: NDA con proveedor cloud. 22 min (vs 45 habituales). Calidad: 3/5 (Claude marcó dos cláusulas, yo encontré una tercera que no vio). Aprendizaje: tengo que pedirle expresamente que liste TODAS las cláusulas de jurisdicción y duración.\n\nDía 2: MSA con cliente enterprise. 35 min (vs 60). Calidad: 4/5 con el prompt mejorado del día 1. Aprendizaje: dándole nuestros 'red flags estándar' previos al contrato, rinde mucho mejor.\n\nDía 3: Adenda a contrato existente. 8 min (vs 20). Calidad: 5/5. Aprendizaje: las tareas comparativas (comparar dos versiones) son su punto fuerte.\n\nDía 4: NDA bilateral. 18 min (vs 30). Calidad: 4/5. Aprendizaje: cuando hay obligaciones simétricas, pedirle explícitamente que las contraste lado a lado.\n\nDía 5: Contrato de servicios SaaS. 50 min (vs 90). Calidad: 4/5. Más complejo, pero el patrón se mantiene.\n\nDecisión: integrar. Workflow: Claude hace el primer pase con mi prompt guardado, yo reviso con foco en lo que marcó. Ahorro semanal estimado: 3h.",
+      rubric: [
+        "Medir tiempo real con cronómetro, no a ojo",
+        "Calidad evaluada con un criterio explícito (no solo 'me gusta')",
+        "Aprendizaje sobre prompts: iteras el prompt entre día y día, no usas siempre el mismo",
+        "Decisión clara al final: integro / afino / descarto (no 'a ver si sigo probando')",
+        "Si decides integrar: define el workflow exacto (prompt guardado, qué revisas tú)"
+      ]
+    }
+  ],
+
+  prompts: [
+    {
+      tag: "Marketing",
+      title: "Cluster de contenido SEO",
+      desc: "Para generar la arquitectura de un cluster de posts alrededor de una keyword pilar.",
+      text: "Actúa como estratega de contenido SEO B2B con experiencia en [SECTOR].\n\nKeyword pilar: [KEYWORD PRINCIPAL]\nPúblico: [PERFIL DEL LECTOR Y DÓNDE ESTÁ EN EL FUNNEL]\nObjetivo de negocio: [LEADS / TRÁFICO / AUTORIDAD]\n\nGenera un cluster de 10 posts con:\n- Post pilar (1) + posts de apoyo (9)\n- Para cada uno: título H1, intent de búsqueda (informacional/comercial/transaccional), 3 keywords secundarias, meta description (150-160 caracteres), 3 enlaces internos sugeridos al resto del cluster.\n\nFormato: tabla. Evita keywords sobreoptimizadas (densidad de 2010) y títulos clickbait."
+    },
+    {
+      tag: "Marketing",
+      title: "Email marketing por segmento",
+      desc: "Para crear variantes de un mismo email adaptadas a 3 momentos del funnel.",
+      text: "Email para [PRODUCTO/OFERTA]. Genera 3 variantes según segmento:\n\nSegmento A — FRÍO (nunca compró): foco en problema + social proof.\nSegmento B — TIBIO (compró 1 vez, hace 3+ meses): foco en novedad + razón para volver.\nSegmento C — ABANDONADO (carrito sin comprar, < 7 días): foco en urgencia + reducción de fricción.\n\nPara cada variante:\n- 3 opciones de asunto (máx 50 caracteres)\n- Cuerpo (máx 120 palabras)\n- CTA explícito (verbo + qué consigue al pulsar)\n\nTono: [TU TONO DE MARCA]. No usar 'click aquí', no usar 'no te lo pierdas', no usar emojis a no ser que te lo indique."
+    },
+    {
+      tag: "Datos",
+      title: "Análisis de feedback de clientes",
+      desc: "Para procesar reseñas o tickets y sacar patrones accionables, no solo descriptivos.",
+      text: "Te paso [NÚMERO] reseñas/tickets de [PRODUCTO/SERVICIO] del periodo [FECHAS].\n\nAnalízalas y devuelve:\n\n1) Top 5 quejas más frecuentes (con frecuencia absoluta y % del total).\n2) Top 3 elogios más frecuentes.\n3) Sentiment global: % positivo / neutro / negativo.\n4) 5 temas emergentes que aparecen poco pero pueden crecer (red flags tempranos).\n5) 3 acciones priorizadas por impacto estimado, no por facilidad. Para cada una: descripción, qué área de la empresa la ejecuta, qué métrica esperaríamos mover.\n\nNo me des 'mejorar la experiencia del cliente'. Quiero acciones concretas como 'rediseñar el flujo de cancelación porque 18% de tickets lo mencionan'.\n\nReseñas:\n\"\"\"\n[PEGA RESEÑAS]\n\"\"\""
+    },
+    {
+      tag: "Programación",
+      title: "Refactor de función legacy con tests primero",
+      desc: "Para refactorizar código viejo sin romper funcionalidad. Tests antes de tocar nada.",
+      text: "Te paso una función legacy en [LENGUAJE]. Antes de refactorizar, escribe los tests unitarios que cubran su comportamiento ACTUAL (incluso si es raro o tiene bugs evidentes — los corregimos después, no en el refactor).\n\nProceso:\n1) Lee la función. Lista en 3 líneas qué hace (incluyendo efectos colaterales y edge cases).\n2) Escribe 8-12 tests que cubran: caso feliz, edge cases, valores nulos/vacíos, errores esperados, casos límite.\n3) Solo DESPUÉS de los tests, propón un refactor en pasos pequeños (no un rewrite completo). Cada paso debe mantener los tests verdes.\n4) Identifica los 2-3 bugs que detectaste durante el análisis pero NO los arregles aún: lístalos como issues separados.\n\nFunción:\n```\n[PEGA CÓDIGO]\n```"
+    },
+    {
+      tag: "Programación",
+      title: "Code review crítica",
+      desc: "Para que Claude revise un PR como lo haría un senior exigente.",
+      text: "Eres un staff engineer haciendo code review de un PR de un dev mid-level. Lenguaje: [LENGUAJE]. Contexto del proyecto: [SECTOR + CARACTERÍSTICAS RELEVANTES, ej: 'fintech, latencia crítica, código auditado'].\n\nRevisa el siguiente diff. Para cada issue, marca:\n- Severity: BLOCKER / MAJOR / MINOR / NIT\n- Línea exacta\n- Por qué es un problema\n- Sugerencia de fix (con código si aplica)\n\nFoco prioritario en este orden:\n1) Bugs y race conditions\n2) Seguridad (inyección, secretos, validación de input)\n3) Performance (loops innecesarios, allocs en hot path)\n4) Mantenibilidad (naming, complejidad ciclomática, separación de concerns)\n5) Estilo (lo último)\n\nNo seas amable: si el PR debería rechazarse, dilo. Si está bien, di qué tiene de bueno.\n\nDiff:\n```\n[PEGA DIFF]\n```"
+    },
+    {
+      tag: "Soporte",
+      title: "Borrador de respuesta a ticket de soporte",
+      desc: "Para que Claude prepare un primer draft que el agente humano revisa antes de enviar.",
+      text: "Actúa como agente de soporte senior de [PRODUCTO].\n\nTicket del cliente:\n\"\"\"\n[PEGA TICKET]\n\"\"\"\n\nContexto interno (no compartir con cliente):\n[HISTORIAL DEL CLIENTE, ESTADO ACTUAL DE LA CUENTA, INCIDENCIAS CONOCIDAS]\n\nGenera:\n1) Clasificación del ticket: categoría + severity (1-4) + estimación de complejidad (Tier 1/2/3).\n2) Borrador de respuesta al cliente:\n   - Reconocimiento de su situación (sin paternalismo)\n   - Causa probable (si la sabemos) o pasos para diagnosticar\n   - Acción concreta de nuestro lado o pasos para él\n   - Timing realista\n   - Cierre profesional sin 'sentimos las molestias' genéricos\n3) 2 preguntas internas que debería hacerme al cliente si la causa no está clara.\n\nEl borrador lo revisa siempre un humano antes de enviar. Nada de promesas sin verificar."
+    },
+    {
+      tag: "RRHH",
+      title: "Screening preliminar de CVs",
+      desc: "Para clasificar candidaturas contra criterios objetivos. La decisión final es siempre humana.",
+      text: "Actúa como recruiter senior técnico. Te paso un job description y un CV. Evalúa el fit contra los criterios SOLO basándote en lo que dice el CV (no inventes).\n\nJob description:\n\"\"\"\n[PEGA JD]\n\"\"\"\n\nCriterios MUST-HAVE (no negociables):\n- [CRITERIO 1]\n- [CRITERIO 2]\n- [CRITERIO 3]\n\nCriterios NICE-TO-HAVE:\n- [CRITERIO]\n- [CRITERIO]\n\nCV:\n\"\"\"\n[PEGA CV]\n\"\"\"\n\nDevuelve:\n1) Cumplimiento de must-haves: tabla con cada criterio + sí/no/parcial + evidencia del CV (cita literal).\n2) Cobertura de nice-to-haves: lista con sí/no.\n3) Categoría: TOP_FIT / FIT_PARCIAL / NO_FIT / INFO_INSUFICIENTE.\n4) 3 preguntas que haría en una primera screening call para validar puntos dudosos.\n5) Red flags si los hay (gaps no explicados, exageraciones evidentes, etc.) — pero NO descartar por sesgos prohibidos (edad, género, origen, fotos, nombres).\n\nLa decisión de avanzar o no es del recruiter humano, no tuya."
+    },
+    {
+      tag: "Legal",
+      title: "Primer pase de revisión de contrato",
+      desc: "Para detectar cláusulas inusuales o riesgos antes de la revisión legal a fondo. NO reemplaza al abogado.",
+      text: "Eres un asistente de revisión contractual. NO eres abogado y este análisis es solo un primer pase, no asesoramiento legal vinculante.\n\nContrato adjunto: [TIPO DE CONTRATO, ej: NDA / MSA / contrato de servicios]\nPosición de mi parte: [COMPRADOR / VENDEDOR / PROVEEDOR / CLIENTE]\nJurisdicción esperada: [PAÍS / REGIÓN]\n\nAnaliza y devuelve:\n\n1) Resumen del contrato en 5 líneas (qué obliga a cada parte).\n2) Cláusulas críticas, citadas literalmente, agrupadas en:\n   - Duración y terminación\n   - Confidencialidad\n   - Limitación de responsabilidad e indemnización\n   - Jurisdicción y ley aplicable\n   - Cláusulas inusuales o ambiguas\n3) Riesgos detectados, ordenados por gravedad. Para cada uno: cita la cláusula, explica el riesgo, sugiere redacción alternativa.\n4) 5 preguntas que debería hacer al abogado antes de firmar.\n\nContrato:\n\"\"\"\n[PEGA CONTRATO]\n\"\"\""
+    },
+    {
+      tag: "Finanzas",
+      title: "Modelo financiero rápido con sensibilidad",
+      desc: "Para validar una hipótesis de negocio con 3 escenarios y supuestos explícitos.",
+      text: "Actúa como analista financiero. Quiero validar la hipótesis de [HIPÓTESIS, ej: 'subir el precio un 40% no va a hacer perder más del 15% de clientes'].\n\nDatos actuales:\n- MRR / ARR: [CIFRA]\n- CAC: [CIFRA]\n- LTV: [CIFRA]\n- Churn mensual: [%]\n- ARPU: [CIFRA]\n- Margen bruto: [%]\n\nGenera un modelo con 3 escenarios (conservador / base / optimista) a 12 meses. Para cada uno:\n\n1) Supuestos explícitos (mínimo 5 por escenario, ej: 'churn sube 3pp por el cambio de precio').\n2) Tabla mes a mes con: nuevos clientes, churn, MRR final, ingresos del mes.\n3) Métrica clave a vigilar (ej: 'si en mes 2 el churn supera X, abortar').\n4) Break-even del cambio (mes en el que el escenario base supera al status quo).\n\nAl final:\n- Recomendación binaria: ¿lanzar el cambio o no?\n- Las 3 cosas que NO sé y que debería investigar antes de decidir.\n\nNo me des la respuesta segura. Dime cómo de incierto es el modelo."
+    },
+    {
+      tag: "Producto",
+      title: "Brainstorming de features con criterios diversos",
+      desc: "Para evitar 10 versiones de la misma idea. Diversidad real, no apariencia de diversidad.",
+      text: "Producto: [DESCRIBE PRODUCTO EN 2 LÍNEAS].\nUsuario target: [PERFIL].\nProblema a resolver con la v[NÚMERO]: [PROBLEMA CONCRETO].\nRestricciones: [TIEMPO, EQUIPO, STACK].\n\nGenera 15 ideas de features, pero NO 15 variantes parecidas. Estructura:\n\n1-3: lo obvio bien hecho (lo que cualquier competidor ofrecería).\n4-6: lateral / inesperado (resolver el mismo problema con un ángulo distinto).\n7-9: contracorriente (lo que la mayoría descartaría como 'no vale la pena').\n10-12: 10x ambicioso (si tuviéramos 10x recursos).\n13-15: 'no-feature' (qué quitar / simplificar para resolver el mismo problema).\n\nPara cada idea:\n- Nombre + 1 línea\n- Job-to-be-done que resuelve\n- Esfuerzo estimado: S / M / L / XL\n- Argumento contrario más fuerte (por qué NO hacerla)\n\nNo me digas 'depende de las prioridades'. Quiero diversidad real."
+    },
+    {
+      tag: "Educación",
+      title: "Diseño de módulo formativo con objetivos Bloom",
+      desc: "Para diseñar un módulo de curso con estructura pedagógica seria, no improvisada.",
+      text: "Diseña un módulo formativo de [DURACIÓN] sobre [TEMA] para [PERFIL DE ESTUDIANTE].\n\nNivel actual del estudiante: [PRINCIPIANTE / INTERMEDIO / AVANZADO].\nNivel objetivo al terminar: [QUÉ DEBE PODER HACER EL ESTUDIANTE].\n\nUsa la taxonomía de Bloom para los objetivos. Devuelve:\n\n1) 3-5 objetivos de aprendizaje (con verbo Bloom explícito: identificar / aplicar / analizar / evaluar / crear).\n2) Outline del módulo: secciones, duración estimada, contenido clave de cada una.\n3) Por cada sección: 1 ejercicio práctico (con enunciado completo + solución modelo + rúbrica).\n4) Evaluación final: 5 preguntas (mezcla de opción múltiple y aplicación). Especifica qué objetivo de aprendizaje mide cada pregunta.\n5) Material complementario sugerido: 3 recursos externos reales (libros, artículos, vídeos).\n\nTono: directo, sin paja académica. Asume que el estudiante tiene 20 min de atención antes de querer hacer algo con las manos."
+    },
+    {
+      tag: "Traducción",
+      title: "Traducción técnica con glosario consistente",
+      desc: "Para traducir documentación manteniendo terminología consistente y registro técnico.",
+      text: "Traduce el siguiente texto de [IDIOMA ORIGEN] a [IDIOMA DESTINO].\n\nTipo de texto: [DOC TÉCNICA / MANUAL / UI / CONTRATO / WHITEPAPER].\nSector: [SECTOR].\nPúblico: [PERFIL TÉCNICO DEL LECTOR].\nRegistro: [FORMAL / NEUTRO / CERCANO].\n\nGlosario obligatorio (siempre traducir así):\n[TÉRMINO 1] → [TRADUCCIÓN 1]\n[TÉRMINO 2] → [TRADUCCIÓN 2]\n[TÉRMINO 3] → [TRADUCCIÓN 3]\n\nTérminos a NO traducir (dejar en inglés): [LISTA]\n\nReglas:\n- No traducir literalmente: prioriza que suene nativo en el idioma destino.\n- Mantén el formato exacto (Markdown, tablas, code blocks).\n- Cuando una decisión sea no obvia, márcala con [⚠] al final y explica al final del documento.\n\nTexto:\n\"\"\"\n[PEGA TEXTO]\n\"\"\"\n\nAl final del output, lista las 3-5 decisiones de traducción más relevantes y por qué."
+    }
+  ],
+
+  quiz: [
+    {
+      q: "Eres recruiter. Tienes 200 CVs para filtrar. ¿Cuál es la forma correcta de usar Claude?",
+      opts: [
+        "Que Claude descarte automáticamente los 'no aptos' y solo me muestre los buenos",
+        "Que Claude clasifique con criterios explícitos y yo decida quién avanza",
+        "No usar Claude: revisión de CVs es una decisión 100% humana sin ayuda posible",
+        "Subir los CVs a Claude y que me diga el mejor candidato directamente"
+      ],
+      correct: 1,
+      fb: "Claude asiste con clasificación contra criterios explícitos, pero la decisión de avanzar es humana. Delegar el descarte total tiene riesgo legal (sesgos amplificados) y ético. Tampoco es 'no usarlo': reduces 200 a 60 sin perder señales si haces bien el prompt."
+    },
+    {
+      q: "Estás resumiendo un contrato laboral importante antes de firmarlo. ¿Qué papel debe tener Claude?",
+      opts: [
+        "Reemplaza al abogado: te dice qué cláusulas son legales y cuáles no",
+        "Hace un primer pase para identificar cláusulas inusuales, pero la revisión final es de un abogado",
+        "No sirve para nada legal, Claude no debe tocar contratos",
+        "Te dice exactamente si debes firmar o no"
+      ],
+      correct: 1,
+      fb: "Claude es excelente como primer filtro: detecta cláusulas raras, jurisdicciones extrañas, duraciones excesivas. Pero NO es asesoramiento legal vinculante. Para algo que firmas, siempre revisión humana cualificada."
+    },
+    {
+      q: "Customer Support recibe 180 tickets el lunes por la mañana. ¿Cuál es el mejor uso de Claude?",
+      opts: [
+        "Claude responde directamente al cliente sin supervisión humana",
+        "Claude clasifica + redacta borrador, el agente humano revisa y firma cada respuesta",
+        "Claude se usa solo para tickets de 'gracias' o saludos",
+        "Mejor no usar Claude en soporte: es muy arriesgado"
+      ],
+      correct: 1,
+      fb: "El sweet spot: Claude reduce el trabajo del agente (clasifica, redacta primer borrador) pero el agente revisa y envía. Responder al cliente directamente sin humano puede salir mal (caso Air Canada chatbot, condenado a cumplir lo prometido por su bot)."
+    },
+    {
+      q: "Founder no técnico quiere validar una hipótesis de pricing. ¿Es buen caso de uso para Claude?",
+      opts: [
+        "Sí, pero solo si Claude tiene los datos reales de la empresa y los supuestos son explícitos",
+        "No, las decisiones financieras requieren siempre un CFO contratado",
+        "Sí, Claude decide el precio óptimo basándose en datos del sector",
+        "No, Claude no entiende de finanzas"
+      ],
+      correct: 0,
+      fb: "Claude es excelente para estructurar el pensamiento financiero: 3 escenarios, supuestos explícitos, métricas a vigilar. NO toma la decisión por ti. Y los supuestos deben ser cuestionables: el modelo es un primer borrador, no un evangelio."
+    },
+    {
+      q: "¿En cuál de estos casos NO deberías usar Claude?",
+      opts: [
+        "Generar 30 descripciones de producto para un ecommerce",
+        "Resumir 800 reseñas de clientes del último trimestre",
+        "Redactar la nota clínica de una sesión de terapia con un paciente específico",
+        "Hacer brainstorming de nombres para un producto"
+      ],
+      correct: 2,
+      fb: "Nota clínica de un paciente concreto: (1) confidencialidad de datos sensibles, (2) responsabilidad profesional indelegable, (3) tu juicio clínico es parte del valor del registro. Puedes usar Claude para plantillas o psicoeducación, pero NO para el registro de la sesión específica."
+    },
+    {
+      q: "Un programador quiere usar Claude para refactorizar código legacy. ¿Cuál es el orden correcto?",
+      opts: [
+        "Pedir el refactor directamente, sin más",
+        "Pedir tests del comportamiento ACTUAL primero, luego refactor incremental verificando los tests entre cambios",
+        "Pedir un rewrite completo desde cero",
+        "Solo pedir comentarios al código antiguo, no tocarlo"
+      ],
+      correct: 1,
+      fb: "Tests primero contra el comportamiento actual (incluyendo bugs). Luego refactor en pasos pequeños manteniendo tests verdes. Es el patrón seguro: si rompes algo, el test te avisa. Pedir un 'rewrite completo' es la receta del desastre."
+    },
+    {
+      q: "Profesora freelance diseña un curso de 16h. ¿Qué parte del trabajo NO debe delegar a Claude?",
+      opts: [
+        "La estructura de módulos y duración de cada uno",
+        "El diseño pedagógico: qué objetivos de aprendizaje persigue el curso y por qué",
+        "Generación de ejercicios prácticos progresivos",
+        "Borrador de material teórico de cada módulo"
+      ],
+      correct: 1,
+      fb: "El qué y el por qué pedagógico son la huella del docente. Eso depende de su conocimiento del público y de la materia. Claude acelera la producción (outline, ejercicios, material) pero el diseño curricular es humano."
+    },
+    {
+      q: "Tu equipo de soporte va a usar Claude para clasificar tickets. ¿Cuál es la métrica más importante a vigilar las primeras semanas?",
+      opts: [
+        "Velocidad de respuesta (cuántos tickets/hora)",
+        "Tasa de error en clasificación + NPS del cliente",
+        "Coste de tokens consumidos",
+        "Número de palabras por respuesta"
+      ],
+      correct: 1,
+      fb: "Velocidad sin calidad es un desastre. Mira tasa de clasificación incorrecta (un % bajo de tickets mal categorizados) Y el NPS del cliente. Si la velocidad sube pero el NPS cae, has empeorado el servicio, no automatizado."
+    },
+    {
+      q: "Marketer va a producir 30 posts SEO con Claude. ¿Cuál es la trampa más común?",
+      opts: [
+        "Que Claude no entiende SEO",
+        "Que el contenido sale plano y todos los posts suenan igual, sin voz de marca ni casos reales",
+        "Que es ilegal usar Claude para SEO",
+        "Que Google penaliza cualquier contenido generado por IA automáticamente"
+      ],
+      correct: 1,
+      fb: "El riesgo real es contenido genérico sin voz ni casos propios. Google penaliza contenido sin valor añadido, sea humano o IA. La solución: usar Claude para outline y primer draft, pero el editor humano añade voz, casos reales, datos propios. Sin ese paso, el contenido es mediocre."
+    },
+    {
+      q: "¿Cuál es la mejor forma de saber si un caso de uso de Claude merece la pena en tu trabajo?",
+      opts: [
+        "Confiar en que 'siempre ahorra tiempo'",
+        "Medir tiempo real y calidad durante varios días, comparando con tu workflow sin Claude",
+        "Preguntarle a Claude si vale la pena usarlo",
+        "Usarlo solo en lo que ya hace todo el mundo en tu sector"
+      ],
+      correct: 1,
+      fb: "Métrica honesta de tiempo real + calidad comparada con tu output habitual durante al menos 5 días. Si el ahorro es < 30 min/semana o la calidad cae, ese caso no merece la pena. Mejor saberlo pronto que automatizar lo que no toca."
+    }
+  ],
+
+  glosario: [
+    { t: "ARPU", d: "Average Revenue Per User. Ingreso medio por usuario en un periodo. Métrica básica para entender el valor económico de cada cliente." },
+    { t: "B2B / B2C", d: "Business-to-Business (vendes a empresas) vs Business-to-Consumer (vendes a personas). Cambian completamente el ciclo de venta y el tono de marketing." },
+    { t: "CAC", d: "Customer Acquisition Cost. Lo que cuesta conseguir un cliente nuevo (suma de marketing + ventas dividido entre clientes captados). Sin esto, no hay decisión de inversión sensata." },
+    { t: "Churn", d: "Porcentaje de clientes que cancelan en un periodo. Métrica crítica en SaaS: un churn alto se come cualquier captación nueva." },
+    { t: "Funnel", d: "Embudo de conversión: las etapas por las que pasa un lead hasta ser cliente (awareness → interest → consideration → decision). Vital para ubicar dónde se pierde gente." },
+    { t: "ICP", d: "Ideal Customer Profile. Descripción del cliente ideal (tamaño empresa, sector, cargo, dolor). Vender a quien NO es tu ICP es quemar recursos." },
+    { t: "Job-to-be-done", d: "Marco que pregunta no qué producto compra el cliente, sino qué 'tarea' está contratando al producto para resolver. Útil en design de features." },
+    { t: "JTBD", d: "Abreviatura de Job-to-be-done. Verás las dos formas usadas indistintamente en producto y marketing." },
+    { t: "Lead", d: "Persona o empresa que ha mostrado interés y dejado datos. Se cualifica (HOT/WARM/COLD) antes de pasarlo a ventas." },
+    { t: "LTV", d: "Lifetime Value. Cuánto dinero te deja un cliente durante toda su vida útil. La relación LTV/CAC dice si tu negocio es viable (sano >3:1)." },
+    { t: "MEDDIC", d: "Framework de cualificación de leads B2B: Metrics, Economic buyer, Decision criteria, Decision process, Identify pain, Champion. Estándar en SaaS enterprise." },
+    { t: "MRR / ARR", d: "Monthly / Annual Recurring Revenue. Ingreso recurrente al mes o año. La métrica madre de cualquier negocio de suscripción." },
+    { t: "MVP", d: "Minimum Viable Product. La versión más simple del producto que sirve para validar la hipótesis de negocio. No es 'producto a medias': es 'producto enfocado'." },
+    { t: "NPS", d: "Net Promoter Score. Métrica de lealtad del cliente: '¿en una escala de 0-10, recomendarías el producto?'. Promotores menos detractores." },
+    { t: "Pair programming", d: "Práctica de programar a dos sobre el mismo código. Con Claude: tú navegas (decisiones), Claude conduce (escribe), o al revés." },
+    { t: "PR (Pull Request)", d: "Propuesta de cambio en un repo de código que se revisa antes de fusionar. El code review se hace sobre el PR." },
+    { t: "Sprint", d: "Ciclo de trabajo corto (1-3 semanas) con objetivo concreto. Estándar en metodologías ágiles (Scrum). Termina con entregables verificables." },
+    { t: "Taxonomía de Bloom", d: "Clasificación de objetivos de aprendizaje por nivel cognitivo: recordar, comprender, aplicar, analizar, evaluar, crear. Estándar en diseño instruccional." }
+  ],
+
+  recursos: [
+    {
+      tag: "Casos de uso",
+      title: "Anthropic Customer Stories",
+      desc: "Casos reales de empresas que usan Claude: cómo lo aplican, qué resultados midieron. Lectura imprescindible para ver qué funciona en producción.",
+      url: "https://www.anthropic.com/customers",
+      meta: "anthropic.com · actualizado"
+    },
+    {
+      tag: "Cookbook",
+      title: "Anthropic Cookbook (GitHub)",
+      desc: "Repositorio oficial con ejemplos de código por caso de uso: clasificación, RAG, summarization, extracción estructurada. Para devs que quieren ver patrones reales.",
+      url: "https://github.com/anthropics/anthropic-cookbook",
+      meta: "github.com · técnico"
+    },
+    {
+      tag: "Guía",
+      title: "Use cases — Claude Docs",
+      desc: "Página oficial con los casos de uso recomendados por Anthropic agrupados por categoría: extraer datos, customer service, content generation, code, etc.",
+      url: "https://docs.claude.com/en/docs/about-claude/use-case-guides/overview",
+      meta: "docs.claude.com · ~30 min"
+    },
+    {
+      tag: "Industria",
+      title: "Claude para programación · Claude Code",
+      desc: "Página oficial sobre Claude en el flujo del desarrollador: pair programming, refactor, debugging. Con ejemplos concretos por lenguaje.",
+      url: "https://www.anthropic.com/claude-code",
+      meta: "anthropic.com · técnico"
+    },
+    {
+      tag: "Caso real",
+      title: "GitLab + Claude (caso de uso)",
+      desc: "Cómo GitLab integró Claude en GitLab Duo. Buen ejemplo de uso enterprise con consideraciones de privacidad y seguridad reales.",
+      url: "https://about.gitlab.com/blog/",
+      meta: "gitlab.com · blog"
+    },
+    {
+      tag: "Industria",
+      title: "Claude in financial services",
+      desc: "Recursos y caso de uso de Anthropic enfocados en finanzas: research, modelado, compliance asistido. Con cuidado sobre limitaciones legales.",
+      url: "https://www.anthropic.com/solutions/financial-services",
+      meta: "anthropic.com · sector"
+    },
+    {
+      tag: "Lectura",
+      title: "AI Index Report — Stanford HAI",
+      desc: "Informe anual de Stanford con datos sobre adopción de IA en industria, productividad medida y casos reales. Útil para contextualizar tu propio uso.",
+      url: "https://aiindex.stanford.edu/report/",
+      meta: "stanford.edu · ~3h"
+    },
+    {
+      tag: "Comunidad",
+      title: "Build with Claude — Discord oficial",
+      desc: "Discord de Anthropic donde devs comparten implementaciones reales por industria. Búsqueda por canal para encontrar casos de tu sector.",
+      url: "https://www.anthropic.com/discord",
+      meta: "discord · activo"
+    }
+  ],
+
+  checklist: [
+    {
+      day: "Día 1 · Marketing/Contenido",
+      text: "Genera 5 variantes de un email, asunto de un post o descripción de un producto que tengas que producir esta semana.",
+      detail: "Caso de uso: 'Email marketing personalizado' o 'Generación de contenido SEO'. Edición humana obligatoria antes de publicar/enviar."
+    },
+    {
+      day: "Día 2 · Datos/Feedback",
+      text: "Pega 50-100 reseñas, tickets o respuestas de encuesta a Claude y pídele top 5 patrones + 3 acciones priorizadas.",
+      detail: "Caso de uso: 'Análisis de feedback de clientes'. Si no tienes feedback real, usa reviews de un producto público de tu sector."
+    },
+    {
+      day: "Día 3 · Programación/Sistemas",
+      text: "Refactoriza una función de tu código (o un script de automatización) con Claude. Tests primero, refactor después.",
+      detail: "Caso de uso: 'Pair programming'. Si no programas, automatiza una tarea recurrente con un script básico (ej: parsear un CSV)."
+    },
+    {
+      day: "Día 4 · Educación/Formación",
+      text: "Diseña el outline de una formación interna de 1h sobre algo que sepas bien y debas explicar a tu equipo.",
+      detail: "Caso de uso: 'Diseño de cursos online'. Pide objetivos Bloom + 3 ejercicios + 1 evaluación. Material reutilizable."
+    },
+    {
+      day: "Día 5 · Legal/Contratos",
+      text: "Pega un contrato (NDA, propuesta, T&C, condiciones de un servicio que uses) y pide primer pase de revisión.",
+      detail: "Caso de uso: 'Resumen de contratos'. Recuerda: NO es asesoramiento legal. Si vas a firmar algo importante, abogado humano después."
+    },
+    {
+      day: "Día 6 · Finanzas/Decisiones",
+      text: "Modela una hipótesis de negocio que estés considerando (pricing, contratación, gasto) con 3 escenarios.",
+      detail: "Caso de uso: 'Modelado financiero rápido'. Pide supuestos explícitos. Cuestiónalos uno a uno antes de creerte el modelo."
+    },
+    {
+      day: "Día 7 · Decisión y consolidación",
+      text: "Revisa los 6 casos de la semana. Decide cuáles integras en tu workflow permanente, cuáles afinas, cuáles descartas.",
+      detail: "Lo que no se integra se evapora. Para los que integras: guarda el prompt en un archivo de plantillas. Hazlo ahora, no 'algún día'."
+    }
+  ]
+};
+
+// ============================================
+// RENDERIZADO
+// ============================================
+function renderFlashcards() {
+  const grid = document.getElementById('flashgrid');
+  MODULE_DATA.conceptos.forEach((c, i) => {
+    const card = document.createElement('div');
+    card.className = 'flash';
+    card.innerHTML = `
+      <div class="flash-inner">
+        <div class="flash-face front">
+          <div class="flash-num">Caso ${String(i+1).padStart(2,'0')}</div>
+          <div class="flash-title">${c.title}</div>
+          <div class="flash-hint">↻ Pulsa para girar</div>
+        </div>
+        <div class="flash-face back">
+          <div class="flash-def">${c.def}</div>
+          <div class="flash-example">${c.example}</div>
+        </div>
+      </div>
+    `;
+    card.addEventListener('click', () => card.classList.toggle('flipped'));
+    grid.appendChild(card);
+  });
+}
+
+function renderCases() {
+  const wrap = document.getElementById('cases');
+  MODULE_DATA.casos.forEach((c, i) => {
+    const el = document.createElement('div');
+    el.className = 'case';
+    el.innerHTML = `
+      <div class="case-num">Caso ${String(i+1).padStart(2,'0')}</div>
+      <div class="case-title">${c.title}</div>
+      <div class="case-context">${c.context}</div>
+      <div class="case-grid">
+        <div class="case-col bad">
+          <div class="case-col-label">✕ Antes (sin Claude)</div>
+          <div class="case-prompt">${c.bad}</div>
+        </div>
+        <div class="case-col good">
+          <div class="case-col-label">✓ Después (con Claude)</div>
+          <div class="case-prompt">${c.good}</div>
+        </div>
+      </div>
+      <div class="case-why">${c.why}</div>
+    `;
+    wrap.appendChild(el);
+  });
+}
+
+function renderExercises() {
+  const wrap = document.getElementById('exercises');
+  MODULE_DATA.ejercicios.forEach((e, i) => {
+    const el = document.createElement('div');
+    el.className = 'ex';
+    el.innerHTML = `
+      <div class="ex-num">Ejercicio ${String(i+1).padStart(2,'0')}</div>
+      <div class="ex-title">${e.title}</div>
+      <div class="ex-task">${e.task.replace(/\n/g, '<br>')}</div>
+      <textarea class="ex-input" placeholder="Escribe tu respuesta aquí..."></textarea>
+      <div class="ex-btns">
+        <button class="btn btn-primary" data-action="show-solution">Ver solución modelo</button>
+        <button class="btn" data-action="clear">Limpiar</button>
+      </div>
+      <div class="ex-solution">
+        <div class="ex-solution-label">Solución modelo</div>
+        <div class="ex-solution-text">${e.solution}</div>
+        <div class="ex-rubric">
+          <div class="ex-rubric-title">Autoevaluación · ¿tu respuesta cumple?</div>
+          <ul>${e.rubric.map(r => `<li>${r}</li>`).join('')}</ul>
+        </div>
+      </div>
+    `;
+    const textarea = el.querySelector('.ex-input');
+    const solDiv = el.querySelector('.ex-solution');
+    el.querySelector('[data-action="show-solution"]').addEventListener('click', () => {
+      solDiv.classList.toggle('show');
+    });
+    el.querySelector('[data-action="clear"]').addEventListener('click', () => {
+      textarea.value = '';
+      solDiv.classList.remove('show');
+    });
+    wrap.appendChild(el);
+  });
+}
+
+function renderPrompts() {
+  const wrap = document.getElementById('prompts');
+  MODULE_DATA.prompts.forEach((p, i) => {
+    const el = document.createElement('div');
+    el.className = 'prompt-card';
+    el.innerHTML = `
+      <div class="prompt-tag">${p.tag}</div>
+      <div class="prompt-title">${p.title}</div>
+      <div class="prompt-desc">${p.desc}</div>
+      <pre class="prompt-text">${p.text.replace(/</g, '&lt;')}</pre>
+      <button class="copy-btn">Copiar al portapapeles</button>
+    `;
+    const btn = el.querySelector('.copy-btn');
+    btn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(p.text);
+        btn.textContent = '✓ Copiado';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.textContent = 'Copiar al portapapeles';
+          btn.classList.remove('copied');
+        }, 1800);
+      } catch(e) {
+        btn.textContent = 'Selecciona y copia manual';
+      }
+    });
+    wrap.appendChild(el);
+  });
+}
+
+// Tabs
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('sec-' + btn.dataset.tab).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+});
+
+function renderQuiz() {
+  const wrap = document.getElementById('quiz');
+  let answered = 0;
+  let correct = 0;
+  MODULE_DATA.quiz.forEach((q, i) => {
+    const el = document.createElement('div');
+    el.className = 'quiz-q';
+    el.innerHTML = `
+      <div class="quiz-num">Pregunta ${String(i+1).padStart(2,'0')} de ${MODULE_DATA.quiz.length}</div>
+      <div class="quiz-question">${q.q}</div>
+      <div class="quiz-opts">
+        ${q.opts.map((o, j) => `<button class="quiz-opt" data-idx="${j}">${o}</button>`).join('')}
+      </div>
+      <div class="quiz-feedback"></div>
+    `;
+    const opts = el.querySelectorAll('.quiz-opt');
+    const fb = el.querySelector('.quiz-feedback');
+    opts.forEach(opt => {
+      opt.addEventListener('click', () => {
+        if (el.classList.contains('answered')) return;
+        const idx = Number(opt.dataset.idx);
+        const isCorrect = idx === q.correct;
+        opts.forEach((o, j) => {
+          o.classList.add('locked');
+          if (j === q.correct) o.classList.add('correct');
+          else if (j === idx && !isCorrect) o.classList.add('wrong');
+        });
+        fb.classList.add('show', isCorrect ? 'correct' : 'wrong');
+        fb.textContent = (isCorrect ? '✓ Correcto. ' : '✗ Casi. ') + q.fb;
+        el.classList.add('answered');
+        answered++;
+        if (isCorrect) correct++;
+        if (answered === MODULE_DATA.quiz.length) showQuizResult(correct);
+      });
+    });
+    wrap.appendChild(el);
+  });
+}
+
+function showQuizResult(correct) {
+  const total = MODULE_DATA.quiz.length;
+  const pct = Math.round((correct / total) * 100);
+  let msg = '';
+  if (pct >= 90) msg = 'Excelente. Distingues bien dónde Claude aporta y dónde no. Listo para el M7.';
+  else if (pct >= 70) msg = 'Muy bien. Repasa los casos donde fallaste antes de aplicarlos en tu trabajo.';
+  else if (pct >= 50) msg = 'Aceptable. Vuelve a la pestaña de casos y revisa cuándo Claude sí y cuándo no.';
+  else msg = 'Vuelve al vídeo. Aplicar Claude sin saber cuándo NO usarlo es la forma más rápida de quemarse.';
+  const el = document.getElementById('quiz-result');
+  el.innerHTML = `
+    <div class="quiz-result-score">${correct} / ${total}</div>
+    <div class="quiz-result-msg">${msg}</div>
+    <button class="btn btn-primary" onclick="location.reload()">Reintentar quiz</button>
+  `;
+  el.classList.add('show');
+  el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function renderGlosario() {
+  const wrap = document.getElementById('glosario');
+  const sorted = [...MODULE_DATA.glosario].sort((a, b) => a.t.localeCompare(b.t, 'es'));
+  sorted.forEach(g => {
+    const el = document.createElement('div');
+    el.className = 'gloss-item';
+    el.innerHTML = `<div class="gloss-term">${g.t}</div><div class="gloss-def">${g.d}</div>`;
+    wrap.appendChild(el);
+  });
+}
+
+function renderRecursos() {
+  const wrap = document.getElementById('recursos');
+  MODULE_DATA.recursos.forEach(r => {
+    const el = document.createElement('a');
+    el.className = 'recurso';
+    el.href = r.url;
+    el.target = '_blank';
+    el.rel = 'noopener noreferrer';
+    el.innerHTML = `
+      <span class="recurso-tag">${r.tag}</span>
+      <div class="recurso-title">${r.title}</div>
+      <div class="recurso-desc">${r.desc}</div>
+      <div class="recurso-meta">${r.meta}</div>
+    `;
+    wrap.appendChild(el);
+  });
+}
+
+function renderChecklist() {
+  const wrap = document.getElementById('checklist');
+  const progressEl = document.getElementById('checkProgress');
+  const STORAGE_KEY = 'm6-checklist-progress';
+  // No usamos localStorage; estado en memoria solo (artefacto standalone)
+  const state = new Set();
+  function updateProgress() {
+    const done = state.size;
+    const total = MODULE_DATA.checklist.length;
+    progressEl.textContent = `${done} / ${total} completadas · ${Math.round((done/total)*100)}%`;
+  }
+  MODULE_DATA.checklist.forEach((c, i) => {
+    const el = document.createElement('div');
+    el.className = 'check-item';
+    el.innerHTML = `
+      <div class="check-box">${state.has(i) ? '✓' : ''}</div>
+      <div class="check-content">
+        <div class="check-day">${c.day}</div>
+        <div class="check-text">${c.text}</div>
+        <div class="check-detail">${c.detail}</div>
+      </div>
+    `;
+    el.addEventListener('click', () => {
+      if (state.has(i)) { state.delete(i); el.classList.remove('done'); el.querySelector('.check-box').textContent = ''; }
+      else { state.add(i); el.classList.add('done'); el.querySelector('.check-box').textContent = '✓'; }
+      updateProgress();
+    });
+    wrap.appendChild(el);
+  });
+  updateProgress();
+}
+
+renderFlashcards();
+renderCases();
+renderExercises();
+renderPrompts();
+renderQuiz();
+renderGlosario();
+renderRecursos();
+renderChecklist();
+</script>
+</body>
+</html>

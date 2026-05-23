@@ -1,0 +1,1268 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude 101 · Recursos M3 · El arte del prompt</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Geist:wght@300..700&family=Geist+Mono:wght@400..600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #F4EFE3; --bg-2: #EFE9DA; --card: #FBF8F0;
+  --ink: #1C1A16; --ink-2: #3A352D; --muted: #756B5B; --muted-2: #A39782;
+  --line: #E1D8C2; --line-2: #CFC4AA;
+  --accent: #C8542B; --accent-2: #8B3A1E;
+  --olive: #4F5D38; --gold: #B08436;
+  --display: 'Fraunces', Georgia, serif;
+  --body: 'Geist', system-ui, sans-serif;
+  --mono: 'Geist Mono', ui-monospace, monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: var(--bg); color: var(--ink); font-family: var(--body); line-height: 1.55; }
+body {
+  background-image:
+    radial-gradient(circle at 12% 8%, rgba(200,84,43,.06) 0%, transparent 40%),
+    radial-gradient(circle at 88% 92%, rgba(79,93,56,.05) 0%, transparent 40%);
+  min-height: 100vh;
+}
+
+/* === HEADER === */
+.topbar {
+  position: sticky; top: 0; z-index: 50;
+  background: rgba(244,239,227,.85); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+  padding: 14px 32px; display: flex; align-items: center; gap: 20px;
+}
+.back-link {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--muted); text-decoration: none;
+  padding: 8px 14px; border-radius: 100px; border: 1px solid var(--line-2);
+  transition: all .2s;
+}
+.back-link:hover { color: var(--ink); border-color: var(--accent); }
+.topbar-title {
+  font-family: var(--display); font-style: italic; font-size: 22px;
+  font-weight: 400; color: var(--ink); flex: 1;
+}
+.topbar-title em { color: var(--accent); font-style: italic; }
+.topbar-badge {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--muted);
+  padding: 6px 12px; background: var(--card); border: 1px solid var(--line); border-radius: 6px;
+}
+
+/* === HERO === */
+.hero {
+  padding: 80px 32px 40px; max-width: 1100px; margin: 0 auto; text-align: center;
+}
+.hero .eyebrow {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .18em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 18px;
+}
+.hero h1 {
+  font-family: var(--display); font-style: italic; font-weight: 400;
+  font-size: clamp(40px, 6vw, 72px); letter-spacing: -0.025em;
+  color: var(--ink); line-height: 1.05; margin-bottom: 20px;
+}
+.hero h1 em { font-style: normal; color: var(--accent); }
+.hero .lede {
+  font-size: 18px; color: var(--ink-2); max-width: 60ch; margin: 0 auto;
+}
+
+/* === TABS === */
+.tabs-wrap {
+  position: sticky; top: 62px; z-index: 40;
+  background: rgba(244,239,227,.92); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+  padding: 16px 32px; display: flex; justify-content: center; gap: 8px;
+  overflow-x: auto;
+}
+.tab-btn {
+  font-family: var(--mono); font-size: 12px; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--muted);
+  padding: 10px 18px; border-radius: 100px; border: 1px solid var(--line-2);
+  background: var(--card); cursor: pointer; transition: all .2s; white-space: nowrap;
+}
+.tab-btn:hover { color: var(--ink); border-color: var(--accent); }
+.tab-btn.active {
+  color: var(--card); background: var(--ink); border-color: var(--ink);
+}
+
+/* === SECTIONS === */
+.section {
+  padding: 60px 32px 100px; max-width: 1100px; margin: 0 auto; display: none;
+}
+.section.active { display: block; }
+.section-intro {
+  margin-bottom: 40px; max-width: 70ch;
+}
+.section-intro h2 {
+  font-family: var(--display); font-style: italic; font-weight: 400;
+  font-size: 36px; margin-bottom: 12px; color: var(--ink);
+}
+.section-intro h2 em { color: var(--accent); font-style: normal; }
+.section-intro p { color: var(--ink-2); font-size: 16px; }
+
+/* === FLASHCARDS === */
+.flashgrid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;
+}
+.flash {
+  perspective: 1200px; min-height: 320px; cursor: pointer;
+}
+.flash-inner {
+  position: relative; width: 100%; height: 100%; min-height: 320px;
+  transition: transform .6s cubic-bezier(.2,.8,.2,1);
+  transform-style: preserve-3d;
+}
+.flash.flipped .flash-inner { transform: rotateY(180deg); }
+.flash-face {
+  position: absolute; inset: 0; backface-visibility: hidden;
+  background: var(--card); border: 1px solid var(--line); border-radius: 16px;
+  padding: 22px; display: flex; flex-direction: column;
+  overflow-y: auto;
+  box-shadow: 0 2px 12px rgba(28,26,22,.04);
+}
+.flash-face::-webkit-scrollbar { width: 4px; }
+.flash-face::-webkit-scrollbar-thumb { background: var(--line-2); border-radius: 4px; }
+.flash-face.back {
+  transform: rotateY(180deg);
+  background: var(--bg-2); border-color: var(--line-2);
+}
+.flash-num {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 12px;
+}
+.flash-title {
+  font-family: var(--display); font-style: italic; font-size: 24px;
+  font-weight: 400; color: var(--ink); margin-bottom: 10px; line-height: 1.2;
+}
+.flash-hint {
+  margin-top: auto; font-family: var(--mono); font-size: 10px;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--muted-2);
+}
+.flash-def { font-size: 14px; color: var(--ink-2); line-height: 1.6; margin-bottom: 12px; }
+.flash-example {
+  font-family: var(--mono); font-size: 12px; color: var(--olive);
+  background: var(--card); border-left: 2px solid var(--olive);
+  padding: 8px 12px; border-radius: 0 6px 6px 0;
+}
+
+/* === CASE STUDIES === */
+.case {
+  background: var(--card); border: 1px solid var(--line); border-radius: 18px;
+  padding: 32px; margin-bottom: 28px;
+}
+.case-num {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 8px;
+}
+.case-title {
+  font-family: var(--display); font-style: italic; font-size: 28px;
+  font-weight: 400; color: var(--ink); margin-bottom: 12px; line-height: 1.2;
+}
+.case-context { color: var(--ink-2); margin-bottom: 24px; font-size: 15px; }
+.case-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px;
+}
+@media (max-width: 720px) { .case-grid { grid-template-columns: 1fr; } }
+.case-col {
+  background: var(--bg); border-radius: 12px; padding: 20px;
+}
+.case-col.bad { border: 1px solid #e8c4b7; }
+.case-col.good { border: 1px solid #c4d4a8; }
+.case-col-label {
+  font-family: var(--mono); font-size: 10px; letter-spacing: .15em;
+  text-transform: uppercase; margin-bottom: 10px; font-weight: 600;
+}
+.case-col.bad .case-col-label { color: var(--accent-2); }
+.case-col.good .case-col-label { color: var(--olive); }
+.case-prompt {
+  font-family: var(--mono); font-size: 13px; line-height: 1.6;
+  color: var(--ink); white-space: pre-wrap;
+}
+.case-why {
+  background: var(--bg-2); border-left: 3px solid var(--gold);
+  padding: 14px 18px; border-radius: 0 8px 8px 0;
+  font-size: 14px; color: var(--ink-2);
+}
+.case-why strong { color: var(--gold); font-weight: 600; }
+
+/* === EXERCISES === */
+.ex {
+  background: var(--card); border: 1px solid var(--line); border-radius: 18px;
+  padding: 32px; margin-bottom: 28px;
+}
+.ex-num {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 8px;
+}
+.ex-title {
+  font-family: var(--display); font-style: italic; font-size: 28px;
+  font-weight: 400; color: var(--ink); margin-bottom: 12px; line-height: 1.2;
+}
+.ex-task { color: var(--ink-2); margin-bottom: 16px; font-size: 15px; }
+.ex-input {
+  width: 100%; min-height: 120px; resize: vertical;
+  background: var(--bg); border: 1px solid var(--line-2); border-radius: 10px;
+  padding: 14px 16px; font-family: var(--mono); font-size: 13px; color: var(--ink);
+  margin-bottom: 16px;
+}
+.ex-input:focus { outline: 2px solid var(--accent); outline-offset: -2px; }
+.ex-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+.btn {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .12em;
+  text-transform: uppercase; padding: 10px 18px; border-radius: 100px;
+  border: 1px solid var(--line-2); background: var(--card); color: var(--ink-2);
+  cursor: pointer; transition: all .2s;
+}
+.btn:hover { border-color: var(--accent); color: var(--ink); }
+.btn-primary { background: var(--ink); color: var(--card); border-color: var(--ink); }
+.btn-primary:hover { background: var(--accent); border-color: var(--accent); color: var(--card); }
+.ex-solution {
+  margin-top: 20px; padding: 20px; background: var(--bg-2); border-radius: 12px;
+  border-left: 3px solid var(--olive); display: none;
+}
+.ex-solution.show { display: block; }
+.ex-solution-label {
+  font-family: var(--mono); font-size: 10px; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--olive); margin-bottom: 10px; font-weight: 600;
+}
+.ex-solution-text {
+  font-family: var(--mono); font-size: 13px; line-height: 1.7; color: var(--ink);
+  white-space: pre-wrap; margin-bottom: 16px;
+}
+.ex-rubric { margin-top: 16px; }
+.ex-rubric-title {
+  font-size: 13px; color: var(--muted); margin-bottom: 8px; font-weight: 600;
+}
+.ex-rubric ul { list-style: none; padding: 0; }
+.ex-rubric li {
+  padding: 6px 0; font-size: 14px; color: var(--ink-2);
+  display: flex; align-items: flex-start; gap: 10px;
+}
+.ex-rubric li::before {
+  content: "✓"; color: var(--olive); font-weight: 600; margin-top: 1px;
+}
+
+/* === PROMPTS GALLERY === */
+.prompts-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px;
+}
+.prompt-card {
+  background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+  padding: 24px; display: flex; flex-direction: column;
+}
+.prompt-tag {
+  display: inline-block; font-family: var(--mono); font-size: 10px;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--gold);
+  background: var(--bg-2); padding: 4px 10px; border-radius: 100px;
+  margin-bottom: 12px; align-self: flex-start;
+}
+.prompt-title {
+  font-family: var(--display); font-style: italic; font-size: 22px;
+  font-weight: 400; color: var(--ink); margin-bottom: 10px; line-height: 1.2;
+}
+.prompt-desc { font-size: 14px; color: var(--ink-2); margin-bottom: 16px; }
+.prompt-text {
+  font-family: var(--mono); font-size: 12px; line-height: 1.65;
+  color: var(--ink-2); background: var(--bg); border: 1px dashed var(--line-2);
+  border-radius: 8px; padding: 14px; margin-bottom: 14px;
+  white-space: pre-wrap; flex: 1;
+}
+.copy-btn {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .12em;
+  text-transform: uppercase; padding: 10px 16px; border-radius: 8px;
+  border: 1px solid var(--ink); background: transparent; color: var(--ink);
+  cursor: pointer; transition: all .2s; align-self: stretch;
+}
+.copy-btn:hover { background: var(--ink); color: var(--card); }
+.copy-btn.copied { background: var(--olive); border-color: var(--olive); color: var(--card); }
+
+/* === QUIZ === */
+.quiz-q {
+  background: var(--card); border: 1px solid var(--line); border-radius: 16px;
+  padding: 26px; margin-bottom: 20px;
+}
+.quiz-num {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 10px;
+}
+.quiz-question {
+  font-family: var(--display); font-style: italic; font-size: 22px;
+  font-weight: 400; line-height: 1.3; color: var(--ink); margin-bottom: 18px;
+}
+.quiz-opts { display: flex; flex-direction: column; gap: 8px; }
+.quiz-opt {
+  text-align: left; padding: 14px 18px; border: 1px solid var(--line-2);
+  border-radius: 10px; background: var(--bg); color: var(--ink-2);
+  font-family: var(--body); font-size: 15px; cursor: pointer; transition: all .2s;
+}
+.quiz-opt:hover:not(.locked) { border-color: var(--accent); color: var(--ink); }
+.quiz-opt.correct {
+  background: rgba(79,93,56,.12); border-color: var(--olive); color: var(--ink);
+}
+.quiz-opt.wrong {
+  background: rgba(200,84,43,.1); border-color: var(--accent-2); color: var(--ink);
+}
+.quiz-opt.locked { cursor: default; }
+.quiz-feedback {
+  margin-top: 14px; padding: 14px 18px; border-radius: 10px;
+  font-size: 14px; line-height: 1.5; display: none;
+}
+.quiz-feedback.show { display: block; }
+.quiz-feedback.correct { background: rgba(79,93,56,.1); border-left: 3px solid var(--olive); color: var(--ink-2); }
+.quiz-feedback.wrong { background: rgba(200,84,43,.08); border-left: 3px solid var(--accent); color: var(--ink-2); }
+.quiz-result {
+  margin-top: 20px; padding: 28px; background: var(--card);
+  border: 1px solid var(--line); border-radius: 16px; text-align: center;
+  display: none;
+}
+.quiz-result.show { display: block; }
+.quiz-result-score {
+  font-family: var(--display); font-style: italic; font-size: 56px;
+  color: var(--accent); margin-bottom: 8px;
+}
+.quiz-result-msg { font-size: 16px; color: var(--ink-2); margin-bottom: 18px; }
+.quiz-result .btn { display: inline-block; }
+
+/* === GLOSARIO === */
+.glosario-list {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px;
+}
+.gloss-item {
+  background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+  padding: 18px 20px;
+}
+.gloss-term {
+  font-family: var(--display); font-style: italic; font-size: 20px;
+  font-weight: 400; color: var(--accent); margin-bottom: 6px;
+}
+.gloss-def { font-size: 14px; line-height: 1.55; color: var(--ink-2); }
+
+/* === RECURSOS === */
+.recursos-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px;
+}
+.recurso {
+  background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+  padding: 20px; text-decoration: none; color: inherit; transition: all .2s;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.recurso:hover {
+  border-color: var(--accent); transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(28,26,22,.08);
+}
+.recurso-tag {
+  display: inline-block; font-family: var(--mono); font-size: 10px;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--olive);
+  background: var(--bg-2); padding: 4px 10px; border-radius: 100px;
+  align-self: flex-start; margin-bottom: 4px;
+}
+.recurso-title {
+  font-family: var(--display); font-style: italic; font-size: 18px;
+  font-weight: 400; color: var(--ink); line-height: 1.3;
+}
+.recurso-desc { font-size: 13px; color: var(--ink-2); line-height: 1.5; }
+.recurso-meta {
+  font-family: var(--mono); font-size: 11px; color: var(--muted);
+  margin-top: auto; padding-top: 8px;
+}
+
+/* === CHECKLIST === */
+.checklist { display: flex; flex-direction: column; gap: 12px; }
+.check-item {
+  display: flex; align-items: flex-start; gap: 16px;
+  background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+  padding: 18px 22px; cursor: pointer; transition: all .2s;
+}
+.check-item:hover { border-color: var(--line-2); }
+.check-item.done {
+  background: var(--bg-2); border-color: var(--olive); opacity: .75;
+}
+.check-item.done .check-text { text-decoration: line-through; color: var(--muted); }
+.check-box {
+  width: 22px; height: 22px; border: 2px solid var(--line-2);
+  border-radius: 6px; flex-shrink: 0; margin-top: 2px;
+  display: flex; align-items: center; justify-content: center;
+  transition: all .2s;
+}
+.check-item.done .check-box {
+  background: var(--olive); border-color: var(--olive); color: var(--card);
+}
+.check-content { flex: 1; }
+.check-day {
+  font-family: var(--mono); font-size: 10px; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--accent); margin-bottom: 4px;
+}
+.check-text { font-size: 15px; line-height: 1.5; color: var(--ink); }
+.check-detail { font-size: 13px; color: var(--muted); margin-top: 4px; }
+.checklist-progress {
+  margin-top: 24px; padding: 20px; background: var(--bg-2);
+  border-radius: 12px; text-align: center;
+  font-family: var(--mono); font-size: 13px; color: var(--ink-2);
+}
+
+/* === FOOTER NAV === */
+.footer-nav {
+  border-top: 1px solid var(--line); padding: 32px;
+  display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+  max-width: 1100px; margin: 40px auto 0;
+}
+.foot-link {
+  font-family: var(--mono); font-size: 12px; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--muted); text-decoration: none;
+  padding: 12px 18px; border: 1px solid var(--line-2); border-radius: 100px;
+  transition: all .2s;
+}
+.foot-link:hover { color: var(--ink); border-color: var(--accent); }
+
+@media (max-width: 720px) {
+  .topbar { padding: 12px 16px; }
+  .hero { padding: 50px 16px 30px; }
+  .tabs-wrap { padding: 12px 16px; }
+  .section { padding: 40px 16px 80px; }
+  .case, .ex { padding: 22px; }
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <a href="/curso" class="back-link">← Volver al curso</a>
+  <div class="topbar-title">Módulo 3 · <em>Recursos</em></div>
+  <div class="topbar-badge">M3</div>
+</header>
+
+<section class="hero">
+  <div class="eyebrow">Profundiza · Practica · Aplica</div>
+  <h1>El arte del <em>prompt</em></h1>
+  <p class="lede">Un buen prompt no es un truco: es un encargo bien escrito. Aquí tienes la anatomía de los cinco componentes, el contraste brutal entre vaguedad y especificidad, plantillas estructuradas y ejercicios para que tus prompts dejen de improvisar.</p>
+</section>
+
+<nav class="tabs-wrap">
+  <button class="tab-btn active" data-tab="conceptos">Conceptos</button>
+  <button class="tab-btn" data-tab="casos">Casos de uso</button>
+  <button class="tab-btn" data-tab="ejercicios">Ejercicios</button>
+  <button class="tab-btn" data-tab="prompts">Prompts</button>
+  <button class="tab-btn" data-tab="quiz">Quiz final</button>
+  <button class="tab-btn" data-tab="glosario">Glosario</button>
+  <button class="tab-btn" data-tab="recursos">Recursos</button>
+  <button class="tab-btn" data-tab="checklist">Checklist</button>
+</nav>
+
+<!-- === CONCEPTOS === -->
+<section class="section active" id="sec-conceptos">
+  <div class="section-intro">
+    <h2>Diez <em>ideas</em> que tienes que dominar</h2>
+    <p>Pulsa cualquier tarjeta para girarla y ver la definición + un ejemplo concreto.</p>
+  </div>
+  <div class="flashgrid" id="flashgrid"></div>
+</section>
+
+<!-- === CASOS === -->
+<section class="section" id="sec-casos">
+  <div class="section-intro">
+    <h2>Antes y <em>después</em></h2>
+    <p>Seis situaciones reales. El mismo objetivo, dos formas de pedirlo. El contraste no es sutil: es el motivo por el que mucha gente cree que "Claude no le funciona".</p>
+  </div>
+  <div id="cases"></div>
+</section>
+
+<!-- === EJERCICIOS === -->
+<section class="section" id="sec-ejercicios">
+  <div class="section-intro">
+    <h2>Practica <em>ahora</em></h2>
+    <p>Escribe tu respuesta, pulsa "Ver solución modelo" y compara con la rúbrica. Lo importante no es acertar la solución exacta: es ver qué piezas se te olvidan al escribir prompts.</p>
+  </div>
+  <div id="exercises"></div>
+</section>
+
+<!-- === PROMPTS === -->
+<section class="section" id="sec-prompts">
+  <div class="section-intro">
+    <h2>Plantillas para <em>copiar</em></h2>
+    <p>Doce prompts con la estructura ROL + CONTEXTO + TAREA + FORMATO + RESTRICCIONES bien delineada. Sustituye los <code style="background:var(--bg-2);padding:1px 6px;border-radius:4px;font-family:var(--mono);font-size:.85em">[CORCHETES]</code> por lo tuyo y pega en Claude.</p>
+  </div>
+  <div class="prompts-grid" id="prompts"></div>
+</section>
+
+<!-- === QUIZ === -->
+<section class="section" id="sec-quiz">
+  <div class="section-intro">
+    <h2>Quiz <em>final</em></h2>
+    <p>10 preguntas para comprobar que entiendes la anatomía del prompt. Feedback inmediato en cada respuesta. Sin nota: el objetivo es que veas qué te falta repasar antes de avanzar a M4.</p>
+  </div>
+  <div id="quiz"></div>
+  <div id="quiz-result" class="quiz-result"></div>
+</section>
+
+<!-- === GLOSARIO === -->
+<section class="section" id="sec-glosario">
+  <div class="section-intro">
+    <h2>Glosario del <em>módulo</em></h2>
+    <p>Los términos de prompting que vas a leer y oír en el resto del curso. Tenlos a mano para no perderte cuando aparezcan más adelante.</p>
+  </div>
+  <div id="glosario" class="glosario-list"></div>
+</section>
+
+<!-- === RECURSOS === -->
+<section class="section" id="sec-recursos">
+  <div class="section-intro">
+    <h2>Para <em>profundizar</em></h2>
+    <p>Selección oficial de Anthropic más algunos extras de calidad. Ninguna es imprescindible, pero la guía de prompt engineering merece una tarde entera.</p>
+  </div>
+  <div id="recursos" class="recursos-grid"></div>
+</section>
+
+<!-- === CHECKLIST === -->
+<section class="section" id="sec-checklist">
+  <div class="section-intro">
+    <h2>Esta <em>semana</em>, haz esto</h2>
+    <p>Siete acciones graduales para que en una semana escribas prompts de forma radicalmente distinta. Tilda lo que vayas haciendo — se guarda local.</p>
+  </div>
+  <div id="checklist" class="checklist"></div>
+  <div class="checklist-progress" id="checkProgress"></div>
+</section>
+
+<nav class="footer-nav">
+  <a href="/curso" class="foot-link">← Curso</a>
+  <a href="/recursos/M4.html" class="foot-link">Módulo 4 →</a>
+</nav>
+
+<script>
+// ============================================
+// CONTENIDO DEL MÓDULO 3
+// ============================================
+const MODULE_DATA = {
+  conceptos: [
+    {
+      title: "Anatomía del prompt: las 5 partes",
+      def: "Un prompt sólido tiene cinco componentes: ROL (quién es Claude en este encargo), CONTEXTO (la situación y los datos relevantes), TAREA (lo que tiene que hacer), FORMATO (cómo quieres la salida) y RESTRICCIONES (límites, tono, qué evitar). Falta una, la respuesta se vuelve borrosa.",
+      example: "Rol: 'Eres editor jefe de un medio B2B'. Contexto: 'Artículo sobre IA en pymes'. Tarea: 'Reescribe el titular'. Formato: '5 opciones'. Restricciones: 'Máx 70 caracteres, sin clickbait'."
+    },
+    {
+      title: "Rol o persona",
+      def: "Asignarle un rol a Claude no es teatro: activa patrones de lenguaje, vocabulario y prioridades de ese perfil. 'Eres copywriter B2B con 10 años en SaaS' produce respuestas distintas a 'eres asistente'. Sé específico en el nivel de seniority y el dominio.",
+      example: "'Eres un revisor de seguridad con experiencia en aplicaciones financieras y certificación OSCP' > 'Eres experto en seguridad'."
+    },
+    {
+      title: "Contexto explícito",
+      def: "Claude no adivina lo que tú tienes en la cabeza. Si la respuesta depende de un público, un sector, un objetivo de negocio o restricciones que solo tú conoces, hay que escribirlas. La regla: si un colega nuevo necesitaría saberlo para hacer la tarea, Claude también.",
+      example: "Mal: 'mejora este copy'. Bien: 'Mejora este copy. Es para landing de SaaS de RRHH, público director de personas en empresas de 50-200 empleados, objetivo: solicitar demo'."
+    },
+    {
+      title: "Formato de salida",
+      def: "Especificar el formato es el truco que más rendimiento da por palabra escrita. Tabla, JSON, bullets, markdown, número exacto de items, longitud máxima. Convierte respuestas vagas en respuestas usables. Si vas a copiar la salida en otro sitio, declara el formato.",
+      example: "'Devuélveme una tabla markdown con 3 columnas: opción, ventaja, riesgo. Máximo 5 filas. Sin texto antes ni después.'"
+    },
+    {
+      title: "Restricciones",
+      def: "Lo que NO quieres es tan importante como lo que sí. Longitud, tono, qué evitar, cosas que dar por sentadas, decisiones que ya están tomadas. Sin restricciones, Claude te devuelve la media de internet sobre el tema, no lo que tú necesitas.",
+      example: "'Máx 200 palabras. Sin metáforas de viaje. Sin frases tipo Sentimos las molestias. No propongas reembolso, eso ya está descartado.'"
+    },
+    {
+      title: "Especificidad vs vaguedad",
+      def: "La diferencia entre un prompt mediocre y uno bueno casi nunca es cuestión de magia: es de especificidad. Más nombres propios, más números, más ejemplos concretos. Si tu prompt encaja para 100 escenarios distintos, devuelve algo que sirve para ninguno.",
+      example: "Vago: 'haz un plan de marketing'. Específico: 'plan de marketing trimestral para una academia online de inglés B2B, presupuesto 8.000€/mes, KPI: 40 leads/mes cualificados de empresas de 100+ empleados'."
+    },
+    {
+      title: "Show don't tell (few-shot)",
+      def: "En lugar de describir cómo quieres la salida, enseña uno o dos ejemplos. Los LLM aprenden mucho más rápido del patrón que de la descripción. Útil para tonos específicos, estructuras inusuales o estilos personales difíciles de verbalizar.",
+      example: "'Genera 5 titulares con este estilo. Ejemplo 1: La métrica que mata startups (y por qué la mides mal). Ejemplo 2: Tu CAC no es lo que crees. Ahora dame 5 nuevos en este registro.'"
+    },
+    {
+      title: "Few-shot vs zero-shot",
+      def: "Zero-shot = le pides algo sin ejemplos. Funciona bien para tareas estándar. Few-shot = le das 2-5 ejemplos del input/output deseado. Imprescindible para tareas con criterio idiosincrático (clasificaciones internas, tono de marca, estructura de informe propietaria).",
+      example: "Clasificar emails como urgente/no urgente: dale 3 ejemplos resueltos. Claude infiere tu criterio mejor que con 200 palabras de definición."
+    },
+    {
+      title: "Delimitadores",
+      def: "Cuando le pegas un texto largo en medio del prompt, marca dónde empieza y dónde acaba. Usa triple comilla, etiquetas XML tipo &lt;texto&gt;...&lt;/texto&gt;, o líneas de guiones. Claude separa instrucción de contenido y deja de confundirlos.",
+      example: "Analiza el siguiente email:\n&lt;email&gt;\nHola Carlos, te escribo porque...\n&lt;/email&gt;\nDevuélveme: tono percibido, intención del remitente, respuesta recomendada."
+    },
+    {
+      title: "System prompt vs user prompt",
+      def: "El system prompt define el rol y reglas persistentes de toda la conversación. El user prompt es cada petición individual. Si vas a tener una sesión larga, mete en el system todo lo estable (rol, tono, restricciones generales) y en el user solo lo que cambia cada vez.",
+      example: "System: 'Eres editor de mi newsletter. Tono directo, sin paja, máx 300 palabras, español de España'. User: 'Edita este borrador: ...'"
+    }
+  ],
+
+  casos: [
+    {
+      title: "Email a inversores comunicando malos resultados",
+      context: "Eres fundador de una startup. Tienes que mandar update mensual a los inversores reconociendo que el MRR cayó un 18% por churn de tres clientes grandes.",
+      bad: "Escribe un email para inversores diciendo que el mes fue malo.",
+      good: "Actúa como fundador de SaaS B2B redactando el update mensual a inversores (round seed, 5 ángeles + 1 VC).\n\nContexto:\n- MRR de marzo: 42.000€ (vs 51.000€ en febrero, -18%)\n- Causa: churn de 3 clientes enterprise (uno cerró, dos cambiaron a competidor por precio)\n- Pipeline: 4 deals nuevos en negociación, ARR potencial 80.000€\n- Cash runway actual: 11 meses\n\nEscribe el update mensual (máx 350 palabras) con esta estructura:\n1) Una línea brutal arriba: el número que importa\n2) Qué pasó (sin excusas, sin drama)\n3) Qué estamos haciendo concretamente\n4) Qué necesito de los inversores este mes (intros, feedback en pricing, etc.)\n\nTono: dueño del problema, no víctima. Cero corporate-speak. Si algo se rompió, decirlo.",
+      why: "<strong>Por qué funciona:</strong> rol concreto + cifras reales en el contexto + estructura exacta + tono explícito. Sin esto, Claude te entrega un email genérico de 'desafíos del trimestre' que los inversores leen y archivan en 4 segundos."
+    },
+    {
+      title: "Code review de una pull request",
+      context: "Eres tech lead. Un junior te ha pedido revisar su PR que añade autenticación con JWT a un endpoint crítico.",
+      bad: "Revisa este código y dime si está bien.",
+      good: "Eres tech lead haciendo code review a un junior con 8 meses de experiencia. El PR añade autenticación JWT a un endpoint /api/payments en una aplicación Node.js + Express en producción.\n\nObjetivos del review (en este orden de prioridad):\n1) Seguridad: ¿hay vulnerabilidades? (token storage, exposición de secrets, validación)\n2) Robustez: ¿qué pasa en los edge cases? (token expirado, malformado, ausente)\n3) Mantenibilidad: ¿se entiende? ¿está bien testeado?\n4) Estilo: solo si los puntos 1-3 están limpios\n\nFormato de salida:\n- Bloqueantes: cosas que NO mergeo sin arreglar. Cita línea, explica el riesgo en una frase, propón fix.\n- No bloqueantes: mejoras que pediría en otro PR.\n- Lo que está bien: máx 2 cosas (no le hagas la pelota).\n\nTono: directo, didáctico, sin condescendencia. Es junior, no tonto.\n\nCódigo:\n&lt;pr&gt;\n[código aquí]\n&lt;/pr&gt;",
+      why: "<strong>Por qué funciona:</strong> jerarquía de prioridades + formato bloqueante/no-bloqueante + tono explícito + delimitador XML del código. Claude entra al review como un senior con criterio, no como un linter."
+    },
+    {
+      title: "Plan de marketing para lanzamiento",
+      context: "Vas a lanzar un curso online y quieres un plan de marketing accionable para las 6 semanas previas. No otra plantilla genérica de Hubspot.",
+      bad: "Hazme un plan de marketing para lanzar un curso online.",
+      good: "Actúa como Head of Growth de una edtech B2C con experiencia lanzando cursos de 800-1.500€.\n\nProducto: curso online de IA aplicada al trabajo de oficina. 8 horas, en directo, 6 semanas, precio 690€.\nLanzamiento: 15 de junio. Hoy es 1 de mayo. 6 semanas vista.\nPúblico: 30-50 años, mandos intermedios, sector servicios, España.\nCanales disponibles: lista de email (8.400 suscriptores warm), LinkedIn personal del fundador (12k seguidores), 4.000€ de presupuesto en ads.\nKPI único: 80 ventas (objetivo mínimo: 50).\n\nDame un plan semana a semana. Para cada semana:\n- Objetivo de la semana (en una frase, cuantificable)\n- 3-5 acciones concretas con responsable (founder / freelance / agencia)\n- Output esperado (qué deja por escrito esa semana)\n- Métrica para saber si va bien antes del lunes siguiente\n\nAl final del plan:\n- Las 2 cosas que más fácilmente harán fracasar este lanzamiento\n- Qué decisión tomarías el 1 de junio si vas un 40% por debajo del objetivo\n\nNo me des consejos genéricos sobre 'crear contenido de valor'. Concreto o nada.",
+      why: "<strong>Por qué funciona:</strong> rol específico + numeritos en TODO (público, presupuesto, KPI) + restricción de formato semanal + cláusula anti-paja ('concreto o nada'). El prompt malo te devuelve LinkedIn 101, este te devuelve un plan que ejecutas."
+    },
+    {
+      title: "Brief de diseño para un freelance",
+      context: "Necesitas pasarle a una diseñadora freelance un brief para rediseñar la landing de tu producto. Quieres que Claude redacte el brief, no que diseñe.",
+      bad: "Hazme un brief para una diseñadora que tiene que rediseñar mi landing.",
+      good: "Actúa como product manager redactando un brief de diseño para una freelance senior de Figma (a quien no conoces todavía).\n\nProducto: app móvil de seguimiento de hábitos. Versión actual tiene 12.000 usuarios activos. La landing actual convierte 1,8% (objetivo: 3,5%).\n\nLo que sabemos del problema:\n- En sesiones de user testing, el 60% no entiende qué hace la app en los primeros 10 segundos\n- El precio (4,99€/mes) está demasiado abajo en la página\n- La sección de testimonios es la más leída pero la peor diseñada\n\nLo que NO queremos cambiar:\n- El nombre y el logo (auditoría de marca recién hecha)\n- El precio\n- El flujo de checkout\n\nEscribe el brief (máx 600 palabras) con estas secciones:\n1) Contexto del proyecto en 3 líneas\n2) Objetivos cuantitativos (qué métrica mueve esto)\n3) Insights de research (los 3 hallazgos clave del user testing)\n4) Scope: qué entra y qué NO entra en este encargo\n5) Entregables esperados (qué pantallas, qué formato, qué número de iteraciones)\n6) Timeline (fechas concretas, asume kickoff el 6 de mayo)\n7) Lo que valoraremos: 3 cualidades del trabajo que pesarán al evaluar\n\nTono: profesional, claro, sin jerga de growth. Escrito para alguien que NO conoce el producto.",
+      why: "<strong>Por qué funciona:</strong> separa lo que sabemos del problema, lo que NO se toca y el scope. Las 7 secciones del brief están diseñadas. Sin esto, el brief que sale es un mensaje de Slack con buenas intenciones."
+    },
+    {
+      title: "Análisis competitivo serio",
+      context: "Tu CEO te ha pedido un análisis de la competencia para la reunión del comité del jueves. Quiere conclusiones, no un PDF de 30 páginas.",
+      bad: "Hazme un análisis de la competencia de mi sector.",
+      good: "Actúa como analista de estrategia preparando un análisis competitivo para el comité de dirección.\n\nMi empresa: plataforma SaaS de gestión de turnos para retail (cadenas de tiendas físicas con 50-500 empleados). MRR: 180.000€. Mercado: España + Portugal. Equipo: 24 personas.\n\nCompetidores a analizar:\n1) Planday (player internacional, recién entró en España)\n2) Shyfter (player local, fundado 2019, parece estar creciendo)\n3) Excel + WhatsApp (el 65% del mercado sigue usando esto)\n\nPara cada competidor, devuelve:\n- Propuesta de valor en una frase (cómo se posicionan ELLOS, no cómo los vemos nosotros)\n- Pricing (rango, modelo)\n- 2 fortalezas reales (no marketing, capacidades técnicas o de canal)\n- 2 debilidades reales que podamos atacar\n- Cliente tipo (segmento, tamaño)\n\nDespués del análisis individual:\n- Tabla comparativa con 5 ejes que importan al cliente (precio, integración con TPV, soporte en español, app móvil, reporting)\n- Las 3 jugadas estratégicas que recomendarías a 6 meses\n- La amenaza que más me debería preocupar y por qué\n\nRestricciones:\n- Si no tienes datos verificables sobre algo, dilo. NO inventes precios ni features.\n- Output total: máx 1.200 palabras + 1 tabla\n- Sin lenguaje McKinsey. Si suena a consultora, lo reescribes.",
+      why: "<strong>Por qué funciona:</strong> nombres reales de competidores + estructura de salida idéntica para cada uno + cláusula anti-alucinación ('NO inventes') + cláusula anti-consultoría. Llegas a la reunión con algo que se debate, no con relleno."
+    },
+    {
+      title: "Traducción técnica con criterio",
+      context: "Tienes que traducir al inglés la documentación técnica de tu API. Una traducción literal va a parecer escrita por un becario. Quieres que suene a producto serio.",
+      bad: "Tradúceme esta documentación de español a inglés.",
+      good: "Actúa como technical writer bilingüe con experiencia escribiendo documentación de APIs en empresas tipo Stripe, Twilio o Algolia.\n\nTraduce el siguiente texto del español al inglés.\n\nReglas:\n1) NO traducción literal. Reformula cuando una frase en inglés natural cambia el orden o rompe la estructura del español.\n2) Mantén el TÚ del original como YOU (no 'one', no pasivas innecesarias).\n3) Endpoints, métodos HTTP, nombres de parámetros: NO se traducen.\n4) Términos como 'autenticación', 'punto final', 'cuerpo de la respuesta': usar la convención estándar inglesa (authentication, endpoint, response body).\n5) Si una frase en español es ambigua, márcala con [AMBIGUO: por qué]. NO intentes adivinar.\n6) Si una frase suena a manual técnico de los 90 incluso en español, mejórala en la traducción y márcala con [REWRITE: original / propuesta].\n\nFormato de salida:\n- Tabla en markdown con tres columnas: ES original | EN traducción | Notas (si las hay)\n- Al final: lista de los 3-5 términos donde tomaste decisiones de traducción no triviales, y por qué\n\nTexto:\n&lt;documento&gt;\n[texto en español aquí]\n&lt;/documento&gt;",
+      why: "<strong>Por qué funciona:</strong> rol comparativo con referentes reales (Stripe, Twilio) + reglas explícitas para los casos borde + marcadores especiales para ambigüedad + tabla con notas. La salida es auditable; sabes qué decisiones tomó Claude."
+    }
+  ],
+
+  ejercicios: [
+    {
+      title: "Refactoriza este prompt mediocre",
+      task: "Prompt original: \"Hazme un post de LinkedIn sobre productividad.\"\n\nReescríbelo añadiendo los 5 componentes (rol, contexto, tarea, formato, restricciones). Imagina que el post lo escribes tú, fundador de una agencia B2B, y quieres que suene a ti, no a coach genérico.",
+      solution: "Actúa como copywriter B2B con tono propio (cercano, directo, sin emojis ni clichés de LinkedIn).\n\nContexto: voy a publicar un post en mi LinkedIn personal. Soy fundador de una agencia de growth B2B (8 personas, 5 años, clientes SaaS) y tengo 14.000 seguidores que son founders y heads of marketing. Quiero hablar sobre una decisión concreta de productividad que tomé: eliminar la reunión semanal de 1h con el equipo y sustituirla por un Loom de 15 min los lunes.\n\nTarea: redacta el post. La idea central es que la mayoría de reuniones que defendemos como 'alineamiento' son en realidad un sustituto cómodo de escribir con claridad.\n\nFormato:\n- Hook en la primera línea (debe parar el scroll, sin clickbait)\n- 4-6 párrafos cortos, alternando frase larga y frase corta\n- Una métrica concreta del cambio (yo digo: ahorré ~5h/semana del equipo)\n- Cierre con una pregunta a la audiencia que invite a respuesta\n\nRestricciones:\n- Máx 220 palabras\n- Sin emojis\n- Sin frases tipo 'lessons learned' o 'game changer'\n- Nada de 'qué opináis vosotros?'. Pregunta concreta o nada.\n- En español de España",
+      rubric: [
+        "Define un rol específico, no genérico ('asistente')",
+        "Da contexto del autor, audiencia y de la decisión concreta",
+        "Especifica formato: hook, longitud, estructura de párrafos",
+        "Pone restricciones tanto positivas como negativas (qué evitar)",
+        "Convierte una petición vaga en algo que solo puede ser tu post, no el de cualquiera"
+      ]
+    },
+    {
+      title: "Identifica qué falta en este prompt",
+      task: "Lee este prompt y enumera todo lo que le falta para sacar una buena respuesta. No lo reescribas: solo diagnostica.\n\n\"Quiero que me ayudes con un correo. Tengo que cancelar un servicio que ya no uso pero llevo dos años pagando. Hazme un correo bonito.\"",
+      solution: "Lo que falta:\n\n1) ROL: no se define quién es Claude para esta tarea. ¿Asistente legal? ¿Consumer advocate? ¿Redactor neutro?\n\n2) CONTEXTO crítico que falta:\n- ¿Qué servicio es? (saber si hay condiciones especiales: gimnasio, telco, software, suscripción media)\n- ¿A quién va el correo? ¿Empresa grande, autónomo, particular?\n- ¿Hay permanencia? ¿He pasado ya el plazo de la permanencia?\n- ¿Quiero reembolso del último cargo o solo cancelar a futuro?\n- ¿He intentado cancelar antes y me han ignorado?\n- ¿Tengo el contrato a mano?\n\n3) OBJETIVO: ¿solo cancelar? ¿exigir reembolso? ¿dejar la puerta abierta a reactivar? Cada uno cambia el tono.\n\n4) FORMATO: ¿asunto + cuerpo? ¿necesito que cite artículos legales? ¿incluye datos de contacto?\n\n5) RESTRICCIONES: ¿qué tono? 'Bonito' es ambiguo. ¿Firme pero educado? ¿Legalista? ¿Apelando a la relación previa?\n\n6) FALTA DECIR QUÉ NO HACER: no quiero sonar suplicante, no quiero amenazar con denuncia si no es necesario, no quiero usar plantillas legales si la cosa es simple.\n\nDiagnóstico general: el prompt es típica vaguedad disfrazada de cortesía. 'Bonito' es la palabra que destruye toda especificidad. Hay que sustituirla por un objetivo concreto.",
+      rubric: [
+        "Identifica que falta el ROL definido",
+        "Lista al menos 4-5 piezas de contexto ausentes",
+        "Detecta que 'bonito' no es una restricción de tono útil",
+        "Señala que el objetivo (cancelar / cancelar + reembolso) no está claro",
+        "Reconoce que no hay especificación de formato de salida",
+        "Bonus: identifica el patrón general (vaguedad disfrazada de cortesía)"
+      ]
+    },
+    {
+      title: "Escribe un prompt desde cero",
+      task: "Objetivo: necesitas decidir si despedir o no a una persona del equipo. Lleva 14 meses contigo. Es buena técnicamente pero ha tenido tres incidentes en el último trimestre con compañeros (gritó en una reunión, mandó un Slack agresivo a una junior, ridiculizó públicamente a otra persona en daily).\n\nEscribe un prompt que ayude a Claude a estructurarte el pensamiento SIN tomar la decisión por ti. La decisión es tuya y de RRHH, no de Claude.",
+      solution: "Actúa como coach ejecutivo con experiencia en management de equipos. NO eres asesor legal ni de RRHH formal.\n\nContexto: soy manager directo de una persona del equipo, 14 meses con nosotros. Perfil técnico sólido (top 20% del equipo de 15 ingenieros). Tres incidentes en el último trimestre:\n1) Gritó a un compañero en una reunión presencial sobre prioridades (febrero)\n2) Mandó un Slack agresivo a una junior diciéndole que su PR era 'penoso' (marzo)\n3) Ridiculizó públicamente a otra persona del equipo en la daily ('si supieras leer la documentación no preguntarías eso') (la semana pasada)\n\nDespués de cada incidente hubo conversación 1:1 y compromiso de cambio. Los dos primeros aparentemente surtieron efecto durante unas semanas.\n\nLo que NO quiero de ti:\n- NO me digas si debo despedir o no. Esa decisión es mía con RRHH.\n- NO te pongas legal. RRHH ya está al tanto del proceso formal.\n\nLo que SÍ quiero:\n1) Las 6 preguntas que debería responderme yo mismo antes de tomar la decisión final (preguntas duras que probablemente estoy evitando)\n2) Los sesgos que probablemente están operando en mi cabeza ahora (sunk cost por los 14 meses, miedo al hueco técnico que deja, ansiedad por la conversación difícil...)\n3) Una pauta para preparar la conversación de mañana con esta persona: cómo abrirla, qué NO decir, cómo dejarle salida si quiere irse por su cuenta\n4) Una checklist de lo que tengo que tener documentado antes de cualquier decisión\n\nFormato: secciones cortas, listas con bullets, máx 700 palabras totales.",
+      rubric: [
+        "Define rol acotado (coach, NO consejero legal ni decisor)",
+        "Cláusula explícita de qué NO quieres que haga Claude",
+        "Contexto detallado con incidentes concretos y fechas",
+        "Reconoce sus propios posibles sesgos (sunk cost, miedo)",
+        "Pide preguntas para pensar, no respuestas que decidan",
+        "Especifica formato de salida (secciones, longitud)",
+        "Incluye el ángulo accionable de la conversación de mañana"
+      ]
+    },
+    {
+      title: "Convierte una descripción en un few-shot",
+      task: "Quieres que Claude clasifique emails de clientes en una de estas categorías: URGENTE-LEGAL, URGENTE-OPERATIVO, NORMAL, NO-RESPONDER (spam o fuera de scope).\n\nTu primer intento es describir cada categoría con palabras. Pero la respuesta de Claude es inconsistente. Reescribe el prompt usando few-shot: en lugar de DESCRIBIR cada categoría, ENSEÑA 2 ejemplos resueltos por categoría.",
+      solution: "Vas a clasificar emails entrantes en una de cuatro categorías. Mira primero los ejemplos resueltos y aplica el mismo criterio.\n\n&lt;ejemplos&gt;\n\nEjemplo 1\nEmail: \"Buenas tardes. Mi abogado me ha dicho que envíe esto: estoy ejerciendo mi derecho de desistimiento (art. 102 LGDCU) por el contrato firmado el 12 de marzo. Espero confirmación en 14 días o procederé.\"\nCategoría: URGENTE-LEGAL\n\nEjemplo 2\nEmail: \"Os escribo de parte de Bufete Soler. Adjunto reclamación formal por incumplimiento contractual.\"\nCategoría: URGENTE-LEGAL\n\nEjemplo 3\nEmail: \"Llevamos 4 horas con la plataforma caída y tenemos un evento en directo a las 19h con 800 asistentes pagados. Necesito una solución HOY.\"\nCategoría: URGENTE-OPERATIVO\n\nEjemplo 4\nEmail: \"No me llega el email de confirmación del pedido, intenté pagar tres veces y se me ha cobrado dos. Mañana lo necesito.\"\nCategoría: URGENTE-OPERATIVO\n\nEjemplo 5\nEmail: \"Hola, una pregunta sobre la factura de marzo. ¿Podríais incluir el CIF en el detalle? Gracias.\"\nCategoría: NORMAL\n\nEjemplo 6\nEmail: \"Quería saber si tenéis algún descuento por pronto pago o por contratar el plan anual. Sin prisa.\"\nCategoría: NORMAL\n\nEjemplo 7\nEmail: \"Compra Bitcoin AHORA — Elon Musk ha invertido 10B y tú puedes triplicar tus ahorros en 48h. Pincha aquí.\"\nCategoría: NO-RESPONDER\n\nEjemplo 8\nEmail: \"Hola, ¿hacéis catering para bodas en Sevilla?\" (somos una empresa de SaaS B2B de logística)\nCategoría: NO-RESPONDER\n\n&lt;/ejemplos&gt;\n\nAhora clasifica el siguiente email. Devuelve SOLO la categoría, sin justificación, en una línea.\n\nEmail:\n&lt;email&gt;\n[email a clasificar]\n&lt;/email&gt;",
+      rubric: [
+        "Da 2 ejemplos por categoría (no solo 1)",
+        "Los ejemplos cubren casos prototípicos y casos borde",
+        "Usa delimitadores XML (ejemplos, email) para separar instrucción y datos",
+        "Especifica formato de salida exacto (solo categoría, una línea, sin justificación)",
+        "No describe las categorías con palabras: deja que Claude infiera el patrón",
+        "Incluye al menos un ejemplo no obvio (ej: catering pidiendo a SaaS) para enseñar el criterio"
+      ]
+    },
+    {
+      title: "Diagnostica por qué el prompt no funciona",
+      task: "Un compañero te enseña este prompt y se queja de que 'Claude le entiende mal'. ¿Cuáles son los DOS o TRES problemas principales del prompt y cómo los arreglas?\n\n\"Eres un asistente experto en todo. Necesito que me ayudes con mi negocio y me des consejos para crecer. Hazme un plan estratégico completo y detallado con todo lo que debería hacer. Sé exhaustivo y dame muchas opciones para que yo elija. Quiero algo profesional y de calidad. Gracias.\"",
+      solution: "Tres problemas principales:\n\n1) ROL inútil: 'experto en todo' = experto en nada. Claude no activa ningún patrón concreto. Solución: 'Eres consultor de estrategia con experiencia en pymes de [SECTOR]. Tu especialidad es ayudar a fundadores a priorizar, no a expandir el scope.'\n\n2) CONTEXTO inexistente: 'mi negocio' no le dice nada a Claude. ¿Qué negocio, qué tamaño, en qué momento, con qué objetivo, qué problema concreto? Es como pedirle un diagnóstico médico al teléfono sin decir qué te duele. Solución: añadir 2-3 párrafos con sector, MRR/facturación, equipo, mercado, situación actual, el problema o decisión específica.\n\n3) RESTRICCIONES contradictorias: pide 'exhaustivo, detallado, muchas opciones, profesional' = pide un PDF de 40 páginas que no vas a leer. La calidad y la exhaustividad son enemigas. Solución: forzar a Claude a priorizar. 'Dame las 3 acciones que más mueven la aguja, no 30. Justifica por qué descartas el resto.'\n\nBonus que también falla:\n- 'Sé profesional y de calidad' no es una restricción: es ruido cortés. Claude no sabe qué hacer con eso.\n- 'Hazme un plan completo' sin objetivo → plan genérico de manual.\n- 'Gracias' al final no aporta, pero tampoco resta. Es el único elemento perdonable.\n\nDiagnóstico general: este prompt es la suma de buenas intenciones y cero decisiones. El refactor consiste en quitar adjetivos y meter sustantivos concretos.",
+      rubric: [
+        "Detecta que 'experto en todo' es un rol inútil",
+        "Identifica la ausencia total de contexto del negocio",
+        "Señala la contradicción entre 'exhaustivo' y la utilidad real",
+        "Reconoce que adjetivos vagos (profesional, de calidad) no son restricciones",
+        "Propone reemplazar adjetivos vagos por criterios verificables",
+        "Bonus: identifica el patrón de 'cortesía sin decisiones' como anti-patrón general"
+      ]
+    }
+  ],
+
+  prompts: [
+    {
+      tag: "Brief",
+      title: "Brief creativo para agencia",
+      desc: "Para redactar el brief con el que vas a contratar a una agencia o freelance creativo.",
+      text: "ROL\nActúa como product marketing manager redactando un brief creativo para una agencia externa.\n\nCONTEXTO\nProducto: [PRODUCTO + EN UNA FRASE QUÉ HACE]\nMomento: [LANZAMIENTO / REPOSICIONAMIENTO / CAMPAÑA ESTACIONAL]\nPúblico objetivo: [SEGMENTO ESPECÍFICO, NO 'TODOS']\nMetas medibles: [KPI PRINCIPAL + NÚMERO]\nLo que NO se toca: [BRAND GUIDELINES, NOMBRE, CLAIMS LEGALES]\n\nTAREA\nEscribe el brief que voy a enviar a la agencia.\n\nFORMATO\n7 secciones:\n1) Contexto del proyecto (3 líneas)\n2) Objetivo y KPI\n3) Insight del consumidor (qué siente o cree ahora el público)\n4) Mensaje único a transmitir\n5) Tone of voice (3 adjetivos + 1 ejemplo de marca de referencia)\n6) Entregables y formatos\n7) Timeline con hitos\n\nRESTRICCIONES\n- Máx 500 palabras\n- Nada de palabros tipo 'disruptivo', 'innovador', 'experiencia 360'\n- Si falta información para una sección, déjala marcada con [PENDIENTE: qué hace falta]"
+    },
+    {
+      tag: "Análisis",
+      title: "Análisis competitivo con criterios fijos",
+      desc: "Para analizar 3-4 competidores sin que Claude divague.",
+      text: "ROL\nActúa como analista de estrategia con experiencia en [SECTOR].\n\nCONTEXTO\nMi empresa: [QUIÉN ERES, MRR/FACTURACIÓN, MERCADO]\nCompetidores a analizar: [COMP A], [COMP B], [COMP C]\nDecisión que va a salir de este análisis: [QUÉ VAS A HACER CON LA INFO]\n\nTAREA\nPara cada competidor, devuélveme exactamente esta ficha:\n- Propuesta de valor en 1 frase (cómo se posicionan ELLOS)\n- Pricing público (rango + modelo)\n- 2 fortalezas reales\n- 2 debilidades atacables\n- Cliente tipo (segmento, tamaño)\n\nDespués de las fichas individuales:\n- Tabla comparativa con [N] ejes que importan al cliente: [EJE 1], [EJE 2], [EJE 3]...\n- Las 3 jugadas estratégicas que recomendarías a 6 meses\n- La amenaza que más me debería preocupar\n\nFORMATO\nFichas + tabla markdown + lista numerada. Máx 1.500 palabras totales.\n\nRESTRICCIONES\n- Si NO tienes datos verificables sobre algo, escribe [SIN DATOS PÚBLICOS]. NO inventes\n- Sin lenguaje de consultora ('palanca', 'cuello de botella', 'sinergia')"
+    },
+    {
+      tag: "Comercial",
+      title: "Oferta comercial estructurada",
+      desc: "Para redactar una propuesta que el cliente lea entera y entienda en 90 segundos.",
+      text: "ROL\nEres consultor que prepara una oferta comercial para un cliente B2B.\n\nCONTEXTO\nCliente: [NOMBRE, SECTOR, TAMAÑO]\nMomento: [PRIMER CONTACTO / SEGUNDA REUNIÓN / CIERRE]\nLo que sabemos del problema del cliente: [SU DOLOR EN 2-3 LÍNEAS]\nLo que propongo: [SERVICIO O PRODUCTO + ESTRUCTURA DE PRECIO]\nDuración del proyecto: [SEMANAS / MESES]\n\nTAREA\nRedacta la propuesta con esta estructura, exactamente en este orden:\n\n1) Resumen ejecutivo (4 líneas máx) — entendimiento del problema y solución propuesta\n2) Tu situación actual (cómo entendemos lo que les pasa)\n3) Propuesta de valor concreta (qué va a cambiar tras el proyecto, en términos del cliente, no de nuestras capacidades)\n4) Alcance: qué entra y qué NO entra (lista bullets, sin párrafos)\n5) Metodología en 3-5 fases con hitos y entregables\n6) Inversión: precio claro, modalidades de pago, fecha de validez\n7) Próximo paso (acción concreta y fecha, no 'avísanos cuando quieras')\n\nFORMATO\nMarkdown con secciones bien delimitadas. Máx 900 palabras.\n\nRESTRICCIONES\n- Cero corporate-speak\n- No usar la palabra 'sinergia', 'roadmap' ni 'partner estratégico'\n- En 'lo que entra y NO entra' poner mínimo 3 cosas en cada lado"
+    },
+    {
+      tag: "QA",
+      title: "Generar test cases para una feature",
+      desc: "Para que un dev senior te entregue una matriz de pruebas en lugar de improvisar.",
+      text: "ROL\nActúa como QA engineer senior con experiencia en testing manual y automatizado.\n\nCONTEXTO\nFeature a testear: [DESCRIPCIÓN DE LA FEATURE EN 3-5 LÍNEAS]\nStack: [TECNOLOGÍA RELEVANTE: WEB / iOS / API / ETC]\nUsuarios afectados: [QUIÉN LA USA]\nCriticidad: [BAJA / MEDIA / ALTA + JUSTIFICACIÓN]\n\nTAREA\nGenera la matriz de test cases. Para cada caso, incluye:\n- ID (TC-001, TC-002...)\n- Tipo (happy path / edge case / negative / regression)\n- Precondiciones\n- Pasos\n- Resultado esperado\n- Prioridad (P0/P1/P2)\n\nCubre estos ángulos sin dejarte ninguno:\n1) Happy path principal\n2) Edge cases de input (vacío, máximo, mínimo, caracteres especiales, locale)\n3) Errores esperables y manejo de fallos\n4) Concurrencia / estado (qué pasa si dos usuarios hacen X a la vez)\n5) Permisos y roles\n6) Performance (umbrales aceptables)\n7) Accesibilidad mínima\n\nFORMATO\nTabla markdown con las columnas arriba indicadas. Mínimo 12 casos, máximo 20.\n\nRESTRICCIONES\n- Los casos P0 deben ser los que rompen el negocio si fallan\n- Si un caso depende de datos que NO has descrito, márcalo [ASUNCIÓN: ...]"
+    },
+    {
+      tag: "Resumen",
+      title: "Resumen ejecutivo de documento largo",
+      desc: "Cuando recibes un PDF de 40 páginas y tienes 20 minutos antes de una reunión.",
+      text: "ROL\nActúa como chief of staff preparando un resumen para alguien que va a entrar en una reunión.\n\nCONTEXTO\nDocumento: [TIPO Y TEMA: ej. informe sectorial, contrato, white paper]\nQuien lo va a leer: [PERFIL Y QUÉ DECISIÓN TIENE QUE TOMAR]\nDecisión concreta: [QUÉ TIENE QUE DECIDIR O COMUNICAR EN LA REUNIÓN]\n\nTAREA\nResume el documento al servicio de esa decisión.\n\nFORMATO\n1) TL;DR de 3 líneas\n2) Los 5 puntos clave (cada uno con cita de página entre paréntesis)\n3) Los 3 datos numéricos más relevantes\n4) Las 2 cosas que el documento NO dice y deberían preguntarse\n5) Recomendación de postura para la reunión (en 2-3 líneas)\n\nRESTRICCIONES\n- Máx 350 palabras totales\n- Si un dato no aparece literalmente en el documento, marca [NO EN EL DOCUMENTO]\n- Sin valoraciones tipo 'interesante' o 'destacable'. Sustantivo y verbo, no adjetivo\n\nDocumento:\n&lt;documento&gt;\n[PEGA AQUÍ EL TEXTO O ADJUNTA EL PDF]\n&lt;/documento&gt;"
+    },
+    {
+      tag: "Redacción",
+      title: "Email difícil con tono firme",
+      desc: "Para comunicar algo incómodo (subida de precio, fin de relación, cobro pendiente) sin sonar débil ni agresivo.",
+      text: "ROL\nActúa como account manager senior redactando un email difícil para un cliente.\n\nCONTEXTO\nRelación con el cliente: [TIEMPO Y CALIDAD DE LA RELACIÓN]\nMotivo del email: [QUÉ TIENES QUE COMUNICAR]\nResultado deseado: [QUÉ QUIERES QUE EL CLIENTE HAGA O ENTIENDA]\nLo que NO quieres: [SONAR SUPLICANTE / PROVOCAR ESCALADA / DEJAR PUERTAS ABIERTAS QUE NO QUIERES]\n\nTAREA\nEscribe el email con esta estructura:\n1) Asunto claro y no eufemístico (máx 9 palabras)\n2) Primera frase: reconocimiento del impacto en ellos (no 'sentimos las molestias')\n3) Hecho concreto que motiva el email (sin excusas, sin drama)\n4) Tu propuesta o decisión\n5) Acción esperada del cliente y deadline\n6) Cierre profesional sin servilismo\n\nFORMATO\nAsunto + cuerpo. Máx 180 palabras de cuerpo. Devuélveme 2 asuntos alternativos al final por si quiero A/B testear.\n\nRESTRICCIONES\n- Tono: firme y profesional, no servil\n- Prohibido: 'lamentamos las molestias', 'esperamos su comprensión', 'gracias de antemano por su paciencia'\n- En español de España, usted o tú según [INDICAR]"
+    },
+    {
+      tag: "Extraer",
+      title: "Extracción a JSON con esquema",
+      desc: "Cuando tienes texto desestructurado y necesitas JSON limpio que vas a procesar después.",
+      text: "ROL\nActúa como data engineer extrayendo entidades estructuradas de texto libre.\n\nCONTEXTO\nFuente: [QUÉ TIPO DE TEXTO ES: emails, transcripciones, formularios...]\nUso posterior del JSON: [QUÉ HARÁS CON ESTOS DATOS]\n\nTAREA\nDel texto que te paso, extrae todas las entidades de tipo [TIPO DE ENTIDAD] siguiendo este esquema exacto:\n\n{\n  \"campo_1\": string (descripción de qué es),\n  \"campo_2\": number | null,\n  \"campo_3\": string en formato YYYY-MM-DD o null si no aplica,\n  \"campo_4\": [\"opcion_a\", \"opcion_b\", \"opcion_c\"] (uno de estos valores),\n  \"fuente_cita\": string (frase exacta del texto original donde aparece)\n}\n\nFORMATO\nDevuelve SOLO un array JSON válido. Sin texto antes ni después. Sin bloques de código markdown. Empieza con [ y acaba con ].\n\nRESTRICCIONES\n- Si un campo no aparece, ponlo como null. NO inventes ni infieras agresivamente.\n- Si el valor del campo_4 no encaja claramente en una de las opciones, escribe \"OTRO\" y añade un campo \"campo_4_nota\" con el motivo.\n- Si una fecha está ambigua (\"el viernes\"), pon el string literal en lugar de adivinar.\n\nTexto:\n&lt;texto&gt;\n[PEGA AQUÍ EL TEXTO A PROCESAR]\n&lt;/texto&gt;"
+    },
+    {
+      tag: "Decidir",
+      title: "Decisión estructurada con 3 opciones",
+      desc: "Para forzarte a tener un marco claro cuando estás dando vueltas a una decisión.",
+      text: "ROL\nActúa como facilitador de decisiones. NO tomas la decisión por mí; me estructuras el pensamiento.\n\nCONTEXTO\nDecisión a tomar: [DESCRIPCIÓN DE LA DECISIÓN EN UNA FRASE]\nOpciones que estoy considerando:\nA) [OPCIÓN A]\nB) [OPCIÓN B]\nC) [OPCIÓN C]\n\nMi situación: [LO RELEVANTE PARA ESTA DECISIÓN: TIEMPO, DINERO, GENTE, OBJETIVO MAYOR]\nLo que YA he descartado y por qué: [SI APLICA]\n\nTAREA\nDevuélveme:\n1) Los 3-4 criterios que realmente importan en esta decisión (no los obvios — los que se me pueden estar escapando)\n2) Evaluación cualitativa de cada opción contra esos criterios (texto, no puntuaciones)\n3) Los sesgos cognitivos que probablemente están operando ahora mismo en mi cabeza (status quo, sunk cost, urgencia artificial, sesgo de disponibilidad, etc.) y una técnica de neutralización para cada uno\n4) Si quisiera estar más seguro de mi elección, qué información me falta y qué pequeño experimento podría hacer para conseguirla en menos de 1 semana\n5) Una pregunta dura final que aún no me he hecho\n\nFORMATO\nSecciones bien separadas. Listas con bullets. Máx 800 palabras.\n\nRESTRICCIONES\n- NO recomiendes una opción\n- NO uses la palabra 'depende' como respuesta\n- Sé directo si una de las opciones tiene un problema evidente que yo no estoy viendo"
+    },
+    {
+      tag: "Aprender",
+      title: "Explicación por niveles",
+      desc: "Para que Claude te explique algo nuevo a tu nivel exacto, sin caer en lo infantil ni en lo opaco.",
+      text: "ROL\nEres un mentor con buen ojo para calibrar el nivel del alumno.\n\nCONTEXTO\nTema: [CONCEPTO O DISCIPLINA]\nMi punto de partida: [LO QUE YA SÉ Y LO QUE HE LEÍDO]\nMi objetivo: [LO QUE QUIERO PODER HACER O ENTENDER AL TERMINAR]\nCómo aprendo mejor: [ANALOGÍAS / EJEMPLOS PRÁCTICOS / PRIMEROS PRINCIPIOS / etc.]\n\nTAREA\nExplícame el tema en 4 niveles progresivos:\n1) La intuición en una frase (algo a lo que pueda agarrarme antes de los detalles)\n2) Qué problema resuelve y por qué se inventó\n3) Los 3-5 componentes/conceptos centrales, en mi nivel\n4) Un caso concreto que pueda visualizar de principio a fin\n\nDespués:\n- Los 3 errores comunes que comete la gente al pensar en esto\n- Una pregunta para comprobar que lo he entendido\n\nFORMATO\nSecciones numeradas. Frases cortas. Máx 700 palabras.\n\nRESTRICCIONES\n- NO uses analogías de [LO QUE NO QUIERES: ej. 'cocina', 'coches', 'trenes', etc.]\n- Si un concepto no se puede simplificar más sin perder lo esencial, dilo y profundiza\n- Cuando uses un término nuevo, defínelo entre paréntesis la primera vez"
+    },
+    {
+      tag: "Revisar",
+      title: "Review brutal de un texto propio",
+      desc: "Para que Claude haga de editor sin cuidarte los sentimientos.",
+      text: "ROL\nEres editor jefe brutalmente honesto. Tu trabajo no es animarme, es que el texto sea mejor.\n\nCONTEXTO\nTipo de texto: [EMAIL / POST / NEWSLETTER / PROPUESTA / etc.]\nDestinatario o audiencia: [A QUIÉN VA]\nObjetivo del texto: [QUÉ QUIERO QUE PASE DESPUÉS DE LEERLO]\nMi nivel de attachment al texto: [CUÁNTO ME COSTARÍA TIRARLO Y EMPEZAR DE CERO]\n\nTAREA\nLee el texto y devuélveme:\n1) Lo que está bien: máx 2 cosas. Si no encuentras 2, di solo 1.\n2) Los 3 problemas más graves, en orden. Para cada uno:\n   - Cita la frase exacta entre comillas\n   - Por qué falla (en términos de objetivo, no de estilo)\n   - Cómo lo reescribirías\n3) Veredicto general: ¿este texto se puede salvar editando o debería tirarlo y empezar de cero?\n4) Si la respuesta es salvarlo: una versión reescrita\n\nFORMATO\nSecciones numeradas. Citas literales entre comillas. Máx 500 palabras totales.\n\nRESTRICCIONES\n- Prohibido decir 'interesante', 'curioso', 'tiene potencial', 'con algunos ajustes'\n- Si una frase es prescindible, dilo. Si el texto entero no aporta, dilo.\n- No me digas que 'depende del estilo personal'. Asume objetivo y juzga contra él.\n\nTexto a revisar:\n&lt;texto&gt;\n[PEGA AQUÍ TU TEXTO]\n&lt;/texto&gt;"
+    },
+    {
+      tag: "Comparar",
+      title: "Comparativa con criterios numéricos",
+      desc: "Para elegir entre opciones técnicas o de proveedor sin caer en el clásico 'depende' inútil.",
+      text: "ROL\nActúa como [PERFIL TÉCNICO: ARQUITECTO DE SOFTWARE / DIRECTOR DE COMPRAS / etc.] evaluando opciones para mi caso.\n\nCONTEXTO\nMi caso: [DESCRIPCIÓN ESPECÍFICA: TAMAÑO, RECURSOS, RESTRICCIONES, MOMENTO]\nOpciones a comparar: [OPCIÓN A], [OPCIÓN B], [OPCIÓN C]\nQuién va a usar/mantener esto después: [EQUIPO Y NIVEL]\n\nTAREA\nCompara las opciones contra estos criterios y puntúa cada una de 1 a 5 (1 = mal, 5 = excelente):\n1) [CRITERIO 1: ej. coste total a 2 años]\n2) [CRITERIO 2: ej. curva de aprendizaje]\n3) [CRITERIO 3: ej. ecosistema y soporte]\n4) [CRITERIO 4: ej. flexibilidad futura]\n5) [CRITERIO 5: ej. riesgo de obsolescencia]\n\nFORMATO\n1) Tabla con opciones en columnas y criterios en filas, con puntuaciones\n2) Para cada criterio, 1-2 líneas justificando la diferencia entre opciones\n3) Recomendación final en 3 líneas: cuál elegir, qué pierdes con esa elección, qué señal te haría cambiar de opinión\n\nRESTRICCIONES\n- Cero 'depende'\n- Si las opciones empatan en un criterio, dilo, NO inventes diferencias\n- Si no tienes datos verificables, marca [SIN DATOS] en la celda en lugar de inventar"
+    },
+    {
+      tag: "Generar",
+      title: "Variantes con criterios distintos",
+      desc: "Cuando necesitas opciones DIVERSAS (titulares, slogans, nombres) y no 10 variantes de la misma idea.",
+      text: "ROL\nActúa como [DIRECTOR CREATIVO / NAMING SPECIALIST / COPYWRITER] generando opciones con diversidad real.\n\nCONTEXTO\nQué necesito: [TIPO DE OUTPUT: titulares, nombres, slogans, asuntos de email...]\nTema/producto: [DESCRIPCIÓN EN 1-2 LÍNEAS]\nPúblico objetivo: [QUIÉN LO VA A LEER]\nTono general: [3 ADJETIVOS]\nLímite formal: [CARACTERES O PALABRAS POR OPCIÓN]\n\nTAREA\nDame 10 opciones agrupadas en 5 bloques de 2 cada uno. Cada bloque optimiza para una cualidad distinta:\n1-2) Claridad máxima (se entiende en 1 segundo, cero ambigüedad)\n3-4) Curiosidad (dispara el clic, abre un loop sin resolver)\n5-6) Emoción (apela a sentir, no a pensar)\n7-8) Contraste (decir lo opuesto del lugar común del sector)\n9-10) Concreción extrema (un número, un nombre, un caso específico)\n\nPara cada opción:\n- La opción tal cual\n- En 5 palabras: la sensación que transmite\n- Un riesgo o crítica que se le pueda hacer (sé honesto)\n\nFORMATO\nLista numerada agrupada por bloques. Máx 800 palabras totales.\n\nRESTRICCIONES\n- NO repitas la misma idea con sinónimos\n- NO uses palabras de marketing genéricas ('descubre', 'transforma', 'desata', 'desbloquea')\n- NO uses signos de exclamación a menos que el bloque sea Emoción"
+    }
+  ],
+
+  quiz: [
+    {
+      q: "¿Cuáles son los 5 componentes de un buen prompt según el módulo?",
+      opts: [
+        "Hola + petición + por favor + gracias + firma",
+        "Rol + contexto + tarea + formato + restricciones",
+        "Asunto + cuerpo + adjuntos + tono + idioma",
+        "Pregunta + opciones + ejemplo + nota + cierre"
+      ],
+      correct: 1,
+      fb: "ROL (quién es Claude), CONTEXTO (la situación), TAREA (qué hacer), FORMATO (cómo quieres la salida) y RESTRICCIONES (límites y qué evitar). Si falta una, el output se vuelve borroso."
+    },
+    {
+      q: "Le pides a Claude: \"Escribe algo bonito sobre el café\". ¿Cuál es el problema principal?",
+      opts: [
+        "Que el prompt es demasiado corto",
+        "Que 'bonito' es subjetivo y faltan rol, contexto, formato y restricciones",
+        "Que Claude no sabe escribir sobre comida",
+        "Que el verbo 'escribir' es ambiguo"
+      ],
+      correct: 1,
+      fb: "El problema no es la longitud, es la vaguedad disfrazada de cortesía. 'Bonito' no es una restricción útil. Faltan público, propósito, longitud y formato. Adjetivos genéricos = output genérico."
+    },
+    {
+      q: "¿Para qué sirven los delimitadores (triple comilla, etiquetas XML, líneas de guiones) en un prompt?",
+      opts: [
+        "Para que el prompt se vea más bonito",
+        "Para separar instrucciones del contenido sobre el que Claude tiene que trabajar",
+        "Para hacer que la respuesta sea más larga",
+        "Para activar funciones avanzadas de la API"
+      ],
+      correct: 1,
+      fb: "Cuando metes un texto largo en medio del prompt, Claude puede confundir instrucción y contenido. Delimitadores tipo &lt;texto&gt;...&lt;/texto&gt; o triple comilla eliminan esa ambigüedad y mejoran la fiabilidad del output."
+    },
+    {
+      q: "Tienes que clasificar emails con un criterio propio difícil de explicar con palabras. ¿Qué técnica funciona mejor?",
+      opts: [
+        "Escribir un párrafo larguísimo describiendo cada categoría",
+        "Subir la temperatura para que Claude sea más creativo",
+        "Few-shot: darle 2-3 ejemplos resueltos por categoría",
+        "Usar Opus en vez de Sonnet"
+      ],
+      correct: 2,
+      fb: "Few-shot (show don't tell): los LLM infieren patrones mucho mejor con ejemplos resueltos que con descripciones verbales. Especialmente útil cuando el criterio es idiosincrático y difícil de verbalizar."
+    },
+    {
+      q: "¿Qué diferencia hay entre system prompt y user prompt en una sesión larga?",
+      opts: [
+        "Ninguna, son sinónimos",
+        "System = rol y reglas persistentes para toda la conversación; user = cada petición individual",
+        "System es para programadores, user para usuarios normales",
+        "System gasta menos tokens"
+      ],
+      correct: 1,
+      fb: "El system prompt define lo estable (rol, tono, restricciones de toda la sesión). El user prompt es cada mensaje individual. En sesiones largas, mete en el system lo que no cambia y deja el user para lo que sí."
+    },
+    {
+      q: "Le pides a Claude: \"Eres un asistente experto en todo, dame consejos profesionales y de calidad sobre mi negocio\". ¿Qué falla?",
+      opts: [
+        "Nada, es un prompt correcto",
+        "'Experto en todo' es un rol inútil + 'mi negocio' no es contexto + 'profesional y de calidad' no son restricciones operables",
+        "Falta decir 'por favor'",
+        "Debería usar mayúsculas en EXPERTO"
+      ],
+      correct: 1,
+      fb: "Tres anti-patrones clásicos: rol genérico no activa nada; contexto inexistente; adjetivos vagos (profesional, de calidad) no son restricciones, son ruido cortés. La cura: rol concreto, datos del negocio, restricciones verificables."
+    },
+    {
+      q: "Si quieres que Claude te devuelva exactamente JSON sin texto adicional, ¿qué deberías hacer?",
+      opts: [
+        "Pedirle 'porfa devuélveme JSON'",
+        "Especificar el schema exacto + ejemplo del formato + instrucción clara de NO incluir texto antes/después",
+        "No es posible, Claude siempre añade explicaciones",
+        "Subir la temperatura a 1.0"
+      ],
+      correct: 1,
+      fb: "Para output programático: schema explícito + ejemplo + instrucción 'devuelve SOLO el JSON, sin texto antes ni después, sin bloques markdown'. Baja la temperatura a 0 y considera prefill ('[') si usas la API."
+    },
+    {
+      q: "Especificidad vs vaguedad: ¿cuál de estos es el prompt MÁS específico?",
+      opts: [
+        "Escribe un plan de marketing",
+        "Escribe un plan de marketing online",
+        "Escribe un plan de marketing trimestral para una academia online de inglés B2B con 8.000€/mes de presupuesto, KPI 40 leads/mes en empresas de 100+ empleados",
+        "Escribe un plan de marketing detallado y completo"
+      ],
+      correct: 2,
+      fb: "Especificidad = nombres propios + números + restricciones verificables. 'Detallado y completo' son adjetivos vacíos. Más contexto siempre que sea relevante para la tarea: público, presupuesto, KPI, sector, ámbito geográfico."
+    },
+    {
+      q: "Te dan este prompt: \"Hazme una landing para mi cafetería\". ¿Cuál es el problema más estructural?",
+      opts: [
+        "Que Claude no genera código HTML",
+        "Que confunde lo que Claude puede hacer (texto, brief, conceptos) con lo que NO (diseñar imagen visual final)",
+        "Que las cafeterías no necesitan landing",
+        "Que el verbo 'hacer' no es lo bastante elegante"
+      ],
+      correct: 1,
+      fb: "Antes de escribir un prompt, hay que entender qué SÍ y qué NO puede entregar Claude. Para 'una landing' lo útil es pedirle copy, estructura, jerarquía de mensajes y wireframe descrito — no la imagen visual del diseño final."
+    },
+    {
+      q: "En la jerarquía de instrucciones, ¿qué pesa más cuando entran en conflicto?",
+      opts: [
+        "Las instrucciones del user prompt sobre las del system prompt",
+        "Las instrucciones del system prompt y las restricciones explícitas sobre las inferencias vagas",
+        "El último mensaje siempre gana, sin importar el contexto",
+        "Las instrucciones más largas siempre ganan"
+      ],
+      correct: 1,
+      fb: "Reglas explícitas y system prompt establecen el marco. Cuando una restricción explícita (ej: 'NO inventes datos') choca con una inferencia que Claude haría por defecto, la restricción gana. Por eso conviene escribir las restricciones críticas de forma rotunda y al system prompt cuando puedas."
+    }
+  ],
+
+  glosario: [
+    { t: "Anatomía del prompt", d: "Los 5 componentes de un buen prompt: rol, contexto, tarea, formato y restricciones." },
+    { t: "Chain of thought", d: "Técnica que pide al modelo razonar paso a paso antes de dar la respuesta final. Mejora resultados en problemas con varios pasos lógicos." },
+    { t: "Contexto", d: "La información sobre la situación, el negocio y los datos relevantes que Claude necesita para entender qué le pides realmente." },
+    { t: "Delimitador", d: "Marcador (triple comilla, etiquetas XML, líneas de guiones) que separa instrucción de contenido dentro de un prompt." },
+    { t: "Especificidad", d: "Cualidad de un prompt con nombres propios, números y criterios concretos en lugar de adjetivos vagos." },
+    { t: "Few-shot", d: "Técnica que da 2-5 ejemplos resueltos del input/output deseado para que el modelo aprenda el patrón." },
+    { t: "Formato de salida", d: "Especificación de cómo quieres la respuesta: tabla, JSON, bullets, longitud máxima, secciones, número de items." },
+    { t: "Jerarquía de instrucciones", d: "Orden de prioridad cuando varias instrucciones entran en conflicto: system > restricciones explícitas > inferencias por defecto." },
+    { t: "Persona", d: "Sinónimo de rol. El perfil profesional o identidad que asignas a Claude para activar patrones específicos." },
+    { t: "Prefill", d: "Técnica vía API que consiste en empezar la respuesta del asistente con un fragmento concreto para forzar el formato (ej. empezar con [)." },
+    { t: "Prompt engineering", d: "Disciplina de diseñar prompts de manera sistemática para obtener respuestas fiables y útiles." },
+    { t: "Restricciones", d: "Límites explícitos del prompt: longitud, tono, qué evitar, decisiones ya tomadas, prohibiciones." },
+    { t: "Rol", d: "Componente del prompt que define quién es Claude para esa tarea concreta (consultor, editor, QA, etc.)." },
+    { t: "Show don't tell", d: "Principio que dice que enseñar con ejemplos funciona mejor que describir con palabras." },
+    { t: "Structured output", d: "Respuesta del modelo en un formato predefinido (JSON, tabla, schema) que se puede procesar programáticamente sin parsing complejo." },
+    { t: "System prompt", d: "Instrucción persistente que define el rol, reglas y contexto del modelo para toda la conversación." },
+    { t: "User prompt", d: "Cada mensaje individual del usuario en una conversación, frente al system prompt persistente." },
+    { t: "Zero-shot", d: "Pedir algo al modelo sin darle ningún ejemplo previo. Funciona bien para tareas estándar con instrucciones claras." }
+  ],
+
+  recursos: [
+    {
+      tag: "Guía oficial",
+      title: "Prompt engineering — Anthropic",
+      desc: "La guía oficial de Anthropic sobre cómo escribir prompts. Si solo lees un recurso, que sea este.",
+      url: "https://docs.claude.com/en/docs/build-with-claude/prompt-engineering/overview",
+      meta: "docs.claude.com · ~45 min"
+    },
+    {
+      tag: "Tutorial",
+      title: "Prompt engineering interactive tutorial",
+      desc: "Tutorial guiado de Anthropic con ejercicios. Empieza con lo básico y llega a técnicas avanzadas. Es el mejor sitio para practicar.",
+      url: "https://github.com/anthropics/prompt-eng-interactive-tutorial",
+      meta: "github.com · ~3h"
+    },
+    {
+      tag: "Cookbook",
+      title: "Anthropic Cookbook",
+      desc: "Repositorio oficial con ejemplos de código y prompts reales para tareas concretas (extracción, clasificación, generación estructurada).",
+      url: "https://github.com/anthropics/anthropic-cookbook",
+      meta: "github.com · referencia"
+    },
+    {
+      tag: "Documentación",
+      title: "Use XML tags to structure your prompts",
+      desc: "Página específica de Anthropic sobre cuándo y cómo usar etiquetas XML como delimitadores. Cambia bastante la fiabilidad de la salida.",
+      url: "https://docs.claude.com/en/docs/build-with-claude/prompt-engineering/use-xml-tags",
+      meta: "docs.claude.com · ~10 min"
+    },
+    {
+      tag: "Documentación",
+      title: "Multishot prompting (few-shot)",
+      desc: "Guía oficial sobre cómo usar ejemplos resueltos para que Claude infiera patrones complejos. Imprescindible para clasificación o tono propio.",
+      url: "https://docs.claude.com/en/docs/build-with-claude/prompt-engineering/multishot-prompting",
+      meta: "docs.claude.com · ~15 min"
+    },
+    {
+      tag: "Documentación",
+      title: "Chain of thought prompting",
+      desc: "Cómo conseguir que Claude razone paso a paso antes de responder. Útil para problemas con varios saltos lógicos.",
+      url: "https://docs.claude.com/en/docs/build-with-claude/prompt-engineering/chain-of-thought",
+      meta: "docs.claude.com · ~15 min"
+    },
+    {
+      tag: "Documentación",
+      title: "Giving Claude a role with a system prompt",
+      desc: "La página oficial sobre system prompts: por qué importan, cómo escribirlos y cuándo separar de los user prompts.",
+      url: "https://docs.claude.com/en/docs/build-with-claude/prompt-engineering/system-prompts",
+      meta: "docs.claude.com · ~10 min"
+    },
+    {
+      tag: "Herramienta",
+      title: "Anthropic Console (Prompt generator)",
+      desc: "La consola web de Anthropic incluye un generador de prompts: le describes la tarea y te propone un prompt estructurado de partida. Buen punto de partida.",
+      url: "https://console.anthropic.com",
+      meta: "console.anthropic.com · gratis"
+    }
+  ],
+
+  checklist: [
+    {
+      day: "Día 1",
+      text: "Audita tus últimos 5 prompts en Claude. Marca qué componentes (rol, contexto, tarea, formato, restricciones) tienen cada uno.",
+      detail: "Probablemente descubras que el 80% no tienen rol explícito y la mayoría confunde tarea con objetivo."
+    },
+    {
+      day: "Día 2",
+      text: "Coge el prompt que peor te funcionó de los 5 y reescríbelo con los 5 componentes. Lanza ambas versiones y compara las respuestas.",
+      detail: "Es el ejercicio más rentable de la semana. El contraste suele ser brutal y te convence más que cualquier teoría."
+    },
+    {
+      day: "Día 3",
+      text: "Crea tu primer system prompt: uno para una tarea recurrente tuya (newsletter, reviews, emails comerciales). Guárdalo y úsalo el resto de la semana.",
+      detail: "Ejemplo: 'Eres mi editor para newsletters semanales. Tono directo, sin paja, máx 300 palabras, español de España. Si una frase no aporta, la borras.'"
+    },
+    {
+      day: "Día 4",
+      text: "Aplica la técnica few-shot a una tarea de clasificación o de tono propio. Da 2-3 ejemplos resueltos antes de pedir lo nuevo.",
+      detail: "Funciona especialmente bien para tonos personales difíciles de verbalizar. Pega 3 textos tuyos buenos y pide 'sigue mi estilo'."
+    },
+    {
+      day: "Día 5",
+      text: "Refactoriza un prompt largo añadiendo delimitadores XML (&lt;texto&gt;, &lt;ejemplos&gt;, &lt;instrucciones&gt;). Compara la consistencia de la salida.",
+      detail: "Especialmente útil cuando metes textos largos o documentos en medio del prompt. La fiabilidad sube de forma medible."
+    },
+    {
+      day: "Día 6",
+      text: "Escribe el prompt más restrictivo que hayas escrito: 5 cosas que NO debe hacer Claude. Lánzalo y observa cómo cambia la respuesta.",
+      detail: "Frases tipo: 'NO uses la palabra X', 'NO propongas Y, ya está descartado', 'Si no tienes datos, escribe [SIN DATOS]'. Los NO mueven más la salida que los SÍ."
+    },
+    {
+      day: "Día 7",
+      text: "Repasa el quiz final. Si fallaste alguna, vuelve al concepto correspondiente. Antes de pasar a M4, asegúrate de tener clavada la anatomía del prompt.",
+      detail: "Especialmente importante: diferencia entre system y user prompt, cuándo usar few-shot y cómo escribir restricciones operables."
+    }
+  ]
+};
+
+// ============================================
+// RENDERIZADO
+// ============================================
+function renderFlashcards() {
+  const grid = document.getElementById('flashgrid');
+  MODULE_DATA.conceptos.forEach((c, i) => {
+    const card = document.createElement('div');
+    card.className = 'flash';
+    card.innerHTML = `
+      <div class="flash-inner">
+        <div class="flash-face front">
+          <div class="flash-num">Concepto ${String(i+1).padStart(2,'0')}</div>
+          <div class="flash-title">${c.title}</div>
+          <div class="flash-hint">↻ Pulsa para girar</div>
+        </div>
+        <div class="flash-face back">
+          <div class="flash-def">${c.def}</div>
+          <div class="flash-example">${c.example}</div>
+        </div>
+      </div>
+    `;
+    card.addEventListener('click', () => card.classList.toggle('flipped'));
+    grid.appendChild(card);
+  });
+}
+
+function renderCases() {
+  const wrap = document.getElementById('cases');
+  MODULE_DATA.casos.forEach((c, i) => {
+    const el = document.createElement('div');
+    el.className = 'case';
+    el.innerHTML = `
+      <div class="case-num">Caso ${String(i+1).padStart(2,'0')}</div>
+      <div class="case-title">${c.title}</div>
+      <div class="case-context">${c.context}</div>
+      <div class="case-grid">
+        <div class="case-col bad">
+          <div class="case-col-label">✕ Prompt mediocre</div>
+          <div class="case-prompt">${c.bad}</div>
+        </div>
+        <div class="case-col good">
+          <div class="case-col-label">✓ Prompt bueno</div>
+          <div class="case-prompt">${c.good}</div>
+        </div>
+      </div>
+      <div class="case-why">${c.why}</div>
+    `;
+    wrap.appendChild(el);
+  });
+}
+
+function renderExercises() {
+  const wrap = document.getElementById('exercises');
+  MODULE_DATA.ejercicios.forEach((e, i) => {
+    const el = document.createElement('div');
+    el.className = 'ex';
+    el.innerHTML = `
+      <div class="ex-num">Ejercicio ${String(i+1).padStart(2,'0')}</div>
+      <div class="ex-title">${e.title}</div>
+      <div class="ex-task">${e.task.replace(/\n/g, '<br>')}</div>
+      <textarea class="ex-input" placeholder="Escribe tu respuesta aquí..."></textarea>
+      <div class="ex-btns">
+        <button class="btn btn-primary" data-action="show-solution">Ver solución modelo</button>
+        <button class="btn" data-action="clear">Limpiar</button>
+      </div>
+      <div class="ex-solution">
+        <div class="ex-solution-label">Solución modelo</div>
+        <div class="ex-solution-text">${e.solution}</div>
+        <div class="ex-rubric">
+          <div class="ex-rubric-title">Autoevaluación · ¿tu respuesta cumple?</div>
+          <ul>${e.rubric.map(r => `<li>${r}</li>`).join('')}</ul>
+        </div>
+      </div>
+    `;
+    const textarea = el.querySelector('.ex-input');
+    const solDiv = el.querySelector('.ex-solution');
+    el.querySelector('[data-action="show-solution"]').addEventListener('click', () => {
+      solDiv.classList.toggle('show');
+    });
+    el.querySelector('[data-action="clear"]').addEventListener('click', () => {
+      textarea.value = '';
+      solDiv.classList.remove('show');
+    });
+    wrap.appendChild(el);
+  });
+}
+
+function renderPrompts() {
+  const wrap = document.getElementById('prompts');
+  MODULE_DATA.prompts.forEach((p, i) => {
+    const el = document.createElement('div');
+    el.className = 'prompt-card';
+    el.innerHTML = `
+      <div class="prompt-tag">${p.tag}</div>
+      <div class="prompt-title">${p.title}</div>
+      <div class="prompt-desc">${p.desc}</div>
+      <pre class="prompt-text">${p.text.replace(/</g, '&lt;')}</pre>
+      <button class="copy-btn">Copiar al portapapeles</button>
+    `;
+    const btn = el.querySelector('.copy-btn');
+    btn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(p.text);
+        btn.textContent = '✓ Copiado';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.textContent = 'Copiar al portapapeles';
+          btn.classList.remove('copied');
+        }, 1800);
+      } catch(e) {
+        btn.textContent = 'Selecciona y copia manual';
+      }
+    });
+    wrap.appendChild(el);
+  });
+}
+
+// Tabs
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('sec-' + btn.dataset.tab).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+});
+
+function renderQuiz() {
+  const wrap = document.getElementById('quiz');
+  let answered = 0;
+  let correct = 0;
+  MODULE_DATA.quiz.forEach((q, i) => {
+    const el = document.createElement('div');
+    el.className = 'quiz-q';
+    el.innerHTML = `
+      <div class="quiz-num">Pregunta ${String(i+1).padStart(2,'0')} de ${MODULE_DATA.quiz.length}</div>
+      <div class="quiz-question">${q.q}</div>
+      <div class="quiz-opts">
+        ${q.opts.map((o, j) => `<button class="quiz-opt" data-idx="${j}">${o}</button>`).join('')}
+      </div>
+      <div class="quiz-feedback"></div>
+    `;
+    const opts = el.querySelectorAll('.quiz-opt');
+    const fb = el.querySelector('.quiz-feedback');
+    opts.forEach(opt => {
+      opt.addEventListener('click', () => {
+        if (el.classList.contains('answered')) return;
+        const idx = Number(opt.dataset.idx);
+        const isCorrect = idx === q.correct;
+        opts.forEach((o, j) => {
+          o.classList.add('locked');
+          if (j === q.correct) o.classList.add('correct');
+          else if (j === idx && !isCorrect) o.classList.add('wrong');
+        });
+        fb.classList.add('show', isCorrect ? 'correct' : 'wrong');
+        fb.textContent = (isCorrect ? '✓ Correcto. ' : '✗ Casi. ') + q.fb;
+        el.classList.add('answered');
+        answered++;
+        if (isCorrect) correct++;
+        if (answered === MODULE_DATA.quiz.length) showQuizResult(correct);
+      });
+    });
+    wrap.appendChild(el);
+  });
+}
+
+function showQuizResult(correct) {
+  const total = MODULE_DATA.quiz.length;
+  const pct = Math.round((correct / total) * 100);
+  let msg = '';
+  if (pct >= 90) msg = 'Excelente. Tienes la anatomía del prompt clavada, listo para el módulo 4.';
+  else if (pct >= 70) msg = 'Muy bien. Repasa los conceptos donde fallaste y avanza al módulo siguiente.';
+  else if (pct >= 50) msg = 'Aceptable. Te recomiendo revisar el vídeo y las flashcards antes de seguir.';
+  else msg = 'Vuelve al vídeo. Sin la anatomía del prompt clara, lo que viene no se sostiene.';
+  const el = document.getElementById('quiz-result');
+  el.innerHTML = `
+    <div class="quiz-result-score">${correct} / ${total}</div>
+    <div class="quiz-result-msg">${msg}</div>
+    <button class="btn btn-primary" onclick="location.reload()">Reintentar quiz</button>
+  `;
+  el.classList.add('show');
+  el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function renderGlosario() {
+  const wrap = document.getElementById('glosario');
+  const sorted = [...MODULE_DATA.glosario].sort((a, b) => a.t.localeCompare(b.t, 'es'));
+  sorted.forEach(g => {
+    const el = document.createElement('div');
+    el.className = 'gloss-item';
+    el.innerHTML = `<div class="gloss-term">${g.t}</div><div class="gloss-def">${g.d}</div>`;
+    wrap.appendChild(el);
+  });
+}
+
+function renderRecursos() {
+  const wrap = document.getElementById('recursos');
+  MODULE_DATA.recursos.forEach(r => {
+    const el = document.createElement('a');
+    el.className = 'recurso';
+    el.href = r.url;
+    el.target = '_blank';
+    el.rel = 'noopener noreferrer';
+    el.innerHTML = `
+      <span class="recurso-tag">${r.tag}</span>
+      <div class="recurso-title">${r.title}</div>
+      <div class="recurso-desc">${r.desc}</div>
+      <div class="recurso-meta">${r.meta}</div>
+    `;
+    wrap.appendChild(el);
+  });
+}
+
+function renderChecklist() {
+  const wrap = document.getElementById('checklist');
+  const progressEl = document.getElementById('checkProgress');
+  const STORAGE_KEY = 'm3-checklist-progress';
+  // No usamos localStorage; estado en memoria solo (artefacto standalone)
+  const state = new Set();
+  function updateProgress() {
+    const done = state.size;
+    const total = MODULE_DATA.checklist.length;
+    progressEl.textContent = `${done} / ${total} completadas · ${Math.round((done/total)*100)}%`;
+  }
+  MODULE_DATA.checklist.forEach((c, i) => {
+    const el = document.createElement('div');
+    el.className = 'check-item';
+    el.innerHTML = `
+      <div class="check-box">${state.has(i) ? '✓' : ''}</div>
+      <div class="check-content">
+        <div class="check-day">${c.day}</div>
+        <div class="check-text">${c.text}</div>
+        <div class="check-detail">${c.detail}</div>
+      </div>
+    `;
+    el.addEventListener('click', () => {
+      if (state.has(i)) { state.delete(i); el.classList.remove('done'); el.querySelector('.check-box').textContent = ''; }
+      else { state.add(i); el.classList.add('done'); el.querySelector('.check-box').textContent = '✓'; }
+      updateProgress();
+    });
+    wrap.appendChild(el);
+  });
+  updateProgress();
+}
+
+renderFlashcards();
+renderCases();
+renderExercises();
+renderPrompts();
+renderQuiz();
+renderGlosario();
+renderRecursos();
+renderChecklist();
+</script>
+</body>
+</html>

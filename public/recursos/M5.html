@@ -1,0 +1,1263 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude 101 · Recursos M5 · Capacidades y herramientas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Geist:wght@300..700&family=Geist+Mono:wght@400..600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #F4EFE3; --bg-2: #EFE9DA; --card: #FBF8F0;
+  --ink: #1C1A16; --ink-2: #3A352D; --muted: #756B5B; --muted-2: #A39782;
+  --line: #E1D8C2; --line-2: #CFC4AA;
+  --accent: #C8542B; --accent-2: #8B3A1E;
+  --olive: #4F5D38; --gold: #B08436;
+  --display: 'Fraunces', Georgia, serif;
+  --body: 'Geist', system-ui, sans-serif;
+  --mono: 'Geist Mono', ui-monospace, monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: var(--bg); color: var(--ink); font-family: var(--body); line-height: 1.55; }
+body {
+  background-image:
+    radial-gradient(circle at 12% 8%, rgba(200,84,43,.06) 0%, transparent 40%),
+    radial-gradient(circle at 88% 92%, rgba(79,93,56,.05) 0%, transparent 40%);
+  min-height: 100vh;
+}
+
+/* === HEADER === */
+.topbar {
+  position: sticky; top: 0; z-index: 50;
+  background: rgba(244,239,227,.85); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+  padding: 14px 32px; display: flex; align-items: center; gap: 20px;
+}
+.back-link {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--muted); text-decoration: none;
+  padding: 8px 14px; border-radius: 100px; border: 1px solid var(--line-2);
+  transition: all .2s;
+}
+.back-link:hover { color: var(--ink); border-color: var(--accent); }
+.topbar-title {
+  font-family: var(--display); font-style: italic; font-size: 22px;
+  font-weight: 400; color: var(--ink); flex: 1;
+}
+.topbar-title em { color: var(--accent); font-style: italic; }
+.topbar-badge {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--muted);
+  padding: 6px 12px; background: var(--card); border: 1px solid var(--line); border-radius: 6px;
+}
+
+/* === HERO === */
+.hero {
+  padding: 80px 32px 40px; max-width: 1100px; margin: 0 auto; text-align: center;
+}
+.hero .eyebrow {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .18em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 18px;
+}
+.hero h1 {
+  font-family: var(--display); font-style: italic; font-weight: 400;
+  font-size: clamp(40px, 6vw, 72px); letter-spacing: -0.025em;
+  color: var(--ink); line-height: 1.05; margin-bottom: 20px;
+}
+.hero h1 em { font-style: normal; color: var(--accent); }
+.hero .lede {
+  font-size: 18px; color: var(--ink-2); max-width: 60ch; margin: 0 auto;
+}
+
+/* === TABS === */
+.tabs-wrap {
+  position: sticky; top: 62px; z-index: 40;
+  background: rgba(244,239,227,.92); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+  padding: 16px 32px; display: flex; justify-content: center; gap: 8px;
+  overflow-x: auto;
+}
+.tab-btn {
+  font-family: var(--mono); font-size: 12px; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--muted);
+  padding: 10px 18px; border-radius: 100px; border: 1px solid var(--line-2);
+  background: var(--card); cursor: pointer; transition: all .2s; white-space: nowrap;
+}
+.tab-btn:hover { color: var(--ink); border-color: var(--accent); }
+.tab-btn.active {
+  color: var(--card); background: var(--ink); border-color: var(--ink);
+}
+
+/* === SECTIONS === */
+.section {
+  padding: 60px 32px 100px; max-width: 1100px; margin: 0 auto; display: none;
+}
+.section.active { display: block; }
+.section-intro {
+  margin-bottom: 40px; max-width: 70ch;
+}
+.section-intro h2 {
+  font-family: var(--display); font-style: italic; font-weight: 400;
+  font-size: 36px; margin-bottom: 12px; color: var(--ink);
+}
+.section-intro h2 em { color: var(--accent); font-style: normal; }
+.section-intro p { color: var(--ink-2); font-size: 16px; }
+
+/* === FLASHCARDS === */
+.flashgrid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;
+}
+.flash {
+  perspective: 1200px; min-height: 320px; cursor: pointer;
+}
+.flash-inner {
+  position: relative; width: 100%; height: 100%; min-height: 320px;
+  transition: transform .6s cubic-bezier(.2,.8,.2,1);
+  transform-style: preserve-3d;
+}
+.flash.flipped .flash-inner { transform: rotateY(180deg); }
+.flash-face {
+  position: absolute; inset: 0; backface-visibility: hidden;
+  background: var(--card); border: 1px solid var(--line); border-radius: 16px;
+  padding: 22px; display: flex; flex-direction: column;
+  overflow-y: auto;
+  box-shadow: 0 2px 12px rgba(28,26,22,.04);
+}
+.flash-face::-webkit-scrollbar { width: 4px; }
+.flash-face::-webkit-scrollbar-thumb { background: var(--line-2); border-radius: 4px; }
+.flash-face.back {
+  transform: rotateY(180deg);
+  background: var(--bg-2); border-color: var(--line-2);
+}
+.flash-num {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 12px;
+}
+.flash-title {
+  font-family: var(--display); font-style: italic; font-size: 24px;
+  font-weight: 400; color: var(--ink); margin-bottom: 10px; line-height: 1.2;
+}
+.flash-hint {
+  margin-top: auto; font-family: var(--mono); font-size: 10px;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--muted-2);
+}
+.flash-def { font-size: 14px; color: var(--ink-2); line-height: 1.6; margin-bottom: 12px; }
+.flash-example {
+  font-family: var(--mono); font-size: 12px; color: var(--olive);
+  background: var(--card); border-left: 2px solid var(--olive);
+  padding: 8px 12px; border-radius: 0 6px 6px 0;
+}
+
+/* === CASE STUDIES === */
+.case {
+  background: var(--card); border: 1px solid var(--line); border-radius: 18px;
+  padding: 32px; margin-bottom: 28px;
+}
+.case-num {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 8px;
+}
+.case-title {
+  font-family: var(--display); font-style: italic; font-size: 28px;
+  font-weight: 400; color: var(--ink); margin-bottom: 12px; line-height: 1.2;
+}
+.case-context { color: var(--ink-2); margin-bottom: 24px; font-size: 15px; }
+.case-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px;
+}
+@media (max-width: 720px) { .case-grid { grid-template-columns: 1fr; } }
+.case-col {
+  background: var(--bg); border-radius: 12px; padding: 20px;
+}
+.case-col.bad { border: 1px solid #e8c4b7; }
+.case-col.good { border: 1px solid #c4d4a8; }
+.case-col-label {
+  font-family: var(--mono); font-size: 10px; letter-spacing: .15em;
+  text-transform: uppercase; margin-bottom: 10px; font-weight: 600;
+}
+.case-col.bad .case-col-label { color: var(--accent-2); }
+.case-col.good .case-col-label { color: var(--olive); }
+.case-prompt {
+  font-family: var(--mono); font-size: 13px; line-height: 1.6;
+  color: var(--ink); white-space: pre-wrap;
+}
+.case-why {
+  background: var(--bg-2); border-left: 3px solid var(--gold);
+  padding: 14px 18px; border-radius: 0 8px 8px 0;
+  font-size: 14px; color: var(--ink-2);
+}
+.case-why strong { color: var(--gold); font-weight: 600; }
+
+/* === EXERCISES === */
+.ex {
+  background: var(--card); border: 1px solid var(--line); border-radius: 18px;
+  padding: 32px; margin-bottom: 28px;
+}
+.ex-num {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 8px;
+}
+.ex-title {
+  font-family: var(--display); font-style: italic; font-size: 28px;
+  font-weight: 400; color: var(--ink); margin-bottom: 12px; line-height: 1.2;
+}
+.ex-task { color: var(--ink-2); margin-bottom: 16px; font-size: 15px; }
+.ex-input {
+  width: 100%; min-height: 120px; resize: vertical;
+  background: var(--bg); border: 1px solid var(--line-2); border-radius: 10px;
+  padding: 14px 16px; font-family: var(--mono); font-size: 13px; color: var(--ink);
+  margin-bottom: 16px;
+}
+.ex-input:focus { outline: 2px solid var(--accent); outline-offset: -2px; }
+.ex-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+.btn {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .12em;
+  text-transform: uppercase; padding: 10px 18px; border-radius: 100px;
+  border: 1px solid var(--line-2); background: var(--card); color: var(--ink-2);
+  cursor: pointer; transition: all .2s;
+}
+.btn:hover { border-color: var(--accent); color: var(--ink); }
+.btn-primary { background: var(--ink); color: var(--card); border-color: var(--ink); }
+.btn-primary:hover { background: var(--accent); border-color: var(--accent); color: var(--card); }
+.ex-solution {
+  margin-top: 20px; padding: 20px; background: var(--bg-2); border-radius: 12px;
+  border-left: 3px solid var(--olive); display: none;
+}
+.ex-solution.show { display: block; }
+.ex-solution-label {
+  font-family: var(--mono); font-size: 10px; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--olive); margin-bottom: 10px; font-weight: 600;
+}
+.ex-solution-text {
+  font-family: var(--mono); font-size: 13px; line-height: 1.7; color: var(--ink);
+  white-space: pre-wrap; margin-bottom: 16px;
+}
+.ex-rubric { margin-top: 16px; }
+.ex-rubric-title {
+  font-size: 13px; color: var(--muted); margin-bottom: 8px; font-weight: 600;
+}
+.ex-rubric ul { list-style: none; padding: 0; }
+.ex-rubric li {
+  padding: 6px 0; font-size: 14px; color: var(--ink-2);
+  display: flex; align-items: flex-start; gap: 10px;
+}
+.ex-rubric li::before {
+  content: "✓"; color: var(--olive); font-weight: 600; margin-top: 1px;
+}
+
+/* === PROMPTS GALLERY === */
+.prompts-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px;
+}
+.prompt-card {
+  background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+  padding: 24px; display: flex; flex-direction: column;
+}
+.prompt-tag {
+  display: inline-block; font-family: var(--mono); font-size: 10px;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--gold);
+  background: var(--bg-2); padding: 4px 10px; border-radius: 100px;
+  margin-bottom: 12px; align-self: flex-start;
+}
+.prompt-title {
+  font-family: var(--display); font-style: italic; font-size: 22px;
+  font-weight: 400; color: var(--ink); margin-bottom: 10px; line-height: 1.2;
+}
+.prompt-desc { font-size: 14px; color: var(--ink-2); margin-bottom: 16px; }
+.prompt-text {
+  font-family: var(--mono); font-size: 12px; line-height: 1.65;
+  color: var(--ink-2); background: var(--bg); border: 1px dashed var(--line-2);
+  border-radius: 8px; padding: 14px; margin-bottom: 14px;
+  white-space: pre-wrap; flex: 1;
+}
+.copy-btn {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .12em;
+  text-transform: uppercase; padding: 10px 16px; border-radius: 8px;
+  border: 1px solid var(--ink); background: transparent; color: var(--ink);
+  cursor: pointer; transition: all .2s; align-self: stretch;
+}
+.copy-btn:hover { background: var(--ink); color: var(--card); }
+.copy-btn.copied { background: var(--olive); border-color: var(--olive); color: var(--card); }
+
+/* === QUIZ === */
+.quiz-q {
+  background: var(--card); border: 1px solid var(--line); border-radius: 16px;
+  padding: 26px; margin-bottom: 20px;
+}
+.quiz-num {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 10px;
+}
+.quiz-question {
+  font-family: var(--display); font-style: italic; font-size: 22px;
+  font-weight: 400; line-height: 1.3; color: var(--ink); margin-bottom: 18px;
+}
+.quiz-opts { display: flex; flex-direction: column; gap: 8px; }
+.quiz-opt {
+  text-align: left; padding: 14px 18px; border: 1px solid var(--line-2);
+  border-radius: 10px; background: var(--bg); color: var(--ink-2);
+  font-family: var(--body); font-size: 15px; cursor: pointer; transition: all .2s;
+}
+.quiz-opt:hover:not(.locked) { border-color: var(--accent); color: var(--ink); }
+.quiz-opt.correct {
+  background: rgba(79,93,56,.12); border-color: var(--olive); color: var(--ink);
+}
+.quiz-opt.wrong {
+  background: rgba(200,84,43,.1); border-color: var(--accent-2); color: var(--ink);
+}
+.quiz-opt.locked { cursor: default; }
+.quiz-feedback {
+  margin-top: 14px; padding: 14px 18px; border-radius: 10px;
+  font-size: 14px; line-height: 1.5; display: none;
+}
+.quiz-feedback.show { display: block; }
+.quiz-feedback.correct { background: rgba(79,93,56,.1); border-left: 3px solid var(--olive); color: var(--ink-2); }
+.quiz-feedback.wrong { background: rgba(200,84,43,.08); border-left: 3px solid var(--accent); color: var(--ink-2); }
+.quiz-result {
+  margin-top: 20px; padding: 28px; background: var(--card);
+  border: 1px solid var(--line); border-radius: 16px; text-align: center;
+  display: none;
+}
+.quiz-result.show { display: block; }
+.quiz-result-score {
+  font-family: var(--display); font-style: italic; font-size: 56px;
+  color: var(--accent); margin-bottom: 8px;
+}
+.quiz-result-msg { font-size: 16px; color: var(--ink-2); margin-bottom: 18px; }
+.quiz-result .btn { display: inline-block; }
+
+/* === GLOSARIO === */
+.glosario-list {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px;
+}
+.gloss-item {
+  background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+  padding: 18px 20px;
+}
+.gloss-term {
+  font-family: var(--display); font-style: italic; font-size: 20px;
+  font-weight: 400; color: var(--accent); margin-bottom: 6px;
+}
+.gloss-def { font-size: 14px; line-height: 1.55; color: var(--ink-2); }
+
+/* === RECURSOS === */
+.recursos-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px;
+}
+.recurso {
+  background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+  padding: 20px; text-decoration: none; color: inherit; transition: all .2s;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.recurso:hover {
+  border-color: var(--accent); transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(28,26,22,.08);
+}
+.recurso-tag {
+  display: inline-block; font-family: var(--mono); font-size: 10px;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--olive);
+  background: var(--bg-2); padding: 4px 10px; border-radius: 100px;
+  align-self: flex-start; margin-bottom: 4px;
+}
+.recurso-title {
+  font-family: var(--display); font-style: italic; font-size: 18px;
+  font-weight: 400; color: var(--ink); line-height: 1.3;
+}
+.recurso-desc { font-size: 13px; color: var(--ink-2); line-height: 1.5; }
+.recurso-meta {
+  font-family: var(--mono); font-size: 11px; color: var(--muted);
+  margin-top: auto; padding-top: 8px;
+}
+
+/* === CHECKLIST === */
+.checklist { display: flex; flex-direction: column; gap: 12px; }
+.check-item {
+  display: flex; align-items: flex-start; gap: 16px;
+  background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+  padding: 18px 22px; cursor: pointer; transition: all .2s;
+}
+.check-item:hover { border-color: var(--line-2); }
+.check-item.done {
+  background: var(--bg-2); border-color: var(--olive); opacity: .75;
+}
+.check-item.done .check-text { text-decoration: line-through; color: var(--muted); }
+.check-box {
+  width: 22px; height: 22px; border: 2px solid var(--line-2);
+  border-radius: 6px; flex-shrink: 0; margin-top: 2px;
+  display: flex; align-items: center; justify-content: center;
+  transition: all .2s;
+}
+.check-item.done .check-box {
+  background: var(--olive); border-color: var(--olive); color: var(--card);
+}
+.check-content { flex: 1; }
+.check-day {
+  font-family: var(--mono); font-size: 10px; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--accent); margin-bottom: 4px;
+}
+.check-text { font-size: 15px; line-height: 1.5; color: var(--ink); }
+.check-detail { font-size: 13px; color: var(--muted); margin-top: 4px; }
+.checklist-progress {
+  margin-top: 24px; padding: 20px; background: var(--bg-2);
+  border-radius: 12px; text-align: center;
+  font-family: var(--mono); font-size: 13px; color: var(--ink-2);
+}
+
+/* === FOOTER NAV === */
+.footer-nav {
+  border-top: 1px solid var(--line); padding: 32px;
+  display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+  max-width: 1100px; margin: 40px auto 0;
+}
+.foot-link {
+  font-family: var(--mono); font-size: 12px; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--muted); text-decoration: none;
+  padding: 12px 18px; border: 1px solid var(--line-2); border-radius: 100px;
+  transition: all .2s;
+}
+.foot-link:hover { color: var(--ink); border-color: var(--accent); }
+
+@media (max-width: 720px) {
+  .topbar { padding: 12px 16px; }
+  .hero { padding: 50px 16px 30px; }
+  .tabs-wrap { padding: 12px 16px; }
+  .section { padding: 40px 16px 80px; }
+  .case, .ex { padding: 22px; }
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <a href="/curso" class="back-link">← Volver al curso</a>
+  <div class="topbar-title">Módulo 5 · <em>Recursos</em></div>
+  <div class="topbar-badge">M5</div>
+</header>
+
+<section class="hero">
+  <div class="eyebrow">Profundiza · Practica · Aplica</div>
+  <h1>Capacidades y <em>herramientas</em></h1>
+  <p class="lede">Claude no es solo un chat. Lee imágenes, devora PDFs, ejecuta código Python, busca en la web, genera Artifacts interactivos y hasta puede controlar tu navegador. Aquí aprendes qué herramienta usar para qué y cómo pedírselas sin que se atragante.</p>
+</section>
+
+<nav class="tabs-wrap">
+  <button class="tab-btn active" data-tab="conceptos">Conceptos</button>
+  <button class="tab-btn" data-tab="casos">Casos de uso</button>
+  <button class="tab-btn" data-tab="ejercicios">Ejercicios</button>
+  <button class="tab-btn" data-tab="prompts">Prompts</button>
+  <button class="tab-btn" data-tab="quiz">Quiz final</button>
+  <button class="tab-btn" data-tab="glosario">Glosario</button>
+  <button class="tab-btn" data-tab="recursos">Recursos</button>
+  <button class="tab-btn" data-tab="checklist">Checklist</button>
+</nav>
+
+<!-- === CONCEPTOS === -->
+<section class="section active" id="sec-conceptos">
+  <div class="section-intro">
+    <h2>Diez <em>capacidades</em> que cambian lo que puedes pedirle</h2>
+    <p>Pulsa cualquier tarjeta para girarla y ver la definición + un ejemplo concreto.</p>
+  </div>
+  <div class="flashgrid" id="flashgrid"></div>
+</section>
+
+<!-- === CASOS === -->
+<section class="section" id="sec-casos">
+  <div class="section-intro">
+    <h2>Antes y <em>después</em></h2>
+    <p>Seis escenarios donde una herramienta concreta convierte una tarea de horas en una de minutos. Verás cuál usar, cuándo y cómo pedirla.</p>
+  </div>
+  <div id="cases"></div>
+</section>
+
+<!-- === EJERCICIOS === -->
+<section class="section" id="sec-ejercicios">
+  <div class="section-intro">
+    <h2>Practica <em>ahora</em></h2>
+    <p>Cinco ejercicios para probar cada herramienta una vez. Sin esto el módulo se queda en teoría: hazlos.</p>
+  </div>
+  <div id="exercises"></div>
+</section>
+
+<!-- === PROMPTS === -->
+<section class="section" id="sec-prompts">
+  <div class="section-intro">
+    <h2>Plantillas para <em>copiar</em></h2>
+    <p>Sustituye los <code style="background:var(--bg-2);padding:1px 6px;border-radius:4px;font-family:var(--mono);font-size:.85em">[CORCHETES]</code> por lo tuyo y pega en Claude. Cada plantilla aprovecha una capacidad concreta — léelas como un catálogo.</p>
+  </div>
+  <div class="prompts-grid" id="prompts"></div>
+</section>
+
+<!-- === QUIZ === -->
+<section class="section" id="sec-quiz">
+  <div class="section-intro">
+    <h2>Quiz <em>final</em></h2>
+    <p>10 preguntas para comprobar que sabes qué herramienta toca en cada caso. Feedback inmediato. Sin nota.</p>
+  </div>
+  <div id="quiz"></div>
+  <div id="quiz-result" class="quiz-result"></div>
+</section>
+
+<!-- === GLOSARIO === -->
+<section class="section" id="sec-glosario">
+  <div class="section-intro">
+    <h2>Glosario del <em>módulo</em></h2>
+    <p>Términos técnicos que aparecen al hablar de capacidades de Claude. Tenlos a mano para no perderte cuando aparezcan en docs oficiales o en el resto del curso.</p>
+  </div>
+  <div id="glosario" class="glosario-list"></div>
+</section>
+
+<!-- === RECURSOS === -->
+<section class="section" id="sec-recursos">
+  <div class="section-intro">
+    <h2>Para <em>profundizar</em></h2>
+    <p>Documentación oficial, ejemplos y herramientas. Ninguna es imprescindible: están aquí si quieres llevar una capacidad concreta al siguiente nivel.</p>
+  </div>
+  <div id="recursos" class="recursos-grid"></div>
+</section>
+
+<!-- === CHECKLIST === -->
+<section class="section" id="sec-checklist">
+  <div class="section-intro">
+    <h2>Esta <em>semana</em>, haz esto</h2>
+    <p>Una capacidad distinta cada día durante 7 días. No leas más teoría: úsalas. Tilda lo que vayas haciendo — se guarda en memoria mientras tengas la página abierta.</p>
+  </div>
+  <div id="checklist" class="checklist"></div>
+  <div class="checklist-progress" id="checkProgress"></div>
+</section>
+
+<nav class="footer-nav">
+  <a href="/curso" class="foot-link">← Curso</a>
+  <a href="/recursos/M6.html" class="foot-link">Módulo 6 →</a>
+</nav>
+
+<script>
+// ============================================
+// CONTENIDO DEL MÓDULO 5
+// ============================================
+const MODULE_DATA = {
+  conceptos: [
+    {
+      title: "Multimodalidad",
+      def: "Capacidad de Claude para procesar texto + imágenes + PDFs en el mismo prompt. No 've' como un humano: convierte la imagen en tokens visuales que su modelo interpreta. Sirve para capturas de pantalla, fotos, diagramas, gráficos, mockups.",
+      example: "Subes una captura de tu landing y pides 'identifica los 3 problemas de jerarquía visual'. Claude te responde citando elementos concretos de la imagen."
+    },
+    {
+      title: "Lectura de PDFs",
+      def: "Claude lee PDFs nativos directamente (texto + imágenes embebidas + gráficos). Si el PDF es un escaneo (imagen sin texto), aplica OCR sobre él. Procesa documentos largos en una sola pasada gracias a su ventana de contexto extendida.",
+      example: "Subes 50 facturas en PDF y pides extracción a JSON: número, fecha, importe, IVA. En una llamada te devuelve la tabla."
+    },
+    {
+      title: "Lectura de gráficos",
+      def: "Claude interpreta gráficos de barras, líneas, dispersión, mapas de calor, etc. Lee ejes, leyendas, valores aproximados. No es perfecto con cifras exactas, pero capta la narrativa del gráfico y detecta anomalías visuales.",
+      example: "Subes un gráfico de ventas Q1-Q4 y pides 'qué tendencia ves y qué pregunta deberías hacerte sobre el Q3'. Te responde con análisis, no con descripción."
+    },
+    {
+      title: "Tool use (function calling)",
+      def: "Mecanismo por el que Claude puede invocar funciones externas que tú defines: buscar en una BD, llamar a una API, ejecutar un cálculo. Claude no ejecuta la función; decide cuándo llamarla, con qué argumentos, y luego usa el resultado en su respuesta.",
+      example: "Defines una herramienta 'get_weather(city)'. Usuario pregunta 'qué tiempo hace en Madrid'. Claude detecta la intención, llama a la función con city='Madrid', recibe el JSON y redacta la respuesta."
+    },
+    {
+      title: "Búsqueda web integrada",
+      def: "Claude puede consultar la web en tiempo real para superar su fecha de corte de conocimiento. Útil para noticias recientes, precios actuales, eventos. Cita fuentes en la respuesta. Disponible en Claude.ai y vía API con la tool web_search.",
+      example: "Pides 'cuál es la última versión de Next.js y qué cambió'. Claude busca, encuentra el changelog y te resume citando la URL."
+    },
+    {
+      title: "Ejecución de código",
+      def: "Claude puede escribir Y ejecutar código Python en un sandbox aislado (Code Interpreter / code_execution tool). Útil para cálculos exactos, análisis de datos, gráficos generados, manipulación de archivos. No 'alucina' resultados: corre el código.",
+      example: "Subes un CSV de ventas y pides 'calcula el ticket medio por región y dibuja un gráfico'. Claude escribe pandas + matplotlib, lo ejecuta y te devuelve el gráfico real."
+    },
+    {
+      title: "Artifacts",
+      def: "Espacios laterales en Claude.ai donde Claude renderiza contenido interactivo: HTML, React, SVG, markdown, código. En lugar de pegar texto en el chat, lo crea como un 'documento vivo' que puedes editar, iterar y descargar.",
+      example: "Pides 'hazme una calculadora de hipoteca en React'. Claude la genera como Artifact que funciona ahí mismo en el panel derecho."
+    },
+    {
+      title: "Voice mode",
+      def: "Modo de conversación por voz en la app móvil de Claude. Mantiene la conversación hablada con latencia baja. Útil para sesiones manos libres (mientras conduces, cocinas, paseas). El modelo razona igual; solo cambia el canal de entrada/salida.",
+      example: "En el coche, le pides 'ayúdame a estructurar la reunión de mañana en 5 puntos'. Lo dictas, te lo lee, lo refinas. Llegas a casa con notas listas."
+    },
+    {
+      title: "Computer Use",
+      def: "Capacidad experimental por la que Claude controla un ordenador (browser o desktop) viendo capturas y enviando clicks/tecleos. Útil para automatizaciones que requieren UI (rellenar formularios, navegar sites sin API). Lento, frágil, supervisado siempre.",
+      example: "Le pides 'entra en mi panel de Stripe y descárgame el CSV de pagos del mes'. Claude navega, hace clicks, descarga el archivo. Tú miras que no haga locuras."
+    },
+    {
+      title: "Map-reduce para archivos grandes",
+      def: "Patrón para procesar documentos o datasets que NO caben en la ventana de contexto. Divides en trozos (map), Claude procesa cada uno por separado, luego consolidas resultados (reduce). El usuario solo ve el resultado final.",
+      example: "Tienes 500 contratos PDF. Trozo a trozo, Claude extrae cláusulas de cada uno. Después agrega los resultados en una tabla maestra única."
+    }
+  ],
+
+  casos: [
+    {
+      title: "Analizar un dashboard mal diseñado",
+      context: "Te pasan la captura del panel principal de un SaaS y te piden feedback de UX antes del rediseño.",
+      bad: "[adjunta imagen] ¿Qué te parece este dashboard?",
+      good: "[adjunta imagen]\n\nCaptura del dashboard principal de un SaaS de gestión de proyectos. Usuario tipo: PM de equipos de 10-30 personas.\n\nAnaliza en orden:\n1) Jerarquía visual: qué se ve primero/segundo/tercero. ¿Coincide con lo que un PM necesita en sus primeros 5 segundos?\n2) Densidad de información: ¿hay sobrecarga? ¿qué quitarías?\n3) Patrones de UI: cita 3 elementos concretos que están mal y explica por qué (referencia su posición en la imagen: 'el botón rojo arriba a la derecha')\n4) Prioriza: si solo pudiera arreglar UNA cosa antes del lunes, ¿cuál?\n\nSé directo. Cita elementos visibles, no inventes lo que no se ve.",
+      why: "<strong>Por qué funciona:</strong> contexto del producto y usuario + ángulos concretos + 'cita elementos de la imagen' obliga a Claude a mirar de verdad, no a soltar genéricos de manual de UX."
+    },
+    {
+      title: "Procesar 50 facturas PDF a una tabla",
+      context: "Recibes 50 facturas escaneadas/digitales de proveedores y necesitas extraer los datos a una hoja para contabilidad.",
+      bad: "Te paso 50 facturas. Sácame los datos.",
+      good: "Te paso 50 facturas en PDF (mezcla de nativos y escaneos).\n\nPara cada una, extrae a JSON:\n{\n  \"numero_factura\": string,\n  \"fecha\": \"YYYY-MM-DD\",\n  \"proveedor\": string,\n  \"cif_proveedor\": string o null,\n  \"base_imponible\": number,\n  \"iva\": number,\n  \"total\": number,\n  \"moneda\": \"EUR\"|\"USD\"|...,\n  \"archivo_origen\": string\n}\n\nReglas:\n- Si un campo no aparece o no se lee bien, pon null. NO inventes.\n- Si el OCR falla en una factura, márcala con \"_error\": \"OCR ilegible\" y déjala con todos los campos en null excepto archivo_origen.\n- Al final, devuélveme el array JSON completo + un resumen con: total facturas procesadas, total con errores, suma de bases imponibles correctas.\n\nNo me hagas preguntas intermedias. Procesa el lote y devuélvemelo.",
+      why: "<strong>Por qué funciona:</strong> schema explícito + reglas para casos límite + permiso para fallar honestamente. Sin esto, Claude se inventa el CIF cuando no lo encuentra."
+    },
+    {
+      title: "Sacar datos de un gráfico de un informe ajeno",
+      context: "El gráfico del informe de la competencia no trae los datos en bruto. Necesitas las cifras aproximadas para tu propio análisis.",
+      bad: "[adjunta gráfico] ¿Qué números ves?",
+      good: "[adjunta gráfico]\n\nGráfico de barras del informe anual de [competidor]. Muestra ingresos trimestrales 2020-2024.\n\nDevuélveme:\n1) Tabla con los valores aproximados leídos del gráfico (año, trimestre, valor estimado en M€). Marca con ~ los que no estás seguro.\n2) Tendencia general en 2 líneas\n3) Dos preguntas que el gráfico NO responde y que pediría aclarar si tuviera al autor delante\n4) Una sospecha: ¿hay algún punto de los datos que parezca 'maquillado' por el diseño del gráfico (eje cortado, escala engañosa, colores)?\n\nNo me digas que no puedes leer cifras exactas. Da estimaciones razonables y márcalas como tales.",
+      why: "<strong>Por qué funciona:</strong> autorizas estimaciones (~), pides análisis crítico además de extracción, y le exiges hacer su trabajo en vez de decir 'no puedo leer con precisión'."
+    },
+    {
+      title: "Conseguir info actualizada vía búsqueda web",
+      context: "Quieres comparar precios actuales de tres servicios cloud (AWS, GCP, Azure) para una propuesta. Tu modelo no tiene datos recientes.",
+      bad: "¿Cuánto cuesta una VM de 4 vCPU y 16GB de RAM en AWS, GCP y Azure?",
+      good: "Activa búsqueda web.\n\nNecesito precios públicos ACTUALES (cita fecha de consulta) para una VM equivalente a estas specs en los 3 grandes:\n- 4 vCPU, 16 GB RAM, Linux\n- Región: Europa (Frankfurt o equivalente)\n- On-demand, pay-as-you-go\n- Disco SSD 100GB incluido o como add-on\n\nPara cada proveedor:\n1) Nombre exacto del tipo de instancia\n2) Precio/hora y precio/mes estimado\n3) URL oficial de pricing donde lo encontraste\n4) Una nota si la equivalencia no es 1:1 (ej. \"AWS solo ofrece 8GB en este tier, sube al siguiente\")\n\nFormato: tabla. Al final, una línea con el más barato para este perfil concreto.",
+      why: "<strong>Por qué funciona:</strong> especificas que use web search, pides URL como prueba, fuerzas honestidad cuando la comparación no es 1:1. Sin esto te invertaría tarifas de hace dos años."
+    },
+    {
+      title: "Generar y ejecutar un script de análisis",
+      context: "Tienes un CSV de 8.000 filas con ventas y necesitas un análisis exploratorio rápido, no aprenderte pandas.",
+      bad: "Analiza este CSV.",
+      good: "[adjunta ventas_2024.csv]\n\nUsa la herramienta de ejecución de código (Python).\n\nQuiero un análisis exploratorio del CSV que devuelva:\n1) Shape, columnas y tipos\n2) Estadísticas básicas de las columnas numéricas (describe)\n3) Top 10 clientes por facturación\n4) Mes con mayor caída respecto al mes anterior (cifra absoluta y %)\n5) Detección de outliers en 'importe' usando IQR\n6) Un gráfico de líneas: ingresos mensuales 2024\n\nEjecuta el código y muéstrame: el código que has usado + las salidas + el gráfico. Si una columna no existe como esperas, dime el problema en lugar de inventar.",
+      why: "<strong>Por qué funciona:</strong> pides explícitamente code_execution (no 'analiza'), defines salidas concretas, exiges ver el código además del resultado para poder reproducirlo o auditarlo."
+    },
+    {
+      title: "Generar un Artifact interactivo para presentar una idea",
+      context: "Tienes que defender una decisión de pricing al equipo. Quieres un widget interactivo donde toquen sliders y vean el resultado, no una tabla aburrida.",
+      bad: "Hazme una herramienta para calcular el pricing.",
+      good: "Crea un Artifact (HTML + JS sin librerías externas, autocontenido) que sea una calculadora interactiva de pricing.\n\nVariables (sliders):\n- Precio base mensual (10€-200€)\n- Descuento anual (0%-30%)\n- Número de usuarios (1-100)\n- Tier (Starter / Pro / Business) — afecta multiplicador 1x / 1.5x / 2.2x\n\nOutputs en tiempo real:\n- Coste mensual total\n- Coste anual total con descuento aplicado\n- Comparativa visual (barra) entre pago mensual vs anual\n- Punto de equilibrio: a partir de qué número de usuarios compensa el tier superior\n\nDiseño:\n- Limpio, una sola pantalla, sin scroll\n- Tipografía sans-serif del sistema\n- Sliders nativos, sin dependencias\n- Funciona offline (todo embebido)\n\nDevuélvelo como Artifact, no como bloque de código en el chat.",
+      why: "<strong>Por qué funciona:</strong> especificas el tipo de Artifact (HTML autocontenido, sin libs), las variables exactas, los outputs concretos y las restricciones de diseño. Pides el output como Artifact, no como chat."
+    }
+  ],
+
+  ejercicios: [
+    {
+      title: "Subir una imagen y pedir análisis con ángulo concreto",
+      task: "Coge una captura cualquiera de tu trabajo (un dashboard, una landing, un mockup, una hoja de Excel, un slide). Súbela a Claude y pide análisis. NO escribas 'qué te parece'. Define ángulo, criterios y formato de salida. Aquí escribe el prompt que usarías.",
+      solution: "[adjunto: captura_landing_v2.png]\n\nCaptura de la versión 2 de mi landing page (SaaS B2B, herramienta de RRHH para pymes 20-100 empleados).\n\nObjetivo de la landing: que un director de RRHH pida una demo en menos de 30 segundos.\n\nAnaliza en este orden y devuélveme:\n\n1) PRIMEROS 5 SEGUNDOS. ¿Qué se ve primero, segundo, tercero? ¿Un director de RRHH entiende QUÉ ofrecemos antes del primer scroll?\n\n2) PROPUESTA DE VALOR. Lee el headline y el subheadline. ¿Hay claim concreto o palabras vacías ('soluciones', 'líder', 'innovador')? Cita las que sobran.\n\n3) CTA. ¿Cuál es la acción principal? ¿Está donde toca? ¿Compite con otras llamadas?\n\n4) PRIORIDAD. Si solo pudiera arreglar 2 cosas antes del jueves, ¿cuáles serían? Justifica.\n\nNo me cuides el ego. Si una zona entera es ruido, dilo.",
+      rubric: [
+        "Subir realmente una imagen (no describir solo en texto)",
+        "Dar contexto del producto/objetivo antes de pedir el análisis",
+        "Definir ángulo o criterios concretos (no 'qué te parece')",
+        "Pedir referencia a elementos visibles ('cita las palabras', 'cita el botón')",
+        "Acabar con una pregunta accionable ('si solo pudieras arreglar X cosas')"
+      ]
+    },
+    {
+      title: "Pedir extracción estructurada desde un PDF",
+      task: "Coge un PDF que tengas en el escritorio (factura, contrato, informe). Súbelo a Claude y pide extracción a JSON con un schema definido y reglas de fallback. Escribe el prompt.",
+      solution: "[adjunto: contrato_servicios.pdf]\n\nContrato de prestación de servicios (12 páginas) entre dos empresas. Necesito extraer la información clave a JSON para meterla en mi sistema.\n\nSchema:\n{\n  \"partes\": {\n    \"prestador\": { \"razon_social\": string, \"cif\": string, \"domicilio\": string },\n    \"cliente\": { \"razon_social\": string, \"cif\": string, \"domicilio\": string }\n  },\n  \"objeto\": string (resumen en 1-2 frases),\n  \"duracion\": {\n    \"fecha_inicio\": \"YYYY-MM-DD\" o null,\n    \"fecha_fin\": \"YYYY-MM-DD\" o null,\n    \"renovacion_automatica\": boolean\n  },\n  \"importe\": {\n    \"cifra\": number,\n    \"moneda\": string,\n    \"periodicidad\": \"mensual\"|\"anual\"|\"unico\"\n  },\n  \"clausulas_riesgo\": [string]\n}\n\nReglas:\n- Si no encuentras un dato, pon null. No deduzcas ni inventes.\n- Para clausulas_riesgo, marca las 3 más relevantes (penalizaciones, exclusividad, indemnización). Cada una en 1 línea + página donde aparece.\n- Devuelve SOLO el JSON. Si encuentras ambigüedades graves, añade un campo \"_warnings\" con la lista.",
+      rubric: [
+        "Subir el PDF real, no copiar el texto al chat",
+        "Definir un schema JSON explícito (campos y tipos)",
+        "Decir 'pon null' en lugar de permitir invenciones",
+        "Pedir referencia a página para datos críticos",
+        "Definir el formato final (solo JSON, sin texto extra)"
+      ]
+    },
+    {
+      title: "Pedir un Artifact React simple",
+      task: "Pide a Claude un Artifact en React que sea útil para tu trabajo. Algo pequeño: un timer, una calculadora específica, un convertidor, un checklist con estado. Define funcionalidad, estética y restricciones. Escribe el prompt.",
+      solution: "Crea un Artifact en React (sin librerías externas, solo React + estilos inline o Tailwind si está disponible) que sea un Pomodoro Tracker para sesiones de trabajo profundo.\n\nFuncionalidad:\n- Botón de inicio/pausa\n- Temporizador visible (cuenta atrás desde 25:00)\n- Tras cada pomodoro completado, suma 1 al contador del día\n- Después de 4 pomodoros, sugiere descanso largo de 15 min\n- Botón 'reset día' que vuelve el contador a 0\n- Una nota de texto editable donde escribir 'en qué estoy trabajando ahora' (1 línea, persiste mientras el Artifact esté abierto)\n\nDiseño:\n- Una sola pantalla, centrada\n- Tipografía mono para el temporizador, sans para el resto\n- Paleta: fondo claro, acento un único color naranja\n- Mínimo, sin iconos decorativos\n\nTécnico:\n- Funciona dentro del Artifact sin pedir permisos\n- No usar audio (algunas plataformas lo bloquean)\n- Estado en useState, sin librerías\n\nDevuelve el Artifact funcionando, no como bloque de código en el chat.",
+      rubric: [
+        "Especificar 'Artifact' explícitamente, no 'código'",
+        "Definir funcionalidad concreta, no genérica",
+        "Decir si React, HTML, SVG, etc. y restricciones de librerías",
+        "Dar pautas de diseño (paleta, tipografía, layout)",
+        "Pedir el resultado funcionando, no en bloque de chat"
+      ]
+    },
+    {
+      title: "Forzar code execution en lugar de razonamiento",
+      task: "Plantéale a Claude un cálculo donde el razonamiento sin ejecución probablemente fallaría (estadística sobre dataset, simulación, cálculo financiero compuesto). Fuerza explícitamente que use code execution. Escribe el prompt.",
+      solution: "Usa la herramienta de ejecución de código Python. NO calcules a mano, ejecuta.\n\nProblema: tengo 12.000€ ahorrados y aporto 300€/mes. Quiero simular el patrimonio final tras 25 años en 3 escenarios:\n- Escenario A: cuenta remunerada al 2.5% anual fijo\n- Escenario B: fondo indexado MSCI World, asume rentabilidad media histórica del 7% anual con volatilidad del 15% (simula 1000 trayectorias y dame mediana + percentil 10 y 90)\n- Escenario C: igual que B pero con inflación del 3% anual (devuelve cifras reales, no nominales)\n\nPara la simulación de B y C usa Monte Carlo con numpy. Random seed fijo para reproducibilidad.\n\nDevuélveme:\n1) El código completo que has ejecutado\n2) Una tabla con los resultados de los 3 escenarios (mediana, P10, P90)\n3) Un gráfico con las trayectorias de Monte Carlo del escenario B (las 1000, con la mediana resaltada)\n4) Tu interpretación en 3 líneas, sin recomendaciones financieras\n\nSi alguna librería no está disponible, dímelo en lugar de simular el resultado.",
+      rubric: [
+        "Decir explícitamente 'usa code execution' o 'ejecuta Python'",
+        "Plantear un problema donde el cálculo mental fallaría",
+        "Pedir ver el código además del resultado (auditoría)",
+        "Fijar parámetros para reproducibilidad (random seed)",
+        "Permitir a Claude decir 'esta librería no está disponible'"
+      ]
+    },
+    {
+      title: "Diseñar un flujo map-reduce para un dataset enorme",
+      task: "Imagina que tienes 800 emails de soporte de tu producto y quieres clasificarlos por categoría + sacar los 10 problemas más recurrentes. NO caben en un solo prompt. Diseña el plan map-reduce que ejecutarías: cómo trocear, qué pedirle en cada chunk, cómo consolidar.",
+      solution: "Plan map-reduce para 800 emails de soporte:\n\nFASE 1 — PREPARAR DATOS (yo, no Claude):\nExportar emails a CSV: id, fecha, asunto, cuerpo (truncado a 500 palabras). Trocear el CSV en 16 archivos de 50 emails cada uno.\n\nFASE 2 — MAP (Claude, una llamada por chunk):\nProcesa este lote de 50 emails de soporte. Para cada email devuelve JSON:\n{\n  \"id\": string,\n  \"categoria\": una de [\"bug\",\"feature_request\",\"facturacion\",\"onboarding\",\"otro\"],\n  \"sentimiento\": \"frustrado\"|\"neutro\"|\"agradecido\",\n  \"problema_resumen\": string (max 12 palabras),\n  \"producto_area\": string (qué módulo afecta)\n}\nDevuelve solo el array JSON. Si un email es ininteligible, ponlo en \"otro\" + problema_resumen=\"sin contenido claro\".\n\nFASE 3 — CONSOLIDACIÓN (Claude, una llamada con resúmenes):\nTe paso los 800 problema_resumen ya clasificados (lista). Agrupa los semánticamente similares y devuélveme:\n1) Top 10 problemas más mencionados con su frecuencia\n2) Distribución por categoria (%)\n3) Cuántos casos de sentimiento \"frustrado\" hay en cada categoría\n4) 3 patrones inesperados que detectes\n\nFASE 4 — VALIDACIÓN (yo):\nMuestreo aleatorio de 20 emails, comprobar que la clasificación de Claude coincide con la mía. Si <85% de acuerdo, refinar el prompt de la Fase 2 y repetir.",
+      rubric: [
+        "Reconocer que 800 emails no caben en un solo prompt",
+        "Trocear con un tamaño que sí quepa y deje margen",
+        "Definir schema idéntico en cada chunk para poder consolidar",
+        "Diseñar la fase de reduce sobre los resultados, no sobre los datos brutos",
+        "Incluir una fase de validación humana de muestreo"
+      ]
+    }
+  ],
+
+  prompts: [
+    {
+      tag: "Imagen",
+      title: "Análisis de captura UX",
+      desc: "Para sacar feedback útil de una captura de tu producto en lugar de cumplidos vagos.",
+      text: "[Adjunta imagen]\n\nCaptura de [QUÉ ES: pantalla, landing, mockup] de [PRODUCTO Y USUARIO].\n\nObjetivo de esa pantalla: [QUÉ DEBE HACER EL USUARIO].\n\nAnaliza:\n1) Primeros 5 segundos: jerarquía visual real vs. la que debería haber\n2) Propuesta de valor: ¿se entiende sin contexto previo?\n3) Llamada a la acción: ¿hay una sola dominante o compiten varias?\n4) Densidad: ¿qué quitarías sin perder función?\n\nCita elementos visibles concretos (\"el botón verde arriba\", \"la frase X\"). Si una zona es ruido, dilo. Acaba con: si solo pudiera arreglar 2 cosas antes del [DEADLINE], cuáles."
+    },
+    {
+      tag: "Imagen",
+      title: "Extraer datos numéricos de un gráfico",
+      desc: "Cuando tienes un gráfico en un informe ajeno y necesitas las cifras aproximadas.",
+      text: "[Adjunta gráfico]\n\nGráfico de [TIPO] del informe de [FUENTE]. Muestra [QUÉ MIDE] en [PERIODO/SEGMENTOS].\n\nDevuélveme:\n1) Tabla con los valores aproximados que leas del gráfico (marca con ~ los inciertos)\n2) Tendencia general en 2 líneas\n3) Anomalías o puntos llamativos\n4) Sospechas de manipulación visual (eje cortado, escala engañosa, colores tendenciosos) si las hay\n\nNo me digas que no puedes leer cifras exactas. Estima razonable y márcalo. Si una zona del gráfico está ilegible o cortada, dilo en lugar de inventar."
+    },
+    {
+      tag: "PDF",
+      title: "Extracción a JSON desde PDF",
+      desc: "Para sacar datos estructurados de cualquier documento (facturas, contratos, informes).",
+      text: "[Adjunta PDF]\n\nDocumento: [QUÉ ES].\n\nExtrae a JSON con este schema:\n{\n  [DEFINE CAMPOS Y TIPOS]\n}\n\nReglas:\n- Si un campo no aparece o es ambiguo: null. NO inventes.\n- Si el OCR/lectura falla en una sección, márcalo en \"_warnings\".\n- Cita la página donde encuentras cada dato crítico.\n- Devuelve SOLO el JSON, sin texto adicional fuera del bloque.\n\nSi el documento tiene más de un [registro/sección/factura], devuelve un array."
+    },
+    {
+      tag: "PDF",
+      title: "Resumen ejecutivo de PDF largo",
+      desc: "Para informes de 30-100 páginas donde solo necesitas lo accionable.",
+      text: "[Adjunta PDF de N páginas]\n\nInforme sobre [TEMA]. Mi objetivo: tomar [DECISIÓN CONCRETA] en una reunión el [FECHA].\n\nDevuélveme:\n1) Resumen ejecutivo en 5 bullets\n2) Las 3 conclusiones con más evidencia numérica (cita página)\n3) Los 3 riesgos o limitaciones que el informe reconoce\n4) Las 3 preguntas que el informe NO responde y debería investigar aparte\n5) En una sola línea: qué haría si esto fuera mi decisión\n\nNo me cuentes la estructura del informe. Cuéntame lo accionable."
+    },
+    {
+      tag: "Web",
+      title: "Comparativa de precios actualizada",
+      desc: "Cuando necesitas datos vivos (precios, versiones, regulación reciente) y no puedes fiarte del corte de conocimiento.",
+      text: "Activa búsqueda web.\n\nNecesito [DATO CONCRETO Y ACTUAL] de [N OPCIONES O FUENTES].\n\nEspecificaciones a comparar:\n- [SPEC 1]\n- [SPEC 2]\n- [SPEC 3]\n\nPara cada opción devuelve:\n1) Valor encontrado\n2) URL oficial donde lo viste (cítala)\n3) Fecha de la página o de la consulta\n4) Si la comparación no es 1:1, advierte el matiz\n\nFormato: tabla. Línea final: cuál gana según los criterios y por qué."
+    },
+    {
+      tag: "Web",
+      title: "Estado del arte sobre un tema reciente",
+      desc: "Para ponerte al día rápido en algo que ha cambiado tras la fecha de corte del modelo.",
+      text: "Activa búsqueda web.\n\nQuiero entender el estado actual de [TEMA] a fecha de hoy.\n\nDevuélveme:\n1) Resumen en 5 bullets de los avances/cambios últimos 12 meses\n2) Los 3 actores/empresas/personas más relevantes ahora\n3) Las 2 fuentes (blogs, papers, posts) más citadas en este tema\n4) Una pregunta abierta que la comunidad está debatiendo\n\nCita URLs. Si una afirmación no la puedes respaldar con fuente, márcala como \"sin fuente clara\". No mezcles tu conocimiento previo con resultados web sin avisar."
+    },
+    {
+      tag: "Code",
+      title: "EDA exprés sobre un CSV",
+      desc: "Análisis exploratorio de un dataset cualquiera ejecutando código real, no razonando.",
+      text: "[Adjunta CSV]\n\nUsa la herramienta de ejecución de código Python.\n\nQuiero un análisis exploratorio del archivo. Devuélveme:\n1) Shape, columnas, tipos y nulos por columna\n2) describe() de las columnas numéricas\n3) Top 10 [DIMENSIÓN: clientes, productos, regiones...] por [MÉTRICA]\n4) Detección de outliers en [COLUMNA] usando IQR\n5) Un gráfico [TIPO] sobre [PREGUNTA CONCRETA]\n6) 3 anomalías o cosas raras que detectes al mirar los datos\n\nMuéstrame el código que ejecutas + las salidas. Si una columna no es como esperas, dime el problema en vez de adaptar a ciegas."
+    },
+    {
+      tag: "Code",
+      title: "Simulación Monte Carlo",
+      desc: "Para problemas con incertidumbre donde el cálculo determinista no basta.",
+      text: "Usa code execution.\n\nSimula con Monte Carlo:\n[DESCRIBE EL PROBLEMA, VARIABLES Y SUS DISTRIBUCIONES]\n\nParámetros:\n- N de trayectorias: [ej. 1000]\n- Horizonte temporal: [ej. 20 años]\n- Random seed fijo (para reproducibilidad)\n\nDevuélveme:\n1) Código completo (numpy, sin libs raras si no son necesarias)\n2) Tabla con mediana, P10, P90 del resultado\n3) Gráfico de trayectorias con la mediana resaltada\n4) Interpretación en 3 líneas, SIN dar consejos personales/financieros\n\nSi alguna librería no está disponible en el sandbox, dímelo en vez de simularlo a mano."
+    },
+    {
+      tag: "Artifact",
+      title: "Dashboard interactivo en HTML",
+      desc: "Para presentar datos o un modelo de decisión como widget en vez de tabla muerta.",
+      text: "Crea un Artifact (HTML + JS vanilla, autocontenido, sin librerías externas) que sea un [TIPO DE WIDGET: calculadora, dashboard, simulador].\n\nVariables de entrada:\n- [VAR 1: rango y tipo]\n- [VAR 2: rango y tipo]\n- [VAR 3]\n\nOutputs en tiempo real:\n- [OUTPUT 1]\n- [OUTPUT 2]\n- [GRÁFICO O VISUAL]\n\nDiseño:\n- Una sola pantalla, sin scroll\n- Limpio, neutro, una paleta de 2-3 colores\n- Funciona offline (todo embebido)\n- Sliders/inputs nativos del navegador\n\nDevuélvelo como Artifact funcionando, no como bloque de código en el chat."
+    },
+    {
+      tag: "Artifact",
+      title: "Componente React reutilizable",
+      desc: "Para prototipar un componente que luego pasarás a tu codebase.",
+      text: "Crea un Artifact en React con un componente [NOMBRE] que haga [QUÉ].\n\nProps:\n- [PROP 1: tipo y descripción]\n- [PROP 2]\n- [PROP 3]\n\nComportamiento esperado:\n1) [CASO 1]\n2) [CASO 2]\n3) [EDGE CASE]\n\nRestricciones:\n- Solo React + estilos inline (o Tailwind si está disponible). Nada de librerías de UI.\n- Estado con useState, efectos con useEffect si hace falta\n- Accesible (aria-labels donde toque)\n- Sin lógica de negocio externa: todo dentro del componente\n\nIncluye dentro del Artifact un \"playground\" debajo del componente: 3 ejemplos de uso con props distintas, para que pueda ver cómo se comporta."
+    },
+    {
+      tag: "Tool use",
+      title: "Plantilla de tool definition para API",
+      desc: "Para definir una herramienta que Claude pueda invocar desde tu backend.",
+      text: "Diseña la definición de tool (formato JSON Schema de Anthropic) para que Claude pueda llamar a mi función [NOMBRE_FUNCION].\n\nQué hace la función:\n[DESCRIPCIÓN EN UNA FRASE]\n\nParámetros que acepta:\n- [PARAM 1: tipo, requerido, descripción]\n- [PARAM 2]\n- [PARAM 3]\n\nQué devuelve: [SCHEMA DEL OUTPUT].\n\nDevuélveme:\n1) El bloque JSON con name, description, input_schema (con type, properties, required)\n2) 3 ejemplos de prompts de usuario que deberían disparar esta tool\n3) 2 ejemplos de prompts que NO deberían dispararla (para entrenar el límite)\n4) Riesgos: qué inputs maliciosos podrían explotarla y cómo prevenirlo a nivel de schema"
+    },
+    {
+      tag: "Computer Use",
+      title: "Automatización supervisada de tarea repetitiva",
+      desc: "Para tareas en UIs sin API: rellenar formularios, descargar reports, navegar paneles.",
+      text: "Activa Computer Use.\n\nNecesito que automatices esta tarea repetitiva en mi [BROWSER/DESKTOP]:\n\nObjetivo: [QUÉ HAY QUE CONSEGUIR AL FINAL]\n\nPasos esperados:\n1) Abre [URL O APP]\n2) [ACCIÓN 1]\n3) [ACCIÓN 2]\n4) [GUARDAR/DESCARGAR/COPIAR resultado]\n\nReglas críticas:\n- Antes de hacer click en cualquier cosa que parezca destructiva (borrar, enviar, pagar), PARA y pregúntame\n- Si la UI no es como esperas, describe lo que ves y espera instrucción\n- No introduzcas credenciales que no te haya dado yo explícitamente\n- Al final, dame un log con cada acción que has hecho\n\nVoy a estar mirando. Esto es asistencia, no autonomía total."
+    }
+  ],
+
+  quiz: [
+    {
+      q: "Subes una foto de un gráfico de barras a Claude. ¿Qué puedes esperar de forma realista?",
+      opts: [
+        "Que extraiga los valores exactos con precisión decimal",
+        "Que estime los valores aproximados, lea ejes y leyenda, y describa la tendencia",
+        "Que ignore el gráfico y te pida el CSV original",
+        "Que solo entienda texto, no imágenes"
+      ],
+      correct: 1,
+      fb: "Claude lee gráficos con bastante calidad pero NO con precisión decimal. Estima valores, identifica ejes/leyendas y narra la tendencia. Para cifras exactas, siempre pide el dataset."
+    },
+    {
+      q: "¿Qué es 'tool use' o 'function calling' en Claude?",
+      opts: [
+        "Que Claude escribe código y lo ejecuta él mismo automáticamente",
+        "Un mecanismo por el que Claude decide cuándo invocar funciones externas que tú defines, con qué argumentos, y usa el resultado en su respuesta",
+        "La capacidad de leer PDFs y extraer texto",
+        "El modo voz de la app móvil"
+      ],
+      correct: 1,
+      fb: "Tool use = tú defines funciones (con schema), Claude decide cuándo llamarlas y con qué args. NO las ejecuta él; las llama tu backend. Es la base de los agentes integrados con APIs."
+    },
+    {
+      q: "Tienes 800 emails y necesitas clasificarlos. NO caben en una sola ventana de contexto. ¿Qué patrón usas?",
+      opts: [
+        "Pegar los 800 emails y rezar",
+        "Usar Computer Use para abrir tu gestor de correo y leerlos uno a uno",
+        "Map-reduce: trocear en lotes, procesar cada uno con Claude, consolidar al final",
+        "Pedir a Claude que aumente su ventana de contexto"
+      ],
+      correct: 2,
+      fb: "Map-reduce es el patrón estándar para datos que superan la ventana de contexto. Cada lote sigue el mismo schema, luego una llamada final consolida resultados sobre los resúmenes, no sobre los datos brutos."
+    },
+    {
+      q: "¿Qué es un Artifact en Claude.ai?",
+      opts: [
+        "Un archivo descargable que Claude te envía por email",
+        "Un panel lateral donde Claude renderiza contenido interactivo (HTML, React, SVG, markdown) editable e iterable",
+        "Una memoria persistente entre conversaciones",
+        "Un log de auditoría de tus prompts"
+      ],
+      correct: 1,
+      fb: "Los Artifacts viven en un panel lateral de Claude.ai. Sirven para crear documentos vivos: calculadoras, dashboards, componentes React, código, diagramas SVG. Puedes iterar sobre ellos sin reescribir todo el chat."
+    },
+    {
+      q: "Le pides a Claude un cálculo financiero con interés compuesto sobre 30 años. ¿Qué opción rinde mejor?",
+      opts: [
+        "Pedirle que lo razone paso a paso en su respuesta",
+        "Decirle 'usa la herramienta de ejecución de código Python y muéstrame el código + resultado'",
+        "Bajar la temperatura a 0 y esperar precisión",
+        "Pedirle que verifique el cálculo dos veces"
+      ],
+      correct: 1,
+      fb: "Para aritmética larga, especialmente compuesta o estadística, code execution es DRÁSTICAMENTE más fiable que el razonamiento. Claude alucina con cálculos largos; ejecutando Python obtienes el número correcto."
+    },
+    {
+      q: "Cuándo tiene sentido usar Computer Use frente a buscar una API:",
+      opts: [
+        "Siempre que sea posible, es más moderno",
+        "Cuando la app no tiene API pública, la tarea es repetitiva y aceptas supervisión humana",
+        "Cuando necesitas máxima velocidad",
+        "Cuando trabajas con datos sensibles que no quieres exponer"
+      ],
+      correct: 1,
+      fb: "Computer Use es lento, frágil y experimental. Solo tiene sentido cuando no hay API y la tarea es repetitiva. Para datos sensibles o velocidad, casi siempre es mejor una API real."
+    },
+    {
+      q: "¿Por qué Claude pide a veces 'búsqueda web' antes de responder sobre algo reciente?",
+      opts: [
+        "Para cobrar más por la consulta",
+        "Porque su fecha de corte de conocimiento es anterior al evento; sin web search inventaría o daría datos viejos",
+        "Porque la búsqueda web es obligatoria en todos los prompts",
+        "Porque no entiende preguntas sin búsqueda"
+      ],
+      correct: 1,
+      fb: "Claude tiene fecha de corte: eventos posteriores no los conoce. Web search le permite consultar fuentes vivas y citar URLs. Sin esto inventaría hechos plausibles sobre cosas que no ha visto en entrenamiento."
+    },
+    {
+      q: "Subes un PDF escaneado (imagen, sin capa de texto). ¿Qué pasa?",
+      opts: [
+        "Claude se niega a procesarlo",
+        "Lo lee aplicando OCR sobre las imágenes embebidas, aunque con menos fiabilidad que en PDFs nativos",
+        "Lo procesa exactamente igual que un PDF nativo, sin diferencia",
+        "Lo convierte automáticamente a Word"
+      ],
+      correct: 1,
+      fb: "Claude procesa PDFs escaneados con OCR sobre las páginas-imagen. La calidad depende del escaneo: caligrafía, manchas o resolución baja degradan el resultado. Para datos críticos, valida una muestra."
+    },
+    {
+      q: "Pides un Artifact React. ¿Qué restricción tiene sentido especificar en el prompt?",
+      opts: [
+        "Que use al menos 5 librerías externas para parecer profesional",
+        "Que sea autocontenido (sin libs externas obligatorias) y use solo React + estilos básicos, para que funcione dentro del Artifact",
+        "Que escriba el componente con clases en lugar de funciones",
+        "Que use TypeScript siempre, por defecto"
+      ],
+      correct: 1,
+      fb: "Los Artifacts ejecutan un entorno limitado. Pedir autocontenido + sin libs externas evita imports rotos. Tailwind o Lucide a veces están disponibles, pero confiar en eso es frágil — mejor estilos inline."
+    },
+    {
+      q: "Estás revisando una factura PDF y Claude te da el CIF del proveedor sin que aparezca claramente en el documento. ¿Qué hacer?",
+      opts: [
+        "Confiar, Claude no se equivoca con datos fiscales",
+        "Verificar el CIF directamente en el documento o en la base de datos fiscal. Si no aparece, es probable alucinación",
+        "Pedirle a Claude que se autocorrija",
+        "Subir el PDF en otro formato"
+      ],
+      correct: 1,
+      fb: "Los CIF, números de factura y datos fiscales son zona de alta alucinación. SIEMPRE verifica contra el documento original. Si en el prompt dices 'pon null si no aparece, no inventes', reduces el riesgo pero no lo eliminas."
+    }
+  ],
+
+  glosario: [
+    { t: "Artifact", d: "Panel lateral en Claude.ai donde se renderiza contenido interactivo (HTML, React, SVG, markdown). Editable e iterable sin saturar el chat." },
+    { t: "Code execution", d: "Herramienta que permite a Claude escribir y ejecutar código Python en un sandbox aislado. Útil para cálculos exactos, análisis y gráficos." },
+    { t: "Computer Use", d: "Capacidad experimental por la que Claude controla un navegador o escritorio enviando clicks y tecleos sobre capturas de pantalla. Lento y supervisado." },
+    { t: "Context window", d: "Cantidad máxima de tokens que el modelo procesa en una llamada. Define cuánto PDF/datos puedes meterle a la vez." },
+    { t: "Function calling", d: "Sinónimo de tool use. Mecanismo por el que Claude invoca funciones externas definidas por ti, con argumentos estructurados." },
+    { t: "JSON Schema", d: "Formato estándar para describir la forma esperada de un objeto JSON. Lo usas para definir tools y para pedir salidas estructuradas." },
+    { t: "Map-reduce", d: "Patrón para procesar datos que no caben en una sola llamada. Trocear (map), procesar cada chunk, consolidar (reduce) los resultados." },
+    { t: "MCP", d: "Model Context Protocol. Estándar abierto de Anthropic para conectar Claude a herramientas, fuentes de datos y APIs de terceros." },
+    { t: "Multimodal", d: "Modelo que procesa más de un tipo de input. Claude maneja texto + imágenes + PDFs en el mismo prompt." },
+    { t: "OCR", d: "Optical Character Recognition. Reconocimiento de texto a partir de imágenes. Claude lo aplica sobre PDFs escaneados y capturas." },
+    { t: "RAG", d: "Retrieval-Augmented Generation. Patrón en el que recuperas documentos relevantes y los pasas a Claude como contexto antes de pedirle una respuesta." },
+    { t: "Sandbox", d: "Entorno aislado donde se ejecuta código sin acceso a tu máquina real. Claude usa sandboxes para code execution y Computer Use." },
+    { t: "Schema", d: "Definición estructural de los datos que esperas (campos, tipos, obligatoriedad). Imprescindible para extracción estable y tool use." },
+    { t: "Streaming", d: "Modo en que Claude devuelve la respuesta token a token según los genera, en vez de esperar al final. Mejora latencia percibida." },
+    { t: "Tool use", d: "Capacidad de Claude para decidir cuándo invocar funciones externas, con qué argumentos, e integrar la respuesta en la conversación." },
+    { t: "Vision", d: "Submódulo de Claude que procesa imágenes. Lee capturas, fotos, diagramas, gráficos, mockups. Parte de la multimodalidad." },
+    { t: "Voice mode", d: "Modo de conversación por voz en la app móvil de Claude. Mantiene diálogo hablado con baja latencia, manos libres." },
+    { t: "Web search", d: "Herramienta que permite a Claude consultar la web en tiempo real para superar la fecha de corte de conocimiento. Cita fuentes." }
+  ],
+
+  recursos: [
+    {
+      tag: "Documentación",
+      title: "Tool use en Claude — guía oficial",
+      desc: "Cómo definir tools, schemas, y orquestar llamadas a funciones desde la API. La referencia central para integraciones.",
+      url: "https://docs.claude.com/en/docs/agents-and-tools/tool-use/overview",
+      meta: "docs.claude.com · ~40 min"
+    },
+    {
+      tag: "Documentación",
+      title: "Vision — capacidades de imagen",
+      desc: "Qué imágenes acepta Claude, límites de tamaño, mejores prácticas de prompting visual y casos de uso documentados.",
+      url: "https://docs.claude.com/en/docs/build-with-claude/vision",
+      meta: "docs.claude.com · ~25 min"
+    },
+    {
+      tag: "Documentación",
+      title: "Computer Use — overview",
+      desc: "Cómo funciona Computer Use, qué modelos lo soportan, restricciones, y patrones para construir agentes que controlan UI.",
+      url: "https://docs.claude.com/en/docs/agents-and-tools/computer-use",
+      meta: "docs.claude.com · ~35 min"
+    },
+    {
+      tag: "Documentación",
+      title: "Code execution tool",
+      desc: "Herramienta nativa para que Claude escriba y ejecute Python en sandbox. Casos de uso, límites y manejo de archivos.",
+      url: "https://docs.claude.com/en/docs/agents-and-tools/tool-use/code-execution-tool",
+      meta: "docs.claude.com · ~20 min"
+    },
+    {
+      tag: "Documentación",
+      title: "Web search tool",
+      desc: "Cómo activar la búsqueda web desde la API, control de dominios, citación de fuentes y costes asociados.",
+      url: "https://docs.claude.com/en/docs/agents-and-tools/tool-use/web-search-tool",
+      meta: "docs.claude.com · ~15 min"
+    },
+    {
+      tag: "Producto",
+      title: "Claude Skills — extender capacidades",
+      desc: "Skills empaquetadas que añaden capacidades específicas a Claude (manejo de PPTX, Excel, PDF, etc.). Concepto y ejemplos.",
+      url: "https://www.anthropic.com/news/skills",
+      meta: "anthropic.com · ~10 min"
+    },
+    {
+      tag: "Cookbook",
+      title: "Anthropic Cookbook en GitHub",
+      desc: "Notebooks con ejemplos prácticos de tool use, vision, RAG, agentes y patrones avanzados. Código listo para clonar.",
+      url: "https://github.com/anthropics/anthropic-cookbook",
+      meta: "github.com · código real"
+    },
+    {
+      tag: "Documentación",
+      title: "Model Context Protocol (MCP)",
+      desc: "Estándar abierto de Anthropic para conectar Claude a herramientas y datos externos. La base del ecosistema de integraciones.",
+      url: "https://modelcontextprotocol.io",
+      meta: "modelcontextprotocol.io · técnico"
+    }
+  ],
+
+  checklist: [
+    {
+      day: "Día 1 — Vision",
+      text: "Sube una captura de algo tuyo (dashboard, slide, mockup) y pide análisis con ángulo concreto.",
+      detail: "Aplica la plantilla de 'Análisis de captura UX'. Compara la calidad de respuesta con un 'qué te parece' sin contexto."
+    },
+    {
+      day: "Día 2 — PDF",
+      text: "Sube un PDF (factura, contrato, informe) y pide extracción a JSON con schema definido.",
+      detail: "Define los campos, marca null para los que no aparezcan, pide cita de página para datos críticos."
+    },
+    {
+      day: "Día 3 — Code execution",
+      text: "Plantea un cálculo donde el razonamiento mental fallaría y fuerza code_execution.",
+      detail: "Estadística, finanzas con interés compuesto, simulación. Pide ver el código además del resultado."
+    },
+    {
+      day: "Día 4 — Web search",
+      text: "Pide una comparativa de algo cuyos datos cambian rápido (precios cloud, versiones de librería, regulación reciente).",
+      detail: "Exige URL como prueba en cada dato. Verifica una de las URLs para comprobar honestidad."
+    },
+    {
+      day: "Día 5 — Artifact",
+      text: "Pide un Artifact (HTML o React) que sea útil para tu trabajo: calculadora, dashboard, simulador, checklist.",
+      detail: "Define funcionalidad, restricciones y diseño. Itera 2-3 veces sobre el mismo Artifact para acostumbrarte al ciclo."
+    },
+    {
+      day: "Día 6 — Voice mode",
+      text: "En el móvil, usa voice mode 15 minutos en una situación de manos libres (paseo, cocina, conducción urbana).",
+      detail: "Estructura una decisión, planifica una reunión o dicta notas. Compara con escribir lo mismo en chat."
+    },
+    {
+      day: "Día 7 — Tool use (concepto)",
+      text: "Diseña en papel la tool definition de una función real de tu trabajo que Claude podría invocar.",
+      detail: "Nombre, descripción, input_schema, output. No hace falta implementarla. El ejercicio es pensar en qué de tu día se podría 'agentificar'."
+    }
+  ]
+};
+
+// ============================================
+// RENDERIZADO
+// ============================================
+function renderFlashcards() {
+  const grid = document.getElementById('flashgrid');
+  MODULE_DATA.conceptos.forEach((c, i) => {
+    const card = document.createElement('div');
+    card.className = 'flash';
+    card.innerHTML = `
+      <div class="flash-inner">
+        <div class="flash-face front">
+          <div class="flash-num">Concepto ${String(i+1).padStart(2,'0')}</div>
+          <div class="flash-title">${c.title}</div>
+          <div class="flash-hint">↻ Pulsa para girar</div>
+        </div>
+        <div class="flash-face back">
+          <div class="flash-def">${c.def}</div>
+          <div class="flash-example">${c.example}</div>
+        </div>
+      </div>
+    `;
+    card.addEventListener('click', () => card.classList.toggle('flipped'));
+    grid.appendChild(card);
+  });
+}
+
+function renderCases() {
+  const wrap = document.getElementById('cases');
+  MODULE_DATA.casos.forEach((c, i) => {
+    const el = document.createElement('div');
+    el.className = 'case';
+    el.innerHTML = `
+      <div class="case-num">Caso ${String(i+1).padStart(2,'0')}</div>
+      <div class="case-title">${c.title}</div>
+      <div class="case-context">${c.context}</div>
+      <div class="case-grid">
+        <div class="case-col bad">
+          <div class="case-col-label">✕ Prompt mediocre</div>
+          <div class="case-prompt">${c.bad}</div>
+        </div>
+        <div class="case-col good">
+          <div class="case-col-label">✓ Prompt bueno</div>
+          <div class="case-prompt">${c.good}</div>
+        </div>
+      </div>
+      <div class="case-why">${c.why}</div>
+    `;
+    wrap.appendChild(el);
+  });
+}
+
+function renderExercises() {
+  const wrap = document.getElementById('exercises');
+  MODULE_DATA.ejercicios.forEach((e, i) => {
+    const el = document.createElement('div');
+    el.className = 'ex';
+    el.innerHTML = `
+      <div class="ex-num">Ejercicio ${String(i+1).padStart(2,'0')}</div>
+      <div class="ex-title">${e.title}</div>
+      <div class="ex-task">${e.task.replace(/\n/g, '<br>')}</div>
+      <textarea class="ex-input" placeholder="Escribe tu respuesta aquí..."></textarea>
+      <div class="ex-btns">
+        <button class="btn btn-primary" data-action="show-solution">Ver solución modelo</button>
+        <button class="btn" data-action="clear">Limpiar</button>
+      </div>
+      <div class="ex-solution">
+        <div class="ex-solution-label">Solución modelo</div>
+        <div class="ex-solution-text">${e.solution}</div>
+        <div class="ex-rubric">
+          <div class="ex-rubric-title">Autoevaluación · ¿tu respuesta cumple?</div>
+          <ul>${e.rubric.map(r => `<li>${r}</li>`).join('')}</ul>
+        </div>
+      </div>
+    `;
+    const textarea = el.querySelector('.ex-input');
+    const solDiv = el.querySelector('.ex-solution');
+    el.querySelector('[data-action="show-solution"]').addEventListener('click', () => {
+      solDiv.classList.toggle('show');
+    });
+    el.querySelector('[data-action="clear"]').addEventListener('click', () => {
+      textarea.value = '';
+      solDiv.classList.remove('show');
+    });
+    wrap.appendChild(el);
+  });
+}
+
+function renderPrompts() {
+  const wrap = document.getElementById('prompts');
+  MODULE_DATA.prompts.forEach((p, i) => {
+    const el = document.createElement('div');
+    el.className = 'prompt-card';
+    el.innerHTML = `
+      <div class="prompt-tag">${p.tag}</div>
+      <div class="prompt-title">${p.title}</div>
+      <div class="prompt-desc">${p.desc}</div>
+      <pre class="prompt-text">${p.text.replace(/</g, '&lt;')}</pre>
+      <button class="copy-btn">Copiar al portapapeles</button>
+    `;
+    const btn = el.querySelector('.copy-btn');
+    btn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(p.text);
+        btn.textContent = '✓ Copiado';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.textContent = 'Copiar al portapapeles';
+          btn.classList.remove('copied');
+        }, 1800);
+      } catch(e) {
+        btn.textContent = 'Selecciona y copia manual';
+      }
+    });
+    wrap.appendChild(el);
+  });
+}
+
+// Tabs
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('sec-' + btn.dataset.tab).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+});
+
+function renderQuiz() {
+  const wrap = document.getElementById('quiz');
+  let answered = 0;
+  let correct = 0;
+  MODULE_DATA.quiz.forEach((q, i) => {
+    const el = document.createElement('div');
+    el.className = 'quiz-q';
+    el.innerHTML = `
+      <div class="quiz-num">Pregunta ${String(i+1).padStart(2,'0')} de ${MODULE_DATA.quiz.length}</div>
+      <div class="quiz-question">${q.q}</div>
+      <div class="quiz-opts">
+        ${q.opts.map((o, j) => `<button class="quiz-opt" data-idx="${j}">${o}</button>`).join('')}
+      </div>
+      <div class="quiz-feedback"></div>
+    `;
+    const opts = el.querySelectorAll('.quiz-opt');
+    const fb = el.querySelector('.quiz-feedback');
+    opts.forEach(opt => {
+      opt.addEventListener('click', () => {
+        if (el.classList.contains('answered')) return;
+        const idx = Number(opt.dataset.idx);
+        const isCorrect = idx === q.correct;
+        opts.forEach((o, j) => {
+          o.classList.add('locked');
+          if (j === q.correct) o.classList.add('correct');
+          else if (j === idx && !isCorrect) o.classList.add('wrong');
+        });
+        fb.classList.add('show', isCorrect ? 'correct' : 'wrong');
+        fb.textContent = (isCorrect ? '✓ Correcto. ' : '✗ Casi. ') + q.fb;
+        el.classList.add('answered');
+        answered++;
+        if (isCorrect) correct++;
+        if (answered === MODULE_DATA.quiz.length) showQuizResult(correct);
+      });
+    });
+    wrap.appendChild(el);
+  });
+}
+
+function showQuizResult(correct) {
+  const total = MODULE_DATA.quiz.length;
+  const pct = Math.round((correct / total) * 100);
+  let msg = '';
+  if (pct >= 90) msg = 'Excelente. Dominas el catálogo de herramientas, listo para el módulo 6.';
+  else if (pct >= 70) msg = 'Muy bien. Repasa las herramientas donde fallaste y avanza al módulo siguiente.';
+  else if (pct >= 50) msg = 'Aceptable. Te recomiendo revisar el vídeo y las flashcards antes de seguir.';
+  else msg = 'Vuelve al vídeo. Sin saber qué herramienta toca en cada caso, lo que viene se queda en teoría.';
+  const el = document.getElementById('quiz-result');
+  el.innerHTML = `
+    <div class="quiz-result-score">${correct} / ${total}</div>
+    <div class="quiz-result-msg">${msg}</div>
+    <button class="btn btn-primary" onclick="location.reload()">Reintentar quiz</button>
+  `;
+  el.classList.add('show');
+  el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function renderGlosario() {
+  const wrap = document.getElementById('glosario');
+  const sorted = [...MODULE_DATA.glosario].sort((a, b) => a.t.localeCompare(b.t, 'es'));
+  sorted.forEach(g => {
+    const el = document.createElement('div');
+    el.className = 'gloss-item';
+    el.innerHTML = `<div class="gloss-term">${g.t}</div><div class="gloss-def">${g.d}</div>`;
+    wrap.appendChild(el);
+  });
+}
+
+function renderRecursos() {
+  const wrap = document.getElementById('recursos');
+  MODULE_DATA.recursos.forEach(r => {
+    const el = document.createElement('a');
+    el.className = 'recurso';
+    el.href = r.url;
+    el.target = '_blank';
+    el.rel = 'noopener noreferrer';
+    el.innerHTML = `
+      <span class="recurso-tag">${r.tag}</span>
+      <div class="recurso-title">${r.title}</div>
+      <div class="recurso-desc">${r.desc}</div>
+      <div class="recurso-meta">${r.meta}</div>
+    `;
+    wrap.appendChild(el);
+  });
+}
+
+function renderChecklist() {
+  const wrap = document.getElementById('checklist');
+  const progressEl = document.getElementById('checkProgress');
+  const STORAGE_KEY = 'm5-checklist-progress';
+  // No usamos localStorage; estado en memoria solo (artefacto standalone)
+  const state = new Set();
+  function updateProgress() {
+    const done = state.size;
+    const total = MODULE_DATA.checklist.length;
+    progressEl.textContent = `${done} / ${total} completadas · ${Math.round((done/total)*100)}%`;
+  }
+  MODULE_DATA.checklist.forEach((c, i) => {
+    const el = document.createElement('div');
+    el.className = 'check-item';
+    el.innerHTML = `
+      <div class="check-box">${state.has(i) ? '✓' : ''}</div>
+      <div class="check-content">
+        <div class="check-day">${c.day}</div>
+        <div class="check-text">${c.text}</div>
+        <div class="check-detail">${c.detail}</div>
+      </div>
+    `;
+    el.addEventListener('click', () => {
+      if (state.has(i)) { state.delete(i); el.classList.remove('done'); el.querySelector('.check-box').textContent = ''; }
+      else { state.add(i); el.classList.add('done'); el.querySelector('.check-box').textContent = '✓'; }
+      updateProgress();
+    });
+    wrap.appendChild(el);
+  });
+  updateProgress();
+}
+
+renderFlashcards();
+renderCases();
+renderExercises();
+renderPrompts();
+renderQuiz();
+renderGlosario();
+renderRecursos();
+renderChecklist();
+</script>
+</body>
+</html>
