@@ -17,11 +17,21 @@ function safeEq(a, b) {
   return crypto.timingSafeEqual(Buffer.from(a), Buffer.from(b));
 }
 
+
+// Rate limiter estricto para login admin (anti brute-force)
+const loginLimiter = rateLimit({
+  windowMs: 60_000,
+  max: 5,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Demasiados intentos. Espera 1 minuto.' },
+});
+
 // ============================================================
 // POST /api/admin/login { token }
 // Valida el token y setea cookie httpOnly.
 // ============================================================
-router.post('/login', (req, res) => {
+router.post('/login', loginLimiter, (req, res) => {
   const token = String(req.body?.token || '');
   const expected = process.env.ADMIN_TOKEN || '';
   if (!expected) return res.status(500).json({ error: 'ADMIN_TOKEN no configurado' });

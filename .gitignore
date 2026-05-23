@@ -8,3 +8,4 @@ db/claude101.db-journal
 .DS_Store
 .vscode/
 .idea/
+db/*.db*
