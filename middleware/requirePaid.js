@@ -4,7 +4,7 @@ export function requirePaid(req, res, next) {
     return res.status(401).json({ error: 'No autenticado' });
   }
   if (!req.user.has_paid) {
-    const wantsJson = req.path.startsWith('/api/') || req.accepts(['html', 'json']) === 'json';
+    const wantsJson = req.originalUrl.startsWith('/api/') || req.accepts(['html', 'json']) === 'json';
     if (wantsJson) {
       return res.status(402).json({ error: 'Pago requerido', checkout: '/api/checkout' });
     }
