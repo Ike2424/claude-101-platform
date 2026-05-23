@@ -143,4 +143,46 @@ router.get('/validate-coupon', async (req, res) => {
   res.json({ ok: true, discount_pct: v.coupon.discount_pct, code: v.coupon.code });
 });
 
+
+
+// GET /api/checkout/netdiag — diagnóstico de red real (sin Stripe SDK)
+// Hace GET directo a api.stripe.com para ver si Railway puede salir a Stripe
+router.get('/netdiag', async (req, res) => {
+  const tests = {};
+  // Test 1: DNS + HTTPS a api.stripe.com
+  try {
+    const t1 = Date.now();
+    const r = await fetch('https://api.stripe.com/v1/balance', {
+      headers: { 'Authorization': `Bearer ${process.env.STRIPE_SECRET_KEY}` },
+      signal: AbortSignal.timeout(15000),
+    });
+    tests.stripe_api = {
+      ok: true,
+      status: r.status,
+      ms: Date.now() - t1,
+      body_preview: (await r.text()).slice(0, 200),
+    };
+  } catch (err) {
+    tests.stripe_api = { ok: false, error: err?.message, name: err?.name, cause: err?.cause?.code };
+  }
+  // Test 2: ¿Internet en general funciona?
+  try {
+    const t2 = Date.now();
+    const r = await fetch('https://www.google.com/generate_204', { signal: AbortSignal.timeout(5000) });
+    tests.internet = { ok: true, status: r.status, ms: Date.now() - t2 };
+  } catch (err) {
+    tests.internet = { ok: false, error: err?.message };
+  }
+  // Test 3: ¿DNS funciona?
+  try {
+    const dns = await import('node:dns');
+    const t3 = Date.now();
+    const addrs = await dns.promises.resolve4('api.stripe.com');
+    tests.dns_stripe = { ok: true, ms: Date.now() - t3, ips: addrs };
+  } catch (err) {
+    tests.dns_stripe = { ok: false, error: err?.message };
+  }
+  res.json({ node_version: process.version, tests: tests });
+});
+
 export default router;
