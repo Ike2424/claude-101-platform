@@ -94,9 +94,43 @@ router.post('/', checkoutLimiter, async (req, res) => {
 
     res.json({ url: session.url, id: session.id, applied_discount_pct: discountPct, final_amount: finalAmount });
   } catch (err) {
-    logger.error({ err: err }, 'Error creando checkout:');
-    res.status(500).json({ error: 'No se pudo iniciar el pago. Revisa la configuración de Stripe.' });
+    // Log detallado para diagnosticar
+    logger.error({
+      err: err?.message,
+      type: err?.type,
+      code: err?.code,
+      param: err?.param,
+      statusCode: err?.statusCode,
+      raw: err?.raw?.message,
+    }, 'Error creando checkout:');
+    // Devolver detalle del error para diagnosticar (sin filtrar secrets)
+    res.status(500).json({
+      error: 'No se pudo iniciar el pago.',
+      stripe_error: err?.message || 'sin mensaje',
+      stripe_type: err?.type || null,
+      stripe_code: err?.code || null,
+      stripe_status: err?.statusCode || null,
+    });
   }
+});
+
+// GET /api/checkout/diag — diagnóstico (qué variables de Stripe ve el server)
+router.get('/diag', (req, res) => {
+  const key = process.env.STRIPE_SECRET_KEY || '';
+  const pubKey = process.env.STRIPE_PUBLISHABLE_KEY || '';
+  const whsec = process.env.STRIPE_WEBHOOK_SECRET || '';
+  res.json({
+    has_secret_key: !!key,
+    secret_key_prefix: key ? key.slice(0, 8) + '...' : 'EMPTY',
+    secret_key_length: key.length,
+    has_pub_key: !!pubKey,
+    pub_key_prefix: pubKey ? pubKey.slice(0, 8) + '...' : 'EMPTY',
+    has_webhook_secret: !!whsec,
+    webhook_secret_prefix: whsec ? whsec.slice(0, 8) + '...' : 'EMPTY',
+    public_url: process.env.PUBLIC_URL || 'NOT_SET',
+    price_cents: process.env.COURSE_PRICE_CENTS || '4900 (default)',
+    currency: process.env.COURSE_CURRENCY || 'eur (default)',
+  });
 });
 
 // GET /api/checkout/validate-coupon?code=XXX
