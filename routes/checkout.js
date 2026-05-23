@@ -78,10 +78,8 @@ router.post('/', async (req, res) => {
       },
     });
 
-    // Marcamos uso del cupón (optimista; si la sesión expira, lo descontamos en cron — por ahora suficiente)
-    if (couponId) {
-      try { await exec('UPDATE coupons SET uses = uses + 1 WHERE id = ?', [couponId]); } catch {}
-    }
+    // NO incrementamos coupons.uses aquí — se hace en el webhook tras pago confirmado
+    // (evita que abandonos / sessions expiradas agoten cupones gratis)
 
     res.json({ url: session.url, id: session.id, applied_discount_pct: discountPct, final_amount: finalAmount });
   } catch (err) {

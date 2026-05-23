@@ -78,6 +78,16 @@ router.post('/', express.raw({ type: 'application/json' }), async (req, res) => 
         if (!isUniqueViolation(err)) throw err;
       }
 
+      // Incrementar uses del cupón si se usó uno interno (ahora sí, pago confirmado)
+      try {
+        const couponId = session.metadata?.internal_coupon_id;
+        if (couponId && /^\d+$/.test(couponId)) {
+          await exec('UPDATE coupons SET uses = uses + 1 WHERE id = ?', [Number(couponId)]);
+        }
+      } catch (err) {
+        logger.error({ err }, 'Error incrementando cupón tras pago:');
+      }
+
       // Enviar magic link inmediato para que pueda entrar sin esperar al success page
       try {
         const { raw, hash } = makeMagicToken();

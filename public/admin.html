@@ -525,7 +525,7 @@ async function loadPurchases() {
       <td>${escapeHtml(p.email)}</td>
       <td>${(p.amount_cents/100).toLocaleString('es-ES', { style: 'currency', currency: p.currency.toUpperCase() })}</td>
       <td><span class="badge badge-${p.status}">${p.status}</span></td>
-      <td><code style="font-family: var(--mono); font-size: 11px; color: var(--muted);">${p.stripe_session_id.slice(0,18)}…</code></td>
+      <td><code style="font-family: var(--mono); font-size: 11px; color: var(--muted);">${(p.stripe_session_id||'').slice(0,18)}…</code></td>
     </tr>
   `).join('');
 }

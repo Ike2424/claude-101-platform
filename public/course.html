@@ -1934,9 +1934,17 @@ function goTo(lessonId) {
 }
 
 function toggleComplete(lessonId) {
-  state.completed[lessonId] = !state.completed[lessonId];
+  const wasCompleted = !!state.completed[lessonId];
+  const nowCompleted = !wasCompleted;
+  state.completed[lessonId] = nowCompleted;
   saveState();
   render();
+  fetch('/api/course/progress', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'same-origin',
+    body: JSON.stringify({ lessonId, completed: nowCompleted })
+  }).catch(() => {});
 }
 
 function openModal(lessonId) {
