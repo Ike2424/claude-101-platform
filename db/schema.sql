@@ -133,3 +133,17 @@ CREATE TABLE IF NOT EXISTS certificates (
 
 CREATE INDEX IF NOT EXISTS idx_certificates_user ON certificates(user_id);
 CREATE INDEX IF NOT EXISTS idx_certificates_code ON certificates(code);
+
+-- QUIZ_ATTEMPTS: intentos de quiz por módulo (para scoring y badges)
+CREATE TABLE IF NOT EXISTS quiz_attempts (
+  id          INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id     INTEGER NOT NULL,
+  module_num  INTEGER NOT NULL,
+  score       INTEGER NOT NULL,
+  total       INTEGER NOT NULL,
+  created_at  TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+CREATE INDEX IF NOT EXISTS idx_quiz_attempts_user ON quiz_attempts(user_id);
+CREATE INDEX IF NOT EXISTS idx_quiz_attempts_module ON quiz_attempts(module_num);

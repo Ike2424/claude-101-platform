@@ -1250,6 +1250,15 @@ function renderQuiz() {
 
 function showQuizResult(correct) {
   const total = MODULE_DATA.quiz.length;
+  // Guardar intento en servidor (silencioso si falla)
+  try {
+    fetch('/api/quiz/attempt', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'same-origin',
+      body: JSON.stringify({ module: 2, score: correct, total })
+    }).catch(() => {});
+  } catch {}
   const pct = Math.round((correct / total) * 100);
   let msg = '';
   if (pct >= 90) msg = 'Excelente. Conoces la interfaz al dedillo, listo para el módulo 3.';

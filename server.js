@@ -24,6 +24,7 @@ import adminRouter from './routes/admin.js';
 import trackRouter from './routes/track.js';
 import contactRouter from './routes/contact.js';
 import certificatesRouter from './routes/certificates.js';
+import quizRouter from './routes/quiz.js';
 import { requireAuth } from './middleware/requireAuth.js';
 import { requirePaid } from './middleware/requirePaid.js';
 import { vhost } from './middleware/vhost.js';
@@ -177,6 +178,7 @@ app.use('/api/track', trackRouter);
 app.use('/api/contact', contactRouter);
 app.use('/api/admin', adminRouter);
 app.use('/api/certificates', certificatesRouter);
+app.use('/api/quiz', quizRouter);
 
 // SEO
 app.get('/robots.txt', (_req, res) => {

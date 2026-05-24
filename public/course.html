@@ -1978,6 +1978,95 @@ Lenguaje claro, frases cortas, sin tecnicismos.
       }
     ]
   }
+  ,
+  // ============================================
+  // MÓDULO 9 BONUS — Desarrollo avanzado
+  // ============================================
+  {
+    id: 'm9',
+    title: 'Desarrollo avanzado con Claude',
+    badge: 'BONUS',
+    lessons: [
+      {
+        id: 'l9-1',
+        title: 'Claude design y Constitutional AI',
+        emphasis: 'Constitutional AI',
+        summary: 'Cómo Anthropic entrena Claude para ser útil, honesto e inofensivo. Y por qué eso te importa.',
+        body: `
+          <h3>Qué es Constitutional AI</h3>
+          <p>Anthropic no entrena Claude solo con feedback humano (RLHF). Usa un proceso llamado <strong>Constitutional AI</strong>: el modelo se autoevalúa contra una <em>constitución</em> de principios escritos (basados en la Declaración de Derechos Humanos, términos de uso de Apple, principios de Anthropic, etc.) y se autorefuerza.</p>
+          <h3>Por qué te importa a ti</h3>
+          <ul>
+            <li><strong>Claude se niega menos de manera ciega.</strong> Razona en lugar de bloquear todo lo que suene incómodo.</li>
+            <li><strong>Da contexto cuando no está seguro.</strong> En lugar de inventar, dice "no tengo certeza".</li>
+            <li><strong>Mantiene posturas matizadas</strong> en temas sensibles, sin convertirse en cómplice ni en censor.</li>
+          </ul>
+          <h3>La familia Claude</h3>
+          <p>Haiku, Sonnet y Opus comparten la misma constitución y el mismo enfoque de entrenamiento. La diferencia es <strong>capacidad de razonamiento y velocidad</strong>, no valores. Por eso un Haiku y un Opus rechazan las mismas cosas — solo que el Opus razona más profundo sobre ellas.</p>
+        `
+      },
+      {
+        id: 'l9-2',
+        title: 'Markdown como input estructurado',
+        emphasis: 'Markdown',
+        summary: 'Por qué Claude entiende mejor un prompt en markdown que en texto plano. Y cómo combinarlo con XML.',
+        body: `
+          <h3>Markdown semántico</h3>
+          <p>Claude está entrenado con millones de documentos en markdown. Cuando estructuras tu prompt con headers, listas y bloques de código, Claude lo procesa como información jerarquizada, no como un muro de texto.</p>
+          <h3>Patrón ganador: Markdown + XML</h3>
+          <p>Las etiquetas XML delimitan secciones que Claude debe tratar como bloques aislados. El markdown estructura el contenido dentro.</p>
+          <h3>Cuándo usar archivos .md</h3>
+          <p>Si tu prompt supera 200 líneas, considera subirlo como archivo .md. Claude trata cada sección como un bloque conceptual y puede referirse a ella con precisión ("según la sección 3.2 de tu documento...").</p>
+        `
+      },
+      {
+        id: 'l9-3',
+        title: 'Skills de Claude',
+        emphasis: 'Skills',
+        summary: 'El formato .skill para empaquetar habilidades reutilizables que Claude carga bajo demanda.',
+        body: `
+          <h3>Qué es una Skill</h3>
+          <p>Una <strong>Skill</strong> es un directorio con un SKILL.md y archivos auxiliares que define una capacidad específica. Claude la carga cuando detecta que el usuario necesita esa habilidad.</p>
+          <h3>Estructura mínima</h3>
+          <p>El SKILL.md tiene frontmatter YAML (name, description) y el cuerpo describe cuándo y cómo usar la skill. Los archivos auxiliares pueden ser scripts, plantillas, ejemplos.</p>
+          <h3>Por qué importan</h3>
+          <p>Las Skills te permiten <strong>componer flujos repetibles</strong> sin reinventar el prompt cada vez. Anthropic publica las suyas oficiales (docx, pdf, xlsx, etc.) y la comunidad las suyas en marketplaces.</p>
+        `
+      },
+      {
+        id: 'l9-4',
+        title: 'Cómo construir un agente',
+        emphasis: 'agente',
+        summary: 'Del prompt monolítico al sistema agéntico que planifica, ejecuta y se autoevalúa.',
+        body: `
+          <h3>Qué hace un agente diferente de un prompt</h3>
+          <p>Un prompt es una pregunta-respuesta. Un <strong>agente</strong> es un bucle: planifica qué pasos dar, ejecuta el primero (usando tools), evalúa el resultado, y vuelve a planificar hasta terminar la tarea.</p>
+          <h3>Claude Agent SDK</h3>
+          <p>Anthropic ofrece el <strong>Claude Agent SDK</strong> (Python y TypeScript) para construir agentes en pocas líneas. Defines las tools que el agente puede usar y el system prompt que define su rol. El SDK gestiona el bucle automáticamente.</p>
+          <h3>Patrón "agente revisor de PRs"</h3>
+          <p>Tools: leer archivo del repo, ejecutar tests, postear comentario en GitHub. System prompt: "Eres revisor senior. Lee el diff, identifica 3 problemas, ejecuta tests, comenta." Con ~50 líneas tienes un agente funcional.</p>
+        `
+      },
+      {
+        id: 'l9-5',
+        title: 'MCP — Model Context Protocol',
+        emphasis: 'MCP',
+        summary: 'El estándar abierto para conectar Claude a tus datos y herramientas, sin reescribir nada.',
+        body: `
+          <h3>El problema que resuelve</h3>
+          <p>Cada agente reinventaba cómo darle a Claude acceso a Notion, Slack, GitHub… Cada integración era custom. <strong>MCP</strong> (Model Context Protocol) estandariza esto: cualquier servidor MCP puede ser usado por cualquier cliente MCP.</p>
+          <h3>Arquitectura</h3>
+          <p><strong>MCP Server</strong>: expone tools y resources (ej: "buscar en Notion"). <strong>MCP Client</strong>: Claude (en Claude.ai, Claude Code, tu propia app). El cliente descubre las tools del servidor y las usa.</p>
+          <h3>Cómo lo usas</h3>
+          <p>Como usuario: en Claude.ai → Settings → MCP → "Add server". Como developer: SDKs en TypeScript y Python. Defines tools como funciones y cualquier cliente MCP puede consumirlas.</p>
+          <div class="callout">
+            <div class="callout-label">Has terminado el módulo 9 BONUS</div>
+            <p>Conoces Constitutional AI, markdown semántico, Skills, agentes y MCP. Lo que sigue es <strong>construir cosas reales</strong>. Empieza por algo pequeño: un agente que te resuma los emails del día, una skill que automatice una tarea repetitiva tuya.</p>
+          </div>
+        `
+      }
+    ]
+  }
 ];
 
 // ============================================
