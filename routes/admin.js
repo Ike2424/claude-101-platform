@@ -336,6 +336,56 @@ router.get('/analytics', async (req, res) => {
 });
 
 
+
+// GET /api/admin/analytics-min — devuelve SOLO conteos básicos para aislar el bug
+router.get('/analytics-min', async (req, res) => {
+  const start = Date.now();
+  const result = { tests: {}, elapsed_ms: 0 };
+
+  // Test 1: query simple
+  try {
+    const t = Date.now();
+    const r = await one('SELECT COUNT(*) AS n FROM page_views');
+    result.tests.simple_count = { ok: true, n: r?.n ?? 0, ms: Date.now() - t };
+  } catch (e) { result.tests.simple_count = { ok: false, err: e?.message }; }
+
+  // Test 2: con dateAgo
+  try {
+    const t = Date.now();
+    const since = sql.dateAgo(30);
+    const r = await one(`SELECT COUNT(*) AS n FROM page_views WHERE created_at >= ${since}`);
+    result.tests.with_dateago = { ok: true, n: r?.n ?? 0, ms: Date.now() - t, expr: since };
+  } catch (e) { result.tests.with_dateago = { ok: false, err: e?.message }; }
+
+  // Test 3: con dateOf + GROUP BY
+  try {
+    const t = Date.now();
+    const dateOf = sql.dateOf('created_at');
+    const since = sql.dateAgo(30);
+    const r = await q(`SELECT ${dateOf} AS day, COUNT(*) AS n FROM page_views WHERE created_at >= ${since} GROUP BY ${dateOf} LIMIT 5`);
+    result.tests.dateof_groupby = { ok: true, rows: r.length, sample: r.slice(0, 2), ms: Date.now() - t };
+  } catch (e) { result.tests.dateof_groupby = { ok: false, err: e?.message }; }
+
+  // Test 4: subquery
+  try {
+    const t = Date.now();
+    const r = await q(`SELECT done, COUNT(*) AS users FROM (SELECT user_id, COUNT(*) AS done FROM progress GROUP BY user_id) AS t GROUP BY done`);
+    result.tests.subquery = { ok: true, rows: r.length, ms: Date.now() - t };
+  } catch (e) { result.tests.subquery = { ok: false, err: e?.message }; }
+
+  // Test 5: NOT LIKE con param (el más sospechoso)
+  try {
+    const t = Date.now();
+    const since = sql.dateAgo(30);
+    const r = await q(`SELECT referrer FROM page_views WHERE created_at >= ${since} AND referrer IS NOT NULL AND referrer NOT LIKE '%' || ? || '%' LIMIT 3`,
+      [(process.env.PUBLIC_URL || 'localhost').replace(/^https?:\/\//, '').replace(/\/$/, '')]);
+    result.tests.not_like_param = { ok: true, rows: r.length, ms: Date.now() - t };
+  } catch (e) { result.tests.not_like_param = { ok: false, err: e?.message }; }
+
+  result.elapsed_ms = Date.now() - start;
+  res.json(result);
+});
+
 // GET /api/admin/analytics-raw — diagnóstico raw para ver si hay datos en BD
 router.get('/analytics-raw', async (req, res) => {
   try {
