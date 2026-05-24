@@ -119,3 +119,17 @@ CREATE TABLE IF NOT EXISTS coupons (
 );
 
 CREATE INDEX IF NOT EXISTS idx_coupons_code ON coupons(code);
+
+-- CERTIFICATES: certificados de finalización del curso
+CREATE TABLE IF NOT EXISTS certificates (
+  id          INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id     INTEGER NOT NULL,
+  code        TEXT NOT NULL UNIQUE,              -- código verificable (base64url 12 chars)
+  full_name   TEXT NOT NULL,                     -- nombre tal y como aparece en el certificado
+  issued_at   TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  lessons_completed INTEGER NOT NULL DEFAULT 32, -- snapshot del total
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+CREATE INDEX IF NOT EXISTS idx_certificates_user ON certificates(user_id);
+CREATE INDEX IF NOT EXISTS idx_certificates_code ON certificates(code);

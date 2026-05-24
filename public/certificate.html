@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Certificado · Claude 101</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Geist:wght@300..700&family=Geist+Mono:wght@400..600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #F4EFE3; --card: #FBF8F0; --ink: #1C1A16; --ink-2: #3A352D; --muted: #756B5B;
+  --line: #E1D8C2; --line-2: #CFC4AA; --accent: #C8542B; --olive: #4F5D38; --gold: #B08436;
+  --display: 'Fraunces', Georgia, serif;
+  --body: 'Geist', system-ui, sans-serif;
+  --mono: 'Geist Mono', ui-monospace, monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  background: linear-gradient(135deg, #F4EFE3 0%, #EFE9DA 100%);
+  color: var(--ink); font-family: var(--body);
+  min-height: 100vh; padding: 24px;
+}
+
+.shell { max-width: 1100px; margin: 0 auto; }
+
+.toolbar {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 24px; flex-wrap: wrap; gap: 12px;
+}
+.toolbar .back {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--muted); text-decoration: none;
+  padding: 8px 14px; border-radius: 100px; border: 1px solid var(--line-2);
+}
+.toolbar .back:hover { color: var(--ink); border-color: var(--accent); }
+.toolbar .actions { display: flex; gap: 10px; flex-wrap: wrap; }
+.btn {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .12em;
+  text-transform: uppercase; padding: 10px 18px; border-radius: 100px;
+  border: 1px solid var(--ink); background: var(--ink); color: var(--card);
+  cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+}
+.btn:hover { background: var(--accent); border-color: var(--accent); }
+.btn-ghost { background: transparent; color: var(--ink); }
+.btn-ghost:hover { background: var(--ink); color: var(--card); border-color: var(--ink); }
+
+/* === EL CERTIFICADO EN SÍ === */
+.cert {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 80px 100px;
+  position: relative;
+  aspect-ratio: 1.414 / 1; /* A4 horizontal */
+  box-shadow: 0 24px 64px rgba(28,26,22,.12);
+  background-image:
+    radial-gradient(circle at 15% 15%, rgba(200,84,43,.04) 0%, transparent 35%),
+    radial-gradient(circle at 85% 85%, rgba(79,93,56,.04) 0%, transparent 35%);
+}
+
+/* Esquinas decorativas */
+.cert::before, .cert::after {
+  content: ''; position: absolute; width: 60px; height: 60px;
+  border: 2px solid var(--accent); border-radius: 1px;
+}
+.cert::before { top: 24px; left: 24px; border-right: none; border-bottom: none; }
+.cert::after { bottom: 24px; right: 24px; border-left: none; border-top: none; }
+
+.cert-eyebrow {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .25em;
+  text-transform: uppercase; color: var(--muted); text-align: center;
+  margin-bottom: 24px;
+}
+.cert-brand {
+  text-align: center; margin-bottom: 40px;
+}
+.cert-brand .name {
+  font-family: var(--display); font-style: italic; font-weight: 400;
+  font-size: 36px; letter-spacing: -0.02em; color: var(--ink);
+}
+.cert-brand .name em {
+  font-style: normal; color: var(--accent); font-weight: 500;
+}
+.cert-brand .sub {
+  font-family: var(--mono); font-size: 10px; letter-spacing: .2em;
+  text-transform: uppercase; color: var(--muted); margin-top: 4px;
+}
+
+.cert-title {
+  font-family: var(--display); font-style: italic; font-weight: 400;
+  font-size: clamp(36px, 5vw, 54px); letter-spacing: -0.02em;
+  color: var(--ink); text-align: center; line-height: 1.1;
+  margin-bottom: 12px;
+}
+.cert-title em { font-style: normal; color: var(--accent); }
+.cert-subtitle {
+  font-size: 16px; color: var(--ink-2); text-align: center;
+  max-width: 60ch; margin: 0 auto 56px;
+}
+
+.cert-recipient {
+  text-align: center; margin-bottom: 40px;
+}
+.cert-recipient .label {
+  font-family: var(--mono); font-size: 10px; letter-spacing: .25em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 18px;
+}
+.cert-recipient .name {
+  font-family: var(--display); font-weight: 400;
+  font-size: clamp(48px, 7vw, 72px); letter-spacing: -0.02em;
+  color: var(--accent); line-height: 1;
+  padding-bottom: 16px; border-bottom: 2px solid var(--line-2);
+  display: inline-block; padding-left: 80px; padding-right: 80px;
+}
+
+.cert-body {
+  font-size: 15px; color: var(--ink-2); text-align: center;
+  max-width: 64ch; margin: 0 auto 60px; line-height: 1.7;
+}
+.cert-body strong { color: var(--ink); font-weight: 600; }
+
+.cert-footer {
+  display: flex; justify-content: space-between; align-items: flex-end;
+  border-top: 1px solid var(--line-2); padding-top: 24px;
+  font-family: var(--mono); font-size: 11px; color: var(--muted);
+}
+.cert-footer .col { display: flex; flex-direction: column; gap: 4px; }
+.cert-footer .label { letter-spacing: .15em; text-transform: uppercase; font-size: 9px; }
+.cert-footer .value { color: var(--ink); font-size: 12px; }
+.cert-footer .center { text-align: center; }
+.cert-footer .right { text-align: right; }
+.cert-code { font-family: var(--mono); }
+
+.verify-note {
+  margin-top: 24px; text-align: center;
+  font-family: var(--mono); font-size: 11px; color: var(--muted); letter-spacing: .1em;
+}
+.verify-note a { color: var(--accent); text-decoration: none; }
+
+/* === PRINT === */
+@media print {
+  html, body {
+    background: white !important; padding: 0; margin: 0;
+  }
+  .toolbar, .verify-note { display: none !important; }
+  .shell { max-width: none; padding: 0; margin: 0; }
+  .cert {
+    box-shadow: none; border: none; aspect-ratio: auto;
+    page-break-after: avoid; padding: 60px 80px;
+  }
+  @page { size: A4 landscape; margin: 0; }
+}
+
+@media (max-width: 720px) {
+  .cert { padding: 40px 28px; }
+  .cert-recipient .name { padding-left: 16px; padding-right: 16px; }
+  .cert-footer { flex-direction: column; gap: 16px; align-items: center; text-align: center; }
+}
+
+.loading, .error {
+  background: var(--card); border: 1px solid var(--line); border-radius: 16px;
+  padding: 48px; text-align: center; color: var(--muted);
+}
+.error { color: var(--accent-2); }
+</style>
+</head>
+<body>
+
+<div class="shell">
+  <div class="toolbar">
+    <a href="/app" class="back">← Volver al curso</a>
+    <div class="actions">
+      <button class="btn btn-ghost" onclick="window.print()">📄 Descargar PDF</button>
+      <a href="#" id="shareLinked" class="btn" target="_blank">in Compartir</a>
+    </div>
+  </div>
+
+  <div id="content">
+    <div class="loading">Cargando certificado…</div>
+  </div>
+</div>
+
+<script>
+async function load() {
+  try {
+    const r = await fetch('/api/certificates/me', { credentials: 'same-origin' });
+    if (!r.ok) {
+      window.location.href = '/login?next=/certificate';
+      return;
+    }
+    const data = await r.json();
+
+    if (!data.has_certificate) {
+      // No tiene certificado todavía
+      let html = '';
+      if (data.eligible) {
+        html = `
+          <div class="loading">
+            <p style="margin-bottom: 20px;">Has completado las ${data.total} lecciones. ¡Estás listo para tu certificado!</p>
+            <p style="margin-bottom: 24px;">Introduce tu <strong>nombre completo</strong> tal y como quieres que aparezca en el certificado:</p>
+            <input id="fullName" type="text" placeholder="Ej: María García López" style="padding: 12px 16px; font-size: 16px; border-radius: 10px; border: 1px solid var(--line-2); width: 100%; max-width: 400px; margin-bottom: 16px; font-family: var(--body);">
+            <br>
+            <button class="btn" onclick="issue()">Emitir mi certificado</button>
+          </div>`;
+      } else {
+        html = `
+          <div class="loading">
+            <p style="margin-bottom: 12px;">Para obtener tu certificado necesitas completar todas las lecciones.</p>
+            <p style="font-family: var(--mono); font-size: 14px; color: var(--accent);">Progreso: ${data.completed} / ${data.total}</p>
+            <p style="margin-top: 24px;"><a href="/app" class="btn">Volver al curso</a></p>
+          </div>`;
+      }
+      document.getElementById('content').innerHTML = html;
+      return;
+    }
+
+    renderCertificate(data);
+  } catch (e) {
+    document.getElementById('content').innerHTML = `<div class="error">Error: ${e.message}</div>`;
+  }
+}
+
+async function issue() {
+  const name = document.getElementById('fullName').value.trim();
+  if (name.length < 2) { alert('Pon tu nombre completo'); return; }
+  try {
+    const r = await fetch('/api/certificates/issue', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'same-origin',
+      body: JSON.stringify({ full_name: name })
+    });
+    const data = await r.json();
+    if (!r.ok) { alert(data.error || 'Error'); return; }
+    location.reload();
+  } catch (e) {
+    alert('Error: ' + e.message);
+  }
+}
+
+function renderCertificate(cert) {
+  const date = new Date(cert.issued_at).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+  const verifyUrl = cert.verify_url;
+  const shareText = encodeURIComponent('Acabo de completar el curso Claude 101 — Aprende a trabajar con Claude AI');
+  const shareLinkedIn = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(verifyUrl)}&summary=${shareText}`;
+  document.getElementById('shareLinked').href = shareLinkedIn;
+
+  document.getElementById('content').innerHTML = `
+    <div class="cert">
+      <div class="cert-eyebrow">Certificado de finalización</div>
+      <div class="cert-brand">
+        <div class="name">Claude<em>·101</em></div>
+        <div class="sub">Academia101 · Curso oficial de Claude AI en español</div>
+      </div>
+      <h1 class="cert-title">Aprende a trabajar con <em>Claude</em></h1>
+      <p class="cert-subtitle">Programa formativo de 8 módulos sobre el uso profesional de Claude, el asistente de IA de Anthropic.</p>
+
+      <div class="cert-recipient">
+        <div class="label">Se otorga a</div>
+        <div class="name">${escapeHtml(cert.full_name)}</div>
+      </div>
+
+      <p class="cert-body">
+        Por haber completado satisfactoriamente las <strong>${cert.lessons_completed} lecciones</strong>
+        del curso, demostrando dominio sobre fundamentos de Claude, ingeniería de prompts,
+        técnicas avanzadas, capacidades del modelo y aplicación profesional en casos de uso reales.
+      </p>
+
+      <div class="cert-footer">
+        <div class="col">
+          <span class="label">Fecha</span>
+          <span class="value">${date}</span>
+        </div>
+        <div class="col center">
+          <span class="label">Emisor</span>
+          <span class="value">Tacto Agencia SLU</span>
+          <span style="font-size:10px;">CIF B22955199 · Granada</span>
+        </div>
+        <div class="col right">
+          <span class="label">Código</span>
+          <span class="value cert-code">${cert.code}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="verify-note">
+      Verifica este certificado en <a href="/verify/${cert.code}">academia101.com/verify/${cert.code}</a>
+    </div>
+  `;
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+}
+
+load();
+</script>
+</body>
+</html>

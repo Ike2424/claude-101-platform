@@ -707,6 +707,31 @@
     .resources-banner-arrow { display: none; }
   }
 
+  
+  /* Banner certificado en sidebar */
+  .cert-banner {
+    margin: 16px 12px; padding: 16px 18px;
+    background: linear-gradient(135deg, var(--card), var(--bg-2));
+    border: 1px solid var(--olive); border-radius: 12px;
+    text-decoration: none; color: inherit; display: none;
+    box-shadow: 0 4px 16px rgba(79,93,56,.15);
+    transition: all .2s;
+  }
+  .cert-banner.show { display: block; }
+  .cert-banner:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(79,93,56,.25); border-color: var(--accent); }
+  .cert-banner .icon { font-size: 24px; margin-bottom: 8px; display: block; }
+  .cert-banner .title {
+    font-family: var(--display); font-style: italic; font-size: 16px;
+    color: var(--ink); margin-bottom: 4px;
+  }
+  .cert-banner .sub {
+    font-size: 12px; color: var(--muted); line-height: 1.4;
+  }
+  .cert-banner .cta {
+    margin-top: 10px; font-family: var(--mono); font-size: 10px;
+    letter-spacing: .12em; text-transform: uppercase; color: var(--accent);
+  }
+
   .lesson-footer {
     padding: 28px 56px;
     border-top: 1px solid var(--line);
@@ -1752,11 +1777,22 @@ function getEmbed(url) {
 // ============================================
 function renderTOC() {
   const toc = document.getElementById('toc');
+  const done = completedCount();
+  const total = totalLessons();
+  const certBanner = done >= total ? `
+    <a href="/certificate" class="cert-banner show" target="_top">
+      <span class="icon">🎓</span>
+      <div class="title">Certificado de finalización</div>
+      <div class="sub">Has completado todas las lecciones. Descarga tu certificado oficial.</div>
+      <div class="cta">Obtener certificado →</div>
+    </a>` : '';
+
   const intro = `
     <div class="toc-intro">
       <div class="toc-label">Programa formativo</div>
       <div class="toc-title">Aprende a trabajar con <em>Claude</em></div>
     </div>
+    ${certBanner}
   `;
 
   const modulesHtml = COURSE.map((mod, i) => {
@@ -2013,6 +2049,14 @@ function render() {
   renderTOC();
   renderMain();
   renderProgress();
+
+  // Mostrar banner de certificado cuando completas todas las lecciones
+  try {
+    const total = totalLessons();
+    const done = completedCount();
+    const banner = document.getElementById('certBanner');
+    if (banner) banner.classList.toggle('show', done >= total);
+  } catch {}
 }
 
 // ============================================
