@@ -205,34 +205,43 @@ router.get('/analytics', async (req, res) => {
   const dateOfCreated = sql.dateOf('created_at');
   const dateOfCompleted = sql.dateOf('completed_at');
 
+  // Wrapper resiliente: si un query falla, log + devolver fallback
+  async function tryQ(name, fn, fallback) {
+    try { return await fn(); }
+    catch (err) {
+      logger.error({ err: err?.message, stack: err?.stack?.split('\n').slice(0,3), q: name }, 'analytics query failed:');
+      return fallback;
+    }
+  }
+
   // Visitas totales y únicas
-  const totalViews = (await one(`SELECT COUNT(*) AS n FROM page_views WHERE created_at >= ${sinceExpr}`))?.n ?? 0;
-  const uniqueVisitors = (await one(
+  const totalViews = await tryQ('totalViews', async () => (await one(`SELECT COUNT(*) AS n FROM page_views WHERE created_at >= ${sinceExpr}`))?.n ?? 0, 0);
+  const uniqueVisitors = await tryQ('uniqueVisitors', async () => (await one(
     `SELECT COUNT(DISTINCT visitor_id) AS n FROM page_views
      WHERE created_at >= ${sinceExpr} AND visitor_id IS NOT NULL`
-  ))?.n ?? 0;
+  ))?.n ?? 0, 0);
 
   // Visitas por día (para la curva)
-  const viewsByDay = await q(
+  const viewsByDay = await tryQ('viewsByDay', async () => await q(
     `SELECT ${dateOfCreated} AS day, COUNT(*) AS views, COUNT(DISTINCT visitor_id) AS uniques
      FROM page_views
      WHERE created_at >= ${sinceExpr}
      GROUP BY ${dateOfCreated}
      ORDER BY day ASC`
-  );
+  ), []);
 
   // Top páginas
-  const topPages = await q(
+  const topPages = await tryQ('topPages', async () => await q(
     `SELECT path, COUNT(*) AS hits, COUNT(DISTINCT visitor_id) AS uniques
      FROM page_views
      WHERE created_at >= ${sinceExpr}
      GROUP BY path
      ORDER BY hits DESC
      LIMIT 15`
-  );
+  ), []);
 
   // Top referrers (limpia internos)
-  const topReferrers = await q(
+  const topReferrers = await tryQ('topReferrers', async () => await q(
     `SELECT referrer, COUNT(*) AS hits
      FROM page_views
      WHERE created_at >= ${sinceExpr}
@@ -243,62 +252,62 @@ router.get('/analytics', async (req, res) => {
      ORDER BY hits DESC
      LIMIT 10`,
     [(process.env.PUBLIC_URL || 'localhost').replace(/^https?:\/\//, '').replace(/\/$/, '')]
-  );
+  ), []);
 
   // Eventos del periodo
-  const eventCounts = await q(
+  const eventCounts = await tryQ('eventCounts', async () => await q(
     `SELECT event_type, COUNT(*) AS n FROM events
      WHERE created_at >= ${sinceExpr}
      GROUP BY event_type
      ORDER BY n DESC`
-  );
+  ), []);
 
   // Funnel: visitas únicas a "/" → checkout_started → checkout_completed (= compras)
-  const landingUniques = (await one(
+  const landingUniques = await tryQ('landingUniques', async () => (await one(
     `SELECT COUNT(DISTINCT visitor_id) AS n FROM page_views
      WHERE created_at >= ${sinceExpr} AND path = '/' AND visitor_id IS NOT NULL`
-  ))?.n ?? 0;
-  const checkoutStarted = (await one(
+  ))?.n ?? 0, 0);
+  const checkoutStarted = await tryQ('checkoutStarted', async () => (await one(
     `SELECT COUNT(DISTINCT visitor_id) AS n FROM events
      WHERE created_at >= ${sinceExpr} AND event_type = 'checkout_started' AND visitor_id IS NOT NULL`
-  ))?.n ?? 0;
-  const purchasesInPeriod = (await one(
+  ))?.n ?? 0, 0);
+  const purchasesInPeriod = await tryQ('purchasesInPeriod', async () => (await one(
     `SELECT COUNT(*) AS n FROM purchases
      WHERE status = 'completed' AND created_at >= ${sinceExpr}`
-  ))?.n ?? 0;
+  ))?.n ?? 0, 0);
 
   // Curso: lecciones más completadas
-  const topLessons = await q(
+  const topLessons = await tryQ('topLessons', async () => await q(
     `SELECT lesson_id, COUNT(*) AS completions
      FROM progress
      WHERE completed_at >= ${sinceExpr}
      GROUP BY lesson_id
      ORDER BY completions DESC
      LIMIT 15`
-  );
+  ), []);
 
   // Curso: usuarios activos (con al menos 1 completion en el periodo)
-  const activeLearners = (await one(
+  const activeLearners = await tryQ('activeLearners', async () => (await one(
     `SELECT COUNT(DISTINCT user_id) AS n FROM progress
      WHERE completed_at >= ${sinceExpr}`
-  ))?.n ?? 0;
+  ))?.n ?? 0, 0);
 
   // Curso: distribución de completion por usuario (cuántas lecciones han hecho)
   // Postgres exige alias en subconsultas → "AS t"
-  const completionDist = await q(
+  const completionDist = await tryQ('completionDist', async () => await q(
     `SELECT done, COUNT(*) AS users FROM (
        SELECT user_id, COUNT(*) AS done FROM progress GROUP BY user_id
      ) AS t GROUP BY done ORDER BY done ASC`
-  );
+  ), []);
 
   // Ingresos por día
-  const revenueByDay = await q(
+  const revenueByDay = await tryQ('revenueByDay', async () => await q(
     `SELECT ${dateOfCreated} AS day, COUNT(*) AS sales, COALESCE(SUM(amount_cents),0) AS revenue
      FROM purchases
      WHERE status = 'completed' AND created_at >= ${sinceExpr}
      GROUP BY ${dateOfCreated}
      ORDER BY day ASC`
-  );
+  ), []);
 
   res.json({
     period_days: days,
