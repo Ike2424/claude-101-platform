@@ -1,0 +1,1382 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude 101 · Recursos M9 · Desarrollo avanzado con Claude</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Geist:wght@300..700&family=Geist+Mono:wght@400..600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #F4EFE3; --bg-2: #EFE9DA; --card: #FBF8F0;
+  --ink: #1C1A16; --ink-2: #3A352D; --muted: #756B5B; --muted-2: #A39782;
+  --line: #E1D8C2; --line-2: #CFC4AA;
+  --accent: #C8542B; --accent-2: #8B3A1E;
+  --olive: #4F5D38; --gold: #B08436;
+  --display: 'Fraunces', Georgia, serif;
+  --body: 'Geist', system-ui, sans-serif;
+  --mono: 'Geist Mono', ui-monospace, monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: var(--bg); color: var(--ink); font-family: var(--body); line-height: 1.55; }
+body {
+  background-image:
+    radial-gradient(circle at 12% 8%, rgba(200,84,43,.06) 0%, transparent 40%),
+    radial-gradient(circle at 88% 92%, rgba(79,93,56,.05) 0%, transparent 40%);
+  min-height: 100vh;
+}
+
+/* === HEADER === */
+.topbar {
+  position: sticky; top: 0; z-index: 50;
+  background: rgba(244,239,227,.85); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+  padding: 14px 32px; display: flex; align-items: center; gap: 20px;
+}
+.back-link {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--muted); text-decoration: none;
+  padding: 8px 14px; border-radius: 100px; border: 1px solid var(--line-2);
+  transition: all .2s;
+}
+.back-link:hover { color: var(--ink); border-color: var(--accent); }
+.topbar-title {
+  font-family: var(--display); font-style: italic; font-size: 22px;
+  font-weight: 400; color: var(--ink); flex: 1;
+}
+.topbar-title em { color: var(--accent); font-style: italic; }
+.topbar-badge {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--muted);
+  padding: 6px 12px; background: var(--card); border: 1px solid var(--line); border-radius: 6px;
+}
+
+/* === HERO === */
+.hero {
+  padding: 80px 32px 40px; max-width: 1100px; margin: 0 auto; text-align: center;
+}
+.hero .eyebrow {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .18em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 18px;
+}
+.hero h1 {
+  font-family: var(--display); font-style: italic; font-weight: 400;
+  font-size: clamp(40px, 6vw, 72px); letter-spacing: -0.025em;
+  color: var(--ink); line-height: 1.05; margin-bottom: 20px;
+}
+.hero h1 em { font-style: normal; color: var(--accent); }
+.hero .lede {
+  font-size: 18px; color: var(--ink-2); max-width: 60ch; margin: 0 auto;
+}
+
+/* === TABS === */
+.tabs-wrap {
+  position: sticky; top: 62px; z-index: 40;
+  background: rgba(244,239,227,.92); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+  padding: 16px 32px; display: flex; justify-content: center; gap: 8px;
+  overflow-x: auto;
+}
+.tab-btn {
+  font-family: var(--mono); font-size: 12px; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--muted);
+  padding: 10px 18px; border-radius: 100px; border: 1px solid var(--line-2);
+  background: var(--card); cursor: pointer; transition: all .2s; white-space: nowrap;
+}
+.tab-btn:hover { color: var(--ink); border-color: var(--accent); }
+.tab-btn.active {
+  color: var(--card); background: var(--ink); border-color: var(--ink);
+}
+
+/* === SECTIONS === */
+.section {
+  padding: 60px 32px 100px; max-width: 1100px; margin: 0 auto; display: none;
+}
+.section.active { display: block; }
+.section-intro {
+  margin-bottom: 40px; max-width: 70ch;
+}
+.section-intro h2 {
+  font-family: var(--display); font-style: italic; font-weight: 400;
+  font-size: 36px; margin-bottom: 12px; color: var(--ink);
+}
+.section-intro h2 em { color: var(--accent); font-style: normal; }
+.section-intro p { color: var(--ink-2); font-size: 16px; }
+
+/* === FLASHCARDS === */
+.flashgrid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;
+}
+.flash {
+  perspective: 1200px; min-height: 320px; cursor: pointer;
+}
+.flash-inner {
+  position: relative; width: 100%; height: 100%; min-height: 320px;
+  transition: transform .6s cubic-bezier(.2,.8,.2,1);
+  transform-style: preserve-3d;
+}
+.flash.flipped .flash-inner { transform: rotateY(180deg); }
+.flash-face {
+  position: absolute; inset: 0; backface-visibility: hidden;
+  background: var(--card); border: 1px solid var(--line); border-radius: 16px;
+  padding: 22px; display: flex; flex-direction: column;
+  overflow-y: auto;
+  box-shadow: 0 2px 12px rgba(28,26,22,.04);
+}
+.flash-face::-webkit-scrollbar { width: 4px; }
+.flash-face::-webkit-scrollbar-thumb { background: var(--line-2); border-radius: 4px; }
+.flash-face.back {
+  transform: rotateY(180deg);
+  background: var(--bg-2); border-color: var(--line-2);
+}
+.flash-num {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 12px;
+}
+.flash-title {
+  font-family: var(--display); font-style: italic; font-size: 24px;
+  font-weight: 400; color: var(--ink); margin-bottom: 10px; line-height: 1.2;
+}
+.flash-hint {
+  margin-top: auto; font-family: var(--mono); font-size: 10px;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--muted-2);
+}
+.flash-def { font-size: 14px; color: var(--ink-2); line-height: 1.6; margin-bottom: 12px; }
+.flash-example {
+  font-family: var(--mono); font-size: 12px; color: var(--olive);
+  background: var(--card); border-left: 2px solid var(--olive);
+  padding: 8px 12px; border-radius: 0 6px 6px 0;
+}
+
+/* === CASE STUDIES === */
+.case {
+  background: var(--card); border: 1px solid var(--line); border-radius: 18px;
+  padding: 32px; margin-bottom: 28px;
+}
+.case-num {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 8px;
+}
+.case-title {
+  font-family: var(--display); font-style: italic; font-size: 28px;
+  font-weight: 400; color: var(--ink); margin-bottom: 12px; line-height: 1.2;
+}
+.case-context { color: var(--ink-2); margin-bottom: 24px; font-size: 15px; }
+.case-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px;
+}
+@media (max-width: 720px) { .case-grid { grid-template-columns: 1fr; } }
+.case-col {
+  background: var(--bg); border-radius: 12px; padding: 20px;
+}
+.case-col.bad { border: 1px solid #e8c4b7; }
+.case-col.good { border: 1px solid #c4d4a8; }
+.case-col-label {
+  font-family: var(--mono); font-size: 10px; letter-spacing: .15em;
+  text-transform: uppercase; margin-bottom: 10px; font-weight: 600;
+}
+.case-col.bad .case-col-label { color: var(--accent-2); }
+.case-col.good .case-col-label { color: var(--olive); }
+.case-prompt {
+  font-family: var(--mono); font-size: 13px; line-height: 1.6;
+  color: var(--ink); white-space: pre-wrap;
+}
+.case-why {
+  background: var(--bg-2); border-left: 3px solid var(--gold);
+  padding: 14px 18px; border-radius: 0 8px 8px 0;
+  font-size: 14px; color: var(--ink-2);
+}
+.case-why strong { color: var(--gold); font-weight: 600; }
+
+/* === EXERCISES === */
+.ex {
+  background: var(--card); border: 1px solid var(--line); border-radius: 18px;
+  padding: 32px; margin-bottom: 28px;
+}
+.ex-num {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 8px;
+}
+.ex-title {
+  font-family: var(--display); font-style: italic; font-size: 28px;
+  font-weight: 400; color: var(--ink); margin-bottom: 12px; line-height: 1.2;
+}
+.ex-task { color: var(--ink-2); margin-bottom: 16px; font-size: 15px; }
+.ex-input {
+  width: 100%; min-height: 120px; resize: vertical;
+  background: var(--bg); border: 1px solid var(--line-2); border-radius: 10px;
+  padding: 14px 16px; font-family: var(--mono); font-size: 13px; color: var(--ink);
+  margin-bottom: 16px;
+}
+.ex-input:focus { outline: 2px solid var(--accent); outline-offset: -2px; }
+.ex-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+.btn {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .12em;
+  text-transform: uppercase; padding: 10px 18px; border-radius: 100px;
+  border: 1px solid var(--line-2); background: var(--card); color: var(--ink-2);
+  cursor: pointer; transition: all .2s;
+}
+.btn:hover { border-color: var(--accent); color: var(--ink); }
+.btn-primary { background: var(--ink); color: var(--card); border-color: var(--ink); }
+.btn-primary:hover { background: var(--accent); border-color: var(--accent); color: var(--card); }
+.ex-solution {
+  margin-top: 20px; padding: 20px; background: var(--bg-2); border-radius: 12px;
+  border-left: 3px solid var(--olive); display: none;
+}
+.ex-solution.show { display: block; }
+.ex-solution-label {
+  font-family: var(--mono); font-size: 10px; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--olive); margin-bottom: 10px; font-weight: 600;
+}
+.ex-solution-text {
+  font-family: var(--mono); font-size: 13px; line-height: 1.7; color: var(--ink);
+  white-space: pre-wrap; margin-bottom: 16px;
+}
+.ex-rubric { margin-top: 16px; }
+.ex-rubric-title {
+  font-size: 13px; color: var(--muted); margin-bottom: 8px; font-weight: 600;
+}
+.ex-rubric ul { list-style: none; padding: 0; }
+.ex-rubric li {
+  padding: 6px 0; font-size: 14px; color: var(--ink-2);
+  display: flex; align-items: flex-start; gap: 10px;
+}
+.ex-rubric li::before {
+  content: "\2713"; color: var(--olive); font-weight: 600; margin-top: 1px;
+}
+
+/* === PROMPTS GALLERY === */
+.prompts-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px;
+}
+.prompt-card {
+  background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+  padding: 24px; display: flex; flex-direction: column;
+}
+.prompt-tag {
+  display: inline-block; font-family: var(--mono); font-size: 10px;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--gold);
+  background: var(--bg-2); padding: 4px 10px; border-radius: 100px;
+  margin-bottom: 12px; align-self: flex-start;
+}
+.prompt-title {
+  font-family: var(--display); font-style: italic; font-size: 22px;
+  font-weight: 400; color: var(--ink); margin-bottom: 10px; line-height: 1.2;
+}
+.prompt-desc { font-size: 14px; color: var(--ink-2); margin-bottom: 16px; }
+.prompt-text {
+  font-family: var(--mono); font-size: 12px; line-height: 1.65;
+  color: var(--ink-2); background: var(--bg); border: 1px dashed var(--line-2);
+  border-radius: 8px; padding: 14px; margin-bottom: 14px;
+  white-space: pre-wrap; flex: 1;
+}
+.copy-btn {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .12em;
+  text-transform: uppercase; padding: 10px 16px; border-radius: 8px;
+  border: 1px solid var(--ink); background: transparent; color: var(--ink);
+  cursor: pointer; transition: all .2s; align-self: stretch;
+}
+.copy-btn:hover { background: var(--ink); color: var(--card); }
+.copy-btn.copied { background: var(--olive); border-color: var(--olive); color: var(--card); }
+
+/* === QUIZ === */
+.quiz-q {
+  background: var(--card); border: 1px solid var(--line); border-radius: 16px;
+  padding: 26px; margin-bottom: 20px;
+}
+.quiz-num {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 10px;
+}
+.quiz-question {
+  font-family: var(--display); font-style: italic; font-size: 22px;
+  font-weight: 400; line-height: 1.3; color: var(--ink); margin-bottom: 18px;
+}
+.quiz-opts { display: flex; flex-direction: column; gap: 8px; }
+.quiz-opt {
+  text-align: left; padding: 14px 18px; border: 1px solid var(--line-2);
+  border-radius: 10px; background: var(--bg); color: var(--ink-2);
+  font-family: var(--body); font-size: 15px; cursor: pointer; transition: all .2s;
+}
+.quiz-opt:hover:not(.locked) { border-color: var(--accent); color: var(--ink); }
+.quiz-opt.correct {
+  background: rgba(79,93,56,.12); border-color: var(--olive); color: var(--ink);
+}
+.quiz-opt.wrong {
+  background: rgba(200,84,43,.1); border-color: var(--accent-2); color: var(--ink);
+}
+.quiz-opt.locked { cursor: default; }
+.quiz-feedback {
+  margin-top: 14px; padding: 14px 18px; border-radius: 10px;
+  font-size: 14px; line-height: 1.5; display: none;
+}
+.quiz-feedback.show { display: block; }
+.quiz-feedback.correct { background: rgba(79,93,56,.1); border-left: 3px solid var(--olive); color: var(--ink-2); }
+.quiz-feedback.wrong { background: rgba(200,84,43,.08); border-left: 3px solid var(--accent); color: var(--ink-2); }
+.quiz-result {
+  margin-top: 20px; padding: 28px; background: var(--card);
+  border: 1px solid var(--line); border-radius: 16px; text-align: center;
+  display: none;
+}
+.quiz-result.show { display: block; }
+.quiz-result-score {
+  font-family: var(--display); font-style: italic; font-size: 56px;
+  color: var(--accent); margin-bottom: 8px;
+}
+.quiz-result-msg { font-size: 16px; color: var(--ink-2); margin-bottom: 18px; }
+.quiz-result .btn { display: inline-block; }
+
+/* === GLOSARIO === */
+.glosario-list {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px;
+}
+.gloss-item {
+  background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+  padding: 18px 20px;
+}
+.gloss-term {
+  font-family: var(--display); font-style: italic; font-size: 20px;
+  font-weight: 400; color: var(--accent); margin-bottom: 6px;
+}
+.gloss-def { font-size: 14px; line-height: 1.55; color: var(--ink-2); }
+
+/* === RECURSOS === */
+.recursos-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px;
+}
+.recurso {
+  background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+  padding: 20px; text-decoration: none; color: inherit; transition: all .2s;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.recurso:hover {
+  border-color: var(--accent); transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(28,26,22,.08);
+}
+.recurso-tag {
+  display: inline-block; font-family: var(--mono); font-size: 10px;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--olive);
+  background: var(--bg-2); padding: 4px 10px; border-radius: 100px;
+  align-self: flex-start; margin-bottom: 4px;
+}
+.recurso-title {
+  font-family: var(--display); font-style: italic; font-size: 18px;
+  font-weight: 400; color: var(--ink); line-height: 1.3;
+}
+.recurso-desc { font-size: 13px; color: var(--ink-2); line-height: 1.5; }
+.recurso-meta {
+  font-family: var(--mono); font-size: 11px; color: var(--muted);
+  margin-top: auto; padding-top: 8px;
+}
+
+/* === CHECKLIST === */
+.checklist { display: flex; flex-direction: column; gap: 12px; }
+.check-item {
+  display: flex; align-items: flex-start; gap: 16px;
+  background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+  padding: 18px 22px; cursor: pointer; transition: all .2s;
+}
+.check-item:hover { border-color: var(--line-2); }
+.check-item.done {
+  background: var(--bg-2); border-color: var(--olive); opacity: .75;
+}
+.check-item.done .check-text { text-decoration: line-through; color: var(--muted); }
+.check-box {
+  width: 22px; height: 22px; border: 2px solid var(--line-2);
+  border-radius: 6px; flex-shrink: 0; margin-top: 2px;
+  display: flex; align-items: center; justify-content: center;
+  transition: all .2s;
+}
+.check-item.done .check-box {
+  background: var(--olive); border-color: var(--olive); color: var(--card);
+}
+.check-content { flex: 1; }
+.check-day {
+  font-family: var(--mono); font-size: 10px; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--accent); margin-bottom: 4px;
+}
+.check-text { font-size: 15px; line-height: 1.5; color: var(--ink); }
+.check-detail { font-size: 13px; color: var(--muted); margin-top: 4px; }
+.checklist-progress {
+  margin-top: 24px; padding: 20px; background: var(--bg-2);
+  border-radius: 12px; text-align: center;
+  font-family: var(--mono); font-size: 13px; color: var(--ink-2);
+}
+
+
+/* === GALLERY === */
+.gallery-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;
+}
+.gallery-card {
+  background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+  overflow: hidden; text-decoration: none; color: inherit;
+  display: flex; flex-direction: column; transition: all .2s ease;
+}
+.gallery-card:hover {
+  border-color: var(--accent); transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(28,26,22,.08);
+}
+.gallery-img {
+  width: 100%; aspect-ratio: 16/9; background: var(--bg-2); object-fit: cover;
+  border-bottom: 1px solid var(--line);
+}
+.gallery-body { padding: 18px 20px; display: flex; flex-direction: column; gap: 6px; }
+.gallery-tag {
+  display: inline-block; font-family: var(--mono); font-size: 10px;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--gold);
+  background: var(--bg-2); padding: 4px 10px; border-radius: 100px;
+  margin-bottom: 4px; align-self: flex-start;
+}
+.gallery-title {
+  font-family: var(--display); font-style: italic; font-size: 20px;
+  font-weight: 400; color: var(--ink); line-height: 1.3;
+}
+.gallery-desc { font-size: 13px; color: var(--ink-2); line-height: 1.55; }
+.gallery-link {
+  font-family: var(--mono); font-size: 10px; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--accent); margin-top: auto; padding-top: 6px;
+}
+
+/* === FOOTER NAV === */
+.footer-nav {
+  border-top: 1px solid var(--line); padding: 32px;
+  display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+  max-width: 1100px; margin: 40px auto 0;
+}
+.foot-link {
+  font-family: var(--mono); font-size: 12px; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--muted); text-decoration: none;
+  padding: 12px 18px; border: 1px solid var(--line-2); border-radius: 100px;
+  transition: all .2s;
+}
+.foot-link:hover { color: var(--ink); border-color: var(--accent); }
+
+@media (max-width: 720px) {
+  .topbar { padding: 12px 16px; }
+  .hero { padding: 50px 16px 30px; }
+  .tabs-wrap { padding: 12px 16px; }
+  .section { padding: 40px 16px 80px; }
+  .case, .ex { padding: 22px; }
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <a href="/curso" class="back-link">← Volver al curso</a>
+  <div class="topbar-title">Módulo 9 · <em>Recursos</em></div>
+  <div class="topbar-badge">M9</div>
+</header>
+
+<section class="hero">
+  <div class="eyebrow">Bonus · Avanzado · Construir</div>
+  <h1>Desarrollo <em>avanzado</em> con Claude</h1>
+  <p class="lede">Has hecho los 8 módulos. Ahora vas al motor: la filosofía de Anthropic, markdown como input estructurado, skills, agentes y MCP. Cinco áreas técnicas para pasar de usar Claude a construir con él.</p>
+</section>
+
+<nav class="tabs-wrap">
+  <button class="tab-btn active" data-tab="conceptos">Conceptos</button>
+  <button class="tab-btn" data-tab="casos">Casos de uso</button>
+  <button class="tab-btn" data-tab="ejercicios">Ejercicios</button>
+  <button class="tab-btn" data-tab="prompts">Prompts</button>
+  <button class="tab-btn" data-tab="quiz">Quiz final</button>
+  <button class="tab-btn" data-tab="glosario">Glosario</button>
+  <button class="tab-btn" data-tab="recursos">Recursos</button>
+  <button class="tab-btn" data-tab="galeria">Galería</button>
+  <button class="tab-btn" data-tab="checklist">Checklist</button>
+</nav>
+
+<!-- === CONCEPTOS === -->
+<section class="section active" id="sec-conceptos">
+  <div class="section-intro">
+    <h2>Diez <em>piezas</em> avanzadas</h2>
+    <p>Los conceptos técnicos que sustentan la construcción con Claude. Pulsa cualquier tarjeta para girarla y ver la definición + un ejemplo concreto.</p>
+  </div>
+  <div class="flashgrid" id="flashgrid"></div>
+</section>
+
+<!-- === CASOS === -->
+<section class="section" id="sec-casos">
+  <div class="section-intro">
+    <h2>De <em>prompt</em> a sistema agentico</h2>
+    <p>Seis escenarios técnicos avanzados: cómo problemas reales se resuelven con agentes, skills, MCP y tool use bien diseñado.</p>
+  </div>
+  <div id="cases"></div>
+</section>
+
+<!-- === EJERCICIOS === -->
+<section class="section" id="sec-ejercicios">
+  <div class="section-intro">
+    <h2>Tu primer <em>agente</em></h2>
+    <p>Cinco ejercicios para construir piezas reales: diseñar un agente, escribir una skill, conectar MCP, refactorizar prompts monolíticos.</p>
+  </div>
+  <div id="exercises"></div>
+</section>
+
+<!-- === PROMPTS === -->
+<section class="section" id="sec-prompts">
+  <div class="section-intro">
+    <h2>Plantillas para <em>sistemas</em> agenticos</h2>
+    <p>System prompts para agentes, esqueletos de skills, configs MCP, esquemas tool use. Sustituye los <code style="background:var(--bg-2);padding:1px 6px;border-radius:4px;font-family:var(--mono);font-size:.85em">[CORCHETES]</code> y úsalas en tu código.</p>
+  </div>
+  <div class="prompts-grid" id="prompts"></div>
+</section>
+
+<!-- === QUIZ === -->
+<section class="section" id="sec-quiz">
+  <div class="section-intro">
+    <h2>Quiz <em>técnico</em></h2>
+    <p>10 preguntas sobre agentes, MCP, skills y filosofía Anthropic. Si las clavas, estás listo para construir cosas en producción.</p>
+  </div>
+  <div id="quiz"></div>
+  <div id="quiz-result" class="quiz-result"></div>
+</section>
+
+<!-- === GLOSARIO === -->
+<section class="section" id="sec-glosario">
+  <div class="section-intro">
+    <h2>Glosario <em>técnico</em></h2>
+    <p>Los términos que aparecen en la documentación oficial, en papers y en código real. Si vas a leer specs, tenlos a mano.</p>
+  </div>
+  <div id="glosario" class="glosario-list"></div>
+</section>
+
+<!-- === RECURSOS === -->
+<section class="section" id="sec-recursos">
+  <div class="section-intro">
+    <h2>Para <em>profundizar</em></h2>
+    <p>Los ocho enlaces oficiales que importan: docs del Agent SDK, spec del MCP, paper de Constitutional AI, guías de skills. Todos reales, todos vivos.</p>
+  </div>
+  <div id="recursos" class="recursos-grid"></div>
+</section>
+
+<!-- === GALERIA === -->
+<section class="section" id="sec-galeria">
+  <div class="section-intro">
+    <h2>El <em>ecosistema</em> en imágenes</h2>
+    <p>Capturas oficiales del producto. Clic en cualquier tarjeta para abrir la página original con más contexto.</p>
+  </div>
+  <div id="galeria" class="gallery-grid"></div>
+</section>
+
+<!-- === CHECKLIST === -->
+<section class="section" id="sec-checklist">
+  <div class="section-intro">
+    <h2>Tu primera <em>semana</em> construyendo</h2>
+    <p>Siete días con acciones técnicas concretas: instalar el Agent SDK, escribir tu primera skill, conectar un MCP, montar un agente mínimo.</p>
+  </div>
+  <div id="checklist" class="checklist"></div>
+  <div class="checklist-progress" id="checkProgress"></div>
+</section>
+
+<nav class="footer-nav">
+  <a href="/curso" class="foot-link">← Curso</a>
+  <a href="/curso" class="foot-link">Volver al curso →</a>
+</nav>
+
+<script>
+// ============================================
+// CONTENIDO DEL MODULO 9 BONUS
+// ============================================
+const MODULE_DATA = {
+  conceptos: [
+    {
+      title: "Constitutional AI",
+      def: "Método de entrenamiento de Anthropic donde el modelo se autocritica y revisa sus respuestas siguiendo una 'constitución' (un conjunto de principios escritos en lenguaje natural). Sustituye gran parte del feedback humano por feedback del propio modelo guiado por reglas explícitas.",
+      example: "Una respuesta inicial pasa por: 'critica esta respuesta según estos principios → reescríbela corrigiendo lo que falla'. Es lo que hace que Claude rechace ataques de prompt injection sin que se le entrene caso por caso."
+    },
+    {
+      title: "RLHF y RLAIF",
+      def: "RLHF (Reinforcement Learning from Human Feedback): humanos ranquean respuestas y el modelo aprende a generar las mejores. RLAIF (... from AI Feedback): el ranker es otro modelo. Anthropic combina ambos: humanos para los casos de alta sensibilidad, IA para escalar el resto.",
+      example: "Ranking de 1000 pares de respuestas: humanos hacen 100 (las difíciles), un modelo entrenado hace los 900 restantes. Resultado: alineamiento a escala que sería imposible solo con humanos."
+    },
+    {
+      title: "Claude family architecture",
+      def: "Familia de modelos optimizada por trade-off coste/capacidad: Haiku (rápido y barato, clasificación y extracción), Sonnet (equilibrio, default para la mayoría de tareas), Opus (máximo razonamiento, código y agentes largos). Mismo proveedor, misma API, distinto tamaño.",
+      example: "Pipeline típico: Haiku para clasificar 10.000 emails entrantes, Sonnet para los 300 que necesitan respuesta personalizada, Opus para los 12 casos críticos que pasan a soporte premium."
+    },
+    {
+      title: "System prompt avanzado",
+      def: "El system prompt define rol, reglas, formato de salida y herramientas disponibles. Va separado del mensaje del usuario y se cachea con prompt caching. Un buen system prompt es la diferencia entre un chatbot genérico y un agente especialista.",
+      example: "system: 'Eres revisor de PRs. Para cada PR: (1) resumen en 2 frases, (2) riesgos en bullets, (3) tests que faltan. Formato Markdown. Si el diff supera 500 líneas, pide partir el PR antes de revisar.'"
+    },
+    {
+      title: "Markdown semántico como input",
+      def: "Estructurar prompts con Markdown (encabezados, listas, bloques de código) no es estética: Claude está entrenado masivamente con Markdown y lo usa como señal estructural. Un prompt bien marcado se interpreta mejor que un parégrafo gigante.",
+      example: "En lugar de 'analiza esto y dame X, Y, Z', usar: ## Contexto / ## Tarea / ## Restricciones / ## Formato de salida. Mejora la precisión notablemente, especialmente en tareas con varios sub-objetivos."
+    },
+    {
+      title: "Formato .skill",
+      def: "Una skill es una carpeta con SKILL.md (metadatos + instrucciones) más opcionalmente scripts y assets. El SKILL.md tiene un YAML frontmatter con 'name' y 'description'. Claude carga la skill cuando la descripción encaja con el contexto del usuario.",
+      example: "skills/pdf-extractor/SKILL.md con frontmatter 'name: pdf-extractor, description: Use this skill when the user provides a PDF and asks to extract text, tables, or perform OCR'. Más scripts/extract.py al lado."
+    },
+    {
+      title: "MCP (Model Context Protocol)",
+      def: "Protocolo abierto (JSON-RPC sobre stdio o HTTP/SSE) que estandariza cómo un LLM consume herramientas y datos externos. Un servidor MCP expone 'tools', 'resources' y 'prompts'. El cliente (Claude Desktop, Claude Code, tu app) los descubre y los usa.",
+      example: "Un servidor MCP de PostgreSQL expone tools como 'query', 'list_tables', 'describe_schema'. Claude descubre estas tools al conectar, decide cuál usar en cada momento y recibe el resultado estructurado."
+    },
+    {
+      title: "Agent loop",
+      def: "El ciclo básico de un agente: (1) observa el estado actual, (2) decide acción con el modelo, (3) ejecuta una tool, (4) recibe el resultado, (5) vuelve a 1. Se repite hasta cumplir un objetivo o llegar a un límite de turnos.",
+      example: "Agente que arregla un bug: lee error → busca el archivo → propone fix → corre tests → si fallan, analiza el output → ajusta → vuelve a correr tests → cuando pasan, termina."
+    },
+    {
+      title: "Tool use",
+      def: "Mecanismo por el cual el modelo decide llamar a una función externa en lugar de responder solo con texto. Defines tools con esquema JSON (nombre, descripción, parámetros). El modelo elige cuál usar, recibes el JSON, la ejecutas, devuelves el resultado al modelo.",
+      example: "tools=[{name: 'get_weather', input_schema: {type: 'object', properties: {city: {type: 'string'}}}}]. El modelo responde con tool_use → tu código llama la API real → devuelves el resultado → el modelo lo integra en la respuesta final."
+    },
+    {
+      title: "JSON mode y structured output",
+      def: "Forzar al modelo a producir JSON válido que cumpla un schema. Se consigue con tool use (defines una tool con el schema deseado y obligas a usarla) o con prefilling de la respuesta. Crítico para integrar Claude en pipelines donde el output alimenta otro sistema.",
+      example: "Quieres clasificar tickets devolviendo {categoria: 'X', prioridad: 1-5, etiquetas: []}. Defines una tool 'classify_ticket' con ese schema, tool_choice: {type: 'tool', name: 'classify_ticket'}. La salida es 100% parseable."
+    }
+  ],
+
+  casos: [
+    {
+      title: "Agente que resume PRs de GitHub",
+      context: "Manuel lidera un equipo de 8 devs. Cada día llegan 15-20 PRs y quiere un resumen ejecutivo en Slack a las 18h: qué tocó cada PR, riesgos, qué falta revisar.",
+      bad: "Un prompt monolítico de 400 líneas que recibe el JSON crudo de la GitHub API con todos los diffs concatenados. Excede el context window con 5 PRs grandes. Falla silenciosamente.",
+      good: "Agente con Claude Agent SDK. Tools: list_open_prs(), get_pr_diff(id), get_pr_comments(id), post_to_slack(msg). El agente itera: para cada PR llama get_pr_diff, resume con Sonnet, acumula. Al final, llama Opus una sola vez para generar el resumen ejecutivo. Post a Slack. Coste controlado, no rompe con repos grandes.",
+      why: "<strong>Por qué funciona:</strong> separas 'iterar y resumir' (Sonnet, barato) de 'sintetizar' (Opus, una vez). El loop del agente gestiona el contexto: nunca cargas 20 diffs a la vez."
+    },
+    {
+      title: "Skill para análisis de logs",
+      context: "Carmen es SRE. Cuando hay un incidente, alguien le pasa 50 MB de logs. Necesita el diagnóstico en 5 minutos.",
+      bad: "Pegar todo el log al chat. Claude rechaza por límite de tokens, o trunca silenciosamente y se inventa el diagnóstico. Cada vez la persona redacta el prompt distinto.",
+      good: "Skill 'log-analyzer' con SKILL.md que describe cuándo activarla ('cuando el usuario aporta un fichero .log o output de stacktrace') y scripts/analyze.py que filtra por nivel de error, agrupa por servicio, extrae stacktraces únicos. Claude llama el script, recibe un resumen estructurado, genera el diagnóstico final.",
+      why: "<strong>Por qué funciona:</strong> el código determinista filtra los 50 MB a 200 KB relevantes, y el modelo trabaja con datos manejables. La skill se carga sola, sin que Carmen explique el flujo cada vez."
+    },
+    {
+      title: "MCP para conectar Notion al equipo",
+      context: "Pedro tiene un equipo que vive en Notion: docs, runbooks, OKRs. Quiere que Claude lea y escriba sin pegar IDs ni copy/paste.",
+      bad: "Cada vez que alguien pregunta 'qué dice el runbook X', toca abrir Notion, copiar texto, pegar en Claude. Frustrante. Nadie lo hace consistentemente.",
+      good: "Servidor MCP de Notion configurado en Claude Desktop con el integration token oficial. Tools expuestas: search_pages, get_page_content, append_block, create_page. Cualquier miembro del equipo escribe 'resúmeme el runbook de incident-response' y Claude lo busca, lo lee y lo resúme. Sin copy/paste, sin IDs.",
+      why: "<strong>Por qué funciona:</strong> el MCP traslada el problema del prompt al protocolo. Una sola config, todo el equipo tiene Notion como contexto en su Claude. No hay que rehacer integraciones por usuario."
+    },
+    {
+      title: "Prompt complejo con XML + Markdown",
+      context: "Rocío tiene un sistema de moderación de contenido. El prompt debe manejar texto, imágenes, contexto de usuario y reglas de la plataforma.",
+      bad: "Un parégrafo gigante: 'eres un moderador, analiza esto, ten en cuenta esto, la política es esta, el usuario es nuevo, mira también la imagen...'. Claude se pierde, mezcla criterios, da resultados inconsistentes.",
+      good: "Prompt estructurado: encabezados Markdown para secciones (## Política, ## Contexto del usuario, ## Contenido a moderar) y tags XML para envolver datos largos (<post_text>...</post_text>, <user_history>...</user_history>). El modelo distingue 'instrucciones' de 'datos' sin ambigüedad. Salida en JSON via tool use.",
+      why: "<strong>Por qué funciona:</strong> Markdown da estructura semántica, XML delimita datos largos. La separación instrucciones/datos reduce prompt injection y mejora la precisión. Es el patrón que recomienda la doc de Anthropic."
+    },
+    {
+      title: "Sistema multi-step con tool use",
+      context: "Álvaro vende seguros online. Quiere un agente que tome los datos del cliente, calcule cotizaciones de 3 productos, compare y recomiende.",
+      bad: "Un solo prompt que 'simula' calcular las cotizaciones con conocimiento general del modelo. Inventa precios. Cumplimiento se queja. Cliente compra un seguro que no existe.",
+      good: "Agente con tres tools reales: get_customer_risk_profile(id), calculate_quote(product, profile), compare_products(quotes[]). El modelo orquesta: llama la primera, después las tres calculate_quote en paralelo (parallel tool use), luego compare_products. La recomendación final es texto generado, pero sobre datos reales. Auditable.",
+      why: "<strong>Por qué funciona:</strong> el modelo decide el plan, el código calcula los números. Parallel tool use acorta la latencia. Todo lo crítico (precio, riesgo) viene de funciones reales, no de la cabeza del modelo."
+    },
+    {
+      title: "Debugging de un agente",
+      context: "Andrea construyó un agente la semana pasada. A veces resuelve la tarea, a veces se queda en loop, a veces inventa nombres de tools. No tiene idea de qué pasa.",
+      bad: "Añadir prints aleatorios. Cambiar el system prompt 'a ver si así'. Probar Opus en lugar de Sonnet 'por si era el modelo'. Tres días perdidos sin certezas.",
+      good: "Logging estructurado del agent loop: cada turno guarda {turn_id, plan, tool_called, tool_args, tool_result, tokens_used}. Reproduce el fallo con un dataset de 5 inputs problemáticos. Detecta patrón: el agente inventa tools cuando la descripción de las tools reales es ambigua. Reescribe descripciones siguiendo formato 'verbo + cuándo + qué devuelve'. Fallos bajan del 30% al 4%.",
+      why: "<strong>Por qué funciona:</strong> sin observabilidad no hay debugging, hay supersticiones. Loggear el loop convierte un 'a veces falla' en 'falla cuando X'. La causa casi siempre está en las descripciones de las tools, no en el modelo."
+    }
+  ],
+
+  ejercicios: [
+    {
+      title: "Diseña un agente en papel antes de tocar código",
+      task: "Elige una tarea que hoy hagas a mano y te lleve >30 min/semana. Diseña el agente que la haría: objetivo medible, lista de tools (mínimo 2, máximo 6) con nombre + qué hace + inputs/outputs, sistema de confirmaciones humanas, criterio de éxito, límite de turnos. Sin escribir una sola línea de código.",
+      solution: "Ejemplo: agente 'weekly-content-digest' que cada lunes genera un brief de 10 artículos relevantes de mi sector.\n\nObjetivo medible: entregar un documento Markdown con 10 artículos (título, link, resumen 2 frases, por qué importa) en menos de 5 min, antes de las 8:00.\n\nTools:\n1. search_rss(feeds[], since_date) -> articles[]\n2. fetch_article_text(url) -> texto plano\n3. score_relevance(text, criteria) -> 0-10\n4. write_markdown_doc(path, content) -> ok|error\n\nConfirmaciones humanas: ninguna durante la ejecución (es solo lectura/escritura local). Pero el doc se guarda en 'drafts/' y yo lo apruebo antes de publicar.\n\nCriterio de éxito: 4 de cada 5 lunes, al menos 7 de los 10 artículos los considero relevantes.\n\nLímite de turnos: 50. Si supera, aborta y envía alerta.\n\nDiseñar primero en papel evita reescribir tres veces. El 80% de los problemas de un agente vienen de tools mal definidas, no de código mal escrito.",
+      rubric: [
+        "Objetivo en una frase medible, no aspiracional",
+        "Tools con verbo en nombre, inputs/outputs tipados",
+        "Identificas qué acciones requieren confirmación humana (las que escriben/borran/envían)",
+        "Límite de turnos y de tiempo: el agente debe poder rendirse",
+        "Criterio de éxito comprobable, no 'subjetivamente bueno'"
+      ]
+    },
+    {
+      title: "Escribe tu primer SKILL.md",
+      task: "Elige una tarea que repitas y crea una skill mínima. Crea carpeta 'mi-skill/' con un SKILL.md con frontmatter YAML (name + description) y, debajo, instrucciones claras para Claude. Opcionalmente, un script en scripts/. Compártelo y prueba si Claude la carga cuando esperas.",
+      solution: "Estructura:\n\nmi-skill/\n  SKILL.md\n  scripts/\n    clean_csv.py\n\nSKILL.md:\n\n---\nname: csv-cleaner\ndescription: \"Use this skill when the user provides a messy CSV file with mixed delimiters, blank rows, BOM headers, or inconsistent encoding, and asks to clean it before further processing.\"\n---\n\n# CSV Cleaner\n\n## When to use\n- User uploads a .csv file and mentions: errors when opening, weird characters, blank rows, can't parse.\n- User asks to 'normalize' or 'clean' a CSV before another step.\n\n## How it works\n1. Run scripts/clean_csv.py with the input file.\n2. The script: detects delimiter, strips BOM, removes empty rows, normalizes encoding to UTF-8, outputs a clean copy.\n3. Report to the user: rows before/after, what was changed.\n\n## Inputs\n- Path to a CSV file.\n\n## Output\n- Cleaned CSV in the same folder with suffix '_clean.csv'.\n- Summary of changes applied.\n\n## Common errors\n- File is not CSV (Excel disguised as .csv): suggest exporting first.\n- File >100MB: warn that processing may take a minute.\n\nClaves: la 'description' es lo más importante. Debe describir el TRIGGER, no la skill. Si pones 'cleans CSV files', no se carga. Si pones 'when the user provides a messy CSV...', se carga sola.",
+      rubric: [
+        "Frontmatter YAML válido con name (kebab-case) y description",
+        "Description orientada al TRIGGER (cuándo activarla), no al qué hace",
+        "Cuerpo de la skill con secciones claras (when, how, inputs, output, errors)",
+        "Estructura de carpeta correcta (SKILL.md en raíz, código en scripts/)",
+        "Probada en Claude Desktop o claude.ai: se activa con un prompt natural, sin pedir 'usa la skill'"
+      ]
+    },
+    {
+      title: "Debugea un prompt con tool use",
+      task: "Te paso un prompt con tool use que falla al 30%. Identifica el problema y propon una corrección. El prompt define una tool 'send_email' con parámetros {to: string, body: string} y descripción 'sends email'. El agente a veces inventa una tool 'email_send' o llama 'send_email' con un único string concatenado en lugar de los dos parámetros.",
+      solution: "Diagnóstico:\n\n1. La descripción 'sends email' es vaga. El modelo no sabe CUÁNDO usarla y se confunde con tools similares. Si tu sistema también tiene 'send_slack' o 'send_notification', el modelo crea fusiones.\n\n2. Faltan descripciones por parámetro. 'to' y 'body' como simples strings no dan señal de qué esperar.\n\n3. Falta un ejemplo de uso correcto.\n\nCorrección:\n\n{\n  \"name\": \"send_email\",\n  \"description\": \"Send a transactional email to a single recipient. Use ONLY when the user explicitly asks to send an email (not for Slack, not for in-app notifications). Returns the message ID on success.\",\n  \"input_schema\": {\n    \"type\": \"object\",\n    \"properties\": {\n      \"to\": {\n        \"type\": \"string\",\n        \"description\": \"Recipient email address. Must be a single, valid email. Format: name@domain.com\"\n      },\n      \"body\": {\n        \"type\": \"string\",\n        \"description\": \"Plain text body of the email. No HTML. Max 5000 characters.\"\n      }\n    },\n    \"required\": [\"to\", \"body\"]\n  }\n}\n\nAñade al system prompt: 'When sending emails, always use the send_email tool with both \"to\" and \"body\" as separate parameters. Never pass them as a single concatenated string.'\n\nVerificación: ejecuta el dataset de fallos otra vez. Los errores de naming deben caer a 0; los de parámetros, casi 0.",
+      rubric: [
+        "Identificas que el problema está en la descripción de la tool, no en el modelo",
+        "Reescribes description con: qué hace + cuándo usar + cuándo NO usar + qué devuelve",
+        "Añades description a cada parámetro del input_schema",
+        "Marcas required correctamente",
+        "Validas el fix con el mismo dataset que usó para detectar el bug (no por intuición)"
+      ]
+    },
+    {
+      title: "Conecta un MCP a tu app",
+      task: "Toma una app tuya (Notion, GitHub, base de datos local, Linear, lo que tengas). Conecta su MCP server oficial o crea uno básico custom. Documenta: qué tools expone, cómo lo configuraste, una operación real que probaste. Si el MCP no existe aún oficialmente, escribe uno mínimo en TypeScript con el SDK.",
+      solution: "Caso A: MCP oficial existe (ej. Notion).\n\n1. Sacar integration token en notion.so/my-integrations.\n2. Compartir las páginas/databases con la integración (en cada página: Share → add integration).\n3. Editar ~/Library/Application Support/Claude/claude_desktop_config.json:\n\n{\n  \"mcpServers\": {\n    \"notion\": {\n      \"command\": \"npx\",\n      \"args\": [\"-y\", \"@notionhq/notion-mcp-server\"],\n      \"env\": {\n        \"NOTION_TOKEN\": \"secret_...\"\n      }\n    }\n  }\n}\n\n4. Reiniciar Claude Desktop. Aparece el icono de tools.\n5. Probar: 'Búscame todas las páginas de mi workspace que mencionen \"roadmap Q3\"'. Claude llama search, devuelve resultados reales.\n\nCaso B: MCP custom mínimo (TypeScript).\n\nimport { Server } from \"@modelcontextprotocol/sdk/server/index.js\";\nimport { StdioServerTransport } from \"@modelcontextprotocol/sdk/server/stdio.js\";\n\nconst server = new Server(\n  { name: \"my-app\", version: \"0.1.0\" },\n  { capabilities: { tools: {} } }\n);\n\nserver.setRequestHandler(\"tools/list\", async () => ({\n  tools: [{\n    name: \"get_user_stats\",\n    description: \"Returns total users, active users (30d), and revenue MTD\",\n    inputSchema: { type: \"object\", properties: {} }\n  }]\n}));\n\nserver.setRequestHandler(\"tools/call\", async (req) => {\n  if (req.params.name === \"get_user_stats\") {\n    const stats = await fetchFromMyDB();\n    return { content: [{ type: \"text\", text: JSON.stringify(stats) }] };\n  }\n});\n\nawait server.connect(new StdioServerTransport());\n\nLo construyes con tsc, lo apuntas desde el config. En 50 líneas tienes un MCP server de tu app.",
+      rubric: [
+        "Configuración en el fichero correcto del SO",
+        "Token con permisos mínimos necesarios (no admin)",
+        "Verificado que el icono de tools aparece en Claude Desktop",
+        "Una operación real probada (no solo 'list tools')",
+        "Si custom: usas el SDK oficial @modelcontextprotocol/sdk, no implementas JSON-RPC desde cero"
+      ]
+    },
+    {
+      title: "Refactoriza un prompt monolítico a sistema agentico",
+      task: "Te paso un prompt de 600 palabras que hace muchas cosas a la vez: analiza un email entrante, decide categoría, redacta respuesta, marca prioridad, sugiere acciones de seguimiento. Funciona al 65%. Refactórialo a un sistema agentico con 3-4 llamadas separadas + tool use. Justifica las divisiones.",
+      solution: "Diagnóstico del monolítico:\n- Mezcla clasificación (determinista) con redacción (creativa).\n- El modelo gasta atención en cuatro tareas a la vez.\n- Una salida con cuatro secciones en texto libre es frágil de parsear.\n\nRefactor en 3 pasos:\n\nPaso 1 - Clasificar (Haiku, JSON via tool use):\nsystem: \"Eres un clasificador de emails de soporte. Devuelve siempre vía la tool classify_email.\"\ntools: classify_email({category: enum, priority: 1-5, requires_human: bool})\nLlamada rápida, barata, formato garantizado.\n\nPaso 2 - Si requires_human=true, paramos aquí y derivamos. Si no, seguimos.\n\nPaso 3 - Redactar respuesta (Sonnet, prompt enfocado solo en eso):\nsystem: \"Eres un agente de soporte. Te paso un email con su categoría ya identificada. Redacta respuesta siguiendo el tono de marca [adjunto]. NO clasifiques, NO priorices, solo redacta.\"\ninput: email + categoría + tono.\n\nPaso 4 - Sugerir acciones de seguimiento (Haiku, tool use):\ntools: suggest_followups({actions: [{type: 'create_ticket'|'schedule_call'|'send_doc', details: string}]})\n\nPor qué mejora:\n- Cada llamada hace UNA cosa, mejor calidad por llamada.\n- Modelos baratos donde basta (clasificación, seguimientos).\n- Modelo caro solo donde aporta (redacción).\n- Tool use garantiza JSON válido en las partes que se integran con otro sistema.\n- Si falla un paso, sabes cuál y lo iteras independientemente.\n\nResultado típico: precisión sube del 65% al 88%, coste baja un 40% (modelos más baratos en 2 de 3 pasos), latencia similar o mejor porque pasos 1 y 4 se pueden paralelizar.",
+      rubric: [
+        "Identificas qué partes son clasificación vs. generación vs. extracción",
+        "Usas modelo barato (Haiku) para tareas estructuradas",
+        "Usas tool use para forzar formato en las partes que alimentan otro sistema",
+        "Cada llamada tiene un prompt enfocado en UNA tarea, no mezclas",
+        "Justificas el orden y las dependencias entre pasos"
+      ]
+    }
+  ],
+
+  prompts: [
+    {
+      tag: "Agente",
+      title: "System prompt para agente revisor de código",
+      desc: "Esqueleto de agente que revisa PRs y devuelve un informe estructurado. Listo para conectar a tools de GitHub.",
+      text: "Eres un revisor de código experimentado para [LENGUAJE/STACK]. Tu trabajo: dado un Pull Request, generar una revisión estructurada útil para el autor.\n\nHerramientas disponibles:\n- get_pr_diff(pr_id): devuelve el diff completo\n- get_file_context(path, lines): trae código circundante para entender cambios\n- list_existing_tests(module): lista tests del módulo afectado\n- post_review_comment(pr_id, comment): publica comentario en el PR\n\nProceso obligatorio:\n1. Llama get_pr_diff(pr_id) primero.\n2. Si el diff supera 500 líneas, llama post_review_comment pidiendo partir el PR y termina.\n3. Para cada archivo modificado relevante, considera llamar get_file_context si el cambio depende de lógica fuera del diff.\n4. Llama list_existing_tests para evaluar cobertura.\n\nFormato del informe final (Markdown):\n\n## Resumen\n[2 frases: qué hace el PR y por qué]\n\n## Riesgos\n- [bullet por riesgo concreto]\n\n## Tests\n- Cobertura actual: [óptima | aceptable | insuficiente]\n- Tests que faltarían: [lista]\n\n## Recomendaciones\n- [acciones concretas, no opiniones]\n\nReglas duras:\n- NUNCA inventes nombres de funciones o archivos. Si no lo viste en una tool call, no existe para ti.\n- Si el PR toca seguridad, pagos o auth: marca [CRÍTICO] y exige revisión humana adicional.\n- Máximo 20 turnos por revisión."
+    },
+    {
+      tag: "Agente",
+      title: "Agente investigador web",
+      desc: "Plantilla para un agente que investiga un tema, contrasta fuentes y entrega un informe con citas.",
+      text: "Eres un agente de investigación. Tu objetivo: dado un tema, producir un informe corto (≤1000 palabras) basado en mínimo 5 fuentes distintas, con citas verificables.\n\nHerramientas:\n- web_search(query): devuelve top 10 resultados con url + snippet\n- fetch_page(url): trae el texto principal de una URL\n- save_note(key, content): guarda hallazgos para la síntesis final\n\nProtocolo:\n1. Formula 3-5 sub-preguntas que descomponen el tema. Escópelas en plan inicial.\n2. Para cada sub-pregunta, haz 1-2 búsquedas, abre 2-3 fuentes prometedoras, extrae datos clave a save_note.\n3. DESCARTA fuentes con: dominio sospechoso, sin fecha, opinion piece sin datos, contenido auto-generado.\n4. Cuando tengas notas de >=5 fuentes distintas, sintetiza.\n\nFormato del informe:\n\n# [Título conciso]\n\n## TL;DR\n[3 bullets]\n\n## [Sub-pregunta 1]\n[Respuesta con citas [n] en línea]\n\n[...]\n\n## Limitaciones del informe\n[Qué NO pudiste verificar, qué fuentes faltaron]\n\n## Fuentes\n[1] Título - dominio - fecha - url\n[...]\n\nReglas:\n- Si dos fuentes se contradicen, di EXPLÍCITAMENTE que se contradicen y muestra ambas posturas.\n- Si no hay datos suficientes para una sub-pregunta, declaúrelo. No rellenes.\n- Máximo 30 turnos."
+    },
+    {
+      tag: "Skill",
+      title: "Esqueleto base de SKILL.md",
+      desc: "Plantilla mínima de SKILL.md con frontmatter YAML y secciones recomendadas por la documentación oficial.",
+      text: "---\nname: [nombre-skill-kebab-case]\ndescription: \"Use this skill when [DESCRIBE EXACTAMENTE EL TRIGGER: tipo de input, palabras clave del usuario, formato de archivo]. Be specific enough that Claude won't load it for unrelated requests.\"\n---\n\n# [Nombre legible de la skill]\n\n## When to use\n[Describe en 2-4 frases el escenario donde debe activarse. Da ejemplos concretos de peticiones de usuario que la activan.]\n\nEjemplos que la activan:\n- \"[ejemplo de prompt 1]\"\n- \"[ejemplo de prompt 2]\"\n\nEjemplos que NO la activan:\n- \"[contraejemplo donde podría confundirse]\"\n\n## How it works\n1. [Paso 1, normalmente: leer/validar input]\n2. [Paso 2, normalmente: ejecutar script o lógica]\n3. [Paso 3, normalmente: generar salida estructurada]\n\n## Scripts available\n- `scripts/[script1].py` — [qué hace, qué inputs, qué outputs]\n- `scripts/[script2].py` — [...]\n\n## Inputs expected\n[Qué debe darte el usuario para que la skill funcione]\n\n## Output\n[Qué entrega la skill al terminar]\n\n## Common errors\n- [Error 1]: [cómo resolverlo]\n- [Error 2]: [cómo resolverlo]"
+    },
+    {
+      tag: "Tool use",
+      title: "System prompt + tools en JSON",
+      desc: "Esquema de llamada API con system prompt y definición de tools listas para ejecutarse.",
+      text: "POST https://api.anthropic.com/v1/messages\n\n{\n  \"model\": \"claude-sonnet-4-5\",\n  \"max_tokens\": 1024,\n  \"system\": \"Eres un [ROL]. Usa las tools disponibles cuando necesites datos reales. NUNCA inventes resultados de tools.\",\n  \"tools\": [\n    {\n      \"name\": \"[verb_noun]\",\n      \"description\": \"[QUÉ HACE. CUÁNDO USAR. CUÁNDO NO USAR. QUÉ DEVUELVE.]\",\n      \"input_schema\": {\n        \"type\": \"object\",\n        \"properties\": {\n          \"[param1]\": {\n            \"type\": \"string\",\n            \"description\": \"[Qué es este parámetro, formato esperado, ejemplos]\"\n          },\n          \"[param2]\": {\n            \"type\": \"integer\",\n            \"description\": \"[...]\"\n          }\n        },\n        \"required\": [\"[param1]\"]\n      }\n    }\n  ],\n  \"messages\": [\n    {\"role\": \"user\", \"content\": \"[PETICIÓN DEL USUARIO]\"}\n  ]\n}\n\n// La respuesta tendrá type: 'tool_use' si el modelo decide llamar una tool.\n// Tú ejecutas la tool y devuelves el resultado en el siguiente mensaje con role: 'user' y content tipo 'tool_result'."
+    },
+    {
+      tag: "Agente",
+      title: "Agente con memoria persistente",
+      desc: "Patrón para que un agente recuerde contexto entre sesiones usando un archivo o BD como memoria externa.",
+      text: "Eres un asistente personal con MEMORIA PERSISTENTE. Tienes acceso a tools para leer y escribir tu memoria a largo plazo.\n\nHerramientas de memoria:\n- read_memory(key): devuelve el contenido guardado bajo esa clave, o null si no existe\n- write_memory(key, value): guarda o sobrescribe el valor bajo esa clave\n- list_memory_keys(): devuelve todas las claves guardadas\n\nProtocolo al iniciar cada sesión:\n1. Llama list_memory_keys() para ver qué sabes del usuario.\n2. Llama read_memory para las claves relevantes al contexto (ej. 'preferences', 'recent_projects', 'ongoing_tasks').\n3. Usa esa información para personalizar tu respuesta sin que el usuario tenga que repetirla.\n\nProtocolo durante la conversación:\n- Cuando el usuario te dé una preferencia estable (ej. 'siempre usa tono formal', 'prefiero respuestas en bullets'), guárdala con write_memory('preferences', ...).\n- Cuando empiece un proyecto nuevo, guárdalo en write_memory('projects/[nombre]', {descripción, estado, fechas}).\n- NUNCA guardes datos sensibles (passwords, claves, datos médicos) sin confirmación explicita.\n\nClaves recomendadas a mantener:\n- preferences: tono, formato preferido, idioma\n- ongoing_tasks: lista de tareas en curso con última actualización\n- recent_context: 3-5 temas recientes con resumen breve\n\nReglas:\n- Antes de escribir en memoria, considera si vale la pena (un dato puntual NO, una preferencia recurrente SÍ).\n- Si la memoria entra en conflicto con lo que dice el usuario AHORA, prioriza lo nuevo y actualiza."
+    },
+    {
+      tag: "MCP",
+      title: "Cliente MCP mínimo en Python",
+      desc: "Código base para conectar a un servidor MCP desde tu app Python usando el SDK oficial.",
+      text: "# pip install mcp\n\nfrom mcp import ClientSession, StdioServerParameters\nfrom mcp.client.stdio import stdio_client\n\nasync def main():\n    server_params = StdioServerParameters(\n        command=\"npx\",\n        args=[\"-y\", \"[PAQUETE_MCP_AQUI]\"],\n        env={\"[VAR_ENV]\": \"[VALOR]\"}\n    )\n\n    async with stdio_client(server_params) as (read, write):\n        async with ClientSession(read, write) as session:\n            await session.initialize()\n\n            # Descubrir tools disponibles\n            tools = await session.list_tools()\n            for tool in tools.tools:\n                print(f\"Tool: {tool.name} - {tool.description}\")\n\n            # Llamar una tool concreta\n            result = await session.call_tool(\n                \"[NOMBRE_TOOL]\",\n                arguments={\"[PARAM]\": \"[VALOR]\"}\n            )\n            print(result.content)\n\nimport asyncio\nasyncio.run(main())"
+    },
+    {
+      tag: "Constitucional",
+      title: "Self-critique al estilo Constitutional AI",
+      desc: "Patrón para hacer que Claude se autocritique y revise su salida según principios escritos.",
+      text: "Vas a responder en DOS pasadas.\n\nPASADA 1: Responde a la petición del usuario lo mejor que puedas.\n\nPASADA 2: Aplica esta CRÍTICA sobre tu respuesta de la pasada 1, basada en estos principios:\n\nPrincipios:\n1. ¿Hay alguna afirmación que no pueda verificar con los datos dados? → marcarla y reformularla como hipótesis o eliminarla.\n2. ¿Tengo asunciones implícitas sobre el usuario (nivel técnico, contexto, intención) que no me dijo? → hacerlas explícitas o preguntar.\n3. ¿Mi tono es respetuoso pero directo? ¿Evito relleno y disclaimers innecesarios?\n4. ¿La respuesta es proporcional a la pregunta (no la sobrecargo de detalle si pidió algo simple, no la simplifico si pidió profundidad)?\n5. ¿Hay riesgos en seguir mi consejo que debería mencionar?\n6. ¿Podrían existir lectores razonables que se ofenderían o se sentirían invalidados sin que sea necesario?\n\nPara cada principio donde detectes problema: corrígelo en la respuesta final.\n\nFormato de salida:\n\n[RESPUESTA FINAL CORREGIDA]\n\n---\n\n<details>\n<summary>Notas de autocritica (opcional)</summary>\nLista de cambios que hice respecto a la pasada 1 y por qué.\n</details>"
+    },
+    {
+      tag: "Markdown",
+      title: "Prompt semántico con Markdown + XML",
+      desc: "Estructura recomendada por la doc oficial: Markdown para instrucciones, XML para datos largos.",
+      text: "# Tarea\n[Una frase clara del objetivo. Verbo + qué + para quién.]\n\n# Contexto\n[2-4 frases sobre el dominio, el usuario y el porqué de la tarea.]\n\n# Restricciones\n- [Restricción dura 1]\n- [Restricción dura 2]\n- [Lo que NO debes hacer]\n\n# Formato de salida\n[Describe la estructura exacta: secciones, JSON schema, longitud, tono.]\n\n# Datos\n<documento_principal>\n[CONTENIDO LARGO 1, puede ser texto, código, transcripción]\n</documento_principal>\n\n<contexto_adicional>\n[CONTENIDO LARGO 2]\n</contexto_adicional>\n\n<historial_usuario>\n[CONTENIDO LARGO 3]\n</historial_usuario>\n\n# Pregunta del usuario\n[Lo que el usuario pidió textualmente]\n\n---\n\nResponde siguiendo el FORMATO DE SALIDA, usando los DATOS dentro de los tags XML. Si la pregunta no se puede responder con los datos dados, dilo explícitamente."
+    },
+    {
+      tag: "Producción",
+      title: "Auditoría de un agente antes de deploy",
+      desc: "Checklist accionable para revisar un agente antes de ponerlo en producción.",
+      text: "Vas a auditar este agente antes de deploy. Para cada ítem responde con: [OK] / [PARCIAL] / [FALTA] + 1 frase explicativa. Al final, veredicto: 'listo' / 'listo para piloto controlado' / 'no listo, faltan X'.\n\nDescripción del agente:\n[QUÉ HACE, CON QUÉ TOOLS, QUIÉN LO USA]\n\nChecklist:\n\n1) Manejo de errores: ¿qué hace cuando una tool devuelve error, timeout o respuesta inesperada?\n2) Límite de turnos: ¿hay un máximo de turnos para que no loope infinito?\n3) Límite de coste por sesión: ¿hay tope de tokens/llamadas/dólares?\n4) Confirmaciones humanas: ¿qué acciones disparan obligatoriamente confirmación manual?\n5) Validación de inputs de tools: ¿se valida el input antes de ejecutar la tool real?\n6) Datos sensibles: ¿se loguean PII, secrets, tokens? Si sí: ¿está redactado en logs?\n7) Observabilidad: ¿se guarda por sesión {turn_id, plan, tool, args, result, cost}?\n8) Reproducibilidad: ¿puedo reejecutar una sesión histórica para depurar?\n9) Eval de regresión: ¿hay dataset que se corre antes de cada deploy?\n10) Plan B humano: ¿qué pasa cuando el agente se rinde? ¿escala correctamente?\n11) Versionado del system prompt: ¿está en git con changelog?\n12) Rate limit / circuit breaker: ¿hay protección contra spikes (suyos o de tools externas)?\n\nDevuelve tabla resumen + veredicto + las 3 acciones más urgentes."
+    },
+    {
+      tag: "Skill",
+      title: "Skill para extracción estructurada",
+      desc: "SKILL.md para una skill que extrae datos estructurados de documentos no estructurados.",
+      text: "---\nname: extract-invoice-data\ndescription: \"Use this skill when the user provides an invoice (PDF, image, or pasted text) and asks to extract structured fields like invoice number, date, total amount, line items, or vendor info. Do NOT use for generic document summarization.\"\n---\n\n# Invoice Data Extractor\n\n## When to use\n- User uploads an invoice file (.pdf, .png, .jpg) and asks for the data.\n- User pastes invoice text and asks to 'extract', 'parse', 'estructurar' o similar.\n- User says \"prepare these invoices for QuickBooks/Notion/spreadsheet\".\n\nNot for: contracts, receipts (use receipt-parser), purchase orders (use po-parser).\n\n## How it works\n1. Read the file or text input.\n2. Run scripts/extract.py to parse the document.\n3. Return JSON matching the schema below.\n4. If a field cannot be confidently extracted, return null and add a note.\n\n## Output schema\n```json\n{\n  \"invoice_number\": \"string|null\",\n  \"issue_date\": \"YYYY-MM-DD|null\",\n  \"due_date\": \"YYYY-MM-DD|null\",\n  \"vendor\": {\n    \"name\": \"string\",\n    \"tax_id\": \"string|null\",\n    \"address\": \"string|null\"\n  },\n  \"line_items\": [\n    {\"description\": \"string\", \"quantity\": \"number\", \"unit_price\": \"number\", \"total\": \"number\"}\n  ],\n  \"subtotal\": \"number|null\",\n  \"tax\": \"number|null\",\n  \"total\": \"number\",\n  \"currency\": \"ISO 4217 code\",\n  \"low_confidence_fields\": [\"list of field paths\"]\n}\n```\n\n## Common errors\n- Scanned PDF without OCR: run OCR first (sugerir tesseract).\n- Foreign currency: confirmar código ISO antes de procesar.\n- Multi-page invoice: procesar todas las páginas, consolidar line_items."
+    },
+    {
+      tag: "Debug",
+      title: "Debug session con un agente que falla",
+      desc: "Plantilla para investigar por qué un agente falla, con preguntas guiadas que evitan supersticiones.",
+      text: "Mi agente falla en [X]% de los casos. Voy a darte: descripción del agente, ejemplos de inputs que fallan, logs del agent loop en esos casos.\n\nNo cambies nada antes de diagnosticar. Sigue estos pasos:\n\n1. Lee los logs y agrupa los fallos por SSÍNTOMA (no por causa supuesta):\n   - inventa nombres de tools\n   - llama tools con parámetros mal formados\n   - se queda en loop\n   - se rinde demasiado pronto\n   - alucina datos en la respuesta final\n   - excede límite de turnos sin progreso\n\n2. Para cada síntoma con más casos, propon 2-3 hipótesis de causa raiz. Para cada hipótesis di qué evidencia la confirmaría o descartaría.\n\n3. Sugiere UN cambio acotado por hipótesis más probable. Cambio en este orden de preferencia:\n   a) reescribir descripción de una tool\n   b) añadir ejemplo de uso al system prompt\n   c) cambiar formato del input que recibe la tool\n   d) cambiar el system prompt principal\n   e) cambiar de modelo (solo si todo lo anterior se probó)\n\n4. Para validar el cambio: el mismo dataset de fallos debe ejecutarse y la métrica debe mejorar. NO valides con un caso suelto.\n\nDescripción del agente:\n[...]\n\nInputs que fallan:\n[...]\n\nLogs:\n[...]"
+    },
+    {
+      tag: "MCP",
+      title: "Servidor MCP mínimo (TypeScript)",
+      desc: "Esqueleto de servidor MCP con una tool, listo para ampliar. Usa el SDK oficial.",
+      text: "// package.json: { \"dependencies\": { \"@modelcontextprotocol/sdk\": \"latest\" } }\n\nimport { Server } from \"@modelcontextprotocol/sdk/server/index.js\";\nimport { StdioServerTransport } from \"@modelcontextprotocol/sdk/server/stdio.js\";\nimport {\n  CallToolRequestSchema,\n  ListToolsRequestSchema,\n} from \"@modelcontextprotocol/sdk/types.js\";\n\nconst server = new Server(\n  { name: \"[MI_SERVIDOR]\", version: \"0.1.0\" },\n  { capabilities: { tools: {} } }\n);\n\nserver.setRequestHandler(ListToolsRequestSchema, async () => ({\n  tools: [\n    {\n      name: \"[verb_noun]\",\n      description: \"[QUÉ HACE + CUÁNDO USAR + QUÉ DEVUELVE]\",\n      inputSchema: {\n        type: \"object\",\n        properties: {\n          \"[param]\": {\n            type: \"string\",\n            description: \"[descripción del parámetro]\"\n          }\n        },\n        required: [\"[param]\"]\n      }\n    }\n  ]\n}));\n\nserver.setRequestHandler(CallToolRequestSchema, async (req) => {\n  const { name, arguments: args } = req.params;\n\n  if (name === \"[verb_noun]\") {\n    // Tú implementas la lógica real aquí.\n    const result = await myBusinessLogic(args);\n    return {\n      content: [\n        { type: \"text\", text: JSON.stringify(result) }\n      ]\n    };\n  }\n\n  throw new Error(`Unknown tool: ${name}`);\n});\n\nconst transport = new StdioServerTransport();\nawait server.connect(transport);"
+    }
+  ],
+
+  quiz: [
+    {
+      q: "¿Qué es Constitutional AI en una frase?",
+      opts: [
+        "Un método donde el modelo se autocritica y revisa sus respuestas siguiendo principios escritos en lenguaje natural",
+        "Un modelo legal entrenado exclusivamente con textos constitucionales",
+        "Una variante de RLHF que solo usa moderadores humanos certificados",
+        "Una política de uso publicada por Anthropic"
+      ],
+      correct: 0,
+      fb: "Constitutional AI sustituye gran parte del feedback humano por autocrítica del modelo guiada por una 'constitución' (principios en lenguaje natural). Es lo que hace que Claude rechace prompt injections y mantenga el tono sin que se le entrene caso por caso."
+    },
+    {
+      q: "¿Por qué conviene estructurar prompts con Markdown y tags XML?",
+      opts: [
+        "Por estética visual cuando se imprimen",
+        "Porque Claude está entrenado con mucho Markdown y XML, los lee como señal estructural, mejorando precisión y separando instrucciones de datos",
+        "Porque la API solo acepta input en esos formatos",
+        "Porque baja el coste por token al usar menos palabras"
+      ],
+      correct: 1,
+      fb: "Markdown da estructura semántica (secciones, listas) y XML delimita datos largos sin ambigüedad. La separación 'instrucciones vs datos' reduce prompt injection y mejora la precisión. Es la recomendación oficial de la doc de Anthropic."
+    },
+    {
+      q: "Una Skill (formato .skill) consiste fundamentalmente en:",
+      opts: [
+        "Un fine-tuning del modelo subido a Anthropic",
+        "Una carpeta con SKILL.md (YAML frontmatter con name y description) más opcionalmente scripts y assets",
+        "Una API key con permisos especiales",
+        "Un plugin compilado en binario que Anthropic certifica"
+      ],
+      correct: 1,
+      fb: "Una skill es solo una carpeta con SKILL.md y archivos. El frontmatter tiene 'name' y 'description'. La description es lo que decide cuándo Claude carga la skill, por eso debe describir el TRIGGER, no el qué hace."
+    },
+    {
+      q: "MCP (Model Context Protocol) es:",
+      opts: [
+        "Un modelo de Anthropic optimizado para contexto largo",
+        "Un protocolo abierto (JSON-RPC) que estandariza cómo un LLM consume tools, resources y prompts de servidores externos",
+        "Un servicio cloud privado de Anthropic",
+        "Una librería de Python específica de Anthropic"
+      ],
+      correct: 1,
+      fb: "MCP es un protocolo abierto sobre JSON-RPC (stdio o HTTP/SSE). Define tools, resources y prompts. Cualquier cliente compatible (Claude Desktop, Claude Code, tu app) puede consumir cualquier servidor MCP. Es 'USB para LLMs'."
+    },
+    {
+      q: "¿Qué es el agent loop en un agente de Claude?",
+      opts: [
+        "Un bug que hace que el agente se quede atascado",
+        "El ciclo observar → decidir acción → ejecutar tool → recibir resultado → repetir, hasta cumplir objetivo o llegar al límite",
+        "Una nueva versión del SDK",
+        "El loop interno del transformer al generar tokens"
+      ],
+      correct: 1,
+      fb: "El agent loop es el ciclo básico que define a un agente. Cada vuelta: ver estado, elegir acción, ejecutar tool, integrar el resultado. El Claude Agent SDK te lo da implementado para que solo definas tools y lógica."
+    },
+    {
+      q: "Tu tool 'send_email' falla porque el modelo a veces inventa una tool 'email_send'. La primera causa que deberías investigar es:",
+      opts: [
+        "El modelo es demasiado pequeño; pasa a Opus",
+        "La descripción de la tool es vaga o se confunde con otras tools similares en tu sistema",
+        "La temperatura está muy alta",
+        "El context window está agotado"
+      ],
+      correct: 1,
+      fb: "El 90% de los errores de tool use vienen de descripciones flojas: vagas, ambiguas, sin decir 'cuándo SÍ / cuándo NO usar'. Reescribir descripciones es siempre el primer fix antes de tocar el modelo."
+    },
+    {
+      q: "¿Por qué usar tool use para forzar output JSON en lugar de pedir JSON en el prompt?",
+      opts: [
+        "Porque el JSON queda más legible visualmente",
+        "Porque tool use con un schema definido garantiza JSON válido y parseable, mientras pedirlo en texto libre puede romperse",
+        "Porque cuesta menos tokens",
+        "Porque es la única forma de obtener output del modelo"
+      ],
+      correct: 1,
+      fb: "Forzar tool_choice a una tool con schema garantiza un JSON 100% válido. Pedir JSON en texto libre lleva a outputs con triple-backticks, comentarios, comas finales y otros desperfectos que rompen tu parser."
+    },
+    {
+      q: "Refactorizas un prompt monolítico que clasifica + redacta + prioriza. ¿Qué patrón suele dar mejor resultado?",
+      opts: [
+        "Una sola llamada a Opus con todo el contexto y un prompt más largo",
+        "Tres llamadas separadas: Haiku para clasificar (tool use), Sonnet para redactar, Haiku para priorizar (tool use)",
+        "Una llamada a Haiku con respuesta concatenada por puntos y comas",
+        "Tres llamadas paralelas a Opus para mayor robustez"
+      ],
+      correct: 1,
+      fb: "Dividir tareas heterogéneas en llamadas específicas mejora calidad y baja coste: modelo barato para tareas estructuradas (tool use garantiza formato), modelo más capaz solo donde aporta (redacción). Patrón agentico clásico."
+    },
+    {
+      q: "Tu agente está en producción y a veces hace acciones inesperadas. ¿Qué NO debe faltar antes del próximo deploy?",
+      opts: [
+        "Cambiar a un modelo más nuevo cada semana",
+        "Logging estructurado del agent loop (turn, plan, tool, args, result, cost) + confirmación humana en acciones críticas + eval de regresión",
+        "Quitar todas las tools que escriben",
+        "Reducir el system prompt a una frase"
+      ],
+      correct: 1,
+      fb: "Observabilidad + confirmaciones humanas + eval de regresión son el mínimo no negociable. Sin logs no debugeas; sin confirmaciones, una alucinación se vuelve incidente; sin eval, cada deploy es ruleta rusa."
+    },
+    {
+      q: "Acabas el M9. ¿Cuál es la jugada con más impacto para esta semana?",
+      opts: [
+        "Leer los papers de Anthropic durante 20 horas antes de tocar código",
+        "Esperar al próximo modelo para empezar a construir",
+        "Diseñar un agente mínimo (3 tools, 1 problema tuyo real), instalar el Agent SDK y montarlo en un par de tardes",
+        "Comprar un servidor dedicado para entrenar tu propio modelo"
+      ],
+      correct: 2,
+      fb: "Construir mueve la aguja. Un agente acotado a un problema tuyo real, con el SDK oficial, enseña en una semana lo que 20h de teoría no enseñan. Empieza pequeño, mide, itera."
+    }
+  ],
+
+  glosario: [
+    { t: "Agent", d: "Aplicación que opera un loop autónomo con Claude: observa, decide, ejecuta tool, recibe resultado, repite hasta cumplir objetivo o límite." },
+    { t: "Agent SDK", d: "Librería oficial de Anthropic (Python y TypeScript) que implementa el agent loop, tool dispatch y gestión de historial para construir agentes sin reinventar la rueda." },
+    { t: "Anthropic Console", d: "console.anthropic.com. Panel donde sacas API keys, cargas saldo, ves uso, configuras Workbench y consultas rate limits." },
+    { t: "Claude Code", d: "CLI oficial de Anthropic que opera sobre tu repo real: lee archivos, edita código, ejecuta comandos y corre tests." },
+    { t: "Constitutional AI", d: "Método de entrenamiento de Anthropic donde el modelo se autocritica según una constitución (principios en lenguaje natural). Combina con RLHF y RLAIF." },
+    { t: "Frontmatter", d: "Bloque YAML al inicio de un .md (entre tres guiones). En una skill contiene 'name' y 'description', metadatos que Claude usa para decidir cuándo cargarla." },
+    { t: "JSON-RPC", d: "Protocolo de comunicación basado en JSON que usa MCP. Mensajes con method, params y id. Funciona sobre stdio o HTTP/SSE." },
+    { t: "JSON mode", d: "Técnica para forzar output JSON válido. En Claude se consigue vía tool use con un schema definido y tool_choice forzado a esa tool." },
+    { t: "MCP", d: "Model Context Protocol. Estándar abierto para que LLMs consuman tools, resources y prompts de servidores externos de forma plug-and-play." },
+    { t: "Parallel tool use", d: "Cuando Claude llama varias tools simultáneamente en el mismo turno. Reduce latencia en tareas independientes (ej. consultar 3 APIs a la vez)." },
+    { t: "Prompt caching", d: "Mecanismo de la API que cachea partes estables del prompt (system, contexto largo) para abaratar llamadas repetidas hasta un 90%." },
+    { t: "RLAIF", d: "Reinforcement Learning from AI Feedback. Variante donde otro modelo ranquea respuestas. Permite escalar el alineamiento más allá de la capacidad humana." },
+    { t: "RLHF", d: "Reinforcement Learning from Human Feedback. Humanos ranquean pares de respuestas y el modelo aprende a generar las preferidas." },
+    { t: "Skill", d: "Carpeta con SKILL.md (frontmatter + instrucciones) más opcionalmente scripts y assets. Claude la carga automáticamente cuando el contexto encaja con su description." },
+    { t: "Stdio transport", d: "Forma más común de comunicarse con un servidor MCP local: el cliente arranca el server como subproceso y le habla por stdin/stdout." },
+    { t: "System prompt", d: "Instrucción persistente que define rol, reglas y formato. Va separada del mensaje del usuario y se cachea con prompt caching para abaratar." },
+    { t: "Tool use", d: "Patrón donde el modelo decide llamar a una función externa (definida con schema JSON) en lugar de responder solo con texto." },
+    { t: "Tool description", d: "Texto que explica una tool al modelo. Debe incluir qué hace, cuándo SÍ usar, cuándo NO usar y qué devuelve. Es el factor más impactante en la calidad del tool use." }
+  ],
+
+  recursos: [
+    {
+      tag: "Documentación",
+      title: "Claude Agent SDK (docs oficiales)",
+      desc: "Documentación completa del Agent SDK: setup, conceptos, tools, MCP servers, ejemplos de agentes. Punto de entrada obligatorio.",
+      url: "https://docs.claude.com/en/api/agent-sdk/overview",
+      meta: "docs.claude.com · Python + TS"
+    },
+    {
+      tag: "Documentación",
+      title: "Agent Skills (docs oficiales)",
+      desc: "Guía completa de Skills: estructura, cómo escribir SKILL.md, ejemplos, integración con Claude Code y la API.",
+      url: "https://docs.claude.com/en/docs/agents-and-tools/agent-skills/overview",
+      meta: "docs.claude.com · spec + tutoriales"
+    },
+    {
+      tag: "Especificación",
+      title: "Model Context Protocol",
+      desc: "Spec oficial de MCP, lista de servidores existentes, guías para construir el tuyo. Imprescindible si vas a tocar MCPs.",
+      url: "https://modelcontextprotocol.io",
+      meta: "modelcontextprotocol.io · protocolo abierto"
+    },
+    {
+      tag: "Investigación",
+      title: "Constitutional AI (paper original)",
+      desc: "Paper de Anthropic donde se presenta Constitutional AI. Para entender la filosofía de alineamiento y cómo se entrena Claude.",
+      url: "https://www.anthropic.com/research/constitutional-ai-harmlessness-from-ai-feedback",
+      meta: "anthropic.com · paper técnico"
+    },
+    {
+      tag: "Documentación",
+      title: "Tool use (docs oficiales)",
+      desc: "Cómo definir tools, schemas, manejo de tool_use y tool_result, parallel tool use, forced tool choice. Lectura imprescindible.",
+      url: "https://docs.claude.com/en/docs/agents-and-tools/tool-use/overview",
+      meta: "docs.claude.com · referencia"
+    },
+    {
+      tag: "Open source",
+      title: "Claude Agent SDK (GitHub Python)",
+      desc: "Repo oficial del Agent SDK en Python: código, issues activos, ejemplos en /examples. Aceptan PRs.",
+      url: "https://github.com/anthropics/claude-agent-sdk-python",
+      meta: "github.com · open source"
+    },
+    {
+      tag: "Open source",
+      title: "Anthropic Cookbook",
+      desc: "Repo de patrones reales: RAG, classification, agents, contextual retrieval, tool use, JSON extraction. Empieza copiando, ajusta después.",
+      url: "https://github.com/anthropics/anthropic-cookbook",
+      meta: "github.com · notebooks"
+    },
+    {
+      tag: "Investigación",
+      title: "Anthropic Research",
+      desc: "Hub de papers de Anthropic: Constitutional AI, interpretabilidad, scaling, alignment. Para entender la dirección a 2-3 años del ecosistema.",
+      url: "https://www.anthropic.com/research",
+      meta: "anthropic.com · papers + posts"
+    }
+  ],
+
+  galeria: [
+    {
+      img: "https://cdn.prod.website-files.com/6889473510b50328dbb70ae6/699b61141cf0f9e76c9cab46_20bcc9c8b2977d965525d00c3beb00a3_desktop.png",
+      title: "Claude Code · Desktop",
+      desc: "Punto de entrada para construir agentes y skills desde el escritorio.",
+      src: "https://claude.com/product/claude-code",
+      tag: "Claude Code"
+    },
+    {
+      img: "https://cdn.prod.website-files.com/6889473510b50328dbb70ae6/691505c9bba2f78bec842d0c_claude-code_use-case_terminal_w-bg.webp",
+      title: "Terminal · Agent SDK",
+      desc: "Construye agentes desde la CLI con el Agent SDK oficial.",
+      src: "https://docs.claude.com/en/api/agent-sdk/overview",
+      tag: "Agent SDK"
+    },
+    {
+      img: "https://cdn.prod.website-files.com/6889473510b50328dbb70ae6/691505ca4de51af872ae550e_claude-code_use-case_ide_w-bg.webp",
+      title: "IDE · Claude en VS Code y JetBrains",
+      desc: "Extensiones nativas. Skills y agents activos desde tu editor.",
+      src: "https://marketplace.visualstudio.com/items?itemName=anthropic.claude-code",
+      tag: "IDE"
+    },
+    {
+      img: "https://cdn.prod.website-files.com/6889473510b50328dbb70ae6/69150a45d1261c4b25ae9142_claude-code_use-case_web_w-bg.webp",
+      title: "Web y móvil",
+      desc: "Acceso multi-dispositivo. Los agentes corren en la nube y tú supervisas.",
+      src: "https://claude.ai/code",
+      tag: "Web"
+    },
+    {
+      img: "https://cdn.prod.website-files.com/6889473510b50328dbb70ae6/689ca7abcff690b07c62fb43_cc08c7c80742b99a736e29763f7ef442_claude_code.webp",
+      title: "Claude Developer Platform",
+      desc: "API, Workbench, integraciones cloud. La base para llevar agentes a producción.",
+      src: "https://platform.claude.com",
+      tag: "API"
+    },
+    {
+      img: "https://cdn.sanity.io/images/4zrzovbb/claude-com/6c36adaaf60ecdde313a93ad255eef573ea4de97-1200x630.jpg",
+      title: "MCP — Model Context Protocol",
+      desc: "Estándar abierto para que tus agentes consuman tools y datos externos.",
+      src: "https://modelcontextprotocol.io",
+      tag: "MCP"
+    }
+  ],
+
+  checklist: [
+    {
+      day: "Día 1",
+      text: "Instala el Claude Agent SDK (Python o TypeScript) y corre el ejemplo mínimo del README.",
+      detail: "pip install claude-agent-sdk o npm install @anthropic-ai/claude-agent-sdk. El primer agente del README corre en 5 minutos. Es tu hello world."
+    },
+    {
+      day: "Día 2",
+      text: "Crea tu primera skill: una carpeta con SKILL.md y un script mínimo.",
+      detail: "Elige una tarea que repitas. Escribe el frontmatter (name + description orientada al trigger). Pruébala cargando la skill en Claude Code o claude.ai."
+    },
+    {
+      day: "Día 3",
+      text: "Conecta un MCP server oficial (Notion, GitHub o filesystem) a Claude Desktop.",
+      detail: "Edita claude_desktop_config.json, reinicia la app, verifica que aparece el icono de tools. Haz una operación real (listar páginas, leer un repo)."
+    },
+    {
+      day: "Día 4",
+      text: "Lee el paper de Constitutional AI (o resumen del propio Claude) y apunta 3 ideas clave.",
+      detail: "Entiende cómo se alinea Claude. Te va a ayudar a escribir mejores system prompts y a no pelearte con el modelo cuando rechaza algo razonable."
+    },
+    {
+      day: "Día 5",
+      text: "Convierte un prompt monolítico tuyo en sistema agentico de 2-3 pasos con tool use.",
+      detail: "Identifica clasificación vs. generación vs. extracción. Usa Haiku donde basta, Sonnet donde aporta. Fuerza JSON con tool_choice donde se integra con otro sistema."
+    },
+    {
+      day: "Día 6",
+      text: "Monta logging estructurado en tu agente: cada turno guarda plan + tool + args + result + cost.",
+      detail: "Sin observabilidad no hay debugging. Un JSON por turno en una tabla o fichero. Es la diferencia entre 'a veces falla' y 'falla cuando X'."
+    },
+    {
+      day: "Día 7",
+      text: "Publica tu agente o skill: repo GitHub público con README + ejemplo de uso, y envíanoslo a hola@academia101.com.",
+      detail: "Aunque sea mínimo. Que exista, que arranque, que resuelva un problema tuyo real. Te respondemos personalmente y entras en la galería del curso."
+    }
+  ]
+};
+
+// ============================================
+// RENDERIZADO
+// ============================================
+function renderFlashcards() {
+  const grid = document.getElementById('flashgrid');
+  MODULE_DATA.conceptos.forEach((c, i) => {
+    const card = document.createElement('div');
+    card.className = 'flash';
+    card.innerHTML = `
+      <div class="flash-inner">
+        <div class="flash-face front">
+          <div class="flash-num">Concepto ${String(i+1).padStart(2,'0')}</div>
+          <div class="flash-title">${c.title}</div>
+          <div class="flash-hint">↻ Pulsa para girar</div>
+        </div>
+        <div class="flash-face back">
+          <div class="flash-def">${c.def}</div>
+          <div class="flash-example">${c.example}</div>
+        </div>
+      </div>
+    `;
+    card.addEventListener('click', () => card.classList.toggle('flipped'));
+    grid.appendChild(card);
+  });
+}
+
+function renderCases() {
+  const wrap = document.getElementById('cases');
+  MODULE_DATA.casos.forEach((c, i) => {
+    const el = document.createElement('div');
+    el.className = 'case';
+    el.innerHTML = `
+      <div class="case-num">Caso ${String(i+1).padStart(2,'0')}</div>
+      <div class="case-title">${c.title}</div>
+      <div class="case-context">${c.context}</div>
+      <div class="case-grid">
+        <div class="case-col bad">
+          <div class="case-col-label">✕ Antes (monolítico)</div>
+          <div class="case-prompt">${c.bad}</div>
+        </div>
+        <div class="case-col good">
+          <div class="case-col-label">✓ Después (agentico)</div>
+          <div class="case-prompt">${c.good}</div>
+        </div>
+      </div>
+      <div class="case-why">${c.why}</div>
+    `;
+    wrap.appendChild(el);
+  });
+}
+
+function renderExercises() {
+  const wrap = document.getElementById('exercises');
+  MODULE_DATA.ejercicios.forEach((e, i) => {
+    const el = document.createElement('div');
+    el.className = 'ex';
+    el.innerHTML = `
+      <div class="ex-num">Ejercicio ${String(i+1).padStart(2,'0')}</div>
+      <div class="ex-title">${e.title}</div>
+      <div class="ex-task">${e.task.replace(/\n/g, '<br>')}</div>
+      <textarea class="ex-input" placeholder="Escribe tu respuesta aquí..."></textarea>
+      <div class="ex-btns">
+        <button class="btn btn-primary" data-action="show-solution">Ver solución modelo</button>
+        <button class="btn" data-action="clear">Limpiar</button>
+      </div>
+      <div class="ex-solution">
+        <div class="ex-solution-label">Solución modelo</div>
+        <div class="ex-solution-text">${e.solution}</div>
+        <div class="ex-rubric">
+          <div class="ex-rubric-title">Autoevaluación · ¿tu respuesta cumple?</div>
+          <ul>${e.rubric.map(r => `<li>${r}</li>`).join('')}</ul>
+        </div>
+      </div>
+    `;
+    const textarea = el.querySelector('.ex-input');
+    const solDiv = el.querySelector('.ex-solution');
+    el.querySelector('[data-action="show-solution"]').addEventListener('click', () => {
+      solDiv.classList.toggle('show');
+    });
+    el.querySelector('[data-action="clear"]').addEventListener('click', () => {
+      textarea.value = '';
+      solDiv.classList.remove('show');
+    });
+    wrap.appendChild(el);
+  });
+}
+
+function renderPrompts() {
+  const wrap = document.getElementById('prompts');
+  MODULE_DATA.prompts.forEach((p, i) => {
+    const el = document.createElement('div');
+    el.className = 'prompt-card';
+    el.innerHTML = `
+      <div class="prompt-tag">${p.tag}</div>
+      <div class="prompt-title">${p.title}</div>
+      <div class="prompt-desc">${p.desc}</div>
+      <pre class="prompt-text">${p.text.replace(/</g, '&lt;')}</pre>
+      <button class="copy-btn">Copiar al portapapeles</button>
+    `;
+    const btn = el.querySelector('.copy-btn');
+    btn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(p.text);
+        btn.textContent = '✓ Copiado';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.textContent = 'Copiar al portapapeles';
+          btn.classList.remove('copied');
+        }, 1800);
+      } catch(e) {
+        btn.textContent = 'Selecciona y copia manual';
+      }
+    });
+    wrap.appendChild(el);
+  });
+}
+
+// Tabs
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('sec-' + btn.dataset.tab).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+});
+
+function renderQuiz() {
+  const wrap = document.getElementById('quiz');
+  let answered = 0;
+  let correct = 0;
+  MODULE_DATA.quiz.forEach((q, i) => {
+    const el = document.createElement('div');
+    el.className = 'quiz-q';
+    el.innerHTML = `
+      <div class="quiz-num">Pregunta ${String(i+1).padStart(2,'0')} de ${MODULE_DATA.quiz.length}</div>
+      <div class="quiz-question">${q.q}</div>
+      <div class="quiz-opts">
+        ${q.opts.map((o, j) => `<button class="quiz-opt" data-idx="${j}">${o}</button>`).join('')}
+      </div>
+      <div class="quiz-feedback"></div>
+    `;
+    const opts = el.querySelectorAll('.quiz-opt');
+    const fb = el.querySelector('.quiz-feedback');
+    opts.forEach(opt => {
+      opt.addEventListener('click', () => {
+        if (el.classList.contains('answered')) return;
+        const idx = Number(opt.dataset.idx);
+        const isCorrect = idx === q.correct;
+        opts.forEach((o, j) => {
+          o.classList.add('locked');
+          if (j === q.correct) o.classList.add('correct');
+          else if (j === idx && !isCorrect) o.classList.add('wrong');
+        });
+        fb.classList.add('show', isCorrect ? 'correct' : 'wrong');
+        fb.textContent = (isCorrect ? '✓ Correcto. ' : '✗ Casi. ') + q.fb;
+        el.classList.add('answered');
+        answered++;
+        if (isCorrect) correct++;
+        if (answered === MODULE_DATA.quiz.length) showQuizResult(correct);
+      });
+    });
+    wrap.appendChild(el);
+  });
+}
+
+function showQuizResult(correct) {
+  const total = MODULE_DATA.quiz.length;
+  try {
+    fetch('/api/quiz/attempt', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'same-origin',
+      body: JSON.stringify({ module: 9, score: correct, total })
+    }).catch(() => {});
+  } catch {}
+  const pct = Math.round((correct / total) * 100);
+  let msg = '';
+  if (pct >= 90) msg = 'Dominio sólido del bloque avanzado. Ya puedes construir agentes y skills en serio. Al checklist.';
+  else if (pct >= 70) msg = 'Buen nivel. Repasa los conceptos donde fallaste y arranca el checklist de 7 días.';
+  else if (pct >= 50) msg = 'Vas por buen camino. Vuelve a las flashcards de conceptos antes de tocar el SDK.';
+  else msg = 'Vuelve al vídeo del M9. Sin estos conceptos claros, construir un agente se atasca en la primera tool.';
+  const el = document.getElementById('quiz-result');
+  el.innerHTML = `
+    <div class="quiz-result-score">${correct} / ${total}</div>
+    <div class="quiz-result-msg">${msg}</div>
+    <button class="btn btn-primary" onclick="location.reload()">Reintentar quiz</button>
+  `;
+  el.classList.add('show');
+  el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function renderGlosario() {
+  const wrap = document.getElementById('glosario');
+  const sorted = [...MODULE_DATA.glosario].sort((a, b) => a.t.localeCompare(b.t, 'es'));
+  sorted.forEach(g => {
+    const el = document.createElement('div');
+    el.className = 'gloss-item';
+    el.innerHTML = `<div class="gloss-term">${g.t}</div><div class="gloss-def">${g.d}</div>`;
+    wrap.appendChild(el);
+  });
+}
+
+function renderRecursos() {
+  const wrap = document.getElementById('recursos');
+  MODULE_DATA.recursos.forEach(r => {
+    const el = document.createElement('a');
+    el.className = 'recurso';
+    el.href = r.url;
+    el.target = '_blank';
+    el.rel = 'noopener noreferrer';
+    el.innerHTML = `
+      <span class="recurso-tag">${r.tag}</span>
+      <div class="recurso-title">${r.title}</div>
+      <div class="recurso-desc">${r.desc}</div>
+      <div class="recurso-meta">${r.meta}</div>
+    `;
+    wrap.appendChild(el);
+  });
+}
+
+
+function renderGaleria() {
+  const wrap = document.getElementById('galeria');
+  (MODULE_DATA.galeria || []).forEach(g => {
+    const el = document.createElement('a');
+    el.className = 'gallery-card';
+    el.href = g.src;
+    el.target = '_blank';
+    el.rel = 'noopener noreferrer';
+    el.innerHTML = `
+      <img class="gallery-img" src="${g.img}" alt="${g.title}" loading="lazy" referrerpolicy="no-referrer">
+      <div class="gallery-body">
+        <span class="gallery-tag">${g.tag}</span>
+        <div class="gallery-title">${g.title}</div>
+        <div class="gallery-desc">${g.desc}</div>
+        <div class="gallery-link">Abrir fuente →</div>
+      </div>
+    `;
+    wrap.appendChild(el);
+  });
+}
+
+function renderChecklist() {
+  const wrap = document.getElementById('checklist');
+  const progressEl = document.getElementById('checkProgress');
+  const state = new Set();
+  function updateProgress() {
+    const done = state.size;
+    const total = MODULE_DATA.checklist.length;
+    progressEl.textContent = `${done} / ${total} completadas · ${Math.round((done/total)*100)}%`;
+  }
+  MODULE_DATA.checklist.forEach((c, i) => {
+    const el = document.createElement('div');
+    el.className = 'check-item';
+    el.innerHTML = `
+      <div class="check-box">${state.has(i) ? '✓' : ''}</div>
+      <div class="check-content">
+        <div class="check-day">${c.day}</div>
+        <div class="check-text">${c.text}</div>
+        <div class="check-detail">${c.detail}</div>
+      </div>
+    `;
+    el.addEventListener('click', () => {
+      if (state.has(i)) { state.delete(i); el.classList.remove('done'); el.querySelector('.check-box').textContent = ''; }
+      else { state.add(i); el.classList.add('done'); el.querySelector('.check-box').textContent = '✓'; }
+      updateProgress();
+    });
+    wrap.appendChild(el);
+  });
+  updateProgress();
+}
+
+renderFlashcards();
+renderCases();
+renderExercises();
+renderPrompts();
+renderQuiz();
+renderGlosario();
+renderRecursos();
+renderGaleria();
+renderChecklist();
+</script>
+</body>
+</html>
