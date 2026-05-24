@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude 101 · Módulo 9 BONUS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Geist:wght@300..700&family=Geist+Mono:wght@400..600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F4EFE3;--bg-2:#EFE9DA;--card:#FBF8F0;--ink:#1C1A16;--ink-2:#3A352D;--muted:#756B5B;--muted-2:#A39782;--line:#E1D8C2;--line-2:#CFC4AA;--accent:#C8542B;--accent-2:#8B3A1E;--olive:#4F5D38;--gold:#B08436;--display:'Fraunces',Georgia,serif;--body:'Geist',system-ui,sans-serif;--mono:'Geist Mono',ui-monospace,monospace;}
+*{box-sizing:border-box;margin:0;padding:0;}
+html, body { height: 100%; margin: 0; padding: 0; background: var(--bg); color: var(--ink); font-family: var(--body); overflow: hidden; }
+body { display: flex; flex-direction: column; }
+body{background-image:radial-gradient(circle at 12% 8%,rgba(200,84,43,.06) 0%,transparent 40%),radial-gradient(circle at 88% 92%,rgba(176,132,54,.06) 0%,transparent 40%);}
+.stage { flex: 1; min-height: 0; position: relative; overflow: hidden; width: 100%; }
+.scene{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;padding: 24px 40px 100px;overflow-y:auto;opacity:0;transform:translateY(20px);transition:opacity .8s cubic-bezier(.2,.8,.2,1),transform .8s cubic-bezier(.2,.8,.2,1);pointer-events:none;}
+.scene.active{opacity:1;transform:translateY(0);pointer-events:auto;}
+.scene-title .label{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:28px;}
+.scene-title h1{font-family:var(--display);font-style:italic;font-weight:400;font-size:clamp(40px,6vw,80px);letter-spacing:-0.025em;font-variation-settings:"opsz" 144,"SOFT" 50;color:var(--ink);line-height:1.05;text-align:center;max-width:18ch;}
+.scene-title h1 em{font-style:normal;color:var(--accent);}
+.scene-title .sub{margin-top:36px;font-size:18px;color:var(--muted);max-width:36ch;text-align:center;}
+.s-title{font-family:var(--display);font-size:clamp(28px,3.5vw,46px);font-weight:400;margin-bottom:16px;text-align:center;}
+.s-title em{font-style:italic;color:var(--accent);}
+.s-sub{color:var(--muted);margin-bottom:36px;text-align:center;max-width:56ch;}
+
+.badge-bonus{display:inline-block;background:linear-gradient(135deg,var(--accent),var(--gold));color:var(--bg);padding:6px 14px;border-radius:100px;font-family:var(--mono);font-size:10px;letter-spacing:.15em;text-transform:uppercase;margin-bottom:18px;}
+
+/* Pilares card grid */
+.pillar-grid{display:grid;grid-template-columns:repeat(3,minmax(0,200px));gap:14px;max-width:680px;}
+.pillar-card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;text-align:center;opacity:0;transform:scale(.9);transition:all .4s;}
+.pillar-card.show{opacity:1;transform:scale(1);}
+.pillar-icon{font-size:32px;margin-bottom:10px;}
+.pillar-name{font-family:var(--display);font-size:18px;font-weight:600;color:var(--ink);margin-bottom:6px;}
+.pillar-desc{font-size:12px;color:var(--muted);line-height:1.5;}
+
+/* Markdown editor mock */
+.md-mock{width:100%;max-width:680px;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;display:grid;grid-template-columns:1fr 1fr;font-family:var(--mono);font-size:12px;box-shadow:0 8px 32px rgba(28,26,22,.1);}
+.md-pane{padding:16px;}
+.md-pane.left{background:#1A1611;color:#E8E4DA;border-right:1px solid var(--line);}
+.md-pane.right{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:13px;line-height:1.5;}
+.md-line{display:block;opacity:0;transition:opacity .25s;margin-bottom:4px;}
+.md-line.show{opacity:1;}
+.md-h{color:#FFB47A;font-weight:600;}
+.md-bold{color:#A8C588;font-weight:600;}
+.md-bullet{color:#7BA7C8;}
+.md-comment{color:#777067;font-style:italic;}
+.md-right-h{font-family:var(--display);font-size:18px;color:var(--ink);margin-bottom:8px;font-weight:600;}
+.md-right-p{margin-bottom:6px;}
+.md-right-ul{padding-left:18px;margin-bottom:6px;}
+
+/* Skills tree */
+.skill-tree{font-family:var(--mono);font-size:13px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;max-width:540px;}
+.skill-line{display:block;color:var(--ink-2);opacity:0;transform:translateX(-8px);transition:all .35s;margin:3px 0;}
+.skill-line.show{opacity:1;transform:translateX(0);}
+.skill-folder{color:var(--accent);font-weight:600;}
+.skill-file{color:var(--olive);}
+.skill-comment{color:var(--muted);font-style:italic;margin-left:8px;}
+
+/* Agente loop */
+.agent-loop{position:relative;width:100%;max-width:580px;height:280px;display:flex;align-items:center;justify-content:center;}
+.agent-step{position:absolute;background:var(--card);border:2px solid var(--line);border-radius:14px;padding:14px 18px;text-align:center;opacity:0;transform:scale(.85);transition:all .4s;min-width:120px;}
+.agent-step.show{opacity:1;transform:scale(1);}
+.agent-step.active{border-color:var(--accent);background:linear-gradient(180deg,var(--card),rgba(200,84,43,.06));box-shadow:0 6px 20px rgba(200,84,43,.15);}
+.agent-step-icon{font-size:22px;margin-bottom:4px;}
+.agent-step-label{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2);}
+.agent-step.s1{top:0;left:50%;transform:translateX(-50%) scale(.85);}
+.agent-step.s1.show{transform:translateX(-50%) scale(1);}
+.agent-step.s2{top:50%;right:0;transform:translateY(-50%) scale(.85);}
+.agent-step.s2.show{transform:translateY(-50%) scale(1);}
+.agent-step.s3{bottom:0;left:50%;transform:translateX(-50%) scale(.85);}
+.agent-step.s3.show{transform:translateX(-50%) scale(1);}
+.agent-step.s4{top:50%;left:0;transform:translateY(-50%) scale(.85);}
+.agent-step.s4.show{transform:translateY(-50%) scale(1);}
+.agent-arrow{position:absolute;color:var(--muted-2);font-size:24px;opacity:0;transition:opacity .4s;}
+.agent-arrow.show{opacity:1;}
+.agent-arrow.a1{top:20%;right:30%;}
+.agent-arrow.a2{bottom:20%;right:30%;transform:rotate(45deg);}
+.agent-arrow.a3{bottom:20%;left:30%;}
+.agent-arrow.a4{top:20%;left:30%;transform:rotate(-45deg);}
+
+/* MCP connectors */
+.mcp-grid{display:grid;grid-template-columns:repeat(4,minmax(0,130px));gap:12px;max-width:600px;}
+.mcp-chip{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 12px;text-align:center;opacity:0;transform:scale(.9);transition:all .4s;}
+.mcp-chip.show{opacity:1;transform:scale(1);}
+.mcp-chip.connected{border-color:var(--olive);background:linear-gradient(180deg,var(--card),rgba(79,93,56,.06));}
+.mcp-icon{font-size:26px;margin-bottom:8px;}
+.mcp-name{font-size:12px;font-weight:600;color:var(--ink);}
+.mcp-status{font-family:var(--mono);font-size:9px;color:var(--muted);margin-top:3px;letter-spacing:.1em;text-transform:uppercase;}
+.mcp-chip.connected .mcp-status{color:var(--olive);}
+
+.captions { position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); max-width: 720px; width: calc(100% - 80px); max-height: 52px; overflow: hidden; text-align: center; font-size: 17px; line-height: 1.5; color: var(--ink); background: rgba(251,248,240,.92); backdrop-filter: blur(8px); border: 1px solid var(--line); border-radius: 14px; padding: 8px 14px; opacity: 0; transition: opacity .4s; z-index: 5; pointer-events: none; }
+.captions.show{opacity:1;}
+.chip-nav { flex-shrink: 0; display: flex; gap: 6px; margin: 12px auto 0; padding: 4px; background: rgba(251,248,240,.85); backdrop-filter: blur(12px); border: 1px solid var(--line); border-radius: 100px; width: fit-content; z-index: 10; }
+.chip{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:11px;color:var(--muted);background:transparent;border:none;cursor:pointer;transition:all .2s;}
+.chip:hover{background:var(--bg-2);color:var(--ink);}
+.chip.active{background:var(--ink);color:var(--bg);}
+.brand-mark { position: absolute; top: 10px; left: 14px; font-family: var(--display); font-style: italic; font-size: 14px; letter-spacing: -0.02em; color: var(--ink); z-index: 100; }
+.brand-mark em{font-style:normal;color:var(--accent);}
+.brand-tag{margin-left:8px;font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);}
+.controls { flex-shrink: 0; display: flex; align-items: center; gap: 12px; margin: 12px auto; padding: 6px 10px; background: rgba(251,248,240,.92); backdrop-filter: blur(12px); border: 1px solid var(--line); border-radius: 100px; box-shadow: 0 4px 24px rgba(28,26,22,.08); width: fit-content; z-index: 10; }
+.btn{background:transparent;border:1px solid var(--line-2);color:var(--ink-2);font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:8px 14px;border-radius:100px;cursor:pointer;transition:all .2s;}
+.btn:hover{border-color:var(--ink-2);color:var(--ink);}
+.btn-primary{background:var(--ink);color:var(--bg);border-color:var(--ink);}
+.btn-primary:hover{background:var(--accent);border-color:var(--accent);color:var(--bg);}
+.btn-icon{width:36px;height:36px;padding:0;display:flex;align-items:center;justify-content:center;font-size:14px;}
+.progress-wrap{width:220px;cursor:pointer;padding:8px 0;position:relative;}
+.progress{width:100%;height:4px;background:var(--line-2);border-radius:100px;overflow:hidden;pointer-events:none;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--gold));transition:width .15s linear;width:0%;}
+.progress-wrap:hover .progress{height:6px;transition:height .15s;}
+.time{font-family:var(--mono);font-size:11px;color:var(--muted);min-width:70px;text-align:center;}
+.mute-btn{position:relative;width:36px;height:36px;border:1px solid var(--line-2);border-radius:50%;background:var(--card);cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;}
+.mute-btn:hover{border-color:var(--ink-2);}
+.mute-btn svg{width:16px;height:16px;}
+.mute-btn.muted{background:var(--bg-2);}
+.mute-btn .slash{display:none;}
+.mute-btn.muted .slash{display:block;}
+@media(max-width:880px){.chip-nav{display:none;}.mcp-grid{grid-template-columns:repeat(2,1fr);}.pillar-grid{grid-template-columns:1fr;}.md-mock{grid-template-columns:1fr;}.md-pane.left{border-right:none;border-bottom:1px solid var(--line);}.progress-wrap{width:120px;}.scene { padding: 40px 24px 100px; }}
+@media (max-width: 600px) { .captions { font-size: 14px; padding: 10px 14px; bottom: 24px; } .scene { padding: 40px 24px 100px; } .scene-title h1 { font-size: clamp(28px, 8vw, 48px); } .s-title { font-size: clamp(22px, 6vw, 36px); } .s-sub { font-size: 13px; margin-bottom: 22px; } }
+.scene { -webkit-overflow-scrolling: touch; }
+.scene::-webkit-scrollbar { width: 6px; }
+.scene::-webkit-scrollbar-thumb { background: var(--line-2); border-radius: 100px; }
+</style>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/favicon.svg">
+</head>
+<body>
+<div class="brand-mark">Claude<em>·101</em> <span class="brand-tag">Módulo 9 · Bonus</span></div>
+<div class="chip-nav" id="chipNav"></div>
+
+<div class="stage">
+  <!-- 1 — Apertura -->
+  <div class="scene scene-title active" data-scene="1">
+    <span class="badge-bonus">Bonus avanzado</span>
+    <div class="label">Desarrollo con Claude</div>
+    <h1>Más allá del <em>chat</em></h1>
+    <p class="sub">Constitutional AI, markdown, Skills, agentes y MCP. Lo que sucede por debajo cuando Claude trabaja contigo.</p>
+  </div>
+
+  <!-- 2 — Constitutional AI -->
+  <div class="scene" data-scene="2">
+    <h2 class="s-title">Constitutional <em>AI</em></h2>
+    <p class="s-sub">Cómo Anthropic entrena Claude para ser útil, honesto e inofensivo. Y por qué eso te importa cuando lo usas en tu día a día.</p>
+    <div class="pillar-grid">
+      <div class="pillar-card" id="p-1">
+        <div class="pillar-icon">🤝</div>
+        <div class="pillar-name">Útil</div>
+        <div class="pillar-desc">Resuelve el problema concreto, no redirige ni evade.</div>
+      </div>
+      <div class="pillar-card" id="p-2">
+        <div class="pillar-icon">🎯</div>
+        <div class="pillar-name">Honesto</div>
+        <div class="pillar-desc">Reconoce cuando no sabe en lugar de inventar.</div>
+      </div>
+      <div class="pillar-card" id="p-3">
+        <div class="pillar-icon">🛡️</div>
+        <div class="pillar-name">Inofensivo</div>
+        <div class="pillar-desc">Razona el daño potencial antes de bloquear ciegamente.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3 — Markdown -->
+  <div class="scene" data-scene="3">
+    <h2 class="s-title">Markdown <em>semántico</em></h2>
+    <p class="s-sub">Claude se entrenó con millones de documentos en markdown. Cuando estructuras tu prompt así, lo procesa como información jerarquizada, no como un muro de texto.</p>
+    <div class="md-mock">
+      <div class="md-pane left">
+        <span class="md-line md-comment" id="md-0"># prompt-claude.md</span>
+        <span class="md-line md-h" id="md-1"># Tarea</span>
+        <span class="md-line" id="md-2">Resume este informe en 3 puntos.</span>
+        <span class="md-line md-h" id="md-3">## Contexto</span>
+        <span class="md-line" id="md-4">Lo lee un CEO con 2 minutos.</span>
+        <span class="md-line md-h" id="md-5">## Reglas</span>
+        <span class="md-line md-bullet" id="md-6">- Cifras concretas</span>
+        <span class="md-line md-bullet" id="md-7">- Verbos en presente</span>
+        <span class="md-line md-bullet" id="md-8">- Sin jerga corporativa</span>
+      </div>
+      <div class="md-pane right">
+        <div class="md-line md-right-h" id="mdr-1">Tarea</div>
+        <div class="md-line md-right-p" id="mdr-2">Resume este informe en 3 puntos.</div>
+        <div class="md-line md-right-h" id="mdr-3">Contexto</div>
+        <div class="md-line md-right-p" id="mdr-4">Lo lee un CEO con 2 minutos.</div>
+        <div class="md-line md-right-h" id="mdr-5">Reglas</div>
+        <ul class="md-line md-right-ul" id="mdr-6"><li>Cifras concretas</li><li>Verbos en presente</li><li>Sin jerga corporativa</li></ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4 — Skills -->
+  <div class="scene" data-scene="4">
+    <h2 class="s-title"><em>Skills</em> de Claude</h2>
+    <p class="s-sub">Una carpeta con un SKILL.md y archivos auxiliares. Claude la carga cuando detecta que necesita esa habilidad.</p>
+    <div class="skill-tree">
+      <span class="skill-line skill-folder" id="sk-1">📁 generar-reporte/</span>
+      <span class="skill-line" id="sk-2">  ├─ <span class="skill-file">SKILL.md</span><span class="skill-comment">// cuándo y cómo se usa</span></span>
+      <span class="skill-line" id="sk-3">  ├─ <span class="skill-file">plantilla.docx</span></span>
+      <span class="skill-line" id="sk-4">  ├─ <span class="skill-file">graficar.py</span></span>
+      <span class="skill-line" id="sk-5">  └─ <span class="skill-file">ejemplos/</span></span>
+      <span class="skill-line" id="sk-6">      ├─ q1-2024.docx</span>
+      <span class="skill-line" id="sk-7">      └─ q2-2024.docx</span>
+      <span class="skill-line skill-comment" id="sk-8" style="margin-top:14px;display:block;">// Claude detecta "haz un reporte" → carga la skill → la ejecuta</span>
+    </div>
+  </div>
+
+  <!-- 5 — Agentes -->
+  <div class="scene" data-scene="5">
+    <h2 class="s-title">El <em>bucle</em> agéntico</h2>
+    <p class="s-sub">Un prompt es pregunta-respuesta. Un agente planifica, ejecuta, evalúa y vuelve a planificar hasta terminar la tarea.</p>
+    <div class="agent-loop">
+      <div class="agent-step s1" id="ag-1"><div class="agent-step-icon">🧭</div><div class="agent-step-label">Planifica</div></div>
+      <div class="agent-step s2" id="ag-2"><div class="agent-step-icon">⚙️</div><div class="agent-step-label">Ejecuta</div></div>
+      <div class="agent-step s3" id="ag-3"><div class="agent-step-icon">🔍</div><div class="agent-step-label">Evalúa</div></div>
+      <div class="agent-step s4" id="ag-4"><div class="agent-step-icon">↻</div><div class="agent-step-label">Itera</div></div>
+      <div class="agent-arrow a1" id="aa-1">→</div>
+      <div class="agent-arrow a2" id="aa-2">↓</div>
+      <div class="agent-arrow a3" id="aa-3">←</div>
+      <div class="agent-arrow a4" id="aa-4">↑</div>
+    </div>
+  </div>
+
+  <!-- 6 — MCP -->
+  <div class="scene" data-scene="6">
+    <h2 class="s-title">Model Context <em>Protocol</em></h2>
+    <p class="s-sub">Estándar abierto para conectar Claude a tus datos y herramientas. Un servidor MCP funciona con cualquier cliente compatible.</p>
+    <div class="mcp-grid">
+      <div class="mcp-chip" id="mcp-1"><div class="mcp-icon">📁</div><div class="mcp-name">Drive</div><div class="mcp-status">MCP</div></div>
+      <div class="mcp-chip" id="mcp-2"><div class="mcp-icon">📝</div><div class="mcp-name">Notion</div><div class="mcp-status">MCP</div></div>
+      <div class="mcp-chip" id="mcp-3"><div class="mcp-icon">💬</div><div class="mcp-name">Slack</div><div class="mcp-status">MCP</div></div>
+      <div class="mcp-chip" id="mcp-4"><div class="mcp-icon">🐙</div><div class="mcp-name">GitHub</div><div class="mcp-status">MCP</div></div>
+      <div class="mcp-chip" id="mcp-5"><div class="mcp-icon">📅</div><div class="mcp-name">Calendar</div><div class="mcp-status">MCP</div></div>
+      <div class="mcp-chip" id="mcp-6"><div class="mcp-icon">📊</div><div class="mcp-name">Linear</div><div class="mcp-status">MCP</div></div>
+      <div class="mcp-chip" id="mcp-7"><div class="mcp-icon">🛠️</div><div class="mcp-name">Tu app</div><div class="mcp-status">MCP</div></div>
+      <div class="mcp-chip" id="mcp-8"><div class="mcp-icon">…</div><div class="mcp-name">Lo que venga</div><div class="mcp-status">MCP</div></div>
+    </div>
+  </div>
+
+  <!-- 7 — Cierre -->
+  <div class="scene" data-scene="7">
+    <div class="label" style="font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:20px;">Has terminado el bonus</div>
+    <h1 style="font-family:var(--display);font-style:italic;font-weight:400;font-size:clamp(40px,6vw,72px);letter-spacing:-0.025em;color:var(--ink);line-height:1.1;text-align:center;max-width:18ch;">Ahora <em>construyes</em></h1>
+    <p style="margin-top:28px;font-size:17px;color:var(--muted);max-width:36ch;text-align:center;">Empieza pequeño: un agente que te resuma los emails, una skill que automatice una tarea tuya. Lo demás llega solo.</p>
+  </div>
+</div>
+
+<div class="captions" id="captions"></div>
+
+<div class="controls">
+  <button class="btn btn-primary" id="btnPlay">▶︎ Play</button>
+  <button class="btn btn-icon" id="btnRestart">↻</button>
+  <div class="progress-wrap" id="progressWrap"><div class="progress"><div class="progress-fill" id="progressFill"></div></div></div>
+  <div class="time" id="time">0:00 / 2:00</div>
+  <button class="mute-btn" id="btnMute"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><line class="slash" x1="2" y1="2" x2="22" y2="22" stroke="currentColor" stroke-width="2.2"/></svg></button>
+</div>
+
+<script>
+class AmbientMusic{constructor(){this.ctx=null;this.master=null;this.playing=false;this.muted=false;this.nodes=[];this.volume=0.11;}init(){if(this.ctx)return;const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;this.ctx=new AC();this.master=this.ctx.createGain();this.master.gain.value=0;this.master.connect(this.ctx.destination);}build(){const c=this.ctx;const d1=c.createOscillator();d1.type='sine';d1.frequency.value=98;const d1g=c.createGain();d1g.gain.value=0.40;d1.connect(d1g).connect(this.master);d1.start();const d2=c.createOscillator();d2.type='sine';d2.frequency.value=147;const d2g=c.createGain();d2g.gain.value=0.20;d2.connect(d2g).connect(this.master);d2.start();const pad=c.createOscillator();pad.type='sawtooth';pad.frequency.value=196;const pf=c.createBiquadFilter();pf.type='lowpass';pf.frequency.value=380;pf.Q.value=3;const pg=c.createGain();pg.gain.value=0.06;pad.connect(pf).connect(pg).connect(this.master);pad.start();const lfo=c.createOscillator();lfo.frequency.value=0.07;const lg=c.createGain();lg.gain.value=280;lfo.connect(lg).connect(pf.frequency);lfo.start();this.nodes.push(d1,d1g,d2,d2g,pad,pf,pg,lfo,lg);}async play(){this.init();if(!this.ctx)return;if(this.ctx.state==='suspended'){try{await this.ctx.resume();}catch(e){}}if(this.nodes.length===0)this.build();this.playing=true;const t=this.muted?0:this.volume;this.master.gain.cancelScheduledValues(this.ctx.currentTime);this.master.gain.setValueAtTime(this.master.gain.value,this.ctx.currentTime);this.master.gain.linearRampToValueAtTime(t,this.ctx.currentTime+1.4);}pause(){if(!this.ctx)return;this.master.gain.cancelScheduledValues(this.ctx.currentTime);this.master.gain.linearRampToValueAtTime(0,this.ctx.currentTime+0.5);this.playing=false;}toggleMute(){this.muted=!this.muted;if(this.ctx&&this.playing){this.master.gain.cancelScheduledValues(this.ctx.currentTime);this.master.gain.linearRampToValueAtTime(this.muted?0:this.volume,this.ctx.currentTime+0.3);}return this.muted;}}
+const music = new AmbientMusic();
+
+const TIMELINE=[
+  {t:0,scene:1,caption:"Has llegado al bonus. Lo que viene es opcional, pero abre la puerta a construir con Claude."},
+  {t:8,scene:1,caption:"Cinco ideas: Constitutional AI, markdown, Skills, agentes y MCP."},
+  {t:15,scene:2,caption:"Empezamos por cómo se entrena Claude. No es solo feedback humano."},
+  {t:21,scene:2,caption:"Es Constitutional AI: el modelo se evalúa contra una constitución escrita.",action:"show-p-1"},
+  {t:27,scene:2,caption:"Útil — resuelve el problema sin redirigir.",action:"show-p-2"},
+  {t:32,scene:2,caption:"Honesto — reconoce cuando no sabe.",action:"show-p-3"},
+  {t:37,scene:2,caption:"Inofensivo — razona el daño en lugar de bloquear ciegamente."},
+  {t:44,scene:3,caption:"Pasamos a cómo le hablas tú. Markdown semántico."},
+  {t:50,scene:3,caption:"Claude entiende un documento en markdown como una estructura jerárquica.",action:"show-md-0 show-md-1 show-md-2 show-mdr-1 show-mdr-2"},
+  {t:57,scene:3,caption:"Headers, secciones, listas con guiones.",action:"show-md-3 show-md-4 show-mdr-3 show-mdr-4"},
+  {t:62,scene:3,caption:"El mismo prompt en texto plano funciona peor.",action:"show-md-5 show-md-6 show-md-7 show-md-8 show-mdr-5 show-mdr-6"},
+  {t:70,scene:4,caption:"Tercer concepto: las Skills."},
+  {t:75,scene:4,caption:"Una carpeta con un SKILL.md y archivos auxiliares.",action:"show-sk-1 show-sk-2"},
+  {t:81,scene:4,caption:"Plantillas, scripts, ejemplos.",action:"show-sk-3 show-sk-4 show-sk-5 show-sk-6 show-sk-7"},
+  {t:87,scene:4,caption:"Claude detecta cuándo usarla y la carga sola.",action:"show-sk-8"},
+  {t:94,scene:5,caption:"Cuarto: los agentes. El salto desde el chat."},
+  {t:100,scene:5,caption:"Un agente planifica antes de actuar.",action:"show-ag-1"},
+  {t:105,scene:5,caption:"Ejecuta el primer paso usando tools.",action:"show-aa-1 show-ag-2"},
+  {t:110,scene:5,caption:"Evalúa el resultado.",action:"show-aa-2 show-ag-3"},
+  {t:115,scene:5,caption:"Si no terminó, vuelve a planificar.",action:"show-aa-3 show-ag-4 show-aa-4"},
+  {t:122,scene:6,caption:"Quinto y último: MCP, Model Context Protocol."},
+  {t:128,scene:6,caption:"Estándar abierto para conectar Claude a tus apps.",action:"show-mcp-1 show-mcp-2"},
+  {t:133,scene:6,caption:"GitHub, Slack, Drive, lo que tengas conectado.",action:"show-mcp-3 show-mcp-4 show-mcp-5 show-mcp-6"},
+  {t:139,scene:6,caption:"Y cualquier app puede exponer su propio servidor MCP.",action:"show-mcp-7 show-mcp-8"},
+  {t:146,scene:7,caption:"Has terminado Claude 101 — el bonus incluido."},
+  {t:152,scene:7,caption:"Lo que sigue es construir. Empieza pequeño, itera, comparte lo que aprendas."},
+  {t:160,scene:7,caption:""}
+];
+const DURATION=164;
+
+const scenes=document.querySelectorAll('.scene');
+const captionsEl=document.getElementById('captions');
+const playBtn=document.getElementById('btnPlay');
+const restartBtn=document.getElementById('btnRestart');
+const muteBtn=document.getElementById('btnMute');
+const progressWrap=document.getElementById('progressWrap');
+const progressFill=document.getElementById('progressFill');
+const timeEl=document.getElementById('time');
+const chipNav=document.getElementById('chipNav');
+const SCENE_COUNT=7;
+let startTime=0,elapsed=0,playing=false,rafId=null,lastIdx=-1,currentScene=1;
+const fmtTime=s=>`${Math.floor(s/60)}:${String(Math.max(0,Math.floor(s%60))).padStart(2,'0')}`;
+function setScene(n){if(n===currentScene)return;currentScene=n;scenes.forEach(s=>s.classList.toggle('active',parseInt(s.dataset.scene,10)===n));chipNav.querySelectorAll('.chip').forEach(c=>c.classList.toggle('active',parseInt(c.dataset.scene,10)===n));}
+function setCaption(t){if(!t){captionsEl.classList.remove('show');return;}captionsEl.textContent=t;captionsEl.classList.add('show');}
+function runAction(a){if(!a)return;a.split(' ').forEach(act=>{if(act.startsWith('show-')){const id=act.substring(5);document.getElementById(id)?.classList.add('show');}});}
+function resetState(){document.querySelectorAll('.pillar-card,.md-line,.skill-line,.agent-step,.agent-arrow,.mcp-chip').forEach(e=>e.classList.remove('show'));lastIdx=-1;}
+function seekTo(t){elapsed=Math.max(0,Math.min(DURATION,t));startTime=performance.now()-elapsed*1000;resetState();let idx=-1;for(let i=0;i<TIMELINE.length;i++){if(TIMELINE[i].t<=elapsed)idx=i;else break;}for(let i=0;i<=idx;i++){runAction(TIMELINE[i].action);}if(idx>=0){setScene(TIMELINE[idx].scene);setCaption(TIMELINE[idx].caption);lastIdx=idx;}progressFill.style.width=(elapsed/DURATION*100)+'%';timeEl.textContent=fmtTime(elapsed)+' / '+fmtTime(DURATION);}
+function tick(){if(!playing)return;elapsed=(performance.now()-startTime)/1000;if(elapsed>=DURATION){elapsed=DURATION;playing=false;playBtn.textContent='▶︎ Replay';music.pause();}let idx=-1;for(let i=0;i<TIMELINE.length;i++){if(TIMELINE[i].t<=elapsed)idx=i;else break;}if(idx!==lastIdx&&idx>=0){const e=TIMELINE[idx];setScene(e.scene);setCaption(e.caption);runAction(e.action);lastIdx=idx;}progressFill.style.width=(elapsed/DURATION*100)+'%';timeEl.textContent=fmtTime(elapsed)+' / '+fmtTime(DURATION);if(playing)rafId=requestAnimationFrame(tick);}
+function play(){if(elapsed>=DURATION){restart();return;}playing=true;startTime=performance.now()-elapsed*1000;playBtn.textContent='⏸ Pause';music.play();tick();}
+function pause(){playing=false;if(rafId)cancelAnimationFrame(rafId);playBtn.textContent='▶︎ Play';music.pause();}
+function restart(){pause();elapsed=0;resetState();setScene(1);setCaption(TIMELINE[0].caption);progressFill.style.width='0%';timeEl.textContent='0:00 / '+fmtTime(DURATION);setTimeout(play,250);}
+playBtn.addEventListener('click',()=>{playing?pause():play();});
+restartBtn.addEventListener('click',restart);
+muteBtn.addEventListener('click',()=>{const m=music.toggleMute();muteBtn.classList.toggle('muted',m);});
+progressWrap.addEventListener('click',e=>{const r=progressWrap.getBoundingClientRect();const x=e.clientX-r.left;const p=Math.max(0,Math.min(1,x/r.width));const w=playing;pause();seekTo(p*DURATION);if(w)play();});
+for(let i=1;i<=SCENE_COUNT;i++){const b=document.createElement('button');b.className='chip'+(i===1?' active':'');b.dataset.scene=i;b.textContent=i;b.addEventListener('click',()=>{const target=TIMELINE.find(t=>t.scene===i);if(target){const w=playing;pause();seekTo(target.t);if(w)play();}});chipNav.appendChild(b);}
+setScene(1);setCaption(TIMELINE[0].caption);timeEl.textContent='0:00 / '+fmtTime(DURATION);
+setTimeout(()=>{if(!playing)play();},1200);
+document.addEventListener('click',()=>{if(music.ctx&&music.ctx.state==='suspended')music.ctx.resume();},{once:true});
+</script>
+</body>
+</html>

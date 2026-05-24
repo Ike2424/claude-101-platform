@@ -1992,6 +1992,7 @@ Lenguaje claro, frases cortas, sin tecnicismos.
         title: 'Claude design y Constitutional AI',
         emphasis: 'Constitutional AI',
         summary: 'Cómo Anthropic entrena Claude para ser útil, honesto e inofensivo. Y por qué eso te importa.',
+        defaultVideo: 'claude-101-videos/M9-video-animado.html',
         body: `
           <h3>Qué es Constitutional AI</h3>
           <p>Anthropic no entrena Claude solo con feedback humano (RLHF). Usa un proceso llamado <strong>Constitutional AI</strong>: el modelo se autoevalúa contra una <em>constitución</em> de principios escritos (basados en la Declaración de Derechos Humanos, términos de uso de Apple, principios de Anthropic, etc.) y se autorefuerza.</p>
@@ -2010,6 +2011,7 @@ Lenguaje claro, frases cortas, sin tecnicismos.
         title: 'Markdown como input estructurado',
         emphasis: 'Markdown',
         summary: 'Por qué Claude entiende mejor un prompt en markdown que en texto plano. Y cómo combinarlo con XML.',
+        defaultVideo: 'claude-101-videos/M9-video-animado.html',
         body: `
           <h3>Markdown semántico</h3>
           <p>Claude está entrenado con millones de documentos en markdown. Cuando estructuras tu prompt con headers, listas y bloques de código, Claude lo procesa como información jerarquizada, no como un muro de texto.</p>
@@ -2024,6 +2026,7 @@ Lenguaje claro, frases cortas, sin tecnicismos.
         title: 'Skills de Claude',
         emphasis: 'Skills',
         summary: 'El formato .skill para empaquetar habilidades reutilizables que Claude carga bajo demanda.',
+        defaultVideo: 'claude-101-videos/M9-video-animado.html',
         body: `
           <h3>Qué es una Skill</h3>
           <p>Una <strong>Skill</strong> es un directorio con un SKILL.md y archivos auxiliares que define una capacidad específica. Claude la carga cuando detecta que el usuario necesita esa habilidad.</p>
@@ -2038,6 +2041,7 @@ Lenguaje claro, frases cortas, sin tecnicismos.
         title: 'Cómo construir un agente',
         emphasis: 'agente',
         summary: 'Del prompt monolítico al sistema agéntico que planifica, ejecuta y se autoevalúa.',
+        defaultVideo: 'claude-101-videos/M9-video-animado.html',
         body: `
           <h3>Qué hace un agente diferente de un prompt</h3>
           <p>Un prompt es una pregunta-respuesta. Un <strong>agente</strong> es un bucle: planifica qué pasos dar, ejecuta el primero (usando tools), evalúa el resultado, y vuelve a planificar hasta terminar la tarea.</p>
@@ -2482,5 +2486,156 @@ fetch('/api/course/progress', { credentials: 'same-origin' })
     </div>
   </div>
 </div>
+
+<script>
+// === Búsqueda Ctrl+K — wiring ===
+(function initSearch() {
+  const overlay = document.getElementById('searchOverlay');
+  const input   = document.getElementById('searchInput');
+  const results = document.getElementById('searchResults');
+  const trigger = document.getElementById('searchTrigger');
+  if (!overlay || !input || !results) return;
+
+  // Construir índice desde COURSE
+  function buildIndex() {
+    const idx = [];
+    if (typeof COURSE === 'undefined') return idx;
+    COURSE.forEach((m, mi) => {
+      m.lessons.forEach((l) => {
+        // Plain text del body para buscar (sin HTML)
+        const plain = (l.body || '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+        idx.push({
+          type: 'lesson',
+          moduleTitle: m.title,
+          moduleId: m.id,
+          lessonId: l.id,
+          title: l.title,
+          summary: l.summary || '',
+          body: plain.slice(0, 800),
+          modNum: mi + 1
+        });
+      });
+    });
+    return idx;
+  }
+  const INDEX = buildIndex();
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+  }
+  function mark(text, q) {
+    if (!q) return escapeHtml(text);
+    const re = new RegExp('(' + q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi');
+    return escapeHtml(text).replace(re, '<mark>$1</mark>');
+  }
+  function snippet(text, q, len = 120) {
+    if (!q) return escapeHtml(text.slice(0, len));
+    const low = text.toLowerCase();
+    const pos = low.indexOf(q.toLowerCase());
+    if (pos < 0) return escapeHtml(text.slice(0, len));
+    const start = Math.max(0, pos - 40);
+    const end = Math.min(text.length, pos + q.length + 80);
+    const before = start > 0 ? '…' : '';
+    const after = end < text.length ? '…' : '';
+    return before + mark(text.slice(start, end), q) + after;
+  }
+
+  function render(q) {
+    q = (q || '').trim();
+    if (!q) {
+      results.innerHTML = '<div class="search-empty">Escribe para buscar lecciones, conceptos y prompts.</div>';
+      return;
+    }
+    const low = q.toLowerCase();
+    const hits = INDEX
+      .map(item => {
+        let score = 0;
+        if (item.title.toLowerCase().includes(low)) score += 10;
+        if (item.summary.toLowerCase().includes(low)) score += 5;
+        if (item.body.toLowerCase().includes(low)) score += 2;
+        return { item, score };
+      })
+      .filter(x => x.score > 0)
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 20);
+    if (hits.length === 0) {
+      results.innerHTML = `<div class="search-empty">Sin resultados para "${escapeHtml(q)}"</div>`;
+      return;
+    }
+    let html = '<div class="search-group-title">Lecciones</div>';
+    hits.forEach((h, i) => {
+      const it = h.item;
+      html += `<a href="#" class="search-result${i===0?' active':''}" data-lesson="${escapeHtml(it.lessonId)}">`;
+      html += `<div class="search-result-title">${mark(it.title, q)}</div>`;
+      html += `<div class="search-result-meta">Módulo ${it.modNum} · ${escapeHtml(it.moduleTitle)}</div>`;
+      const ctx = it.summary.toLowerCase().includes(low) ? it.summary : it.body;
+      html += `<div class="search-result-meta">${snippet(ctx, q, 140)}</div>`;
+      html += `</a>`;
+    });
+    results.innerHTML = html;
+    // click handlers
+    results.querySelectorAll('.search-result').forEach(el => {
+      el.addEventListener('click', (e) => {
+        e.preventDefault();
+        const id = el.getAttribute('data-lesson');
+        closeSearch();
+        if (typeof goTo === 'function') goTo(id);
+      });
+    });
+  }
+
+  function openSearch() {
+    overlay.classList.add('open');
+    input.value = '';
+    render('');
+    setTimeout(() => input.focus(), 30);
+  }
+  function closeSearch() {
+    overlay.classList.remove('open');
+  }
+
+  if (trigger) trigger.addEventListener('click', openSearch);
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) closeSearch(); });
+
+  input.addEventListener('input', (e) => render(e.target.value));
+  input.addEventListener('keydown', (e) => {
+    const items = Array.from(results.querySelectorAll('.search-result'));
+    const active = results.querySelector('.search-result.active');
+    let i = items.indexOf(active);
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      if (items.length === 0) return;
+      i = Math.min(items.length - 1, i + 1);
+      items.forEach(el => el.classList.remove('active'));
+      items[i].classList.add('active');
+      items[i].scrollIntoView({ block: 'nearest' });
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      if (items.length === 0) return;
+      i = Math.max(0, i - 1);
+      items.forEach(el => el.classList.remove('active'));
+      items[i].classList.add('active');
+      items[i].scrollIntoView({ block: 'nearest' });
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      const target = active || items[0];
+      if (target) target.click();
+    } else if (e.key === 'Escape') {
+      e.preventDefault();
+      closeSearch();
+    }
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+      e.preventDefault();
+      if (overlay.classList.contains('open')) closeSearch(); else openSearch();
+    } else if (e.key === 'Escape' && overlay.classList.contains('open')) {
+      closeSearch();
+    }
+  });
+})();
+
+</script>
 </body>
 </html>

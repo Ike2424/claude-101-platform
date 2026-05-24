@@ -311,6 +311,16 @@ app.get('/course.html', requireAuth, requirePaid, (_req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'course.html'));
 });
 
+// Certificado de finalización (requiere auth + pago)
+app.get('/certificate', requireAuth, requirePaid, (_req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'certificate.html'));
+});
+
+// Verificación pública de certificado por código
+app.get('/verify/:code', (_req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'verify.html'));
+});
+
 app.use('/claude-101-videos', requireAuth, requirePaid,
   express.static(path.join(__dirname, 'public', 'claude-101-videos'))
 );
