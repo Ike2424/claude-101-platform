@@ -35,4 +35,4 @@ Allow: /
 User-agent: anthropic-ai
 Allow: /
 
-Sitemap: ${PUBLIC_URL}/sitemap.xml
+Sitemap: https://academia101.com/sitemap.xml
