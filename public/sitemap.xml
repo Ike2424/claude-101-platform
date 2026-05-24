@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://academia101.com/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://academia101.com/sobre</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://academia101.com/contacto</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://academia101.com/recursos</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://academia101.com/comunidad</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://academia101.com/docs</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://academia101.com/blog</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://academia101.com/blog/como-empezar-con-claude</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://academia101.com/blog/5-prompts-que-cambian-tu-flujo-de-trabajo</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://academia101.com/blog/claude-vs-chatgpt-cual-elegir</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://academia101.com/blog/que-datos-puedo-compartir-con-claude</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://academia101.com/terminos</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://academia101.com/privacidad</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://academia101.com/reembolsos</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+</urlset>
