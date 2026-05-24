@@ -30,7 +30,7 @@ body {
 .scene {
   position: absolute; inset: 0;
   display: flex; align-items: center; justify-content: center; flex-direction: column;
-  padding: 50px 40px 110px;
+  padding: 70px 40px 110px;
   overflow-y: auto;
   opacity: 0; transform: translateY(20px);
   transition: opacity .8s cubic-bezier(.2,.8,.2,1), transform .8s cubic-bezier(.2,.8,.2,1);
@@ -205,7 +205,7 @@ body {
 
 /* Captions */
 .captions {
-  position: fixed; bottom: 18px;
+  position: fixed; bottom: 72px;
   max-height: 52px; overflow: hidden; left: 50%; transform: translateX(-50%);
   max-width: 720px; width: calc(100% - 64px);
   text-align: center; font-size: 17px; line-height: 1.5; color: var(--ink);
@@ -221,7 +221,7 @@ body {
   position: fixed; top: 16px; left: 50%; transform: translateX(-50%);
   display: flex; gap: 6px; z-index: 40;
   background: rgba(251,248,240,.85); backdrop-filter: blur(12px);
-  border: 1px solid var(--line); border-radius: 100px; padding: 6px;
+  border: 1px solid var(--line); border-radius: 100px; padding: 4px;
 }
 .chip {
   width: 28px; height: 28px; border-radius: 50%;
@@ -246,11 +246,11 @@ body {
 
 /* Controls */
 .controls {
-  position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+  position: fixed; bottom: 12px; left: 50%; transform: translateX(-50%);
   display: flex; align-items: center; gap: 12px;
   background: rgba(251,248,240,.92); backdrop-filter: blur(12px);
   border: 1px solid var(--line); border-radius: 100px;
-  padding: 8px 12px; box-shadow: 0 4px 24px rgba(28,26,22,.08); z-index: 50;
+  padding: 6px 10px; box-shadow: 0 4px 24px rgba(28,26,22,.08); z-index: 50;
 }
 .btn {
   background: transparent; border: 1px solid var(--line-2); color: var(--ink-2);
