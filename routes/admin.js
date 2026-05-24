@@ -326,6 +326,25 @@ router.get('/analytics', async (req, res) => {
   });
 });
 
+
+// GET /api/admin/analytics-raw — diagnóstico raw para ver si hay datos en BD
+router.get('/analytics-raw', async (req, res) => {
+  try {
+    const pageViewsTotal = (await one('SELECT COUNT(*) AS n FROM page_views'))?.n ?? 0;
+    const pageViewsLast = await q('SELECT id, path, visitor_id, referrer, created_at FROM page_views ORDER BY id DESC LIMIT 10');
+    const eventsTotal = (await one('SELECT COUNT(*) AS n FROM events'))?.n ?? 0;
+    const eventsLast = await q('SELECT id, event_type, visitor_id, created_at FROM events ORDER BY id DESC LIMIT 10');
+    res.json({
+      page_views: { total: pageViewsTotal, last_10: pageViewsLast },
+      events: { total: eventsTotal, last_10: eventsLast },
+      now: new Date().toISOString(),
+    });
+  } catch (err) {
+    res.status(500).json({ error: err?.message, stack: err?.stack?.split('\n').slice(0, 5) });
+  }
+});
+
+
 // ============================================================
 // Cupones — CRUD básico
 // ============================================================
