@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude 101 · Módulo 1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Geist:wght@300..700&family=Geist+Mono:wght@400..600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #F4EFE3; --bg-2: #EFE9DA; --card: #FBF8F0;
+  --ink: #1C1A16; --ink-2: #3A352D; --muted: #756B5B; --muted-2: #A39782;
+  --line: #E1D8C2; --line-2: #CFC4AA;
+  --accent: #C8542B; --accent-2: #8B3A1E;
+  --olive: #4F5D38; --gold: #B08436;
+  --display: 'Fraunces', Georgia, serif;
+  --body: 'Geist', system-ui, sans-serif;
+  --mono: 'Geist Mono', ui-monospace, monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; margin: 0; padding: 0; background: var(--bg); color: var(--ink); font-family: var(--body); overflow: hidden; }
+body { display: flex; flex-direction: column; }
+body {
+  background-image:
+    radial-gradient(circle at 12% 8%, rgba(200,84,43,.06) 0%, transparent 40%),
+    radial-gradient(circle at 88% 92%, rgba(79,93,56,.05) 0%, transparent 40%);
+}
+
+.stage { flex: 1; min-height: 0; position: relative; overflow: hidden; width: 100%; }
+.scene {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center; flex-direction: column;
+  padding: 24px 40px 60px;
+  overflow-y: auto;
+  opacity: 0; transform: translateY(20px);
+  transition: opacity .8s cubic-bezier(.2,.8,.2,1), transform .8s cubic-bezier(.2,.8,.2,1);
+  pointer-events: none;
+}
+.scene.active { opacity: 1; transform: translateY(0); pointer-events: auto; }
+
+/* Title */
+.scene-title .label {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .18em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 28px;
+}
+.scene-title h1 {
+  font-family: var(--display); font-style: italic; font-weight: 400;
+  font-size: clamp(48px, 7vw, 96px); letter-spacing: -0.025em;
+  font-variation-settings: "opsz" 144, "SOFT" 50;
+  color: var(--ink); line-height: 1.05; text-align: center; max-width: 18ch;
+}
+.scene-title h1 em { font-style: normal; color: var(--accent); }
+.scene-title .sub { margin-top: 36px; font-size: 18px; color: var(--muted); max-width: 36ch; text-align: center; }
+
+/* Qué es Claude */
+.scene-qe .question {
+  font-family: var(--display); font-style: italic; font-size: clamp(36px, 5vw, 72px);
+  letter-spacing: -0.02em; color: var(--ink); text-align: center; margin-bottom: 32px;
+}
+.scene-qe .question em { font-style: normal; color: var(--accent); }
+.scene-qe .answer {
+  background: var(--card); border: 1px solid var(--line); border-radius: 20px;
+  padding: 28px 32px; max-width: 720px; font-size: 18px; line-height: 1.7;
+  color: var(--ink-2); box-shadow: 0 4px 24px rgba(28,26,22,.08);
+}
+.scene-qe .answer strong { color: var(--accent); }
+.scene-qe .pill-row { display: flex; gap: 12px; margin-top: 24px; flex-wrap: wrap; justify-content: center; }
+.scene-qe .pill {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--olive);
+  padding: 8px 14px; border: 1px solid var(--line-2); border-radius: 100px; background: var(--card);
+  transition: all .2s; cursor: pointer;
+}
+.scene-qe .pill:hover { border-color: var(--olive); transform: translateY(-2px); }
+.scene-qe .pill.pulsing { animation: pulse 2s ease-in-out infinite; }
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(79,93,56,.4); }
+  50% { box-shadow: 0 0 0 8px rgba(79,93,56,0); }
+}
+
+/* Modelos */
+.scene-models .title { font-family: var(--display); font-size: clamp(32px, 4vw, 56px); font-weight: 400; margin-bottom: 16px; text-align: center; }
+.scene-models .title em { font-style: italic; color: var(--accent); }
+.scene-models .sub { color: var(--muted); margin-bottom: 40px; text-align: center; max-width: 50ch; }
+.scene-models .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 280px)); gap: 20px; }
+.scene-models .card {
+  background: var(--card); border: 1px solid var(--line); border-radius: 20px;
+  padding: 32px 24px; text-align: center; cursor: pointer;
+  transition: transform .4s cubic-bezier(.2,.8,.2,1), box-shadow .4s ease, border-color .3s;
+}
+.scene-models .card:hover { transform: translateY(-6px); box-shadow: 0 8px 24px rgba(28,26,22,.1); }
+.scene-models .card.highlight {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 32px rgba(200,84,43,.15);
+  border-color: var(--accent);
+}
+.scene-models .card-name { font-family: var(--display); font-size: 32px; letter-spacing: -0.02em; margin-bottom: 8px; }
+.scene-models .card-tag {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 20px;
+}
+.scene-models .card-desc { font-size: 14px; line-height: 1.6; color: var(--ink-2); }
+.scene-models .card.haiku .card-name { color: var(--olive); }
+.scene-models .card.sonnet .card-name { color: var(--accent); }
+.scene-models .card.opus .card-name { color: var(--gold); }
+.scene-models .hint {
+  margin-top: 24px; font-family: var(--mono); font-size: 11px;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--muted-2);
+}
+
+/* Cómo razona */
+.scene-reason .title { font-family: var(--display); font-size: clamp(32px, 4vw, 56px); font-weight: 400; margin-bottom: 36px; text-align: center; }
+.scene-reason .title em { font-style: italic; color: var(--accent); }
+.scene-reason .predictor {
+  background: var(--card); border: 1px solid var(--line); border-radius: 20px;
+  padding: 32px; max-width: 720px; width: 100%;
+}
+.scene-reason .input-line { font-family: var(--mono); font-size: 16px; color: var(--ink-2); margin-bottom: 24px; }
+.scene-reason .input-line .blank {
+  display: inline-block; min-width: 80px; border-bottom: 2px dotted var(--accent);
+  height: 22px; vertical-align: -4px; margin: 0 4px;
+}
+.scene-reason .predictions { display: flex; flex-direction: column; gap: 8px; }
+.scene-reason .pred-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 8px 12px; border-radius: 10px; cursor: pointer;
+  opacity: 0; transform: translateX(-12px);
+  transition: opacity .5s, transform .5s, background .2s;
+}
+.scene-reason .pred-item:hover { background: var(--bg-2); }
+.scene-reason .pred-item.show { opacity: 1; transform: translateX(0); }
+.scene-reason .pred-bar {
+  height: 8px; background: linear-gradient(90deg, var(--accent), var(--gold));
+  border-radius: 100px; transition: width 1s cubic-bezier(.2,.8,.2,1); width: 0; flex: 1; max-width: 320px;
+}
+.scene-reason .pred-item.show .pred-bar { width: var(--w, 60%); }
+.scene-reason .pred-label { font-family: var(--mono); font-size: 14px; color: var(--ink-2); min-width: 100px; }
+.scene-reason .pred-pct { font-family: var(--mono); font-size: 12px; color: var(--muted); margin-left: auto; }
+.scene-reason .insight {
+  margin-top: 32px; text-align: center; font-size: 16px;
+  color: var(--muted); font-style: italic; max-width: 50ch; margin-left: auto; margin-right: auto;
+}
+
+/* Diferencias */
+.scene-diff .title { font-family: var(--display); font-size: clamp(28px, 3.5vw, 48px); font-weight: 400; margin-bottom: 36px; text-align: center; }
+.scene-diff .title em { font-style: italic; color: var(--accent); }
+.scene-diff .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 320px)); gap: 16px; }
+.scene-diff .card {
+  background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 18px;
+  opacity: 0; transform: translateY(12px); transition: opacity .6s, transform .6s, box-shadow .3s;
+  cursor: pointer;
+}
+.scene-diff .card:hover { box-shadow: 0 6px 20px rgba(28,26,22,.08); border-color: var(--line-2); }
+.scene-diff .card.show { opacity: 1; transform: translateY(0); }
+.scene-diff .card-icon { font-size: 28px; margin-bottom: 12px; }
+.scene-diff .card-title { font-family: var(--display); font-size: 20px; margin-bottom: 8px; color: var(--ink); }
+.scene-diff .card-desc { font-size: 14px; color: var(--ink-2); line-height: 1.6; }
+
+/* Cierre + checkpoint */
+.scene-close .label {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .18em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 20px;
+}
+.scene-close h2 {
+  font-family: var(--display); font-style: italic; font-weight: 400;
+  font-size: clamp(36px, 5vw, 64px); letter-spacing: -0.02em; color: var(--ink);
+  line-height: 1.1; text-align: center; max-width: 18ch; margin-bottom: 32px;
+}
+.scene-close h2 em { font-style: normal; color: var(--accent); }
+.scene-close .check {
+  background: var(--card); border: 1px solid var(--line); border-radius: 16px;
+  padding: 24px; max-width: 520px; width: 100%;
+}
+.scene-close .check-label {
+  font-family: var(--mono); font-size: 10px; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--accent); margin-bottom: 8px;
+}
+.scene-close .check-q { font-size: 16px; color: var(--ink-2); margin-bottom: 16px; }
+.scene-close .check-options { display: flex; flex-direction: column; gap: 8px; }
+.scene-close .check-opt {
+  background: var(--bg); border: 1px solid var(--line); border-radius: 10px;
+  padding: 12px 16px; cursor: pointer; font-size: 14px;
+  color: var(--ink-2); text-align: left; transition: all .2s;
+  font-family: var(--body);
+}
+.scene-close .check-opt:hover { border-color: var(--ink-2); }
+.scene-close .check-opt.correct { background: rgba(79,93,56,.08); border-color: var(--olive); color: var(--olive); font-weight: 600; }
+.scene-close .check-opt.wrong { background: rgba(200,84,43,.06); border-color: var(--accent); color: var(--accent-2); }
+.scene-close .check-opt.disabled { pointer-events: none; opacity: .55; }
+.scene-close .check-feedback {
+  margin-top: 14px; font-size: 14px; color: var(--olive);
+  opacity: 0; transition: opacity .4s;
+}
+.scene-close .check-feedback.show { opacity: 1; }
+.scene-close .next {
+  margin-top: 20px;
+  background: var(--card); border: 1px solid var(--line); border-left: 4px solid var(--accent);
+  border-radius: 14px; padding: 16px 20px; max-width: 520px; text-align: left;
+}
+.scene-close .next-label {
+  font-family: var(--mono); font-size: 10px; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--accent); margin-bottom: 6px;
+}
+.scene-close .next-text { font-size: 14px; color: var(--ink-2); line-height: 1.55; }
+
+/* Captions */
+.captions { position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); max-width: 720px; width: calc(100% - 80px); max-height: 52px; overflow: hidden; text-align: center; font-size: 17px; line-height: 1.5; color: var(--ink); background: rgba(251,248,240,.92); backdrop-filter: blur(8px); border: 1px solid var(--line); border-radius: 14px; padding: 8px 14px; opacity: 0; transition: opacity .4s; z-index: 5; pointer-events: none; }
+.captions.show { opacity: 1; }
+
+/* Top chip nav */
+.chip-nav { flex-shrink: 0; display: flex; gap: 6px; margin: 12px auto 0; padding: 4px; background: rgba(251,248,240,.85); backdrop-filter: blur(12px); border: 1px solid var(--line); border-radius: 100px; width: fit-content; z-index: 10; }
+.chip {
+  width: 28px; height: 28px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--mono); font-size: 11px; color: var(--muted);
+  background: transparent; border: none; cursor: pointer; transition: all .2s;
+}
+.chip:hover { background: var(--bg-2); color: var(--ink); }
+.chip.active { background: var(--ink); color: var(--bg); }
+
+/* Brand mark */
+.brand-mark { position: absolute; top: 10px; left: 14px; font-family: var(--display); font-style: italic; font-size: 14px; letter-spacing: -0.02em; color: var(--ink); z-index: 100; }
+.brand-mark em { font-style: normal; color: var(--accent); }
+.brand-tag {
+  margin-left: 8px; font-family: var(--mono); font-size: 10px;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--muted);
+}
+
+/* Controls */
+.controls { flex-shrink: 0; display: flex; align-items: center; gap: 12px; margin: 12px auto; padding: 6px 10px; background: rgba(251,248,240,.92); backdrop-filter: blur(12px); border: 1px solid var(--line); border-radius: 100px; box-shadow: 0 4px 24px rgba(28,26,22,.08); width: fit-content; z-index: 10; }
+.btn {
+  background: transparent; border: 1px solid var(--line-2); color: var(--ink-2);
+  font-family: var(--mono); font-size: 11px; letter-spacing: .1em;
+  text-transform: uppercase; padding: 8px 14px; border-radius: 100px;
+  cursor: pointer; transition: all .2s;
+}
+.btn:hover { border-color: var(--ink-2); color: var(--ink); }
+.btn-primary { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.btn-primary:hover { background: var(--accent); border-color: var(--accent); color: var(--bg); }
+.btn-icon { width: 36px; height: 36px; padding: 0; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+
+.progress-wrap {
+  width: 220px; cursor: pointer; padding: 8px 0; position: relative;
+}
+.progress {
+  width: 100%; height: 4px; background: var(--line-2);
+  border-radius: 100px; overflow: hidden; pointer-events: none;
+}
+.progress-fill {
+  height: 100%; background: linear-gradient(90deg, var(--accent), var(--gold));
+  transition: width .15s linear; width: 0%;
+}
+.progress-wrap:hover .progress { height: 6px; transition: height .15s; }
+.time { font-family: var(--mono); font-size: 11px; color: var(--muted); min-width: 70px; text-align: center; }
+
+
+
+
+
+
+
+
+@media (max-width: 720px) {
+  .chip-nav { display: none; }
+  .progress-wrap { width: 120px; }
+  .scene-models .grid { grid-template-columns: 1fr; }
+  .scene-diff .grid { grid-template-columns: 1fr; }
+  .scene { padding: 40px 24px 100px; }
+}
+
+/* Anti-solape fixes */
+@media (max-height: 720px) {
+  .scene { padding-top: 40px; padding-bottom: 100px; }
+  .captions { bottom: 24px; }
+  .scene-title h1 { font-size: clamp(32px, 5vw, 60px); }
+}
+@media (max-width: 600px) {
+  .captions { font-size: 14px; padding: 10px 14px; bottom: 24px; }
+  .scene { padding: 40px 24px 100px; }
+  .scene-title h1 { font-size: clamp(28px, 8vw, 48px); }
+  .s-title { font-size: clamp(22px, 6vw, 36px); }
+  .s-sub { font-size: 13px; margin-bottom: 22px; }
+}
+/* Hacer las escenas scrolleables si su contenido excede */
+.scene { -webkit-overflow-scrolling: touch; }
+.scene::-webkit-scrollbar { width: 6px; }
+.scene::-webkit-scrollbar-thumb { background: var(--line-2); border-radius: 100px; }
+
+@media (min-width: 900px) {
+  .scene-diff .grid { grid-template-columns: repeat(4, minmax(0, 220px)) !important; }
+}
+</style>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/favicon.svg">
+</head>
+<body>
+
+<div class="brand-mark">Claude<em>·101</em> <span class="brand-tag">Módulo 1</span></div>
+
+<div class="chip-nav" id="chipNav"></div>
+
+<div class="stage">
+
+  <!-- 1: Title -->
+  <div class="scene scene-title" data-scene="1">
+    <div class="label">Curso de formación · Anthropic</div>
+    <h1>Bienvenida y <em>fundamentos</em></h1>
+    <p class="sub">Qué es Claude, cómo piensa, qué modelos existen — y por qué se parece más a un colega informado que a un buscador.</p>
+  </div>
+
+  <!-- 2: Qué es Claude -->
+  <div class="scene scene-qe" data-scene="2">
+    <div class="question">¿Qué es <em>Claude</em>?</div>
+    <div class="answer">
+      Claude es un <strong>asistente de inteligencia artificial</strong> desarrollado por Anthropic, una empresa fundada en 2021 con tres valores que condicionan todo lo que hace:
+    </div>
+    <div class="pill-row">
+      <span class="pill" data-pill="1">Útil</span>
+      <span class="pill" data-pill="2">Honesto</span>
+      <span class="pill" data-pill="3">Inofensivo</span>
+    </div>
+  </div>
+
+  <!-- 3: Modelos -->
+  <div class="scene scene-models" data-scene="3">
+    <div class="title">Una <em>familia</em> de modelos</div>
+    <div class="sub">Tres modelos para distintos equilibrios entre velocidad e inteligencia. <strong>Empieza con Sonnet.</strong></div>
+    <div class="grid">
+      <div class="card haiku" id="card-haiku" data-model="haiku">
+        <div class="card-name">Haiku</div>
+        <div class="card-tag">Rápido · Eficiente</div>
+        <div class="card-desc">Para tareas ligeras, respuestas instantáneas, trabajo en volumen.</div>
+      </div>
+      <div class="card sonnet highlight" id="card-sonnet" data-model="sonnet">
+        <div class="card-name">Sonnet</div>
+        <div class="card-tag">El equilibrio · Por defecto</div>
+        <div class="card-desc">Razonamiento sólido con tiempos razonables. El 80% del tiempo.</div>
+      </div>
+      <div class="card opus" id="card-opus" data-model="opus">
+        <div class="card-name">Opus</div>
+        <div class="card-tag">Potente · Profundo</div>
+        <div class="card-desc">Para problemas complejos, análisis profundo, escritura matizada.</div>
+      </div>
+    </div>
+    <p class="hint">Pulsa una tarjeta para resaltarla</p>
+  </div>
+
+  <!-- 4: Cómo razona -->
+  <div class="scene scene-reason" data-scene="4">
+    <div class="title">No <em>busca</em>. Predice.</div>
+    <div class="predictor">
+      <div class="input-line">El gato está sobre la<span class="blank"></span></div>
+      <div class="predictions">
+        <div class="pred-item" id="pred-1" style="--w: 78%">
+          <span class="pred-label">mesa</span>
+          <div class="pred-bar"></div>
+          <span class="pred-pct">42%</span>
+        </div>
+        <div class="pred-item" id="pred-2" style="--w: 60%">
+          <span class="pred-label">silla</span>
+          <div class="pred-bar"></div>
+          <span class="pred-pct">28%</span>
+        </div>
+        <div class="pred-item" id="pred-3" style="--w: 40%">
+          <span class="pred-label">alfombra</span>
+          <div class="pred-bar"></div>
+          <span class="pred-pct">18%</span>
+        </div>
+      </div>
+      <p class="insight">Claude genera la respuesta más probable según patrones aprendidos. Por eso puede sonar seguro incluso cuando se equivoca — y funciona mejor cuanto más claro es el contexto.</p>
+    </div>
+  </div>
+
+  <!-- 5: Diferencias -->
+  <div class="scene scene-diff" data-scene="5">
+    <div class="title">En qué se <em>distingue</em></div>
+    <div class="grid">
+      <div class="card" id="diff-1"><div class="card-icon">✍️</div><div class="card-title">Escritura natural</div><div class="card-desc">Texto menos formulaico, mejor estructurado para lectura humana.</div></div>
+      <div class="card" id="diff-2"><div class="card-icon">🎯</div><div class="card-title">Honestidad calibrada</div><div class="card-desc">Reconoce sus límites en lugar de afirmar con falsa seguridad.</div></div>
+      <div class="card" id="diff-3"><div class="card-icon">⚖️</div><div class="card-title">Razonamiento matizado</div><div class="card-desc">Aborda temas sensibles con criterio en lugar de bloquear de forma rígida.</div></div>
+      <div class="card" id="diff-4"><div class="card-icon">📚</div><div class="card-title">Contextos largos</div><div class="card-desc">Sobresale al trabajar con documentos extensos manteniendo coherencia.</div></div>
+    </div>
+  </div>
+
+  <!-- 6: Cierre + checkpoint -->
+  <div class="scene scene-close" data-scene="6">
+    <div class="label">Fin del módulo 1</div>
+    <h2>Un colaborador, no un <em>oráculo</em>.</h2>
+    <div class="check">
+      <div class="check-label">Checkpoint rápido</div>
+      <div class="check-q">Si tienes una tarea normal del día a día — escribir, resumir, programar algo sencillo — ¿qué modelo eliges primero?</div>
+      <div class="check-options">
+        <button class="check-opt" data-correct="false" data-fb="Haiku está pensado para tareas muy ligeras o de gran volumen. Para el día a día, Sonnet rinde mejor.">Haiku</button>
+        <button class="check-opt" data-correct="true" data-fb="Correcto. Sonnet es el equilibrio. Subes a Opus si necesitas pensar a fondo en algo difícil.">Sonnet</button>
+        <button class="check-opt" data-correct="false" data-fb="Opus es excelente, pero está pensado para problemas complejos. Para el día a día, Sonnet es la opción por defecto.">Opus</button>
+      </div>
+      <div class="check-feedback" id="checkFb"></div>
+    </div>
+    <div class="next">
+      <div class="next-label">Próximo módulo</div>
+      <div class="next-text">Primeros pasos: cómo acceder, anatomía de la interfaz, proyectos y configuración esencial.</div>
+    </div>
+  </div>
+
+<div class="captions" id="captions"></div></div>
+
+
+
+<div class="controls">
+  <button class="btn btn-primary" id="btnPlay">▶︎ Play</button>
+  <button class="btn btn-icon" id="btnRestart" title="Reiniciar">↻</button>
+  <div class="progress-wrap" id="progressWrap">
+    <div class="progress"><div class="progress-fill" id="progressFill"></div></div>
+  </div>
+  <div class="time" id="time">0:00 / 2:18</div>
+</div>
+
+<script>
+// ============================================================
+// MÚSICA AMBIENT — Web Audio API (sin dependencias externas)
+// ============================================================
+class AmbientMusic{constructor(){this.muted=true;}init(){}build(){}async play(){}pause(){}toggleMute(){return true;}}
+const music = new AmbientMusic();
+
+// ============================================================
+// TIMELINE
+// ============================================================
+const TIMELINE = [
+  { t: 0,    scene: 1, caption: "Esto es Claude — un asistente de inteligencia artificial. Pero la palabra 'asistente' se queda corta." },
+  { t: 6,    scene: 1, caption: "En los próximos minutos vas a entender qué hace, cómo piensa, y por qué se parece más a un colega informado que a un buscador." },
+  { t: 14,   scene: 2, caption: "Claude lo construye Anthropic, una empresa fundada en 2021." },
+  { t: 19,   scene: 2, caption: "Tres valores condicionan todo: útil, honesto, inofensivo.", action: "pulse-pills" },
+  { t: 25,   scene: 2, caption: "No es una frase de marketing. Decide cómo responde y dónde pone el freno." },
+  { t: 32,   scene: 3, caption: "Claude no es uno solo. Es una familia." },
+  { t: 36,   scene: 3, caption: "Haiku — el más rápido. Para tareas ligeras y trabajo en volumen.", action: "highlight-haiku" },
+  { t: 42,   scene: 3, caption: "Sonnet — el equilibrio. El que vas a usar el 80% del tiempo.", action: "highlight-sonnet" },
+  { t: 49,   scene: 3, caption: "Opus — el más potente. Para análisis profundo y escritura matizada.", action: "highlight-opus" },
+  { t: 56,   scene: 3, caption: "Regla práctica: empieza con Sonnet. Sube o baja según la tarea.", action: "highlight-sonnet" },
+  { t: 64,   scene: 4, caption: "Detalle importante: Claude no consulta una base de datos cuando responde." },
+  { t: 70,   scene: 4, caption: "Genera la respuesta más probable basándose en patrones aprendidos.", action: "show-preds" },
+  { t: 78,   scene: 4, caption: "Por eso puede sonar muy seguro incluso cuando se equivoca." },
+  { t: 85,   scene: 4, caption: "Y por eso funciona mejor cuanto más claro es el contexto que le das." },
+  { t: 92,   scene: 5, caption: "Comparte capacidades con otros asistentes, pero se distingue en cuatro cosas." },
+  { t: 98,   scene: 5, caption: "Escritura natural — menos formulaica, mejor para que la lea un humano.", action: "show-diff-1" },
+  { t: 104,  scene: 5, caption: "Honestidad calibrada — reconoce sus límites.", action: "show-diff-2" },
+  { t: 110,  scene: 5, caption: "Razonamiento ético matizado — aborda temas sensibles con criterio.", action: "show-diff-3" },
+  { t: 116,  scene: 5, caption: "Manejo de contextos largos — coherencia con documentos extensos.", action: "show-diff-4" },
+  { t: 124,  scene: 6, caption: "Eso es Claude en una imagen mental: un colaborador, no un oráculo." },
+  { t: 130,  scene: 6, caption: "Ahora tú: responde rápido para fijar el concepto." },
+  { t: 138,  scene: 6, caption: "" }
+];
+const DURATION = 138;
+
+// ============================================================
+// ENGINE
+// ============================================================
+const scenes = document.querySelectorAll('.scene');
+const captionsEl = document.getElementById('captions');
+const playBtn = document.getElementById('btnPlay');
+const restartBtn = document.getElementById('btnRestart');
+const progressWrap = document.getElementById('progressWrap');
+const progressFill = document.getElementById('progressFill');
+const timeEl = document.getElementById('time');
+const chipNav = document.getElementById('chipNav');
+
+let startTime = 0;
+let elapsed = 0;
+let playing = false;
+let rafId = null;
+let lastEntryIdx = -1;
+let currentScene = 1;
+
+function fmtTime(s) {
+  s = Math.max(0, Math.floor(s));
+  return `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;
+}
+
+function setScene(n) {
+  if (n === currentScene) return;
+  currentScene = n;
+  scenes.forEach(s => s.classList.toggle('active', parseInt(s.dataset.scene,10) === n));
+  // Update chip nav
+  chipNav.querySelectorAll('.chip').forEach(c => c.classList.toggle('active', parseInt(c.dataset.scene,10) === n));
+}
+
+function setCaption(text) {
+  if (!text) { captionsEl.classList.remove('show'); return; }
+  captionsEl.textContent = text;
+  captionsEl.classList.add('show');
+}
+
+function runAction(a) {
+  if (!a) return;
+  if (a === 'pulse-pills') {
+    document.querySelectorAll('.scene-qe .pill').forEach((p,i) => {
+      setTimeout(() => p.classList.add('pulsing'), i*200);
+      setTimeout(() => p.classList.remove('pulsing'), 4000 + i*200);
+    });
+  }
+  if (a === 'highlight-haiku') highlightModel('haiku');
+  if (a === 'highlight-sonnet') highlightModel('sonnet');
+  if (a === 'highlight-opus') highlightModel('opus');
+  if (a === 'show-preds') {
+    document.getElementById('pred-1').classList.add('show');
+    setTimeout(() => document.getElementById('pred-2').classList.add('show'), 400);
+    setTimeout(() => document.getElementById('pred-3').classList.add('show'), 800);
+  }
+  if (a.startsWith('show-diff-')) {
+    document.getElementById('diff-' + a.split('-')[2]).classList.add('show');
+  }
+}
+
+function highlightModel(m) {
+  ['haiku','sonnet','opus'].forEach(n => {
+    document.getElementById('card-'+n).classList.toggle('highlight', n === m);
+  });
+}
+
+function resetState() {
+  highlightModel('sonnet');
+  ['1','2','3','4'].forEach(n => {
+    const d = document.getElementById('diff-'+n); if (d) d.classList.remove('show');
+  });
+  ['pred-1','pred-2','pred-3'].forEach(id => document.getElementById(id)?.classList.remove('show'));
+  lastEntryIdx = -1;
+}
+
+function seekTo(t) {
+  elapsed = Math.max(0, Math.min(DURATION, t));
+  startTime = performance.now() - elapsed * 1000;
+  // Re-aplica el estado correcto para ese tiempo
+  resetState();
+  let idx = -1;
+  for (let i = 0; i < TIMELINE.length; i++) {
+    if (TIMELINE[i].t <= elapsed) idx = i; else break;
+  }
+  // Replay las acciones acumulativas hasta este punto (show-* solamente)
+  for (let i = 0; i <= idx; i++) {
+    const a = TIMELINE[i].action;
+    if (a && (a.startsWith('show-diff') || a === 'show-preds' || a.startsWith('highlight-'))) {
+      if (a === 'show-preds') {
+        ['pred-1','pred-2','pred-3'].forEach(id => document.getElementById(id).classList.add('show'));
+      } else if (a.startsWith('show-diff-')) {
+        document.getElementById('diff-' + a.split('-')[2]).classList.add('show');
+      } else if (a.startsWith('highlight-')) {
+        highlightModel(a.split('-')[1]);
+      }
+    }
+  }
+  if (idx >= 0) {
+    setScene(TIMELINE[idx].scene);
+    setCaption(TIMELINE[idx].caption);
+    lastEntryIdx = idx;
+  }
+  progressFill.style.width = (elapsed/DURATION*100) + '%';
+  timeEl.textContent = fmtTime(elapsed) + ' / ' + fmtTime(DURATION);
+}
+
+function tick() {
+  if (!playing) return;
+  elapsed = (performance.now() - startTime) / 1000;
+  if (elapsed >= DURATION) {
+    elapsed = DURATION; playing = false;
+    playBtn.textContent = '▶︎ Replay';
+    music.pause();
+  }
+  let idx = -1;
+  for (let i = 0; i < TIMELINE.length; i++) {
+    if (TIMELINE[i].t <= elapsed) idx = i; else break;
+  }
+  if (idx !== lastEntryIdx && idx >= 0) {
+    const entry = TIMELINE[idx];
+    setScene(entry.scene);
+    setCaption(entry.caption);
+    runAction(entry.action);
+    lastEntryIdx = idx;
+  }
+  progressFill.style.width = (elapsed/DURATION*100) + '%';
+  timeEl.textContent = fmtTime(elapsed) + ' / ' + fmtTime(DURATION);
+  if (playing) rafId = requestAnimationFrame(tick);
+}
+
+function play() {
+  if (elapsed >= DURATION) { restart(); return; }
+  playing = true;
+  startTime = performance.now() - elapsed * 1000;
+  playBtn.textContent = '⏸ Pause';
+  music.play();
+  tick();
+}
+function pause() {
+  playing = false;
+  if (rafId) cancelAnimationFrame(rafId);
+  playBtn.textContent = '▶︎ Play';
+  music.pause();
+}
+function restart() {
+  pause();
+  elapsed = 0;
+  resetState();
+  setScene(1);
+  setCaption(TIMELINE[0].caption);
+  progressFill.style.width = '0%';
+  timeEl.textContent = '0:00 / ' + fmtTime(DURATION);
+  setTimeout(play, 250);
+}
+
+playBtn.addEventListener('click', () => { playing ? pause() : play(); });
+restartBtn.addEventListener('click', restart);
+
+progressWrap.addEventListener('click', (e) => {
+  const rect = progressWrap.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const pct = Math.max(0, Math.min(1, x / rect.width));
+  const wasPlaying = playing;
+  pause();
+  seekTo(pct * DURATION);
+  if (wasPlaying) play();
+});
+
+// Chip nav (1 botón por escena)
+for (let i = 1; i <= 6; i++) {
+  const b = document.createElement('button');
+  b.className = 'chip' + (i === 1 ? ' active' : '');
+  b.dataset.scene = i;
+  b.textContent = i;
+  b.addEventListener('click', () => {
+    // Encuentra el primer entry de esa escena
+    const target = TIMELINE.find(t => t.scene === i);
+    if (target) {
+      const wasPlaying = playing;
+      pause();
+      seekTo(target.t);
+      if (wasPlaying) play();
+    }
+  });
+  chipNav.appendChild(b);
+}
+
+// Cards interactivas: modelos
+document.querySelectorAll('.scene-models .card').forEach(card => {
+  card.addEventListener('click', () => {
+    highlightModel(card.dataset.model);
+  });
+});
+
+// Cards interactivas: diferencias (mostrar al hacer click si están ocultas)
+document.querySelectorAll('.scene-diff .card').forEach(card => {
+  card.addEventListener('click', () => card.classList.add('show'));
+});
+
+// Predictions: clicables (revelan todas)
+document.querySelectorAll('.scene-reason .pred-item').forEach(p => {
+  p.addEventListener('click', () => {
+    ['pred-1','pred-2','pred-3'].forEach(id => document.getElementById(id).classList.add('show'));
+  });
+});
+
+// Checkpoint final
+document.querySelectorAll('.check-opt').forEach(opt => {
+  opt.addEventListener('click', () => {
+    const correct = opt.dataset.correct === 'true';
+    const fb = document.getElementById('checkFb');
+    document.querySelectorAll('.check-opt').forEach(o => o.classList.add('disabled'));
+    opt.classList.add(correct ? 'correct' : 'wrong');
+    if (!correct) {
+      // Mostrar también la correcta
+      document.querySelectorAll('.check-opt').forEach(o => {
+        if (o.dataset.correct === 'true') o.classList.add('correct');
+      });
+    }
+    fb.textContent = opt.dataset.fb;
+    fb.classList.add('show');
+  });
+});
+
+// Init
+setScene(1);
+setCaption(TIMELINE[0].caption);
+timeEl.textContent = '0:00 / ' + fmtTime(DURATION);
+
+// Autoplay con pequeña espera para gesto de usuario (música requiere user gesture)
+// Si autoplay falla por política de audio, el usuario verá el botón Play y al pulsarlo arrancará todo.
+setTimeout(() => {
+  if (!playing) {
+    // Intentar autoplay solo de la animación. La música arrancará cuando el usuario interactúe.
+    play();
+  }
+}, 1200);
+
+// Si el usuario hace cualquier clic, asegurar que el audio context arranca
+document.addEventListener('click', () => {
+  if (music.ctx && music.ctx.state === 'suspended') music.ctx.resume();
+}, { once: true });
+</script>
+</body>
+</html>

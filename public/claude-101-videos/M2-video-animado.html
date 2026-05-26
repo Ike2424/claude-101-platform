@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude 101 · Módulo 2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Geist:wght@300..700&family=Geist+Mono:wght@400..600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #F4EFE3; --bg-2: #EFE9DA; --card: #FBF8F0;
+  --ink: #1C1A16; --ink-2: #3A352D; --muted: #756B5B; --muted-2: #A39782;
+  --line: #E1D8C2; --line-2: #CFC4AA;
+  --accent: #C8542B; --accent-2: #8B3A1E;
+  --olive: #4F5D38; --gold: #B08436;
+  --display: 'Fraunces', Georgia, serif;
+  --body: 'Geist', system-ui, sans-serif;
+  --mono: 'Geist Mono', ui-monospace, monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; margin: 0; padding: 0; background: var(--bg); color: var(--ink); font-family: var(--body); overflow: hidden; }
+body { display: flex; flex-direction: column; }
+body {
+  background-image:
+    radial-gradient(circle at 12% 8%, rgba(200,84,43,.06) 0%, transparent 40%),
+    radial-gradient(circle at 88% 92%, rgba(79,93,56,.05) 0%, transparent 40%);
+}
+.stage { flex: 1; min-height: 0; position: relative; overflow: hidden; width: 100%; }
+.scene {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center; flex-direction: column;
+  padding: 24px 40px 60px;
+  overflow-y: auto;
+  opacity: 0; transform: translateY(20px);
+  transition: opacity .8s cubic-bezier(.2,.8,.2,1), transform .8s cubic-bezier(.2,.8,.2,1);
+  pointer-events: none;
+}
+.scene.active { opacity: 1; transform: translateY(0); pointer-events: auto; }
+
+/* Title */
+.scene-title .label { font-family: var(--mono); font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); margin-bottom: 28px; }
+.scene-title h1 { font-family: var(--display); font-style: italic; font-weight: 400; font-size: clamp(40px, 6vw, 80px); letter-spacing: -0.025em; font-variation-settings: "opsz" 144, "SOFT" 50; color: var(--ink); line-height: 1.05; text-align: center; max-width: 18ch; }
+.scene-title h1 em { font-style: normal; color: var(--accent); }
+.scene-title .sub { margin-top: 36px; font-size: 18px; color: var(--muted); max-width: 36ch; text-align: center; }
+
+/* Sección título genérica */
+.s-title { font-family: var(--display); font-size: clamp(32px, 4vw, 56px); font-weight: 400; margin-bottom: 16px; text-align: center; }
+.s-title em { font-style: italic; color: var(--accent); }
+.s-sub { color: var(--muted); margin-bottom: 36px; text-align: center; max-width: 56ch; }
+
+/* Puertas de entrada (4 cards icon) */
+.doors-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 280px)); gap: 16px; }
+.door {
+  background: var(--card); border: 1px solid var(--line); border-radius: 16px;
+  padding: 20px; cursor: pointer; transition: all .3s;
+  display: flex; align-items: center; gap: 14px;
+  opacity: 0; transform: translateY(10px);
+}
+.door.show { opacity: 1; transform: translateY(0); }
+.door:hover { border-color: var(--accent); transform: translateY(-4px); box-shadow: 0 6px 20px rgba(28,26,22,.08); }
+.door.active { border-color: var(--accent); background: linear-gradient(180deg, var(--card), rgba(200,84,43,.05)); }
+.door-icon { width: 40px; height: 40px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; background: var(--bg-2); border-radius: 10px; font-size: 20px; }
+.door-text { font-family: var(--body); }
+.door-name { font-weight: 600; color: var(--ink); margin-bottom: 4px; }
+.door-desc { font-size: 13px; color: var(--muted); }
+
+/* Planes */
+.plans-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 200px)); gap: 12px; }
+.plan {
+  background: var(--card); border: 1px solid var(--line); border-radius: 16px;
+  padding: 24px 18px; text-align: center; cursor: pointer;
+  transition: all .3s; opacity: 0; transform: translateY(10px);
+}
+.plan.show { opacity: 1; transform: translateY(0); }
+.plan:hover { transform: translateY(-6px); box-shadow: 0 8px 24px rgba(28,26,22,.08); }
+.plan.featured { border-color: var(--accent); background: linear-gradient(180deg, var(--card), rgba(200,84,43,.06)); }
+.plan .name { font-family: var(--display); font-size: 22px; margin-bottom: 4px; color: var(--ink); }
+.plan .price { font-family: var(--mono); font-size: 12px; color: var(--muted); margin-bottom: 16px; letter-spacing: .05em; }
+.plan .feat { font-size: 12px; color: var(--ink-2); line-height: 1.55; }
+.plan.featured .name { color: var(--accent); }
+.plan-tag {
+  display: inline-block; font-family: var(--mono); font-size: 9px; letter-spacing: .15em;
+  text-transform: uppercase; padding: 3px 8px; border-radius: 100px;
+  background: var(--accent); color: var(--bg); margin-bottom: 10px;
+}
+
+/* Anatomía interfaz — mock Claude */
+.mock-claude {
+  width: 100%; max-width: 880px; height: 440px;
+  background: var(--card); border: 1px solid var(--line); border-radius: 18px;
+  overflow: hidden; display: grid; grid-template-columns: 200px 1fr;
+  box-shadow: 0 8px 32px rgba(28,26,22,.08);
+}
+.mock-sidebar { background: var(--bg-2); border-right: 1px solid var(--line); padding: 16px; }
+.mock-sidebar-item {
+  font-family: var(--body); font-size: 13px; color: var(--ink-2);
+  padding: 8px 12px; border-radius: 8px; margin-bottom: 4px;
+  display: flex; align-items: center; gap: 8px; cursor: pointer;
+  position: relative;
+}
+.mock-sidebar-item:hover { background: var(--card); }
+.mock-sidebar-item.hot { background: var(--card); box-shadow: 0 0 0 2px var(--accent); }
+.mock-sidebar-item .pin {
+  position: absolute; right: -8px; top: -8px;
+  width: 22px; height: 22px; border-radius: 50%;
+  background: var(--accent); color: var(--bg);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--mono); font-size: 11px; font-weight: 600;
+  opacity: 0; transform: scale(0); transition: all .3s;
+}
+.mock-sidebar-item.hot .pin { opacity: 1; transform: scale(1); }
+
+.mock-main { padding: 24px; display: flex; flex-direction: column; gap: 14px; }
+.mock-row-top { display: flex; gap: 10px; align-items: center; }
+.mock-model-selector {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
+  padding: 6px 12px; border: 1px solid var(--line); border-radius: 100px;
+  color: var(--ink-2); background: var(--bg); position: relative; cursor: pointer;
+}
+.mock-model-selector.hot { box-shadow: 0 0 0 2px var(--accent); }
+.mock-model-selector .pin {
+  position: absolute; right: -8px; top: -8px;
+  width: 22px; height: 22px; border-radius: 50%;
+  background: var(--accent); color: var(--bg);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--mono); font-size: 11px; font-weight: 600;
+  opacity: 0; transform: scale(0); transition: all .3s;
+}
+.mock-model-selector.hot .pin { opacity: 1; transform: scale(1); }
+
+.mock-input {
+  flex: 1; min-height: 120px;
+  background: var(--bg); border: 1px solid var(--line); border-radius: 14px;
+  padding: 16px; font-family: var(--body); font-size: 13px; color: var(--muted-2);
+  position: relative; cursor: pointer;
+}
+.mock-input.hot { box-shadow: 0 0 0 2px var(--accent); }
+.mock-input .pin {
+  position: absolute; right: -8px; top: -8px;
+  width: 22px; height: 22px; border-radius: 50%;
+  background: var(--accent); color: var(--bg);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--mono); font-size: 11px; font-weight: 600;
+  opacity: 0; transform: scale(0); transition: all .3s;
+}
+.mock-input.hot .pin { opacity: 1; transform: scale(1); }
+.mock-input::after {
+  content: ""; position: absolute; bottom: 12px; right: 12px;
+  width: 24px; height: 24px; background: var(--accent); border-radius: 50%;
+}
+.mock-tools { display: flex; gap: 6px; margin-top: 8px; }
+.mock-tool-chip { font-family: var(--mono); font-size: 10px; color: var(--muted); padding: 4px 10px; border: 1px solid var(--line); border-radius: 100px; }
+
+.legend { margin-top: 24px; display: flex; gap: 18px; flex-wrap: wrap; justify-content: center; }
+.legend-item { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--ink-2); }
+.legend-num { width: 22px; height: 22px; border-radius: 50%; background: var(--accent); color: var(--bg); display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 11px; font-weight: 600; }
+
+/* Proyectos + estilos */
+.proj-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 240px)); gap: 16px; }
+.proj-card {
+  background: var(--card); border: 1px solid var(--line); border-radius: 16px;
+  padding: 20px; cursor: pointer; transition: all .3s;
+  opacity: 0; transform: translateY(10px);
+}
+.proj-card.show { opacity: 1; transform: translateY(0); }
+.proj-card:hover { transform: translateY(-4px); box-shadow: 0 6px 20px rgba(28,26,22,.08); border-color: var(--accent); }
+.proj-card .icon { font-size: 24px; margin-bottom: 12px; }
+.proj-card .name { font-family: var(--display); font-size: 18px; margin-bottom: 6px; }
+.proj-card .desc { font-size: 13px; color: var(--ink-2); line-height: 1.55; }
+
+/* Configuración toggles */
+.cfg-list { display: flex; flex-direction: column; gap: 10px; max-width: 460px; width: 100%; }
+.cfg-row {
+  background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+  padding: 14px 16px; display: flex; align-items: center; justify-content: space-between;
+  cursor: pointer; transition: all .2s;
+  opacity: 0; transform: translateY(8px);
+}
+.cfg-row.show { opacity: 1; transform: translateY(0); }
+.cfg-row:hover { border-color: var(--ink-2); }
+.cfg-text .cfg-name { font-weight: 600; color: var(--ink); margin-bottom: 2px; font-size: 14px; }
+.cfg-text .cfg-desc { font-size: 12px; color: var(--muted); }
+.cfg-toggle {
+  width: 40px; height: 22px; background: var(--line-2); border-radius: 100px;
+  position: relative; transition: background .2s; flex-shrink: 0;
+}
+.cfg-toggle::after {
+  content: ""; position: absolute; left: 2px; top: 2px;
+  width: 18px; height: 18px; background: var(--card);
+  border-radius: 50%; transition: all .2s;
+  box-shadow: 0 1px 3px rgba(0,0,0,.2);
+}
+.cfg-row.on .cfg-toggle { background: var(--olive); }
+.cfg-row.on .cfg-toggle::after { transform: translateX(18px); }
+
+/* Cierre + checkpoint */
+.scene-close .label { font-family: var(--mono); font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); margin-bottom: 20px; }
+.scene-close h2 { font-family: var(--display); font-style: italic; font-weight: 400; font-size: clamp(36px, 5vw, 64px); letter-spacing: -0.02em; color: var(--ink); line-height: 1.1; text-align: center; max-width: 18ch; margin-bottom: 32px; }
+.scene-close h2 em { font-style: normal; color: var(--accent); }
+.check { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 24px; max-width: 520px; width: 100%; }
+.check-label { font-family: var(--mono); font-size: 10px; letter-spacing: .15em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
+.check-q { font-size: 16px; color: var(--ink-2); margin-bottom: 16px; }
+.check-options { display: flex; flex-direction: column; gap: 8px; }
+.check-opt { background: var(--bg); border: 1px solid var(--line); border-radius: 10px; padding: 12px 16px; cursor: pointer; font-size: 14px; color: var(--ink-2); text-align: left; transition: all .2s; font-family: var(--body); }
+.check-opt:hover { border-color: var(--ink-2); }
+.check-opt.correct { background: rgba(79,93,56,.08); border-color: var(--olive); color: var(--olive); font-weight: 600; }
+.check-opt.wrong { background: rgba(200,84,43,.06); border-color: var(--accent); color: var(--accent-2); }
+.check-opt.disabled { pointer-events: none; opacity: .55; }
+.check-feedback { margin-top: 14px; font-size: 14px; color: var(--olive); opacity: 0; transition: opacity .4s; }
+.check-feedback.show { opacity: 1; }
+.next { margin-top: 20px; background: var(--card); border: 1px solid var(--line); border-left: 4px solid var(--accent); border-radius: 14px; padding: 16px 20px; max-width: 520px; text-align: left; }
+.next-label { font-family: var(--mono); font-size: 10px; letter-spacing: .15em; text-transform: uppercase; color: var(--accent); margin-bottom: 6px; }
+.next-text { font-size: 14px; color: var(--ink-2); line-height: 1.55; }
+
+/* Captions, chips, brand, controls — SAME pattern */
+.captions { position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); max-width: 720px; width: calc(100% - 80px); max-height: 52px; overflow: hidden; text-align: center; font-size: 17px; line-height: 1.5; color: var(--ink); background: rgba(251,248,240,.92); backdrop-filter: blur(8px); border: 1px solid var(--line); border-radius: 14px; padding: 8px 14px; opacity: 0; transition: opacity .4s; z-index: 5; pointer-events: none; }
+.captions.show { opacity: 1; }
+.chip-nav { flex-shrink: 0; display: flex; gap: 6px; margin: 12px auto 0; padding: 4px; background: rgba(251,248,240,.85); backdrop-filter: blur(12px); border: 1px solid var(--line); border-radius: 100px; width: fit-content; z-index: 10; }
+.chip { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 11px; color: var(--muted); background: transparent; border: none; cursor: pointer; transition: all .2s; }
+.chip:hover { background: var(--bg-2); color: var(--ink); }
+.chip.active { background: var(--ink); color: var(--bg); }
+.brand-mark { position: absolute; top: 10px; left: 14px; font-family: var(--display); font-style: italic; font-size: 14px; letter-spacing: -0.02em; color: var(--ink); z-index: 100; }
+.brand-mark em { font-style: normal; color: var(--accent); }
+.brand-tag { margin-left: 8px; font-family: var(--mono); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+.controls { flex-shrink: 0; display: flex; align-items: center; gap: 12px; margin: 12px auto; padding: 6px 10px; background: rgba(251,248,240,.92); backdrop-filter: blur(12px); border: 1px solid var(--line); border-radius: 100px; box-shadow: 0 4px 24px rgba(28,26,22,.08); width: fit-content; z-index: 10; }
+.btn { background: transparent; border: 1px solid var(--line-2); color: var(--ink-2); font-family: var(--mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; padding: 8px 14px; border-radius: 100px; cursor: pointer; transition: all .2s; }
+.btn:hover { border-color: var(--ink-2); color: var(--ink); }
+.btn-primary { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.btn-primary:hover { background: var(--accent); border-color: var(--accent); color: var(--bg); }
+.btn-icon { width: 36px; height: 36px; padding: 0; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+.progress-wrap { width: 220px; cursor: pointer; padding: 8px 0; position: relative; }
+.progress { width: 100%; height: 4px; background: var(--line-2); border-radius: 100px; overflow: hidden; pointer-events: none; }
+.progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--gold)); transition: width .15s linear; width: 0%; }
+.progress-wrap:hover .progress { height: 6px; transition: height .15s; }
+.time { font-family: var(--mono); font-size: 11px; color: var(--muted); min-width: 70px; text-align: center; }
+
+
+
+
+
+
+
+@media (max-width: 760px) {
+  .chip-nav { display: none; }
+  .progress-wrap { width: 120px; }
+  .doors-grid { grid-template-columns: 1fr; }
+  .plans-grid { grid-template-columns: repeat(2, 1fr); }
+  .proj-grid { grid-template-columns: 1fr; }
+  .mock-claude { grid-template-columns: 1fr; height: auto; }
+  .scene { padding: 40px 24px 100px; }
+}
+
+/* Anti-solape fixes */
+@media (max-height: 720px) {
+  .scene { padding-top: 40px; padding-bottom: 100px; }
+  .captions { bottom: 24px; }
+  .scene-title h1 { font-size: clamp(32px, 5vw, 60px); }
+}
+@media (max-width: 600px) {
+  .captions { font-size: 14px; padding: 10px 14px; bottom: 24px; }
+  .scene { padding: 40px 24px 100px; }
+  .scene-title h1 { font-size: clamp(28px, 8vw, 48px); }
+  .s-title { font-size: clamp(22px, 6vw, 36px); }
+  .s-sub { font-size: 13px; margin-bottom: 22px; }
+}
+/* Hacer las escenas scrolleables si su contenido excede */
+.scene { -webkit-overflow-scrolling: touch; }
+.scene::-webkit-scrollbar { width: 6px; }
+.scene::-webkit-scrollbar-thumb { background: var(--line-2); border-radius: 100px; }
+
+@media (min-width: 900px) {
+  .scene-diff .grid { grid-template-columns: repeat(4, minmax(0, 220px)) !important; }
+}
+</style>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/favicon.svg">
+</head>
+<body>
+<div class="brand-mark">Claude<em>·101</em> <span class="brand-tag">Módulo 2</span></div>
+<div class="chip-nav" id="chipNav"></div>
+
+<div class="stage">
+
+  <!-- 1: Title -->
+  <div class="scene scene-title" data-scene="1">
+    <div class="label">Curso de formación · Anthropic</div>
+    <h1>Primeros <em>pasos</em></h1>
+    <p class="sub">Cómo entrar, dónde está cada cosa, y la configuración que conviene hacer antes de ponerse a trabajar.</p>
+  </div>
+
+  <!-- 2: Cuatro puertas de entrada -->
+  <div class="scene" data-scene="2">
+    <h2 class="s-title">Cuatro <em>puertas</em> de entrada</h2>
+    <p class="s-sub">Cuatro formas de acceder a Claude según cómo y dónde trabajes.</p>
+    <div class="doors-grid">
+      <div class="door" id="door-1"><div class="door-icon">🌐</div><div class="door-text"><div class="door-name">claude.ai</div><div class="door-desc">La web pública. Abres el navegador y a chatear.</div></div></div>
+      <div class="door" id="door-2"><div class="door-icon">📱</div><div class="door-text"><div class="door-name">App móvil</div><div class="door-desc">iOS y Android. Misma experiencia en pantalla pequeña.</div></div></div>
+      <div class="door" id="door-3"><div class="door-icon">💻</div><div class="door-text"><div class="door-name">App de escritorio</div><div class="door-desc">Mac y Windows. Atajos y acceso rápido.</div></div></div>
+      <div class="door" id="door-4"><div class="door-icon">⌨️</div><div class="door-text"><div class="door-name">API y Claude Code</div><div class="door-desc">Para devs que integran Claude o trabajan en terminal.</div></div></div>
+    </div>
+  </div>
+
+  <!-- 3: Planes -->
+  <div class="scene" data-scene="3">
+    <h2 class="s-title">Cuatro <em>planes</em></h2>
+    <p class="s-sub">Free para empezar. Pro si lo usas todos los días. Team y Enterprise para organizaciones.</p>
+    <div class="plans-grid">
+      <div class="plan" id="plan-1"><div class="name">Free</div><div class="price">0 €/mes</div><div class="feat">Límites de uso. Suficiente para probar.</div></div>
+      <div class="plan featured" id="plan-2"><div class="plan-tag">Recomendado</div><div class="name">Pro</div><div class="price">~$20/mes</div><div class="feat">Más capacidad, acceso prioritario a los modelos potentes.</div></div>
+      <div class="plan" id="plan-3"><div class="name">Team</div><div class="price">Por usuario</div><div class="feat">Colaboración, gestión de equipos, controles de admin.</div></div>
+      <div class="plan" id="plan-4"><div class="name">Enterprise</div><div class="price">A medida</div><div class="feat">Para organizaciones grandes con requisitos específicos.</div></div>
+    </div>
+  </div>
+
+  <!-- 4: Anatomía interfaz -->
+  <div class="scene" data-scene="4">
+    <h2 class="s-title">Anatomía de la <em>interfaz</em></h2>
+    <p class="s-sub">Cinco elementos que vas a usar todos los días. Las chinchetas se iluminan según los nombramos.</p>
+    <div class="mock-claude">
+      <div class="mock-sidebar">
+        <div class="mock-sidebar-item" id="anat-3">📜 Historial<div class="pin">3</div></div>
+        <div class="mock-sidebar-item" id="anat-4">📁 Proyectos<div class="pin">4</div></div>
+        <div class="mock-sidebar-item" id="anat-5">⚙️ Configuración<div class="pin">5</div></div>
+      </div>
+      <div class="mock-main">
+        <div class="mock-row-top">
+          <div class="mock-model-selector" id="anat-2">Sonnet ▾<div class="pin">2</div></div>
+        </div>
+        <div class="mock-input" id="anat-1">Escribe tu mensaje a Claude…<div class="pin">1</div></div>
+        <div class="mock-tools">
+          <span class="mock-tool-chip">🌐 Web</span>
+          <span class="mock-tool-chip">📎 Adjuntar</span>
+          <span class="mock-tool-chip">📄 Archivo</span>
+        </div>
+      </div>
+    </div>
+    <div class="legend">
+      <div class="legend-item"><div class="legend-num">1</div> Caja de mensaje</div>
+      <div class="legend-item"><div class="legend-num">2</div> Selector de modelo</div>
+      <div class="legend-item"><div class="legend-num">3</div> Historial</div>
+      <div class="legend-item"><div class="legend-num">4</div> Proyectos</div>
+      <div class="legend-item"><div class="legend-num">5</div> Configuración</div>
+    </div>
+  </div>
+
+  <!-- 5: Conversaciones, proyectos, estilos -->
+  <div class="scene" data-scene="5">
+    <h2 class="s-title">Conversaciones, proyectos, <em>estilos</em></h2>
+    <p class="s-sub">Tres conceptos que cambian tu productividad cuando los entiendes.</p>
+    <div class="proj-grid">
+      <div class="proj-card" id="proj-1"><div class="icon">💬</div><div class="name">Conversación</div><div class="desc">La unidad básica. Un hilo donde Claude recuerda todo lo dicho. No mezcles temas.</div></div>
+      <div class="proj-card" id="proj-2"><div class="icon">📁</div><div class="name">Proyecto</div><div class="desc">Una carpeta con contexto. Subes documentos clave una vez y todas las conversaciones los tienen.</div></div>
+      <div class="proj-card" id="proj-3"><div class="icon">🎨</div><div class="name">Estilo</div><div class="desc">Configura cómo se expresa Claude: tono formal, directo, divertido, etc.</div></div>
+    </div>
+  </div>
+
+  <!-- 6: Configuración esencial -->
+  <div class="scene" data-scene="6">
+    <h2 class="s-title">Configuración <em>esencial</em></h2>
+    <p class="s-sub">Pulsa cualquier toggle para activarlo. Empieza con lo básico.</p>
+    <div class="cfg-list">
+      <div class="cfg-row on" id="cfg-1"><div class="cfg-text"><div class="cfg-name">Preferencias de usuario</div><div class="cfg-desc">Cómo te llamas, a qué te dedicas, cómo prefieres respuestas.</div></div><div class="cfg-toggle"></div></div>
+      <div class="cfg-row" id="cfg-2"><div class="cfg-text"><div class="cfg-name">Búsqueda web</div><div class="cfg-desc">Para información posterior al corte de conocimiento.</div></div><div class="cfg-toggle"></div></div>
+      <div class="cfg-row" id="cfg-3"><div class="cfg-text"><div class="cfg-name">Memoria</div><div class="cfg-desc">Recordar datos relevantes entre conversaciones.</div></div><div class="cfg-toggle"></div></div>
+      <div class="cfg-row" id="cfg-4"><div class="cfg-text"><div class="cfg-name">Creación de archivos</div><div class="cfg-desc">Exportar a Word, Excel, PowerPoint, PDF.</div></div><div class="cfg-toggle"></div></div>
+      <div class="cfg-row" id="cfg-5"><div class="cfg-text"><div class="cfg-name">Conectores</div><div class="cfg-desc">Drive, Slack, GitHub, etc. Revisa permisos al activarlos.</div></div><div class="cfg-toggle"></div></div>
+    </div>
+  </div>
+
+  <!-- 7: Cierre + checkpoint -->
+  <div class="scene scene-close" data-scene="7">
+    <div class="label">Fin del módulo 2</div>
+    <h2>Ya estás dentro. Ahora <em>cómo hablarle</em>.</h2>
+    <div class="check">
+      <div class="check-label">Checkpoint rápido</div>
+      <div class="check-q">Trabajas con el mismo cliente recurrente cada semana, con varios documentos de referencia. ¿Cómo lo organizas?</div>
+      <div class="check-options">
+        <button class="check-opt" data-correct="false" data-fb="Mezclar todo en un hilo único ensucia la memoria. Mejor un proyecto.">Una sola conversación gigante</button>
+        <button class="check-opt" data-correct="true" data-fb="Correcto. Un proyecto con los documentos fijados de una vez por todas. Cada conversación dentro ya tiene el contexto.">Un proyecto con los docs subidos</button>
+        <button class="check-opt" data-correct="false" data-fb="Re-pegar el contexto cada vez es trabajo manual evitable. Los proyectos existen para esto.">Pegar el contexto en cada chat</button>
+      </div>
+      <div class="check-feedback" id="checkFb"></div>
+    </div>
+    <div class="next">
+      <div class="next-label">Próximo módulo</div>
+      <div class="next-text">El arte del prompt — la habilidad que multiplica todo lo demás.</div>
+    </div>
+  </div>
+
+<div class="captions" id="captions"></div></div>
+
+
+
+<div class="controls">
+  <button class="btn btn-primary" id="btnPlay">▶︎ Play</button>
+  <button class="btn btn-icon" id="btnRestart" title="Reiniciar">↻</button>
+  <div class="progress-wrap" id="progressWrap"><div class="progress"><div class="progress-fill" id="progressFill"></div></div></div>
+  <div class="time" id="time">0:00 / 2:30</div>
+</div>
+
+<script>
+// Música (igual que M1)
+class AmbientMusic{constructor(){this.muted=true;}init(){}build(){}async play(){}pause(){}toggleMute(){return true;}}
+const music = new AmbientMusic();
+
+const TIMELINE = [
+  { t: 0,   scene: 1, caption: "Cuatro maneras distintas de abrir Claude. Cuatro experiencias diferentes." },
+  { t: 6,   scene: 1, caption: "Entramos a la app, vemos qué hay dentro, y dejamos la configuración bien hecha." },
+  { t: 14,  scene: 2, caption: "Empezamos por lo básico: ¿cómo entras?" },
+  { t: 18,  scene: 2, caption: "claude.ai — la web pública. El punto de entrada habitual.", action: "show-door-1" },
+  { t: 24,  scene: 2, caption: "La app móvil — iOS y Android. Útil cuando vas en transporte.", action: "show-door-2" },
+  { t: 30,  scene: 2, caption: "La app de escritorio — para uso diario intenso. Atajos y acceso rápido.", action: "show-door-3" },
+  { t: 36,  scene: 2, caption: "Y para devs: la API y Claude Code, que veremos en el módulo 8.", action: "show-door-4" },
+  { t: 44,  scene: 3, caption: "Cuatro planes: gratuito, Pro, Team y Enterprise.", action: "show-plan-1" },
+  { t: 49,  scene: 3, caption: "El gratuito tiene límites pero te deja probar todo.", action: "show-plan-1" },
+  { t: 54,  scene: 3, caption: "Pro es el que tiene sentido si lo usas a diario.", action: "show-plan-2" },
+  { t: 59,  scene: 3, caption: "Team y Enterprise — para organizaciones con varias personas y requisitos específicos.", action: "show-plan-34" },
+  { t: 66,  scene: 4, caption: "Vamos a abrir Claude y nombrar cada cosa." },
+  { t: 70,  scene: 4, caption: "Uno: la caja de mensaje. Donde escribes — pero también adjuntas archivos.", action: "anat-1" },
+  { t: 76,  scene: 4, caption: "Dos: el selector de modelo. Sonnet por defecto, Opus o Haiku según la tarea.", action: "anat-2" },
+  { t: 82,  scene: 4, caption: "Tres: el historial. Todas tus conversaciones por fecha.", action: "anat-3" },
+  { t: 87,  scene: 4, caption: "Cuatro: los proyectos. La función más infrautilizada.", action: "anat-4" },
+  { t: 92,  scene: 4, caption: "Cinco: la configuración, donde haremos los ajustes esenciales en un minuto.", action: "anat-5" },
+  { t: 100, scene: 5, caption: "Tres conceptos que cambian tu productividad cuando los entiendes." },
+  { t: 105, scene: 5, caption: "La conversación es la unidad básica — un hilo donde Claude recuerda todo lo dicho.", action: "show-proj-1" },
+  { t: 111, scene: 5, caption: "El proyecto es una carpeta con contexto propio — subes documentos una vez y se aplican siempre.", action: "show-proj-2" },
+  { t: 118, scene: 5, caption: "Y los estilos cambian el tono con el que Claude te responde.", action: "show-proj-3" },
+  { t: 125, scene: 6, caption: "Tres ajustes que conviene hacer antes de trabajar en serio." },
+  { t: 130, scene: 6, caption: "Preferencias de usuario — tu Claude suena mejor en dos minutos.", action: "show-cfg-1" },
+  { t: 135, scene: 6, caption: "Búsqueda web para información actual.", action: "show-cfg-2" },
+  { t: 140, scene: 6, caption: "Memoria si quieres que Claude recuerde entre conversaciones.", action: "show-cfg-3" },
+  { t: 145, scene: 6, caption: "Creación de archivos para Word, Excel, PowerPoint, PDF.", action: "show-cfg-4" },
+  { t: 150, scene: 6, caption: "Y conectores con apps externas — activa solo los que uses.", action: "show-cfg-5" },
+  { t: 156, scene: 7, caption: "Ya estás dentro. Lo siguiente es lo más importante: cómo hablarle." },
+  { t: 162, scene: 7, caption: "" }
+];
+const DURATION = 165;
+
+const scenes = document.querySelectorAll('.scene');
+const captionsEl = document.getElementById('captions');
+const playBtn = document.getElementById('btnPlay');
+const restartBtn = document.getElementById('btnRestart');
+const progressWrap = document.getElementById('progressWrap');
+const progressFill = document.getElementById('progressFill');
+const timeEl = document.getElementById('time');
+const chipNav = document.getElementById('chipNav');
+const SCENE_COUNT = 7;
+
+let startTime=0, elapsed=0, playing=false, rafId=null, lastIdx=-1, currentScene=1;
+
+const fmtTime = s => `${Math.floor(s/60)}:${String(Math.max(0,Math.floor(s%60))).padStart(2,'0')}`;
+
+function setScene(n){
+  if(n===currentScene)return;
+  currentScene=n;
+  scenes.forEach(s=>s.classList.toggle('active',parseInt(s.dataset.scene,10)===n));
+  chipNav.querySelectorAll('.chip').forEach(c=>c.classList.toggle('active',parseInt(c.dataset.scene,10)===n));
+}
+function setCaption(t){if(!t){captionsEl.classList.remove('show');return;}captionsEl.textContent=t;captionsEl.classList.add('show');}
+
+function runAction(a){
+  if(!a)return;
+  if(a.startsWith('show-door-')) document.getElementById('door-'+a.split('-')[2])?.classList.add('show');
+  if(a.startsWith('show-plan-')){
+    const v=a.split('-')[2];
+    if(v==='34'){document.getElementById('plan-3')?.classList.add('show');document.getElementById('plan-4')?.classList.add('show');}
+    else document.getElementById('plan-'+v)?.classList.add('show');
+  }
+  if(a.startsWith('anat-')){
+    document.querySelectorAll('[id^="anat-"]').forEach(el=>el.classList.remove('hot'));
+    document.getElementById(a)?.classList.add('hot');
+  }
+  if(a.startsWith('show-proj-')) document.getElementById('proj-'+a.split('-')[2])?.classList.add('show');
+  if(a.startsWith('show-cfg-')){
+    const el=document.getElementById('cfg-'+a.split('-')[2]);
+    if(el){el.classList.add('show');el.classList.add('on');}
+  }
+}
+
+function resetState(){
+  document.querySelectorAll('.door,.plan,.proj-card,.cfg-row').forEach(e=>e.classList.remove('show'));
+  document.querySelectorAll('[id^="anat-"]').forEach(e=>e.classList.remove('hot'));
+  document.querySelectorAll('.cfg-row').forEach(e=>e.classList.remove('on'));
+  // Plan-2 mantiene su featured pero no su 'on'
+  document.getElementById('cfg-1')?.classList.add('on','show'); // primer toggle visible por estética inicial — pero se reseteará en seekTo replay
+  document.getElementById('cfg-1')?.classList.remove('show','on');
+  lastIdx=-1;
+}
+
+function seekTo(t){
+  elapsed=Math.max(0,Math.min(DURATION,t));
+  startTime=performance.now()-elapsed*1000;
+  resetState();
+  let idx=-1;
+  for(let i=0;i<TIMELINE.length;i++){if(TIMELINE[i].t<=elapsed)idx=i;else break;}
+  for(let i=0;i<=idx;i++){runAction(TIMELINE[i].action);}
+  if(idx>=0){setScene(TIMELINE[idx].scene);setCaption(TIMELINE[idx].caption);lastIdx=idx;}
+  progressFill.style.width=(elapsed/DURATION*100)+'%';
+  timeEl.textContent=fmtTime(elapsed)+' / '+fmtTime(DURATION);
+}
+
+function tick(){
+  if(!playing)return;
+  elapsed=(performance.now()-startTime)/1000;
+  if(elapsed>=DURATION){elapsed=DURATION;playing=false;playBtn.textContent='▶︎ Replay';music.pause();}
+  let idx=-1;
+  for(let i=0;i<TIMELINE.length;i++){if(TIMELINE[i].t<=elapsed)idx=i;else break;}
+  if(idx!==lastIdx&&idx>=0){const e=TIMELINE[idx];setScene(e.scene);setCaption(e.caption);runAction(e.action);lastIdx=idx;}
+  progressFill.style.width=(elapsed/DURATION*100)+'%';
+  timeEl.textContent=fmtTime(elapsed)+' / '+fmtTime(DURATION);
+  if(playing)rafId=requestAnimationFrame(tick);
+}
+function play(){if(elapsed>=DURATION){restart();return;}playing=true;startTime=performance.now()-elapsed*1000;playBtn.textContent='⏸ Pause';music.play();tick();}
+function pause(){playing=false;if(rafId)cancelAnimationFrame(rafId);playBtn.textContent='▶︎ Play';music.pause();}
+function restart(){pause();elapsed=0;resetState();setScene(1);setCaption(TIMELINE[0].caption);progressFill.style.width='0%';timeEl.textContent='0:00 / '+fmtTime(DURATION);setTimeout(play,250);}
+
+playBtn.addEventListener('click',()=>{playing?pause():play();});
+restartBtn.addEventListener('click',restart);
+progressWrap.addEventListener('click',e=>{const r=progressWrap.getBoundingClientRect();const x=e.clientX-r.left;const p=Math.max(0,Math.min(1,x/r.width));const w=playing;pause();seekTo(p*DURATION);if(w)play();});
+
+for(let i=1;i<=SCENE_COUNT;i++){
+  const b=document.createElement('button');b.className='chip'+(i===1?' active':'');b.dataset.scene=i;b.textContent=i;
+  b.addEventListener('click',()=>{const target=TIMELINE.find(t=>t.scene===i);if(target){const w=playing;pause();seekTo(target.t);if(w)play();}});
+  chipNav.appendChild(b);
+}
+
+// Interactividad de cards
+document.querySelectorAll('.door').forEach(d=>d.addEventListener('click',()=>{document.querySelectorAll('.door').forEach(x=>x.classList.remove('active'));d.classList.add('active');d.classList.add('show');}));
+document.querySelectorAll('.plan').forEach(p=>p.addEventListener('click',()=>p.classList.add('show')));
+document.querySelectorAll('.proj-card').forEach(p=>p.addEventListener('click',()=>p.classList.add('show')));
+document.querySelectorAll('.cfg-row').forEach(r=>r.addEventListener('click',()=>{r.classList.add('show');r.classList.toggle('on');}));
+
+document.querySelectorAll('.check-opt').forEach(opt=>{
+  opt.addEventListener('click',()=>{
+    const ok=opt.dataset.correct==='true';
+    const fb=document.getElementById('checkFb');
+    document.querySelectorAll('.check-opt').forEach(o=>o.classList.add('disabled'));
+    opt.classList.add(ok?'correct':'wrong');
+    if(!ok)document.querySelectorAll('.check-opt').forEach(o=>{if(o.dataset.correct==='true')o.classList.add('correct');});
+    fb.textContent=opt.dataset.fb;fb.classList.add('show');
+  });
+});
+
+setScene(1);setCaption(TIMELINE[0].caption);timeEl.textContent='0:00 / '+fmtTime(DURATION);
+setTimeout(()=>{if(!playing)play();},1200);
+document.addEventListener('click',()=>{if(music.ctx&&music.ctx.state==='suspended')music.ctx.resume();},{once:true});
+</script>
+</body>
+</html>

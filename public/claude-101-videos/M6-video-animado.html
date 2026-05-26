@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude 101 · Módulo 6</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Geist:wght@300..700&family=Geist+Mono:wght@400..600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F4EFE3;--bg-2:#EFE9DA;--card:#FBF8F0;--ink:#1C1A16;--ink-2:#3A352D;--muted:#756B5B;--muted-2:#A39782;--line:#E1D8C2;--line-2:#CFC4AA;--accent:#C8542B;--accent-2:#8B3A1E;--olive:#4F5D38;--gold:#B08436;--display:'Fraunces',Georgia,serif;--body:'Geist',system-ui,sans-serif;--mono:'Geist Mono',ui-monospace,monospace;}
+*{box-sizing:border-box;margin:0;padding:0;}
+html, body { height: 100%; margin: 0; padding: 0; background: var(--bg); color: var(--ink); font-family: var(--body); overflow: hidden; }
+body { display: flex; flex-direction: column; }
+body{background-image:radial-gradient(circle at 12% 8%,rgba(200,84,43,.06) 0%,transparent 40%),radial-gradient(circle at 88% 92%,rgba(79,93,56,.05) 0%,transparent 40%);}
+.stage { flex: 1; min-height: 0; position: relative; overflow: hidden; width: 100%; }
+.scene{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;padding: 24px 40px 60px;overflow-y:auto;opacity:0;transform:translateY(20px);transition:opacity .8s cubic-bezier(.2,.8,.2,1),transform .8s cubic-bezier(.2,.8,.2,1);pointer-events:none;}
+.scene.active{opacity:1;transform:translateY(0);pointer-events:auto;}
+.scene-title .label{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:28px;}
+.scene-title h1{font-family:var(--display);font-style:italic;font-weight:400;font-size:clamp(40px,6vw,80px);letter-spacing:-0.025em;font-variation-settings:"opsz" 144,"SOFT" 50;color:var(--ink);line-height:1.05;text-align:center;max-width:18ch;}
+.scene-title h1 em{font-style:normal;color:var(--accent);}
+.scene-title .sub{margin-top:36px;font-size:18px;color:var(--muted);max-width:36ch;text-align:center;}
+.s-title{font-family:var(--display);font-size:clamp(28px,3.5vw,46px);font-weight:400;margin-bottom:16px;text-align:center;}
+.s-title em{font-style:italic;color:var(--accent);}
+.s-sub{color:var(--muted);margin-bottom:36px;text-align:center;max-width:56ch;}
+
+/* Flujo escritura — 4 pasos */
+.flow{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;}
+.flow-step{
+  background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;
+  min-width:160px;text-align:center;
+  opacity:0;transform:scale(.94);transition:all .4s;
+  cursor:pointer;
+}
+.flow-step.show{opacity:1;transform:scale(1);}
+.flow-step:hover{border-color:var(--accent);transform:translateY(-4px);}
+.flow-step .num{font-family:var(--mono);font-size:11px;letter-spacing:.15em;color:var(--accent);text-transform:uppercase;margin-bottom:8px;}
+.flow-step .name{font-family:var(--display);font-size:18px;margin-bottom:4px;}
+.flow-step .desc{font-size:11px;color:var(--muted);}
+.flow-arrow{color:var(--muted-2);font-size:18px;opacity:0;transition:opacity .3s;}
+.flow-arrow.show{opacity:1;}
+
+/* Código antes/después — diff visual */
+.code-mock{
+  width:100%;max-width:720px;background:#1F1B16;border-radius:14px;overflow:hidden;
+  font-family:var(--mono);font-size:12px;
+}
+.code-head{padding:10px 14px;background:#2A2419;border-bottom:1px solid #3A3024;display:flex;justify-content:space-between;align-items:center;}
+.code-tab{color:#A0A0A0;font-size:11px;}
+.code-status{font-family:var(--mono);font-size:10px;color:#FFB47A;padding:2px 8px;background:rgba(255,180,122,.15);border-radius:6px;}
+.code-body{padding:14px;color:#E8E4DA;line-height:1.7;}
+.code-line{display:block;opacity:.7;transition:opacity .3s;}
+.code-line.highlight{opacity:1;background:rgba(168,197,136,.18);margin:0 -14px;padding:0 14px;}
+.code-line.removed{opacity:1;background:rgba(200,84,43,.18);margin:0 -14px;padding:0 14px;color:#FFA994;}
+.code-comment{color:#A8C588;}
+.code-keyword{color:#FFB47A;}
+.code-fn{color:#D9B97A;}
+
+/* Análisis dashboard */
+.dashboard{width:100%;max-width:760px;display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+.dash-card{
+  background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;
+  opacity:0;transform:translateY(10px);transition:all .5s;
+}
+.dash-card.show{opacity:1;transform:translateY(0);}
+.dash-card .label{font-family:var(--mono);font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;}
+.dash-card .big{font-family:var(--display);font-size:32px;letter-spacing:-0.02em;color:var(--ink);}
+.dash-card .delta{font-family:var(--mono);font-size:11px;color:var(--olive);margin-top:4px;}
+.dash-card .delta.neg{color:var(--accent);}
+.dash-chart{grid-column:span 3;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;opacity:0;transition:all .5s;}
+.dash-chart.show{opacity:1;}
+.dash-chart .chart{height:80px;display:flex;align-items:flex-end;gap:6px;}
+.dash-chart .bar{flex:1;background:linear-gradient(180deg,var(--accent),var(--gold));border-radius:4px 4px 0 0;height:50%;transition:height .8s;}
+
+/* Creatividad — chips de ideas */
+.ideas{width:100%;max-width:760px;display:flex;flex-wrap:wrap;gap:8px;justify-content:center;}
+.idea{
+  background:var(--card);border:1px solid var(--line);border-radius:100px;
+  padding:10px 16px;font-size:13px;color:var(--ink-2);
+  opacity:0;transform:scale(.85);transition:all .4s;cursor:pointer;
+}
+.idea.show{opacity:1;transform:scale(1);}
+.idea:hover{border-color:var(--accent);background:rgba(200,84,43,.05);}
+.idea.starred{background:linear-gradient(135deg,var(--accent),var(--gold));color:var(--bg);border-color:transparent;}
+.idea.starred::before{content:"⭐ ";}
+.idea-note{
+  margin-top:20px;background:var(--card);border:1px solid var(--line);border-left:4px solid var(--olive);
+  border-radius:12px;padding:14px 18px;font-size:13px;color:var(--ink-2);max-width:560px;
+  font-style:italic;
+}
+
+/* Cierre + checkpoint */
+.scene-close .label{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:20px;}
+.scene-close h2{font-family:var(--display);font-style:italic;font-weight:400;font-size:clamp(36px,5vw,64px);letter-spacing:-0.02em;color:var(--ink);line-height:1.1;text-align:center;max-width:18ch;margin-bottom:32px;}
+.scene-close h2 em{font-style:normal;color:var(--accent);}
+.check{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px;max-width:560px;width:100%;}
+.check-label{font-family:var(--mono);font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--accent);margin-bottom:8px;}
+.check-q{font-size:16px;color:var(--ink-2);margin-bottom:16px;}
+.check-options{display:flex;flex-direction:column;gap:8px;}
+.check-opt{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:12px 16px;cursor:pointer;font-size:14px;color:var(--ink-2);text-align:left;transition:all .2s;font-family:var(--body);}
+.check-opt:hover{border-color:var(--ink-2);}
+.check-opt.correct{background:rgba(79,93,56,.08);border-color:var(--olive);color:var(--olive);font-weight:600;}
+.check-opt.wrong{background:rgba(200,84,43,.06);border-color:var(--accent);color:var(--accent-2);}
+.check-opt.disabled{pointer-events:none;opacity:.55;}
+.check-feedback{margin-top:14px;font-size:14px;color:var(--olive);opacity:0;transition:opacity .4s;}
+.check-feedback.show{opacity:1;}
+.next{margin-top:20px;background:var(--card);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:14px;padding:16px 20px;max-width:560px;text-align:left;}
+.next-label{font-family:var(--mono);font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--accent);margin-bottom:6px;}
+.next-text{font-size:14px;color:var(--ink-2);line-height:1.55;}
+
+.captions { position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); max-width: 720px; width: calc(100% - 80px); max-height: 52px; overflow: hidden; text-align: center; font-size: 17px; line-height: 1.5; color: var(--ink); background: rgba(251,248,240,.92); backdrop-filter: blur(8px); border: 1px solid var(--line); border-radius: 14px; padding: 8px 14px; opacity: 0; transition: opacity .4s; z-index: 5; pointer-events: none; }
+.captions.show{opacity:1;}
+.chip-nav { flex-shrink: 0; display: flex; gap: 6px; margin: 12px auto 0; padding: 4px; background: rgba(251,248,240,.85); backdrop-filter: blur(12px); border: 1px solid var(--line); border-radius: 100px; width: fit-content; z-index: 10; }
+.chip{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:11px;color:var(--muted);background:transparent;border:none;cursor:pointer;transition:all .2s;}
+.chip:hover{background:var(--bg-2);color:var(--ink);}
+.chip.active{background:var(--ink);color:var(--bg);}
+.brand-mark { position: absolute; top: 10px; left: 14px; font-family: var(--display); font-style: italic; font-size: 14px; letter-spacing: -0.02em; color: var(--ink); z-index: 100; }
+.brand-mark em{font-style:normal;color:var(--accent);}
+.brand-tag{margin-left:8px;font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);}
+.controls { flex-shrink: 0; display: flex; align-items: center; gap: 12px; margin: 12px auto; padding: 6px 10px; background: rgba(251,248,240,.92); backdrop-filter: blur(12px); border: 1px solid var(--line); border-radius: 100px; box-shadow: 0 4px 24px rgba(28,26,22,.08); width: fit-content; z-index: 10; }
+.btn{background:transparent;border:1px solid var(--line-2);color:var(--ink-2);font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:8px 14px;border-radius:100px;cursor:pointer;transition:all .2s;}
+.btn:hover{border-color:var(--ink-2);color:var(--ink);}
+.btn-primary{background:var(--ink);color:var(--bg);border-color:var(--ink);}
+.btn-primary:hover{background:var(--accent);border-color:var(--accent);color:var(--bg);}
+.btn-icon{width:36px;height:36px;padding:0;display:flex;align-items:center;justify-content:center;font-size:14px;}
+.progress-wrap{width:220px;cursor:pointer;padding:8px 0;position:relative;}
+.progress{width:100%;height:4px;background:var(--line-2);border-radius:100px;overflow:hidden;pointer-events:none;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--gold));transition:width .15s linear;width:0%;}
+.progress-wrap:hover .progress{height:6px;transition:height .15s;}
+.time{font-family:var(--mono);font-size:11px;color:var(--muted);min-width:70px;text-align:center;}
+
+
+
+
+
+
+@media(max-width:880px){.chip-nav{display:none;}.dashboard{grid-template-columns:1fr;}.dash-chart{grid-column:span 1;}.progress-wrap{width:120px;}.scene { padding: 40px 24px 100px; }}
+
+/* Anti-solape fixes */
+@media (max-height: 720px) {
+  .scene { padding-top: 40px; padding-bottom: 100px; }
+  .captions { bottom: 24px; }
+  .scene-title h1 { font-size: clamp(32px, 5vw, 60px); }
+}
+@media (max-width: 600px) {
+  .captions { font-size: 14px; padding: 10px 14px; bottom: 24px; }
+  .scene { padding: 40px 24px 100px; }
+  .scene-title h1 { font-size: clamp(28px, 8vw, 48px); }
+  .s-title { font-size: clamp(22px, 6vw, 36px); }
+  .s-sub { font-size: 13px; margin-bottom: 22px; }
+}
+/* Hacer las escenas scrolleables si su contenido excede */
+.scene { -webkit-overflow-scrolling: touch; }
+.scene::-webkit-scrollbar { width: 6px; }
+.scene::-webkit-scrollbar-thumb { background: var(--line-2); border-radius: 100px; }
+
+@media (min-width: 900px) {
+  .scene-diff .grid { grid-template-columns: repeat(4, minmax(0, 220px)) !important; }
+}
+</style>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/favicon.svg">
+</head>
+<body>
+<div class="brand-mark">Claude<em>·101</em> <span class="brand-tag">Módulo 6</span></div>
+<div class="chip-nav" id="chipNav"></div>
+
+<div class="stage">
+  <div class="scene scene-title" data-scene="1">
+    <div class="label">Curso de formación · Anthropic</div>
+    <h1>Casos de uso <em>prácticos</em></h1>
+    <p class="sub">Cuatro flujos reales que aplicarás mañana en tu trabajo.</p>
+  </div>
+
+  <!-- Escritura -->
+  <div class="scene" data-scene="2">
+    <h2 class="s-title">Escritura y <em>comunicación</em></h2>
+    <p class="s-sub">El flujo correcto no es "escríbeme un email desde cero". Es este, en cuatro pasos.</p>
+    <div class="flow">
+      <div class="flow-step" id="fs-1"><div class="num">01</div><div class="name">Borrador</div><div class="desc">Mal, rápido. Tú la intención.</div></div>
+      <div class="flow-arrow" id="fa-1">→</div>
+      <div class="flow-step" id="fs-2"><div class="num">02</div><div class="name">Reescritura</div><div class="desc">Claude la ejecución.</div></div>
+      <div class="flow-arrow" id="fa-2">→</div>
+      <div class="flow-step" id="fs-3"><div class="num">03</div><div class="name">Iteración</div><div class="desc">Una frase aquí, otra allá.</div></div>
+      <div class="flow-arrow" id="fa-3">→</div>
+      <div class="flow-step" id="fs-4"><div class="num">04</div><div class="name">Toque humano</div><div class="desc">Lo repasas y envías.</div></div>
+    </div>
+  </div>
+
+  <!-- Programación -->
+  <div class="scene" data-scene="3">
+    <h2 class="s-title">Programación y <em>análisis técnico</em></h2>
+    <p class="s-sub">Colega senior a demanda. Depura, explica, propone.</p>
+    <div class="code-mock">
+      <div class="code-head">
+        <span class="code-tab">sendWelcomeEmails.js</span>
+        <span class="code-status" id="codeStatus">⚠️ TypeError en producción</span>
+      </div>
+      <div class="code-body">
+        <span class="code-line" id="cl-1"><span class="code-keyword">function</span> <span class="code-fn">sendWelcomeEmails</span>(users, emailService) {</span>
+        <span class="code-line" id="cl-2">&nbsp;&nbsp;<span class="code-keyword">for</span> (<span class="code-keyword">let</span> i = 0; i &lt; users.length; i++) {</span>
+        <span class="code-line removed" id="cl-3">&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-comment">// Bug: usuario puede ser null</span></span>
+        <span class="code-line removed" id="cl-4">&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">if</span> (users[i].active === true) {</span>
+        <span class="code-line highlight" id="cl-5">&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-comment">// Fix: comprobar primero que existe</span></span>
+        <span class="code-line highlight" id="cl-6">&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">if</span> (users[i] && users[i].active === true) {</span>
+        <span class="code-line" id="cl-7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;emailService.send({ to: users[i].email });</span>
+        <span class="code-line" id="cl-8">&nbsp;&nbsp;&nbsp;&nbsp;}</span>
+        <span class="code-line" id="cl-9">&nbsp;&nbsp;}</span>
+        <span class="code-line" id="cl-10">}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Análisis -->
+  <div class="scene" data-scene="4">
+    <h2 class="s-title">Análisis de <em>datos y documentos</em></h2>
+    <p class="s-sub">Adjuntas un Excel, pides análisis con cálculos visibles. Te ahorras una mañana.</p>
+    <div class="dashboard">
+      <div class="dash-card" id="d-1"><div class="label">Ingresos Q1</div><div class="big">€189K</div><div class="delta">+12% YoY</div></div>
+      <div class="dash-card" id="d-2"><div class="label">Producto top</div><div class="big">Cápsulas</div><div class="delta">38% del total</div></div>
+      <div class="dash-card" id="d-3"><div class="label">Anomalía</div><div class="big">Dic</div><div class="delta neg">Cold Brew -82%</div></div>
+      <div class="dash-chart" id="d-4">
+        <div class="label" style="font-family:var(--mono);font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">Ingresos por mes</div>
+        <div class="chart">
+          <div class="bar" style="height:45%"></div><div class="bar" style="height:52%"></div><div class="bar" style="height:48%"></div><div class="bar" style="height:38%"></div><div class="bar" style="height:62%"></div><div class="bar" style="height:68%"></div><div class="bar" style="height:78%"></div><div class="bar" style="height:88%"></div><div class="bar" style="height:55%"></div><div class="bar" style="height:58%"></div><div class="bar" style="height:65%"></div><div class="bar" style="height:70%"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Creatividad -->
+  <div class="scene" data-scene="5">
+    <h2 class="s-title">Creatividad: <em>pareja</em>, no sustituto</h2>
+    <p class="s-sub">"Dame 30 ángulos posibles." No filtres. Después tú eliges.</p>
+    <div class="ideas">
+      <div class="idea" id="i-1">El silencio en las reuniones</div>
+      <div class="idea" id="i-2">Cuando la cámara apaga el cuerpo</div>
+      <div class="idea starred" id="i-3">El final de las videollamadas</div>
+      <div class="idea" id="i-4">Reuniones asíncronas</div>
+      <div class="idea" id="i-5">Llamadas "caminando"</div>
+      <div class="idea" id="i-6">Zoom-fatigue como diagnóstico</div>
+      <div class="idea" id="i-7">El audio sin video</div>
+      <div class="idea" id="i-8">Espacios para no decidir</div>
+      <div class="idea" id="i-9">El renacer del teléfono</div>
+      <div class="idea" id="i-10">Reuniones de pie</div>
+      <div class="idea" id="i-11">"Office hours" digitales</div>
+      <div class="idea" id="i-12">Notas de voz como reunión</div>
+    </div>
+    <div class="idea-note">Tu criterio sigue siendo el filtro final. Claude propone — tú decides.</div>
+  </div>
+
+  <!-- Cierre + checkpoint -->
+  <div class="scene scene-close" data-scene="6">
+    <div class="label">Fin del módulo 6</div>
+    <h2>Cuatro flujos para usar <em>mañana</em>.</h2>
+    <div class="check">
+      <div class="check-label">Checkpoint rápido</div>
+      <div class="check-q">Llevas dos días bloqueado escribiendo un artículo. ¿Qué pides a Claude?</div>
+      <div class="check-options">
+        <button class="check-opt" data-correct="false" data-fb="Escribir desde cero pierde lo más valioso: tu voz y tu intención.">"Escríbeme el artículo entero"</button>
+        <button class="check-opt" data-correct="true" data-fb="Correcto. Pedir preguntas que desbloqueen es contraintuitivo pero funciona — te ayuda a clarificar lo que tú quieres decir.">"Hazme 5 preguntas que me desbloqueen"</button>
+        <button class="check-opt" data-correct="false" data-fb="Pedir un resumen sin haber escrito nada no tiene de qué partir.">"Hazme un resumen del artículo"</button>
+      </div>
+      <div class="check-feedback" id="checkFb"></div>
+    </div>
+    <div class="next">
+      <div class="next-label">Próximo módulo</div>
+      <div class="next-text">Antes de soltarte: privacidad, verificación, limitaciones y ética.</div>
+    </div>
+  </div>
+<div class="captions" id="captions"></div></div>
+
+
+<div class="controls">
+  <button class="btn btn-primary" id="btnPlay">▶︎ Play</button>
+  <button class="btn btn-icon" id="btnRestart">↻</button>
+  <div class="progress-wrap" id="progressWrap"><div class="progress"><div class="progress-fill" id="progressFill"></div></div></div>
+  <div class="time" id="time">0:00 / 2:30</div>
+</div>
+
+<script>
+class AmbientMusic{constructor(){this.muted=true;}init(){}build(){}async play(){}pause(){}toggleMute(){return true;}}
+const music = new AmbientMusic();
+
+const TIMELINE=[
+  {t:0,scene:1,caption:"Cuatro categorías de trabajo. Lo que antes tardaba horas, con Claude tarda minutos."},
+  {t:7,scene:1,caption:"Si sabes cómo pedirlo. Vamos a verlo."},
+  {t:13,scene:2,caption:"Empezamos por lo que más vas a usar: escritura."},
+  {t:18,scene:2,caption:"Paso uno: TÚ haces un borrador rápido. Mal, sin pulir. Eso es la intención.",action:"show-fs-1"},
+  {t:25,scene:2,caption:"Paso dos: se lo das a Claude con un encargo claro. La ejecución.",action:"show-fa-1 show-fs-2"},
+  {t:32,scene:2,caption:"Paso tres: iteras. Una frase aquí, un párrafo allá.",action:"show-fa-2 show-fs-3"},
+  {t:39,scene:2,caption:"Paso cuatro: el toque humano final. Tú lo repasas, añades, envías.",action:"show-fa-3 show-fs-4"},
+  {t:46,scene:2,caption:"Este flujo vale para emails, informes, copy, posts. Te ahorra la página en blanco sin perder tu voz."},
+  {t:54,scene:3,caption:"Segundo flujo: programación. Colega senior a demanda."},
+  {t:60,scene:3,caption:"Le das el código y el mensaje de error.",action:"show-cl-1 show-cl-2 show-cl-3 show-cl-4"},
+  {t:67,scene:3,caption:"Te diagnostica en una frase: el usuario puede ser null.",action:"show-cl-3 show-cl-4"},
+  {t:73,scene:3,caption:"Y te da el fix listo para aplicar.",action:"show-cl-5 show-cl-6 show-cl-7 show-cl-8 show-cl-9 show-cl-10"},
+  {t:80,scene:3,caption:"También: explicar código heredado, convertir entre lenguajes, diseñar arquitectura."},
+  {t:88,scene:4,caption:"Tercer flujo: análisis de datos y documentos."},
+  {t:93,scene:4,caption:"Adjuntas el Excel. Le pides tendencias y anomalías.",action:"show-d-1"},
+  {t:99,scene:4,caption:"Y los productos más rentables.",action:"show-d-2"},
+  {t:104,scene:4,caption:"Identifica anomalías que se te escapan a simple vista.",action:"show-d-3"},
+  {t:110,scene:4,caption:"Y el truco clave: pídele que muestre los cálculos para verificarlos.",action:"show-d-4"},
+  {t:118,scene:5,caption:"Cuarto: creatividad. Y aquí va el matiz: Claude no es sustituto, es pareja."},
+  {t:125,scene:5,caption:"'Dame 30 ángulos.' No filtres.",action:"show-i-1 show-i-2 show-i-4 show-i-5"},
+  {t:131,scene:5,caption:"Después tú eliges.",action:"show-i-6 show-i-7 show-i-8 show-i-9 show-i-10 show-i-11 show-i-12 show-i-3"},
+  {t:138,scene:5,caption:"Tu criterio sigue siendo el filtro final. Siempre."},
+  {t:145,scene:6,caption:"Cuatro flujos para mañana. Pero antes — los límites."},
+  {t:151,scene:6,caption:""}
+];
+const DURATION=153;
+
+const scenes=document.querySelectorAll('.scene');
+const captionsEl=document.getElementById('captions');
+const playBtn=document.getElementById('btnPlay');
+const restartBtn=document.getElementById('btnRestart');
+const progressWrap=document.getElementById('progressWrap');
+const progressFill=document.getElementById('progressFill');
+const timeEl=document.getElementById('time');
+const chipNav=document.getElementById('chipNav');
+const SCENE_COUNT=6;
+let startTime=0,elapsed=0,playing=false,rafId=null,lastIdx=-1,currentScene=1;
+const fmtTime=s=>`${Math.floor(s/60)}:${String(Math.max(0,Math.floor(s%60))).padStart(2,'0')}`;
+function setScene(n){if(n===currentScene)return;currentScene=n;scenes.forEach(s=>s.classList.toggle('active',parseInt(s.dataset.scene,10)===n));chipNav.querySelectorAll('.chip').forEach(c=>c.classList.toggle('active',parseInt(c.dataset.scene,10)===n));}
+function setCaption(t){if(!t){captionsEl.classList.remove('show');return;}captionsEl.textContent=t;captionsEl.classList.add('show');}
+function runAction(a){if(!a)return;a.split(' ').forEach(act=>{if(act.startsWith('show-')){const id=act.substring(5);document.getElementById(id)?.classList.add('show');}});}
+function resetState(){document.querySelectorAll('.flow-step,.flow-arrow,.code-line,.dash-card,.dash-chart,.idea').forEach(e=>e.classList.remove('show'));lastIdx=-1;}
+function seekTo(t){elapsed=Math.max(0,Math.min(DURATION,t));startTime=performance.now()-elapsed*1000;resetState();let idx=-1;for(let i=0;i<TIMELINE.length;i++){if(TIMELINE[i].t<=elapsed)idx=i;else break;}for(let i=0;i<=idx;i++){runAction(TIMELINE[i].action);}if(idx>=0){setScene(TIMELINE[idx].scene);setCaption(TIMELINE[idx].caption);lastIdx=idx;}progressFill.style.width=(elapsed/DURATION*100)+'%';timeEl.textContent=fmtTime(elapsed)+' / '+fmtTime(DURATION);}
+function tick(){if(!playing)return;elapsed=(performance.now()-startTime)/1000;if(elapsed>=DURATION){elapsed=DURATION;playing=false;playBtn.textContent='▶︎ Replay';music.pause();}let idx=-1;for(let i=0;i<TIMELINE.length;i++){if(TIMELINE[i].t<=elapsed)idx=i;else break;}if(idx!==lastIdx&&idx>=0){const e=TIMELINE[idx];setScene(e.scene);setCaption(e.caption);runAction(e.action);lastIdx=idx;}progressFill.style.width=(elapsed/DURATION*100)+'%';timeEl.textContent=fmtTime(elapsed)+' / '+fmtTime(DURATION);if(playing)rafId=requestAnimationFrame(tick);}
+function play(){if(elapsed>=DURATION){restart();return;}playing=true;startTime=performance.now()-elapsed*1000;playBtn.textContent='⏸ Pause';music.play();tick();}
+function pause(){playing=false;if(rafId)cancelAnimationFrame(rafId);playBtn.textContent='▶︎ Play';music.pause();}
+function restart(){pause();elapsed=0;resetState();setScene(1);setCaption(TIMELINE[0].caption);progressFill.style.width='0%';timeEl.textContent='0:00 / '+fmtTime(DURATION);setTimeout(play,250);}
+playBtn.addEventListener('click',()=>{playing?pause():play();});
+restartBtn.addEventListener('click',restart);
+progressWrap.addEventListener('click',e=>{const r=progressWrap.getBoundingClientRect();const x=e.clientX-r.left;const p=Math.max(0,Math.min(1,x/r.width));const w=playing;pause();seekTo(p*DURATION);if(w)play();});
+for(let i=1;i<=SCENE_COUNT;i++){const b=document.createElement('button');b.className='chip'+(i===1?' active':'');b.dataset.scene=i;b.textContent=i;b.addEventListener('click',()=>{const target=TIMELINE.find(t=>t.scene===i);if(target){const w=playing;pause();seekTo(target.t);if(w)play();}});chipNav.appendChild(b);}
+document.querySelectorAll('.flow-step,.idea,.dash-card').forEach(el=>el.addEventListener('click',()=>el.classList.add('show')));
+document.querySelectorAll('.check-opt').forEach(opt=>{opt.addEventListener('click',()=>{const ok=opt.dataset.correct==='true';const fb=document.getElementById('checkFb');document.querySelectorAll('.check-opt').forEach(o=>o.classList.add('disabled'));opt.classList.add(ok?'correct':'wrong');if(!ok)document.querySelectorAll('.check-opt').forEach(o=>{if(o.dataset.correct==='true')o.classList.add('correct');});fb.textContent=opt.dataset.fb;fb.classList.add('show');});});
+setScene(1);setCaption(TIMELINE[0].caption);timeEl.textContent='0:00 / '+fmtTime(DURATION);
+setTimeout(()=>{if(!playing)play();},1200);
+document.addEventListener('click',()=>{if(music.ctx&&music.ctx.state==='suspended')music.ctx.resume();},{once:true});
+</script>
+</body>
+</html>
