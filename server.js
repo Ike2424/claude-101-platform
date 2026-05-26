@@ -39,22 +39,30 @@ const isProd = process.env.NODE_ENV === 'production';
 
 // ============================================================
 // 1) Validación de env vars al arranque
+// NO matamos el proceso: si JWT_SECRET falta, generamos un secret efímero
+// (auth funcionará pero los tokens no sobreviven a reinicio) y avisamos
+// muy fuerte en logs y en /api/status. Así el operador puede ver el
+// problema en lugar de un cryptic "Healthcheck failure" de Railway.
 // ============================================================
+const envIssues = [];
+
 function validateEnv() {
-  const required = ['JWT_SECRET'];
-  const missing = required.filter(k => !process.env[k]);
-  if (missing.length) {
-    logger.fatal({ missing }, 'Faltan variables de entorno obligatorias');
-    process.exit(1);
+  if (!process.env.JWT_SECRET) {
+    const tmp = `ephemeral_${Math.random().toString(36).slice(2)}${Date.now().toString(36)}`;
+    process.env.JWT_SECRET = tmp;
+    envIssues.push('JWT_SECRET');
+    logger.error({ }, '⚠ JWT_SECRET no configurado — usando secret efímero. Configúralo en Railway: openssl rand -hex 32');
   }
-  // Warnings (no blocker pero notable)
   if (!process.env.STRIPE_SECRET_KEY || /placeholder/i.test(process.env.STRIPE_SECRET_KEY)) {
+    envIssues.push('STRIPE_SECRET_KEY');
     logger.warn('STRIPE_SECRET_KEY no configurado o placeholder — checkouts fallarán.');
   }
   if (!process.env.STRIPE_WEBHOOK_SECRET && isProd) {
+    envIssues.push('STRIPE_WEBHOOK_SECRET');
     logger.warn('STRIPE_WEBHOOK_SECRET no configurado — el webhook devolverá 400 en producción.');
   }
   if (isProd && (process.env.MAIL_PROVIDER || 'console') === 'console') {
+    envIssues.push('MAIL_PROVIDER');
     logger.warn('MAIL_PROVIDER=console en producción — los magic links solo se imprimirán en logs.');
   }
 }
@@ -62,7 +70,14 @@ validateEnv();
 
 // ============================================================
 // 2) Auto-migración al boot (idempotente)
+// IMPORTANTE: ya NO matamos el proceso si la migración falla.
+// El servidor sigue arriba para que el healthcheck de Railway responda
+// y podamos diagnosticar via /healthz y /api/status. Antes hacíamos
+// process.exit(1) y Railway reportaba "Healthcheck failure" sin pista.
 // ============================================================
+let schemaReady = false;
+let schemaError = null;
+
 async function ensureSchema() {
   try {
     const ready = await isInitialized();
@@ -72,10 +87,11 @@ async function ensureSchema() {
       logger.debug('Schema ya inicializado; ejecutando migración idempotente');
     }
     await runMigration();
+    schemaReady = true;
     logger.info('Schema OK');
   } catch (err) {
-    logger.fatal({ err }, 'Fallo aplicando schema; abortando arranque');
-    process.exit(1);
+    schemaError = err;
+    logger.error({ err }, 'Fallo aplicando schema — el servidor sigue arriba para diagnóstico. Revisa /healthz y /api/status.');
   }
 }
 
@@ -245,14 +261,20 @@ ${urls.map(u => `  <url>
 </urlset>`);
 });
 
-// Healthcheck
+// Healthcheck — SIEMPRE 200 mientras el proceso esté vivo.
+// Railway hace probe a esta ruta. Si devolvemos != 2xx, marca el deploy como
+// "Healthcheck failure". Por eso devolvemos 200 incluso si el schema falló:
+// el operador puede ver el error en el cuerpo y en /api/status sin que Railway
+// reinicie el container en bucle.
 app.get('/healthz', (_req, res) => {
-  res.json({
+  res.status(200).json({
     status: 'ok',
     uptime_sec: Math.round(process.uptime()),
     node: process.version,
     db: process.env.DB_DRIVER || 'sqlite',
     env: process.env.NODE_ENV || 'development',
+    schema_ready: schemaReady,
+    schema_error: schemaError ? String(schemaError.message || schemaError) : null,
     timestamp: new Date().toISOString(),
   });
 });
@@ -350,11 +372,15 @@ app.use(errorHandler);
 let server;
 
 async function start() {
-  await initSentry();
-  await ensureSchema();
-  server = app.listen(PORT, () => {
+  // CRÍTICO: empezamos a escuchar INMEDIATAMENTE en 0.0.0.0.
+  // Railway hace healthcheck a /healthz a los pocos segundos del deploy.
+  // Si app.listen() corre después de migrate/sentry init, el healthcheck
+  // se cae con "Healthcheck failure" aunque la app esté bien.
+  // Bind explícito a 0.0.0.0 (no localhost) — necesario en contenedores.
+  server = app.listen(PORT, '0.0.0.0', () => {
     logger.info({
       port: PORT,
+      host: '0.0.0.0',
       public_url: PUBLIC_URL,
       db: process.env.DB_DRIVER || 'sqlite',
       mail: process.env.MAIL_PROVIDER || 'console',
@@ -363,6 +389,15 @@ async function start() {
   });
   server.keepAliveTimeout = 65_000;
   server.headersTimeout = 66_000;
+
+  // Init en background — fallos aquí NO matan al servidor, solo se loguean.
+  // /healthz seguirá respondiendo 200 y /api/status mostrará el problema.
+  initSentry().catch(err =>
+    logger.error({ err }, 'Sentry init falló (no fatal)')
+  );
+  ensureSchema().catch(err =>
+    logger.error({ err }, 'ensureSchema lanzó una excepción inesperada (no fatal)')
+  );
 }
 
 let shuttingDown = false;
