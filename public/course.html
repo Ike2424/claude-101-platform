@@ -941,6 +941,12 @@
     font-size: 18px;
     color: var(--muted);
   }
+  .search-icon svg {
+    width: 18px;
+    height: 18px;
+    color: var(--accent);
+    display: block;
+  }
   .search-input {
     flex: 1;
     background: transparent;
@@ -1278,9 +1284,13 @@
     </div>
     <div class="header-controls">
       <button class="search-trigger" id="searchTrigger" aria-label="Buscar">
-        <span class="search-icon">🔍</span>
+        <span class="search-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="10" cy="10" r="6"/>
+            <line x1="14.5" y1="14.5" x2="20" y2="20"/>
+          </svg>
+        </span>
         <span class="search-trigger-label">Buscar…</span>
-        <span class="search-kbd">⌘K</span>
       </button>
       <div class="resources-dropdown" id="resourcesDropdown">
         <button class="resources-trigger" id="resourcesTrigger" type="button" aria-haspopup="true" aria-expanded="false">
@@ -2598,13 +2608,115 @@ function buildResourcesDropdown() {
   });
   buildResourcesDropdown();
 })();
+  // ============ BÚSQUEDA DE LECCIONES ============
+const searchTrigger = document.getElementById('searchTrigger');
+const searchOverlay = document.getElementById('searchOverlay');
+const searchInput = document.getElementById('searchInput');
+const searchResults = document.getElementById('searchResults');
+let searchActiveIdx = -1;
+
+function openSearch() {
+  searchOverlay.classList.add('open');
+  searchInput.value = '';
+  renderSearchResults('');
+  setTimeout(() => searchInput.focus(), 50);
+}
+function closeSearch() {
+  searchOverlay.classList.remove('open');
+  searchActiveIdx = -1;
+}
+function renderSearchResults(query) {
+  query = query.trim().toLowerCase();
+  searchActiveIdx = -1;
+  const allLessons = COURSE.flatMap((mod, mIdx) =>
+    mod.lessons.map((lesson, lIdx) => ({
+      modIdx: mIdx, lIdx,
+      lessonId: lesson.id,
+      modTitle: mod.title,
+      lessonTitle: lesson.title,
+      summary: lesson.summary || '',
+      body: (lesson.body || '').replace(/<[^>]+>/g, ' '),
+    }))
+  );
+  let matches;
+  if (!query) {
+    matches = allLessons;
+  } else {
+    matches = allLessons.filter(l =>
+      l.lessonTitle.toLowerCase().includes(query) ||
+      l.modTitle.toLowerCase().includes(query) ||
+      l.summary.toLowerCase().includes(query) ||
+      l.body.toLowerCase().includes(query)
+    );
+  }
+  if (matches.length === 0) {
+    searchResults.innerHTML = '<div class="search-empty">Sin resultados para "' + escapeHtml(query) + '"</div>';
+    return;
+  }
+  searchResults.innerHTML = matches.map((m, idx) => `
+    <a href="#" class="search-result" data-lesson="${m.lessonId}" data-idx="${idx}">
+      <div class="search-result-title">${highlightMatch(m.lessonTitle, query)}</div>
+      <div class="search-result-meta">Lección ${m.modIdx + 1}.${m.lIdx + 1} · ${escapeHtml(m.modTitle)}</div>
+    </a>
+  `).join('');
+  searchResults.querySelectorAll('.search-result').forEach(el => {
+    el.addEventListener('click', (e) => {
+      e.preventDefault();
+      goTo(el.dataset.lesson);
+      closeSearch();
+    });
+  });
+}
+function highlightMatch(text, query) {
+  if (!query) return escapeHtml(text);
+  const escaped = escapeHtml(text);
+  const escapedQuery = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return escaped.replace(new RegExp('(' + escapedQuery + ')', 'gi'), '<mark>$1</mark>');
+}
+searchTrigger.addEventListener('click', openSearch);
+searchInput.addEventListener('input', (e) => renderSearchResults(e.target.value));
+searchOverlay.addEventListener('click', (e) => {
+  if (e.target === searchOverlay) closeSearch();
+});
+document.addEventListener('keydown', (e) => {
+  if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+    e.preventDefault();
+    searchOverlay.classList.contains('open') ? closeSearch() : openSearch();
+  }
+  if (e.key === 'Escape' && searchOverlay.classList.contains('open')) closeSearch();
+  if (searchOverlay.classList.contains('open')) {
+    const results = searchResults.querySelectorAll('.search-result');
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      searchActiveIdx = Math.min(searchActiveIdx + 1, results.length - 1);
+      results.forEach((el, i) => el.classList.toggle('active', i === searchActiveIdx));
+      results[searchActiveIdx]?.scrollIntoView({ block: 'nearest' });
+    }
+    if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      searchActiveIdx = Math.max(searchActiveIdx - 1, 0);
+      results.forEach((el, i) => el.classList.toggle('active', i === searchActiveIdx));
+      results[searchActiveIdx]?.scrollIntoView({ block: 'nearest' });
+    }
+    if (e.key === 'Enter' && searchActiveIdx >= 0 && results[searchActiveIdx]) {
+      e.preventDefault();
+      goTo(results[searchActiveIdx].dataset.lesson);
+      closeSearch();
+    }
+  }
+});
 </script>
 
 <!-- Search modal Ctrl+K -->
 <div class="search-overlay" id="searchOverlay">
   <div class="search-modal">
     <div class="search-input-wrap">
-      <span class="search-icon">🔍</span>
+      <span class="search-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="10" cy="10" r="6"/>
+          <line x1="14.5" y1="14.5" x2="20" y2="20"/>
+        </svg>
+      </span>
       <input type="text" id="searchInput" class="search-input" placeholder="Buscar lecciones, conceptos, prompts..." autocomplete="off">
       <span class="search-kbd">ESC</span>
     </div>
