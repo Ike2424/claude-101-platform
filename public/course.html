@@ -1346,6 +1346,27 @@
   Ahora puedes añadir vídeos a cada lección. Pulsa el botón "Añadir vídeo" en cualquier lección.
 </div>
 
+  <!-- Search modal Ctrl+K -->
+<div class="search-overlay" id="searchOverlay">
+  <div class="search-modal">
+    <div class="search-input-wrap">
+      <span class="search-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="10" cy="10" r="6"/>
+          <line x1="14.5" y1="14.5" x2="20" y2="20"/>
+        </svg>
+      </span>
+      <input type="text" id="searchInput" class="search-input" placeholder="Buscar lecciones, conceptos, prompts..." autocomplete="off">
+      <span class="search-kbd">ESC</span>
+    </div>
+    <div class="search-results" id="searchResults"></div>
+    <div class="search-footer">
+      <span><span class="search-kbd">↑↓</span> navegar</span>
+      <span><span class="search-kbd">↵</span> ir</span>
+      <span><span class="search-kbd">esc</span> cerrar</span>
+    </div>
+  </div>
+</div>
 <script>
 // ============================================
 // CONTENIDO DEL CURSO
@@ -2706,27 +2727,5 @@ document.addEventListener('keydown', (e) => {
   }
 });
 </script>
-
-<!-- Search modal Ctrl+K -->
-<div class="search-overlay" id="searchOverlay">
-  <div class="search-modal">
-    <div class="search-input-wrap">
-      <span class="search-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="10" cy="10" r="6"/>
-          <line x1="14.5" y1="14.5" x2="20" y2="20"/>
-        </svg>
-      </span>
-      <input type="text" id="searchInput" class="search-input" placeholder="Buscar lecciones, conceptos, prompts..." autocomplete="off">
-      <span class="search-kbd">ESC</span>
-    </div>
-    <div class="search-results" id="searchResults"></div>
-    <div class="search-footer">
-      <span><span class="search-kbd">↑↓</span> navegar</span>
-      <span><span class="search-kbd">↵</span> ir</span>
-      <span><span class="search-kbd">esc</span> cerrar</span>
-    </div>
-  </div>
-</div>
 </body>
 </html>
