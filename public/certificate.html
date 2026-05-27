@@ -255,7 +255,7 @@ function renderCertificate(cert) {
         <div class="sub">Academia101 · Curso oficial de Claude AI en español</div>
       </div>
       <h1 class="cert-title">Aprende a trabajar con <em>Claude</em></h1>
-      <p class="cert-subtitle">Programa formativo de 9 módulos sobre el uso profesional de Claude, el asistente de IA de Anthropic.</p>
+      <p class="cert-subtitle">Programa formativo sobre el uso profesional de Claude, el asistente de IA de Anthropic.</p>
 
       <div class="cert-recipient">
         <div class="label">Se otorga a:</div>
@@ -297,6 +297,10 @@ function escapeHtml(s) {
 
 async function downloadPDF() {
   const element = document.querySelector('.cert');
+  if (!element) {
+    alert('El certificado todavía se está cargando. Espera un momento.');
+    return;
+  }
 
   const opt = {
     margin: 0,
