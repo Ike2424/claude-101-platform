@@ -172,8 +172,8 @@ html, body {
   <div class="toolbar">
     <a href="/app" class="back">← Volver al curso</a>
     <div class="actions">
-      <button class="btn btn-ghost" onclick="window.print()">📄 Descargar PDF</button>
-      <a href="#" id="shareLinked" class="btn" target="_blank">in Compartir</a>
+      <button class="btn btn-ghost" onclick="downloadPDF()">📄 Descargar PDF</button>
+      <a href="#" id="shareLinked" class="btn" target="_blank">Compartir en LinkedIn</a>
     </div>
   </div>
 
@@ -255,15 +255,15 @@ function renderCertificate(cert) {
         <div class="sub">Academia101 · Curso oficial de Claude AI en español</div>
       </div>
       <h1 class="cert-title">Aprende a trabajar con <em>Claude</em></h1>
-      <p class="cert-subtitle">Programa formativo de 8 módulos sobre el uso profesional de Claude, el asistente de IA de Anthropic.</p>
+      <p class="cert-subtitle">Programa formativo de 9 módulos sobre el uso profesional de Claude, el asistente de IA de Anthropic.</p>
 
       <div class="cert-recipient">
-        <div class="label">Se otorga a</div>
+        <div class="label">Se otorga a:</div>
         <div class="name">${escapeHtml(cert.full_name)}</div>
       </div>
 
       <p class="cert-body">
-        Por haber completado satisfactoriamente las <strong>${cert.lessons_completed} lecciones</strong>
+        Por haber completado satisfactoriamente los <strong>9 módulos</strong>
         del curso, demostrando dominio sobre fundamentos de Claude, ingeniería de prompts,
         técnicas avanzadas, capacidades del modelo y aplicación profesional en casos de uso reales.
       </p>
@@ -295,7 +295,29 @@ function escapeHtml(s) {
   return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 }
 
+async function downloadPDF() {
+  const element = document.querySelector('.cert');
+
+  const opt = {
+    margin: 0,
+    filename: 'certificado-claude101.pdf',
+    image: { type: 'jpeg', quality: 1 },
+    html2canvas: {
+      scale: 3,
+      useCORS: true
+    },
+    jsPDF: {
+      unit: 'mm',
+      format: 'a4',
+      orientation: 'landscape'
+    }
+  };
+
+  await html2pdf().set(opt).from(element).save();
+}
+  
 load();
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </body>
 </html>
