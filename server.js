@@ -145,7 +145,7 @@ app.use(helmet({
     useDefaults: true,
     directives: {
       'default-src': ["'self'"],
-      'script-src': ["'self'", "'unsafe-inline'"], // inline scripts en HTML
+      'script-src': ["'self'", "'unsafe-inline'", 'https://cdnjs.cloudflare.com'], // inline + cdnjs (html2pdf para descargar certificado)
       'script-src-attr': ["'unsafe-inline'"],      // inline event handlers (onsubmit, onclick, oninput)
       'style-src': ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
       'style-src-attr': ["'unsafe-inline'"],       // inline style attributes
