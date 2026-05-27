@@ -1,0 +1,21 @@
+{
+  "name": "Claude 101 · Academia 101",
+  "short_name": "Claude 101",
+  "description": "Curso completo de Claude AI en español",
+  "icons": [
+    {
+      "src": "/favicon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#C8542B",
+  "background_color": "#F4EFE3",
+  "display": "standalone",
+  "start_url": "/"
+}
