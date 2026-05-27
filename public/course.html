@@ -2547,6 +2547,9 @@ fetch('/api/course/progress', { credentials: 'same-origin' })
   .finally(() => render());
 
   // ============ DROPDOWN DE RECURSOS ============
+  function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+}
 function buildResourcesDropdown() {
   const panel = document.getElementById('resourcesPanel');
   if (!panel || typeof COURSE === 'undefined') return;
