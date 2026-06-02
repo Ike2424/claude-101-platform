@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Claude 101 · Módulo 1 · Slides</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Geist:wght@300..700&family=Geist+Mono:wght@400..600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F4EFE3; --bg-2:#EFE9DA; --card:#FBF8F0;
+  --ink:#1C1A16; --ink-2:#3A352D; --muted:#756B5B; --muted-2:#A39782;
+  --line:#E1D8C2; --line-2:#CFC4AA;
+  --accent:#C8542B; --accent-2:#8B3A1E; --olive:#4F5D38; --gold:#B08436;
+  --display:'Fraunces',Georgia,serif;
+  --body:'Geist',system-ui,sans-serif;
+  --mono:'Geist Mono',ui-monospace,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100vh;height:100dvh;margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:var(--body);overflow:hidden;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent;}
+body{display:flex;flex-direction:column;background-image:radial-gradient(circle at 12% 8%,rgba(200,84,43,.05) 0%,transparent 40%),radial-gradient(circle at 88% 92%,rgba(79,93,56,.04) 0%,transparent 40%);}
+button{font-family:inherit;touch-action:manipulation;}
+
+/* HEADER */
+.header{flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:max(12px,env(safe-area-inset-top)) max(20px,env(safe-area-inset-right)) 12px max(20px,env(safe-area-inset-left));border-bottom:1px solid var(--line);background:rgba(251,248,240,.7);backdrop-filter:blur(8px);z-index:10;gap:10px;}
+.header-left{display:flex;align-items:center;gap:14px;min-width:0;}
+.exit-btn{display:inline-flex;align-items:center;gap:6px;background:transparent;border:1px solid var(--line-2);color:var(--ink-2);font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:7px 12px;border-radius:100px;cursor:pointer;transition:all .2s;flex-shrink:0;min-height:34px;}
+.exit-btn:hover{border-color:var(--accent);color:var(--accent);}
+.exit-btn-arrow{font-size:14px;line-height:1;}
+.brand{font-family:var(--display);font-style:italic;font-size:15px;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.brand em{font-style:normal;color:var(--accent);}
+.brand-tag{margin-left:8px;font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-style:normal;}
+.slide-counter{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.08em;flex-shrink:0;}
+.slide-counter strong{color:var(--ink);font-weight:600;}
+
+/* STAGE */
+.stage{flex:1;min-height:0;position:relative;overflow:hidden;}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 32px;opacity:0;pointer-events:none;transform:translateY(16px);transition:opacity .5s cubic-bezier(.2,.8,.2,1),transform .5s cubic-bezier(.2,.8,.2,1);overflow-y:auto;}
+.slide.active{opacity:1;pointer-events:auto;transform:translateY(0);}
+.slide-inner{width:100%;max-width:780px;display:flex;flex-direction:column;align-items:center;gap:16px;}
+
+/* TYPOGRAPHY */
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:4px;}
+h1.title{font-family:var(--display);font-style:italic;font-weight:400;font-size:clamp(32px,5vw,56px);letter-spacing:-0.025em;color:var(--ink);line-height:1.1;text-align:center;max-width:18ch;}
+h1.title em{font-style:normal;color:var(--accent);}
+h2.title{font-family:var(--display);font-weight:400;font-size:clamp(26px,3.5vw,42px);letter-spacing:-0.015em;color:var(--ink);text-align:center;max-width:22ch;}
+h2.title em{font-style:italic;color:var(--accent);}
+.subtitle{font-size:16px;color:var(--muted);text-align:center;max-width:48ch;line-height:1.5;}
+.prompt-text{font-size:17px;color:var(--ink-2);text-align:center;max-width:50ch;line-height:1.5;margin-bottom:8px;}
+.prompt-text strong{color:var(--ink);}
+
+/* CHIPS / BUTTONS */
+.chips{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:12px;}
+.chip{background:var(--card);border:1px solid var(--line);border-radius:100px;padding:10px 18px;font-family:var(--body);font-size:14px;color:var(--ink-2);cursor:pointer;transition:all .2s;user-select:none;}
+.chip:hover{border-color:var(--ink-2);transform:translateY(-2px);}
+.chip.selected{background:var(--ink);color:var(--bg);border-color:var(--ink);}
+.chip.correct{background:rgba(79,93,56,.12);border-color:var(--olive);color:var(--olive);font-weight:600;}
+.chip.wrong{background:rgba(200,84,43,.08);border-color:var(--accent);color:var(--accent-2);}
+.chip.disabled{pointer-events:none;opacity:.55;}
+
+/* MULTIPLE CHOICE STACK */
+.choices{display:flex;flex-direction:column;gap:10px;width:100%;max-width:540px;margin-top:8px;}
+.choice{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 18px;font-size:15px;color:var(--ink-2);cursor:pointer;text-align:left;transition:all .2s;display:flex;align-items:center;gap:12px;}
+.choice:hover{border-color:var(--ink-2);}
+.choice-letter{width:26px;height:26px;border-radius:50%;background:var(--bg-2);color:var(--muted);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:11px;font-weight:600;flex-shrink:0;}
+.choice.correct{background:rgba(79,93,56,.10);border-color:var(--olive);color:var(--olive);}
+.choice.correct .choice-letter{background:var(--olive);color:var(--bg);}
+.choice.wrong{background:rgba(200,84,43,.06);border-color:var(--accent);color:var(--accent-2);}
+.choice.wrong .choice-letter{background:var(--accent);color:var(--bg);}
+.choice.disabled{pointer-events:none;opacity:.55;}
+
+/* FEEDBACK */
+.feedback{margin-top:14px;padding:12px 18px;background:var(--card);border:1px solid var(--line);border-left:4px solid var(--olive);border-radius:10px;font-size:14px;color:var(--ink-2);max-width:540px;opacity:0;transform:translateY(8px);transition:all .3s;display:none;}
+.feedback.show{opacity:1;transform:translateY(0);display:block;}
+.feedback.wrong{border-left-color:var(--accent);}
+.feedback strong{color:var(--ink);}
+
+/* MODEL CARDS (slide 4) */
+.model-grid{display:grid;grid-template-columns:repeat(3,minmax(0,180px));gap:14px;margin-top:8px;}
+.model-card{background:var(--card);border:2px solid var(--line);border-radius:16px;padding:18px 14px;text-align:center;cursor:pointer;transition:all .25s;position:relative;}
+.model-card:hover{border-color:var(--ink-2);transform:translateY(-3px);}
+.model-card.open{border-color:var(--accent);background:linear-gradient(180deg,var(--card),rgba(200,84,43,.05));}
+.model-icon{font-size:32px;margin-bottom:6px;}
+.model-name{font-family:var(--display);font-size:22px;font-weight:600;color:var(--ink);}
+.model-tag{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:2px;}
+.model-body{max-height:0;overflow:hidden;transition:max-height .35s ease;color:var(--ink-2);font-size:13px;line-height:1.5;text-align:left;}
+.model-card.open .model-body{max-height:200px;margin-top:10px;padding-top:10px;border-top:1px solid var(--line);}
+
+/* TRUE/FALSE */
+.tf-row{display:flex;gap:14px;margin-top:14px;}
+.tf-btn{background:var(--card);border:2px solid var(--line);border-radius:14px;padding:14px 28px;font-family:var(--body);font-size:15px;font-weight:600;color:var(--ink);cursor:pointer;transition:all .2s;min-width:120px;}
+.tf-btn:hover{border-color:var(--ink-2);transform:translateY(-2px);}
+.tf-btn.correct{background:var(--olive);color:var(--bg);border-color:var(--olive);}
+.tf-btn.wrong{background:var(--accent);color:var(--bg);border-color:var(--accent);}
+.tf-btn.disabled{pointer-events:none;opacity:.55;}
+
+/* CONTEXT WINDOW VISUAL (slide 7) */
+.context-box{width:100%;max-width:520px;background:var(--card);border:2px dashed var(--line-2);border-radius:14px;padding:16px;margin-top:8px;min-height:120px;display:flex;flex-wrap:wrap;align-content:flex-start;gap:6px;transition:border-color .3s;}
+.context-box.filling{border-color:var(--gold);}
+.context-box.full{border-color:var(--accent);border-style:solid;background:rgba(200,84,43,.04);}
+.context-token{font-family:var(--mono);font-size:11px;background:var(--bg-2);color:var(--ink-2);padding:3px 8px;border-radius:6px;animation:tokenIn .25s ease;}
+@keyframes tokenIn{from{opacity:0;transform:translateY(-4px);}to{opacity:1;transform:translateY(0);}}
+.context-meter{display:flex;align-items:center;gap:10px;width:100%;max-width:520px;margin-top:10px;font-family:var(--mono);font-size:11px;color:var(--muted);}
+.context-bar{flex:1;height:6px;background:var(--bg-2);border-radius:100px;overflow:hidden;}
+.context-fill{height:100%;background:linear-gradient(90deg,var(--olive),var(--gold),var(--accent));width:0%;transition:width .3s;}
+.context-controls{display:flex;gap:8px;margin-top:12px;}
+.context-btn{background:var(--ink);color:var(--bg);border:none;border-radius:100px;padding:8px 16px;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:all .2s;}
+.context-btn:hover{background:var(--accent);}
+.context-btn.ghost{background:transparent;color:var(--ink-2);border:1px solid var(--line-2);}
+.context-btn.ghost:hover{border-color:var(--ink-2);color:var(--ink);background:var(--bg-2);}
+
+/* MATCH PAIRS (slide 3) */
+.match-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;width:100%;max-width:640px;margin-top:8px;}
+.match-col{display:flex;flex-direction:column;gap:8px;}
+.match-col-head{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:4px;text-align:center;}
+.match-item{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:14px;color:var(--ink-2);cursor:pointer;transition:all .2s;text-align:left;}
+.match-item:hover{border-color:var(--ink-2);}
+.match-item.selected{border-color:var(--accent);background:rgba(200,84,43,.06);}
+.match-item.paired{background:rgba(79,93,56,.10);border-color:var(--olive);color:var(--olive);pointer-events:none;}
+.match-item.wrong-pair{background:rgba(200,84,43,.06);border-color:var(--accent);color:var(--accent-2);animation:shake .3s;}
+@keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-4px);}75%{transform:translateX(4px);}}
+
+/* SCENARIOS (slide 5) */
+.scenario-card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;margin-top:6px;max-width:540px;width:100%;}
+.scenario-text{font-size:15px;color:var(--ink-2);margin-bottom:10px;font-style:italic;}
+.scenario-q{font-size:13px;color:var(--muted);margin-bottom:10px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.08em;}
+.scenario-progress{display:flex;gap:4px;margin-top:8px;}
+.scenario-dot{width:8px;height:8px;border-radius:50%;background:var(--bg-2);transition:background .2s;}
+.scenario-dot.done{background:var(--olive);}
+.scenario-dot.current{background:var(--accent);}
+
+/* IDENTIFY RESPONSE (slide 8) */
+.response-pair{display:grid;grid-template-columns:1fr 1fr;gap:14px;width:100%;max-width:680px;margin-top:8px;}
+.response-card{background:var(--card);border:2px solid var(--line);border-radius:14px;padding:16px;cursor:pointer;transition:all .2s;}
+.response-card:hover{border-color:var(--ink-2);}
+.response-card.correct{background:rgba(79,93,56,.08);border-color:var(--olive);}
+.response-card.wrong{background:rgba(200,84,43,.06);border-color:var(--accent);}
+.response-card.disabled{pointer-events:none;opacity:.65;}
+.response-label{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
+.response-text{font-size:13px;color:var(--ink-2);line-height:1.5;}
+.response-text em{color:var(--muted);font-style:italic;}
+
+/* FINAL */
+.final-stats{display:flex;gap:24px;justify-content:center;margin-top:16px;}
+.final-stat{text-align:center;}
+.final-stat-num{font-family:var(--display);font-size:38px;color:var(--accent);font-weight:600;}
+.final-stat-label{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);}
+.final-cta{margin-top:20px;display:inline-flex;align-items:center;gap:10px;padding:14px 26px;background:var(--ink);color:var(--bg);border-radius:100px;font-family:var(--mono);font-size:12px;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;text-decoration:none;border:none;transition:all .2s;}
+.final-cta:hover{background:var(--accent);transform:translateY(-2px);}
+
+/* CONTROLS / FOOTER */
+.controls{flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:14px max(22px,env(safe-area-inset-right)) max(14px,env(safe-area-inset-bottom)) max(22px,env(safe-area-inset-left));border-top:1px solid var(--line);background:rgba(251,248,240,.7);backdrop-filter:blur(8px);}
+.nav-btn{display:flex;align-items:center;gap:8px;background:transparent;border:1px solid var(--line-2);color:var(--ink-2);font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:9px 18px;border-radius:100px;cursor:pointer;transition:all .2s;-webkit-user-select:none;user-select:none;position:relative;z-index:5;}
+.nav-btn:hover:not(:disabled){border-color:var(--ink-2);color:var(--ink);background:var(--card);}
+.nav-btn:active:not(:disabled){transform:scale(0.94);}
+.nav-btn:disabled{opacity:.35;cursor:not-allowed;}
+.nav-btn.primary{background:var(--ink);color:var(--bg);border-color:var(--ink);}
+.nav-btn.primary:hover:not(:disabled){background:var(--accent);border-color:var(--accent);}
+.dots{display:flex;gap:6px;align-items:center;}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--line-2);cursor:pointer;transition:all .2s;border:none;padding:0;}
+.dot.active{background:var(--accent);width:22px;border-radius:6px;}
+.dot.done{background:var(--olive);}
+
+/* RESPONSIVE */
+@media (max-width: 720px){
+  .header{padding-left:max(12px,env(safe-area-inset-left));padding-right:max(12px,env(safe-area-inset-right));gap:8px;}
+  .header-left{gap:8px;}
+  .brand{font-size:12px;}
+  .brand-tag{font-size:8px;margin-left:4px;}
+  .exit-btn{padding:7px 10px;font-size:9px;}
+  .exit-btn-label{display:none;}
+  .slide-counter{font-size:10px;}
+  .slide{padding:18px 18px;}
+  h1.title{font-size:clamp(24px,7vw,32px);}
+  h2.title{font-size:clamp(20px,5.5vw,28px);}
+  .subtitle{font-size:14px;}
+  .prompt-text{font-size:14px;}
+  .model-grid{grid-template-columns:1fr;gap:10px;}
+  .response-pair{grid-template-columns:1fr;}
+  .match-grid{grid-template-columns:1fr;gap:8px;}
+  .match-col{gap:6px;}
+  .match-col-head{margin-top:6px;font-size:9px;}
+  .chip{font-size:13px;padding:10px 16px;min-height:40px;}
+  .choice{font-size:14px;padding:14px;min-height:48px;}
+  .tf-btn{padding:14px 22px;font-size:14px;min-width:110px;min-height:48px;}
+  .nav-btn{padding:10px 16px;font-size:10px;min-height:40px;}
+  .nav-btn-label{display:none;}
+  .final-stats{flex-direction:row;gap:14px;}
+  .final-stat-num{font-size:28px;}
+  .context-controls{flex-direction:column;width:100%;max-width:520px;}
+  .context-btn{width:100%;padding:12px 16px;min-height:44px;}
+}
+@media (max-height: 640px){
+  .slide{padding:14px 18px;}
+  h1.title{font-size:clamp(20px,4vw,28px);}
+  h2.title{font-size:clamp(18px,3.5vw,24px);}
+  .slide-inner{gap:8px;}
+  .subtitle{font-size:13px;line-height:1.4;}
+  .prompt-text{font-size:13px;}
+}
+@media (hover: none) {
+  .chip:hover, .choice:hover, .tf-btn:hover, .model-card:hover, .nav-btn:hover, .response-card:hover, .match-item:hover, .exit-btn:hover, .context-btn:hover, .final-cta:hover {
+    transform: none;
+    background: var(--card);
+    border-color: var(--line);
+    color: var(--ink-2);
+  }
+  .nav-btn.primary:hover { background: var(--ink); border-color: var(--ink); color: var(--bg); }
+  .context-btn:hover { background: var(--ink); color: var(--bg); }
+  .context-btn.ghost:hover { background: transparent; color: var(--ink-2); border-color: var(--line-2); }
+  .final-cta:hover { background: var(--ink); }
+}
+</style>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/favicon.svg">
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <button class="exit-btn" id="exitBtn" type="button" aria-label="Volver a los módulos del curso">
+      <span class="exit-btn-arrow">←</span><span class="exit-btn-label">Salir</span>
+    </button>
+    <div class="brand">Claude<em>·101</em> <span class="brand-tag">Módulo 1 · Slides</span></div>
+  </div>
+  <div class="slide-counter"><strong id="slideNum">1</strong> <span style="opacity:.5;">/</span> <span id="slideTotal">10</span></div>
+</div>
+
+<div class="stage" id="stage">
+
+  <!-- SLIDE 1 — Apertura / autoeval -->
+  <div class="slide active" data-slide="1">
+    <div class="slide-inner">
+      <div class="eyebrow">Antes de empezar</div>
+      <h1 class="title">¿Cuánto sabes ya de <em>Claude</em>?</h1>
+      <p class="subtitle">Toca lo que apliques. No hay respuesta correcta — esto solo nos ayuda a personalizar tu camino.</p>
+      <div class="chips" id="autoEvalChips">
+        <button class="chip" data-val="nunca">Nunca lo he usado</button>
+        <button class="chip" data-val="poco">Lo he probado un par de veces</button>
+        <button class="chip" data-val="regular">Lo uso semanalmente</button>
+        <button class="chip" data-val="trabajo">Lo uso en el trabajo</button>
+        <button class="chip" data-val="api">He tocado la API</button>
+      </div>
+      <p style="font-family:var(--mono);font-size:11px;color:var(--muted);margin-top:14px;letter-spacing:.08em;text-transform:uppercase;">Pulsa <strong style="color:var(--ink);">Siguiente</strong> cuando termines</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 2 — Qué es Claude -->
+  <div class="slide" data-slide="2">
+    <div class="slide-inner">
+      <div class="eyebrow">Pregunta 1 de 5</div>
+      <h2 class="title">¿Qué es <em>Claude</em>?</h2>
+      <p class="prompt-text">Elige la definición que más se aproxima.</p>
+      <div class="choices" id="q1Choices">
+        <button class="choice" data-correct="0"><span class="choice-letter">A</span><span>Un buscador como Google que devuelve enlaces.</span></button>
+        <button class="choice" data-correct="1"><span class="choice-letter">B</span><span>Un asistente de IA conversacional creado por Anthropic.</span></button>
+        <button class="choice" data-correct="0"><span class="choice-letter">C</span><span>Un sistema operativo para móviles.</span></button>
+        <button class="choice" data-correct="0"><span class="choice-letter">D</span><span>Un modelo de lenguaje propiedad de Google.</span></button>
+      </div>
+      <div class="feedback" id="q1Feedback"><strong>Eso es.</strong> Claude es un asistente de IA conversacional desarrollado por Anthropic, fundada en 2021. Su diseño se basa en tres valores: útil, honesto e inofensivo.</div>
+    </div>
+  </div>
+
+  <!-- SLIDE 3 — Los 3 pilares (match) -->
+  <div class="slide" data-slide="3">
+    <div class="slide-inner">
+      <div class="eyebrow">Empareja</div>
+      <h2 class="title">Los 3 valores de <em>Anthropic</em></h2>
+      <p class="prompt-text">Empareja cada valor con su definición. Toca un valor a la izquierda y luego su definición a la derecha.</p>
+      <div class="match-grid" id="matchGrid">
+        <div class="match-col">
+          <div class="match-col-head">Valor</div>
+          <button class="match-item" data-side="left" data-id="util">Útil</button>
+          <button class="match-item" data-side="left" data-id="honesto">Honesto</button>
+          <button class="match-item" data-side="left" data-id="inofensivo">Inofensivo</button>
+        </div>
+        <div class="match-col">
+          <div class="match-col-head">Definición</div>
+          <button class="match-item" data-side="right" data-id="honesto">Reconoce cuando no sabe, en lugar de inventar.</button>
+          <button class="match-item" data-side="right" data-id="inofensivo">Razona el daño potencial antes de bloquear ciegamente.</button>
+          <button class="match-item" data-side="right" data-id="util">Resuelve el problema concreto sin esquivarlo.</button>
+        </div>
+      </div>
+      <div class="feedback" id="matchFeedback"><strong>Perfecto.</strong> Esos tres principios condicionan cada respuesta que da Claude. Por eso, donde otros asistentes bloquean ciegamente, Claude razona; donde otros inventan, Claude dice "no estoy seguro".</div>
+    </div>
+  </div>
+
+  <!-- SLIDE 4 — La familia de modelos -->
+  <div class="slide" data-slide="4">
+    <div class="slide-inner">
+      <div class="eyebrow">Explora</div>
+      <h2 class="title">La familia: <em>Haiku · Sonnet · Opus</em></h2>
+      <p class="prompt-text">Toca cada tarjeta para ver su perfil. Tienes que abrir las tres para avanzar.</p>
+      <div class="model-grid" id="modelGrid">
+        <div class="model-card" data-model="haiku">
+          <div class="model-icon">⚡</div>
+          <div class="model-name">Haiku</div>
+          <div class="model-tag">El rápido</div>
+          <div class="model-body">Velocidad y eficiencia. Para tareas ligeras, respuestas instantáneas o procesamiento en volumen. Lo más barato de la familia.</div>
+        </div>
+        <div class="model-card" data-model="sonnet">
+          <div class="model-icon">⚖️</div>
+          <div class="model-name">Sonnet</div>
+          <div class="model-tag">El equilibrado</div>
+          <div class="model-body">Razonamiento sólido con tiempos de respuesta razonables. El más usado en el día a día. Es el que debes probar primero.</div>
+        </div>
+        <div class="model-card" data-model="opus">
+          <div class="model-icon">🧠</div>
+          <div class="model-name">Opus</div>
+          <div class="model-tag">El potente</div>
+          <div class="model-body">El más capaz. Para problemas complejos, análisis profundo o tareas que requieren razonamiento extenso. Más caro y más lento.</div>
+        </div>
+      </div>
+      <div class="feedback" id="modelsFeedback"><strong>Ya tienes el mapa.</strong> Regla práctica: empieza siempre por Sonnet. Sube a Opus si la tarea lo merece, baja a Haiku si necesitas velocidad.</div>
+    </div>
+  </div>
+
+  <!-- SLIDE 5 — Caso práctico: qué modelo elijo -->
+  <div class="slide" data-slide="5">
+    <div class="slide-inner">
+      <div class="eyebrow">Práctica · <span id="scenarioCounter">1 de 3</span></div>
+      <h2 class="title">¿Qué modelo <em>elegirías</em>?</h2>
+      <div class="scenario-card">
+        <div class="scenario-q">Caso</div>
+        <div class="scenario-text" id="scenarioText">"Necesito clasificar 10.000 emails de soporte en categorías predefinidas. Velocidad importa más que matiz."</div>
+      </div>
+      <div class="choices" id="scenarioChoices">
+        <button class="choice" data-model="haiku"><span class="choice-letter">A</span><span>Haiku — rápido y barato</span></button>
+        <button class="choice" data-model="sonnet"><span class="choice-letter">B</span><span>Sonnet — equilibrio</span></button>
+        <button class="choice" data-model="opus"><span class="choice-letter">C</span><span>Opus — razonamiento profundo</span></button>
+      </div>
+      <div class="scenario-progress" id="scenarioProgress">
+        <div class="scenario-dot current"></div>
+        <div class="scenario-dot"></div>
+        <div class="scenario-dot"></div>
+      </div>
+      <div class="feedback" id="scenarioFeedback"></div>
+    </div>
+  </div>
+
+  <!-- SLIDE 6 — Cómo razona Claude (true/false) -->
+  <div class="slide" data-slide="6">
+    <div class="slide-inner">
+      <div class="eyebrow">¿Verdadero o falso?</div>
+      <h2 class="title">Cómo razona <em>Claude</em></h2>
+      <p class="prompt-text" id="tfStatement">"Cuando le preguntas a Claude la capital de Francia, consulta una base de datos interna para responder."</p>
+      <div class="tf-row">
+        <button class="tf-btn" data-correct="false">Verdadero</button>
+        <button class="tf-btn" data-correct="true">Falso</button>
+      </div>
+      <div class="feedback" id="tfFeedback"><strong>Correcto.</strong> Claude no consulta una base de datos. Genera la respuesta más probable a partir de patrones aprendidos durante su entrenamiento. Por eso a veces "alucina" — suena seguro incluso cuando se equivoca.</div>
+    </div>
+  </div>
+
+  <!-- SLIDE 7 — Ventana de contexto -->
+  <div class="slide" data-slide="7">
+    <div class="slide-inner">
+      <div class="eyebrow">Visualízalo</div>
+      <h2 class="title">La <em>ventana de contexto</em></h2>
+      <p class="prompt-text">Es lo que Claude puede tener "en la cabeza" en una conversación. Toca <strong>añadir</strong> y mira cómo se va llenando.</p>
+      <div class="context-box" id="contextBox"></div>
+      <div class="context-meter">
+        <span id="contextLabel">0%</span>
+        <div class="context-bar"><div class="context-fill" id="contextFill"></div></div>
+        <span id="contextTokens">0 tokens</span>
+      </div>
+      <div class="context-controls">
+        <button class="context-btn" id="ctxAdd">+ Añadir contenido</button>
+        <button class="context-btn ghost" id="ctxReset">Vaciar</button>
+      </div>
+      <div class="feedback" id="ctxFeedback"><strong>Eso es exactamente lo que pasa.</strong> Cuando llenas demasiado el contexto, Claude empieza a olvidar lo del principio. La ventana es enorme (cientos de páginas) pero no infinita.</div>
+    </div>
+  </div>
+
+  <!-- SLIDE 8 — Identifica la respuesta de Claude -->
+  <div class="slide" data-slide="8">
+    <div class="slide-inner">
+      <div class="eyebrow">Identifica</div>
+      <h2 class="title">¿Cuál suena a <em>Claude</em>?</h2>
+      <p class="prompt-text">Misma pregunta hecha a dos asistentes. ¿Cuál crees que es Claude?</p>
+      <div class="response-pair" id="responsePair">
+        <div class="response-card" data-correct="true">
+          <div class="response-label">Respuesta A</div>
+          <div class="response-text">"Buena pregunta. Hay tres respuestas razonables según el contexto. Si lo que buscas es velocidad, opta por X. Si buscas matiz, Y. Yo me inclinaría por X dada tu situación, pero <em>conviene tener presente que esto depende del caso de uso concreto</em>."</div>
+        </div>
+        <div class="response-card" data-correct="false">
+          <div class="response-label">Respuesta B</div>
+          <div class="response-text">"¡Excelente pregunta! 🎉 La respuesta definitiva es X. Aquí tienes 10 razones por las que X es siempre la mejor opción: 1. ... 2. ... 3. ..."</div>
+        </div>
+      </div>
+      <div class="feedback" id="responseFeedback"><strong>Eso es.</strong> Claude tiende a respuestas matizadas, sin emoji-bombing ni listas inflacionarias. Reconoce los grises y da una recomendación con su razonamiento, en vez de declarar una verdad absoluta.</div>
+    </div>
+  </div>
+
+  <!-- SLIDE 9 — Recap mini quiz -->
+  <div class="slide" data-slide="9">
+    <div class="slide-inner">
+      <div class="eyebrow">Recap rápido · <span id="recapCounter">1 de 3</span></div>
+      <h2 class="title" id="recapQ">¿Quién creó Claude?</h2>
+      <div class="choices" id="recapChoices"></div>
+      <div class="feedback" id="recapFeedback"></div>
+    </div>
+  </div>
+
+  <!-- SLIDE 10 — Cierre -->
+  <div class="slide" data-slide="10">
+    <div class="slide-inner">
+      <div class="eyebrow">Has terminado el módulo 1</div>
+      <h1 class="title"><em>Listo</em> para el siguiente nivel</h1>
+      <p class="subtitle">Ya sabes qué es Claude, quién lo hace, cuántos modelos hay y cómo razona. Lo que viene en el M2 son los <strong style="color:var(--ink);">primeros pasos prácticos</strong>: cómo acceder, cómo se ve la interfaz y cómo organizar tu primer proyecto.</p>
+      <div class="final-stats">
+        <div class="final-stat"><div class="final-stat-num" id="finalCorrect">0</div><div class="final-stat-label">Aciertos</div></div>
+        <div class="final-stat"><div class="final-stat-num" id="finalTotal">0</div><div class="final-stat-label">Preguntas</div></div>
+        <div class="final-stat"><div class="final-stat-num" id="finalPct">0%</div><div class="final-stat-label">Score</div></div>
+      </div>
+      <button class="final-cta" id="finishBtn">Marcar M1 como completado →</button>
+    </div>
+  </div>
+
+</div>
+
+<div class="controls">
+  <button class="nav-btn" id="btnPrev">← <span class="nav-btn-label">Anterior</span></button>
+  <div class="dots" id="dots"></div>
+  <button class="nav-btn primary" id="btnNext"><span class="nav-btn-label">Siguiente</span> →</button>
+</div>
+
+<script>
+(function(){
+  // ===== STATE =====
+  const TOTAL = 10;
+  const state = {
+    current: 1,
+    visited: new Set([1]),
+    completed: new Set(),
+    score: { correct: 0, total: 0 },
+    scenarioIdx: 0,
+    recapIdx: 0,
+    matchSelected: null,
+    matchPairs: new Set(),
+    ctxTokens: 0,
+  };
+
+  const slides = document.querySelectorAll('.slide');
+  const dotsEl = document.getElementById('dots');
+  const btnPrev = document.getElementById('btnPrev');
+  const btnNext = document.getElementById('btnNext');
+  const numEl = document.getElementById('slideNum');
+  const totalEl = document.getElementById('slideTotal');
+  totalEl.textContent = TOTAL;
+
+  // Build dots
+  for (let i=1; i<=TOTAL; i++){
+    const d = document.createElement('button');
+    d.className = 'dot';
+    d.dataset.slide = i;
+    d.setAttribute('aria-label', 'Ir a diapositiva ' + i);
+    d.addEventListener('click', () => goTo(i));
+    dotsEl.appendChild(d);
+  }
+
+  function updateDots(){
+    dotsEl.querySelectorAll('.dot').forEach(d => {
+      const n = parseInt(d.dataset.slide, 10);
+      d.classList.toggle('active', n === state.current);
+      d.classList.toggle('done', state.completed.has(n));
+    });
+  }
+  function updateNav(){
+    btnPrev.disabled = state.current === 1;
+    btnNext.textContent = (state.current === TOTAL) ? 'Finalizar →' : '';
+    // Repopulate next button label correctly
+    btnNext.innerHTML = state.current === TOTAL
+      ? 'Finalizar <span class="nav-btn-label">→</span>'
+      : '<span class="nav-btn-label">Siguiente</span> →';
+    btnNext.disabled = !canAdvance(state.current);
+  }
+  function canAdvance(n){
+    // Slide 1 → always
+    // Slide 9 → only if quiz finished
+    if (n === TOTAL) return true; // finish button is inside slide
+    return state.completed.has(n) || n === 1;
+  }
+  function goTo(n){
+    if (n < 1 || n > TOTAL) return;
+    slides.forEach(s => s.classList.toggle('active', parseInt(s.dataset.slide,10) === n));
+    state.current = n;
+    state.visited.add(n);
+    numEl.textContent = n;
+    updateDots();
+    updateNav();
+  }
+  function markCompleted(n){
+    state.completed.add(n);
+    updateDots();
+    updateNav();
+  }
+  // Helper para añadir handlers robustos en iOS — click + fallback pointerup
+  function onTap(el, fn){
+    let lastTime = 0;
+    const handler = (ev) => {
+      const now = Date.now();
+      if (now - lastTime < 250) return; // debounce contra doble disparo
+      lastTime = now;
+      ev.preventDefault();
+      fn(ev);
+    };
+    el.addEventListener('click', handler);
+    el.addEventListener('pointerup', handler);
+  }
+  onTap(btnPrev, () => goTo(state.current - 1));
+  onTap(btnNext, () => {
+    if (state.current === TOTAL) return;
+    goTo(state.current + 1);
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' && !btnNext.disabled) goTo(state.current + 1);
+    else if (e.key === 'ArrowLeft' && !btnPrev.disabled) goTo(state.current - 1);
+  });
+
+  // === EXIT BUTTON — sale a /app/curso o, si está en iframe, lo cierra ===
+  function exitToModules(){
+    try {
+      if (window.parent && window.parent !== window) {
+        window.parent.postMessage({ type: 'slides-exit' }, '*');
+      }
+    } catch(e){}
+    try {
+      if (window.top && window.top !== window) {
+        window.top.location.href = '/app/curso';
+        return;
+      }
+    } catch(e){}
+    try { window.location.href = '/app/curso'; } catch(e){ history.back(); }
+  }
+  document.getElementById('exitBtn').addEventListener('click', exitToModules);
+
+  function scoreQ(correct){
+    state.score.total += 1;
+    if (correct) state.score.correct += 1;
+  }
+
+  // ===== SLIDE 1 — autoeval =====
+  const autoChips = document.querySelectorAll('#autoEvalChips .chip');
+  let autoSelected = new Set();
+  autoChips.forEach(c => c.addEventListener('click', () => {
+    const v = c.dataset.val;
+    if (autoSelected.has(v)) { autoSelected.delete(v); c.classList.remove('selected'); }
+    else { autoSelected.add(v); c.classList.add('selected'); }
+    markCompleted(1);
+  }));
+  // Even without selecting, allow advance after 600ms (slide 1 doesn't gate)
+  setTimeout(() => { markCompleted(1); }, 100);
+
+  // ===== SLIDE 2 — Q1 multiple choice =====
+  document.querySelectorAll('#q1Choices .choice').forEach(c => c.addEventListener('click', () => {
+    const choices = document.querySelectorAll('#q1Choices .choice');
+    const isRight = c.dataset.correct === '1';
+    choices.forEach(x => {
+      x.classList.add('disabled');
+      if (x.dataset.correct === '1') x.classList.add('correct');
+    });
+    if (!isRight) c.classList.add('wrong');
+    document.getElementById('q1Feedback').classList.add('show');
+    scoreQ(isRight);
+    markCompleted(2);
+  }));
+
+  // ===== SLIDE 3 — match pairs =====
+  document.querySelectorAll('#matchGrid .match-item').forEach(it => it.addEventListener('click', () => {
+    const id = it.dataset.id;
+    const side = it.dataset.side;
+    if (!state.matchSelected){
+      // first pick
+      document.querySelectorAll('#matchGrid .match-item').forEach(x => x.classList.remove('selected'));
+      it.classList.add('selected');
+      state.matchSelected = { id, side, el: it };
+      return;
+    }
+    if (state.matchSelected.el === it){
+      it.classList.remove('selected');
+      state.matchSelected = null;
+      return;
+    }
+    if (state.matchSelected.side === side){
+      // re-pick same side
+      document.querySelectorAll('#matchGrid .match-item.selected').forEach(x => x.classList.remove('selected'));
+      it.classList.add('selected');
+      state.matchSelected = { id, side, el: it };
+      return;
+    }
+    // Check pair
+    if (state.matchSelected.id === id){
+      state.matchSelected.el.classList.remove('selected');
+      state.matchSelected.el.classList.add('paired');
+      it.classList.add('paired');
+      state.matchPairs.add(id);
+      state.matchSelected = null;
+      if (state.matchPairs.size === 3){
+        document.getElementById('matchFeedback').classList.add('show');
+        scoreQ(true);
+        markCompleted(3);
+      }
+    } else {
+      const a = state.matchSelected.el;
+      a.classList.remove('selected');
+      a.classList.add('wrong-pair');
+      it.classList.add('wrong-pair');
+      setTimeout(() => {
+        a.classList.remove('wrong-pair');
+        it.classList.remove('wrong-pair');
+      }, 600);
+      state.matchSelected = null;
+    }
+  }));
+
+  // ===== SLIDE 4 — models reveal =====
+  let openedModels = new Set();
+  document.querySelectorAll('#modelGrid .model-card').forEach(card => card.addEventListener('click', () => {
+    card.classList.toggle('open');
+    openedModels.add(card.dataset.model);
+    if (openedModels.size === 3){
+      document.getElementById('modelsFeedback').classList.add('show');
+      markCompleted(4);
+    }
+  }));
+
+  // ===== SLIDE 5 — scenarios =====
+  const SCENARIOS = [
+    { text: '"Necesito clasificar 10.000 emails de soporte en categorías predefinidas. Velocidad importa más que matiz."', correct: 'haiku', explain: 'Haiku. Tarea sencilla, repetitiva y a volumen — su sweet spot. Opus sería caro y lento sin aportar matiz extra aquí.' },
+    { text: '"Redactar un informe estratégico complejo para el board, cruzando 5 fuentes de datos."', correct: 'opus', explain: 'Opus. Razonamiento profundo, contexto largo, decisiones de tono. Es exactamente para lo que se diseñó.' },
+    { text: '"Escribir el email de bienvenida del nuevo cliente. Bien redactado, sin necesidad de análisis."', correct: 'sonnet', explain: 'Sonnet. Buen español, formato cuidado, sin necesidad de hilar fino. Es lo que usarías el 80% del día.' },
+  ];
+  function renderScenario(){
+    const s = SCENARIOS[state.scenarioIdx];
+    document.getElementById('scenarioText').textContent = s.text;
+    document.getElementById('scenarioCounter').textContent = (state.scenarioIdx + 1) + ' de ' + SCENARIOS.length;
+    const choices = document.querySelectorAll('#scenarioChoices .choice');
+    choices.forEach(c => { c.classList.remove('correct','wrong','disabled'); });
+    const fb = document.getElementById('scenarioFeedback');
+    fb.classList.remove('show','wrong');
+    // progress dots
+    const dots = document.querySelectorAll('#scenarioProgress .scenario-dot');
+    dots.forEach((d, i) => {
+      d.classList.remove('done','current');
+      if (i < state.scenarioIdx) d.classList.add('done');
+      else if (i === state.scenarioIdx) d.classList.add('current');
+    });
+  }
+  renderScenario();
+  document.querySelectorAll('#scenarioChoices .choice').forEach(c => c.addEventListener('click', () => {
+    const s = SCENARIOS[state.scenarioIdx];
+    const choices = document.querySelectorAll('#scenarioChoices .choice');
+    const isRight = c.dataset.model === s.correct;
+    choices.forEach(x => {
+      x.classList.add('disabled');
+      if (x.dataset.model === s.correct) x.classList.add('correct');
+    });
+    if (!isRight) c.classList.add('wrong');
+    const fb = document.getElementById('scenarioFeedback');
+    fb.innerHTML = '<strong>' + (isRight ? '¡Bien!' : 'Casi.') + '</strong> ' + s.explain;
+    fb.classList.add('show');
+    if (!isRight) fb.classList.add('wrong');
+    scoreQ(isRight);
+    setTimeout(() => {
+      state.scenarioIdx += 1;
+      if (state.scenarioIdx >= SCENARIOS.length){
+        markCompleted(5);
+      } else {
+        renderScenario();
+      }
+    }, 1800);
+  }));
+
+  // ===== SLIDE 6 — True/False =====
+  document.querySelectorAll('.tf-btn').forEach(b => b.addEventListener('click', () => {
+    const isRight = b.dataset.correct === 'true';
+    document.querySelectorAll('.tf-btn').forEach(x => {
+      x.classList.add('disabled');
+      if (x.dataset.correct === 'true') x.classList.add('correct');
+    });
+    if (!isRight) b.classList.add('wrong');
+    document.getElementById('tfFeedback').classList.add('show');
+    scoreQ(isRight);
+    markCompleted(6);
+  }));
+
+  // ===== SLIDE 7 — Context window =====
+  const ctxBox = document.getElementById('contextBox');
+  const ctxFill = document.getElementById('contextFill');
+  const ctxLabel = document.getElementById('contextLabel');
+  const ctxTokensEl = document.getElementById('contextTokens');
+  const CTX_MAX = 40;
+  const TOKEN_WORDS = ['lectura','primer','libro','documento','página','párrafo','frase','idea','contexto','memoria','ventana','token','prompt','respuesta','pregunta','dato','análisis','informe','email','cliente'];
+  document.getElementById('ctxAdd').addEventListener('click', () => {
+    if (state.ctxTokens >= CTX_MAX) return;
+    const batch = Math.min(5, CTX_MAX - state.ctxTokens);
+    for (let i=0;i<batch;i++){
+      const t = document.createElement('span');
+      t.className = 'context-token';
+      t.textContent = TOKEN_WORDS[(state.ctxTokens + i) % TOKEN_WORDS.length];
+      ctxBox.appendChild(t);
+    }
+    state.ctxTokens += batch;
+    const pct = Math.round((state.ctxTokens / CTX_MAX) * 100);
+    ctxFill.style.width = pct + '%';
+    ctxLabel.textContent = pct + '%';
+    ctxTokensEl.textContent = state.ctxTokens + ' tokens';
+    ctxBox.classList.toggle('filling', pct >= 50 && pct < 100);
+    ctxBox.classList.toggle('full', pct >= 100);
+    if (pct >= 100){
+      document.getElementById('ctxFeedback').classList.add('show');
+      markCompleted(7);
+    }
+  });
+  document.getElementById('ctxReset').addEventListener('click', () => {
+    state.ctxTokens = 0;
+    ctxBox.innerHTML = '';
+    ctxFill.style.width = '0%';
+    ctxLabel.textContent = '0%';
+    ctxTokensEl.textContent = '0 tokens';
+    ctxBox.classList.remove('filling','full');
+  });
+
+  // ===== SLIDE 8 — identify response =====
+  document.querySelectorAll('#responsePair .response-card').forEach(card => card.addEventListener('click', () => {
+    const isRight = card.dataset.correct === 'true';
+    const cards = document.querySelectorAll('#responsePair .response-card');
+    cards.forEach(x => {
+      x.classList.add('disabled');
+      if (x.dataset.correct === 'true') x.classList.add('correct');
+    });
+    if (!isRight) card.classList.add('wrong');
+    document.getElementById('responseFeedback').classList.add('show');
+    scoreQ(isRight);
+    markCompleted(8);
+  }));
+
+  // ===== SLIDE 9 — recap mini quiz =====
+  const RECAP = [
+    {
+      q: '¿Quién creó Claude?',
+      choices: [
+        { t: 'OpenAI', ok: false },
+        { t: 'Anthropic', ok: true },
+        { t: 'Google DeepMind', ok: false },
+      ],
+      explain: 'Anthropic, fundada en 2021. Su enfoque distintivo: IA útil, honesta e inofensiva.',
+    },
+    {
+      q: '¿Qué modelo usas como primera opción por defecto?',
+      choices: [
+        { t: 'Haiku', ok: false },
+        { t: 'Sonnet', ok: true },
+        { t: 'Opus', ok: false },
+      ],
+      explain: 'Sonnet. La regla práctica: empieza por Sonnet y sube/baja solo si la tarea lo pide.',
+    },
+    {
+      q: '¿Qué es la "ventana de contexto"?',
+      choices: [
+        { t: 'Una opción de la interfaz para cambiar el tamaño del chat', ok: false },
+        { t: 'La cantidad de texto que Claude puede tener en cuenta en una conversación', ok: true },
+        { t: 'El historial completo de tus conversaciones anteriores', ok: false },
+      ],
+      explain: 'Es la "memoria de trabajo" de Claude en esa conversación. Enorme, pero no infinita.',
+    },
+  ];
+  function renderRecap(){
+    const r = RECAP[state.recapIdx];
+    document.getElementById('recapQ').textContent = r.q;
+    document.getElementById('recapCounter').textContent = (state.recapIdx + 1) + ' de ' + RECAP.length;
+    const wrap = document.getElementById('recapChoices');
+    wrap.innerHTML = '';
+    const letters = ['A','B','C','D'];
+    r.choices.forEach((c, i) => {
+      const b = document.createElement('button');
+      b.className = 'choice';
+      b.innerHTML = '<span class="choice-letter">' + letters[i] + '</span><span>' + c.t + '</span>';
+      b.dataset.ok = c.ok ? '1' : '0';
+      b.addEventListener('click', () => {
+        const all = wrap.querySelectorAll('.choice');
+        const isRight = c.ok;
+        all.forEach(x => {
+          x.classList.add('disabled');
+          if (x.dataset.ok === '1') x.classList.add('correct');
+        });
+        if (!isRight) b.classList.add('wrong');
+        const fb = document.getElementById('recapFeedback');
+        fb.innerHTML = '<strong>' + (isRight ? 'Eso es.' : 'No exactamente.') + '</strong> ' + r.explain;
+        fb.classList.add('show');
+        if (!isRight) fb.classList.add('wrong');
+        scoreQ(isRight);
+        setTimeout(() => {
+          state.recapIdx += 1;
+          if (state.recapIdx >= RECAP.length){
+            markCompleted(9);
+            updateFinal();
+          } else {
+            fb.classList.remove('show','wrong');
+            renderRecap();
+          }
+        }, 1600);
+      });
+      wrap.appendChild(b);
+    });
+  }
+  renderRecap();
+
+  // ===== SLIDE 10 — final =====
+  function updateFinal(){
+    document.getElementById('finalCorrect').textContent = state.score.correct;
+    document.getElementById('finalTotal').textContent = state.score.total;
+    const pct = state.score.total ? Math.round((state.score.correct / state.score.total) * 100) : 0;
+    document.getElementById('finalPct').textContent = pct + '%';
+    markCompleted(10);
+  }
+  document.getElementById('finishBtn').addEventListener('click', () => {
+    // Notificar al padre para que marque lección completada y siga
+    try {
+      if (window.parent && window.parent !== window){
+        window.parent.postMessage({ type: 'slides-complete', module: 1, score: state.score.correct, total: state.score.total }, '*');
+      }
+    } catch(e){}
+    // Visual feedback
+    const btn = document.getElementById('finishBtn');
+    btn.textContent = '✓ M1 completado';
+    btn.style.background = 'var(--olive)';
+    setTimeout(() => { btn.textContent = '✓ M1 completado'; }, 100);
+
+    // POST quiz attempt to backend (silent if fails)
+    try {
+      fetch('/api/quiz/attempt', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'same-origin',
+        body: JSON.stringify({ module: 1, score: state.score.correct, total: state.score.total })
+      }).catch(() => {});
+    } catch {}
+  });
+
+  // Initial
+  updateDots();
+  updateNav();
+})();
+</script>
+</body>
+</html>
