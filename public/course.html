@@ -2744,5 +2744,85 @@ document.addEventListener('keydown', (e) => {
   }
 });
 </script>
+
+<script>
+// === Mobile drawer (hamburger) — wiring ===
+(function initMobileDrawer() {
+  const btn = document.getElementById('mobileMenuBtn');
+  const toc = document.getElementById('toc');
+  if (!btn || !toc) return;
+
+  // Backdrop element (crea si no existe)
+  let backdrop = document.querySelector('.sidebar-backdrop');
+  if (!backdrop) {
+    backdrop = document.createElement('div');
+    backdrop.className = 'sidebar-backdrop';
+    backdrop.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(backdrop);
+  }
+
+  // Botón X de cierre dentro del drawer (solo móvil; insertado al primer open)
+  function ensureCloseButton() {
+    if (toc.querySelector('.sidebar-close')) return;
+    const x = document.createElement('button');
+    x.className = 'sidebar-close';
+    x.setAttribute('aria-label', 'Cerrar menú');
+    x.type = 'button';
+    x.textContent = '✕';
+    x.addEventListener('click', closeDrawer);
+    toc.insertBefore(x, toc.firstChild);
+  }
+
+  const isMobile = () => window.matchMedia('(max-width: 720px)').matches;
+
+  function openDrawer() {
+    ensureCloseButton();
+    toc.classList.add('open');
+    backdrop.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeDrawer() {
+    toc.classList.remove('open');
+    backdrop.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function toggleDrawer() {
+    if (toc.classList.contains('open')) closeDrawer();
+    else openDrawer();
+  }
+
+  // Hamburger — click + pointerup fallback iOS
+  ['click','pointerup'].forEach(ev => btn.addEventListener(ev, (e) => {
+    e.preventDefault();
+    toggleDrawer();
+  }));
+
+  // Backdrop tap = cerrar
+  ['click','pointerup'].forEach(ev => backdrop.addEventListener(ev, (e) => {
+    e.preventDefault();
+    closeDrawer();
+  }));
+
+  // Tap en una lección dentro del drawer = cerrar (delegado, sobrevive a re-render)
+  toc.addEventListener('click', (e) => {
+    const lesson = e.target.closest('.lesson');
+    if (lesson && isMobile()) {
+      // Pequeño delay para que el handler de cambio de lección corra primero
+      setTimeout(closeDrawer, 60);
+    }
+  });
+
+  // Escape cierra
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && toc.classList.contains('open')) closeDrawer();
+  });
+
+  // Si redimensionas a desktop con drawer abierto, restablece
+  window.addEventListener('resize', () => {
+    if (!isMobile() && toc.classList.contains('open')) closeDrawer();
+  });
+})();
+</script>
+
 </body>
 </html>
