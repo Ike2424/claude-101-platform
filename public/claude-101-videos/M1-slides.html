@@ -519,7 +519,7 @@ h2.title em{font-style:italic;color:var(--accent);}
     else if (e.key === 'ArrowLeft' && !btnPrev.disabled) goTo(state.current - 1);
   });
 
-  // === EXIT BUTTON — sale a /app/curso o, si está en iframe, lo cierra ===
+  // === EXIT BUTTON — sale a /app o, si está en iframe, lo cierra ===
   function exitToModules(){
     try {
       if (window.parent && window.parent !== window) {
@@ -528,11 +528,11 @@ h2.title em{font-style:italic;color:var(--accent);}
     } catch(e){}
     try {
       if (window.top && window.top !== window) {
-        window.top.location.href = '/app/curso';
+        window.top.location.href = '/app';
         return;
       }
     } catch(e){}
-    try { window.location.href = '/app/curso'; } catch(e){ history.back(); }
+    try { window.location.href = '/app'; } catch(e){ history.back(); }
   }
   document.getElementById('exitBtn').addEventListener('click', exitToModules);
 

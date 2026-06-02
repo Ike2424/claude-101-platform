@@ -102,8 +102,8 @@
   // === EXIT BUTTON ===
   function exitToModules(){
     try { if (window.parent && window.parent !== window) window.parent.postMessage({ type: 'slides-exit' }, '*'); } catch(e){}
-    try { if (window.top && window.top !== window) { window.top.location.href = '/app/curso'; return; } } catch(e){}
-    try { window.location.href = '/app/curso'; } catch(e){ history.back(); }
+    try { if (window.top && window.top !== window) { window.top.location.href = '/app'; return; } } catch(e){}
+    try { window.location.href = '/app'; } catch(e){ history.back(); }
   }
   document.getElementById('exitBtn').addEventListener('click', exitToModules);
 
