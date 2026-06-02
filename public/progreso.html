@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Tu progreso · Claude 101</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Geist:wght@300..700&family=Geist+Mono:wght@400..600&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<style>
+:root{
+  --bg:#F4EFE3; --bg-2:#EFE9DA; --card:#FBF8F0;
+  --ink:#1C1A16; --ink-2:#3A352D; --muted:#756B5B; --muted-2:#A39782;
+  --line:#E1D8C2; --line-2:#CFC4AA;
+  --accent:#C8542B; --accent-2:#8B3A1E; --olive:#4F5D38; --gold:#B08436;
+  --display:'Fraunces',Georgia,serif;
+  --body:'Geist',system-ui,sans-serif;
+  --mono:'Geist Mono',ui-monospace,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{min-height:100vh;background:var(--bg);color:var(--ink);font-family:var(--body);-webkit-font-smoothing:antialiased;}
+body{background-image:radial-gradient(circle at 12% 8%,rgba(200,84,43,.05) 0%,transparent 40%),radial-gradient(circle at 88% 92%,rgba(176,132,54,.05) 0%,transparent 40%);}
+
+.top{display:flex;align-items:center;justify-content:space-between;padding:18px 28px;border-bottom:1px solid var(--line);background:rgba(251,248,240,.75);backdrop-filter:blur(8px);position:sticky;top:0;z-index:10;}
+.brand{font-family:var(--display);font-style:italic;font-size:18px;color:var(--ink);}
+.brand em{font-style:normal;color:var(--accent);}
+.brand-tag{margin-left:8px;font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-style:normal;}
+.nav-actions{display:flex;align-items:center;gap:12px;}
+.btn{display:inline-flex;align-items:center;gap:8px;background:transparent;border:1px solid var(--line-2);color:var(--ink-2);font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:9px 16px;border-radius:100px;cursor:pointer;text-decoration:none;transition:all .2s;}
+.btn:hover{border-color:var(--ink-2);color:var(--ink);}
+.btn-primary{background:var(--ink);color:var(--bg);border-color:var(--ink);}
+.btn-primary:hover{background:var(--accent);border-color:var(--accent);color:var(--bg);}
+
+.container{max-width:1080px;margin:0 auto;padding:40px 28px 80px;}
+
+/* HERO */
+.hero{margin-bottom:48px;}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;}
+.hero h1{font-family:var(--display);font-style:italic;font-weight:400;font-size:clamp(36px,5vw,56px);line-height:1.1;letter-spacing:-0.02em;color:var(--ink);margin-bottom:16px;}
+.hero h1 em{font-style:normal;color:var(--accent);}
+.hero p{font-size:16px;color:var(--muted);max-width:60ch;line-height:1.5;}
+
+/* STATS GRID */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:48px;}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px 22px;}
+.stat-num{font-family:var(--display);font-size:42px;font-weight:600;color:var(--ink);line-height:1;}
+.stat-num em{font-style:normal;color:var(--accent);}
+.stat-label{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-top:8px;}
+.stat-sub{font-size:12px;color:var(--ink-2);margin-top:4px;}
+
+/* BADGES SECTION */
+.section{margin-bottom:56px;}
+.section-title{font-family:var(--display);font-size:28px;font-weight:400;color:var(--ink);margin-bottom:24px;display:flex;align-items:center;gap:14px;}
+.section-title::after{content:"";flex:1;height:1px;background:var(--line);}
+.section-title em{font-style:italic;color:var(--accent);}
+
+.badge-roadmap{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+.badge-card{background:var(--card);border:2px solid var(--line);border-radius:18px;padding:24px;position:relative;transition:all .3s;}
+.badge-card.unlocked{border-color:var(--olive);background:linear-gradient(180deg,var(--card),rgba(79,93,56,.04));}
+.badge-card.current{border-color:var(--accent);background:linear-gradient(180deg,var(--card),rgba(200,84,43,.06));box-shadow:0 8px 32px rgba(200,84,43,.12);}
+.badge-emoji{font-size:48px;line-height:1;margin-bottom:14px;filter:grayscale(1);opacity:.4;transition:all .3s;}
+.badge-card.unlocked .badge-emoji{filter:none;opacity:1;}
+.badge-card.current .badge-emoji{filter:none;opacity:1;transform:scale(1.05);}
+.badge-name{font-family:var(--display);font-size:22px;font-weight:600;color:var(--ink);margin-bottom:6px;}
+.badge-desc{font-size:13px;color:var(--muted);line-height:1.5;margin-bottom:16px;min-height:36px;}
+.badge-progress{height:6px;background:var(--bg-2);border-radius:100px;overflow:hidden;margin-bottom:8px;}
+.badge-progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--gold));border-radius:100px;transition:width .8s ease;}
+.badge-card.unlocked .badge-progress-fill{background:var(--olive);}
+.badge-status{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);}
+.badge-card.unlocked .badge-status{color:var(--olive);}
+.badge-card.current .badge-status{color:var(--accent);}
+.badge-status strong{color:var(--ink);font-weight:600;}
+
+/* MODULES TABLE */
+.modules-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+.module-row{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:10px;transition:all .2s;}
+.module-row.passed{border-color:var(--olive);background:linear-gradient(180deg,var(--card),rgba(79,93,56,.03));}
+.module-row.mastery{border-color:var(--accent);background:linear-gradient(180deg,var(--card),rgba(200,84,43,.04));}
+.module-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;}
+.module-num{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);}
+.module-title{font-family:var(--display);font-size:16px;font-weight:600;color:var(--ink);line-height:1.3;margin-top:2px;}
+.module-score{font-family:var(--display);font-size:24px;font-weight:600;color:var(--ink);text-align:right;line-height:1;}
+.module-score-total{font-size:14px;color:var(--muted);font-weight:400;}
+.module-bar{height:5px;background:var(--bg-2);border-radius:100px;overflow:hidden;}
+.module-bar-fill{height:100%;background:var(--muted-2);border-radius:100px;transition:width .6s ease;}
+.module-row.passed .module-bar-fill{background:var(--olive);}
+.module-row.mastery .module-bar-fill{background:var(--accent);}
+.module-meta{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);}
+.module-row.passed .module-meta-status{color:var(--olive);}
+.module-row.mastery .module-meta-status{color:var(--accent);}
+
+.empty{background:var(--card);border:1px dashed var(--line-2);border-radius:14px;padding:32px;text-align:center;}
+.empty-icon{font-size:36px;margin-bottom:10px;opacity:.7;}
+.empty-title{font-family:var(--display);font-size:20px;color:var(--ink);margin-bottom:8px;}
+.empty-desc{font-size:14px;color:var(--muted);margin-bottom:20px;}
+
+/* MODULE NAMES (mapeo) */
+.module-titles{display:none;}
+
+/* RESPONSIVE */
+@media (max-width:880px){
+  .top{padding:14px 18px;}
+  .container{padding:28px 18px 60px;}
+  .stats{grid-template-columns:repeat(2,1fr);gap:12px;}
+  .stat{padding:18px;}
+  .stat-num{font-size:32px;}
+  .badge-roadmap{grid-template-columns:1fr;}
+  .modules-grid{grid-template-columns:1fr;}
+  .hero h1{font-size:32px;}
+  .section-title{font-size:22px;}
+}
+.loading{padding:80px 0;text-align:center;color:var(--muted);font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="brand">Claude<em>·101</em> <span class="brand-tag">Tu progreso</span></div>
+  <div class="nav-actions">
+    <a href="/app/curso" class="btn">← Volver al curso</a>
+    <a href="/account" class="btn">Mi cuenta</a>
+  </div>
+</div>
+
+<div class="container" id="root">
+  <div class="loading">Cargando tu progreso...</div>
+</div>
+
+<script>
+const MODULE_TITLES = {
+  1: 'Bienvenida y fundamentos',
+  2: 'Primeros pasos',
+  3: 'El arte del prompt',
+  4: 'Técnicas avanzadas',
+  5: 'Capacidades y herramientas',
+  6: 'Casos de uso prácticos',
+  7: 'Buenas prácticas y límites',
+  8: 'Siguiente nivel',
+  9: 'Desarrollo avanzado'
+};
+
+function escapeHtml(s) {
+  return String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+async function load() {
+  try {
+    const [meRes, quizRes] = await Promise.all([
+      fetch('/api/auth/me', { credentials: 'same-origin' }),
+      fetch('/api/quiz/me', { credentials: 'same-origin' })
+    ]);
+    const me = meRes.ok ? await meRes.json() : null;
+    const quiz = quizRes.ok ? await quizRes.json() : null;
+    if (!quiz) throw new Error('No quiz data');
+    render(me, quiz);
+  } catch (e) {
+    document.getElementById('root').innerHTML = `
+      <div class="empty">
+        <div class="empty-icon">⚠️</div>
+        <div class="empty-title">No pudimos cargar tu progreso</div>
+        <div class="empty-desc">Recarga la página o vuelve al curso.</div>
+        <a href="/app/curso" class="btn btn-primary">Volver al curso</a>
+      </div>
+    `;
+  }
+}
+
+function render(me, quiz) {
+  const email = (me && me.user && me.user.email) || '';
+  const firstName = email ? email.split('@')[0].split('.')[0].replace(/^./, c => c.toUpperCase()) : '';
+  const totalAttempts = quiz.total_attempts || 0;
+  const passed70 = quiz.modules_passed_70 || 0;
+  const passed80 = quiz.modules_passed_80 || 0;
+  const bestByModule = quiz.best_by_module || [];
+
+  // Calcular score total
+  const totalCorrect = bestByModule.reduce((s, m) => s + (m.best_score || 0), 0);
+  const totalQuestions = bestByModule.reduce((s, m) => s + (m.total || 0), 0);
+  const avgPct = totalQuestions ? Math.round(100 * totalCorrect / totalQuestions) : 0;
+
+  // Badges status
+  const hasIniciado = totalAttempts >= 1;
+  const hasAvanzado = passed70 >= 4;
+  const hasMaestro = passed80 >= 9;
+  const currentBadge = hasMaestro ? 'maestro' : hasAvanzado ? 'avanzado' : hasIniciado ? 'iniciado' : null;
+
+  // Progress to next badge
+  const progIniciado = Math.min(100, totalAttempts >= 1 ? 100 : 0);
+  const progAvanzado = Math.min(100, Math.round(100 * passed70 / 4));
+  const progMaestro = Math.min(100, Math.round(100 * passed80 / 9));
+
+  // Render greeting
+  const greeting = currentBadge === 'maestro'
+    ? `Ya eres <em>maestro</em>. Increíble trabajo.`
+    : currentBadge === 'avanzado'
+    ? `Vas <em>avanzado</em>, ${escapeHtml(firstName)}.`
+    : currentBadge === 'iniciado'
+    ? `Has empezado, ${escapeHtml(firstName)}.`
+    : `Aún no hay intentos, ${escapeHtml(firstName)}.`;
+
+  const subtitle = currentBadge === 'maestro'
+    ? 'Has dominado los 9 módulos con 80% o más. Próximo paso: aplica lo aprendido a una tarea tuya real.'
+    : currentBadge === 'avanzado'
+    ? 'Estás a 4-5 módulos al 80% de ser maestro. Vuelve a las lecciones más flojas y mejora tu puntuación.'
+    : currentBadge === 'iniciado'
+    ? 'Buen punto de partida. Completa más módulos con 70%+ para subir a Avanzado.'
+    : 'Completa tu primer quiz al final de cualquier lección para empezar a sumar.';
+
+  const root = document.getElementById('root');
+  root.innerHTML = `
+    <div class="hero">
+      <div class="eyebrow">${escapeHtml(email)}</div>
+      <h1>${greeting}</h1>
+      <p>${subtitle}</p>
+    </div>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-num">${totalAttempts}</div>
+        <div class="stat-label">Intentos</div>
+        <div class="stat-sub">Quizzes completados</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">${avgPct}<em>%</em></div>
+        <div class="stat-label">Promedio</div>
+        <div class="stat-sub">${totalCorrect}/${totalQuestions} aciertos</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">${passed70}<em>/9</em></div>
+        <div class="stat-label">Módulos 70%+</div>
+        <div class="stat-sub">Para badge Avanzado: 4</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">${passed80}<em>/9</em></div>
+        <div class="stat-label">Módulos 80%+</div>
+        <div class="stat-sub">Para badge Maestro: 9</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2 class="section-title">Tus <em>badges</em></h2>
+      <div class="badge-roadmap">
+        <div class="badge-card ${hasIniciado ? 'unlocked' : ''} ${currentBadge === 'iniciado' ? 'current' : ''}">
+          <div class="badge-emoji">🌱</div>
+          <div class="badge-name">Iniciado</div>
+          <div class="badge-desc">Has completado tu primer quiz del curso.</div>
+          <div class="badge-progress"><div class="badge-progress-fill" style="width: ${progIniciado}%"></div></div>
+          <div class="badge-status">${hasIniciado ? '<strong>Desbloqueado</strong>' : `Completa 1 quiz`}</div>
+        </div>
+        <div class="badge-card ${hasAvanzado ? 'unlocked' : ''} ${currentBadge === 'avanzado' ? 'current' : ''}">
+          <div class="badge-emoji">🚀</div>
+          <div class="badge-name">Avanzado</div>
+          <div class="badge-desc">Aprueba 4+ módulos con 70% o más de aciertos.</div>
+          <div class="badge-progress"><div class="badge-progress-fill" style="width: ${progAvanzado}%"></div></div>
+          <div class="badge-status">${hasAvanzado ? '<strong>Desbloqueado</strong>' : `<strong>${passed70}/4</strong> módulos`}</div>
+        </div>
+        <div class="badge-card ${hasMaestro ? 'unlocked' : ''} ${currentBadge === 'maestro' ? 'current' : ''}">
+          <div class="badge-emoji">🎖️</div>
+          <div class="badge-name">Maestro</div>
+          <div class="badge-desc">Los 9 módulos con 80% o más. Dominio.</div>
+          <div class="badge-progress"><div class="badge-progress-fill" style="width: ${progMaestro}%"></div></div>
+          <div class="badge-status">${hasMaestro ? '<strong>Desbloqueado</strong>' : `<strong>${passed80}/9</strong> módulos`}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2 class="section-title">Por <em>módulo</em></h2>
+      ${renderModules(bestByModule)}
+    </div>
+  `;
+}
+
+function renderModules(best) {
+  if (!best.length) {
+    return `
+      <div class="empty">
+        <div class="empty-icon">📚</div>
+        <div class="empty-title">Aún no has hecho ningún quiz</div>
+        <div class="empty-desc">Entra en cualquier lección y completa las slides hasta el final. La puntuación se guarda automáticamente.</div>
+        <a href="/app/curso" class="btn btn-primary">Ir al curso</a>
+      </div>
+    `;
+  }
+
+  // Crear mapa para acceso fácil
+  const byNum = {};
+  best.forEach(b => { byNum[b.module_num] = b; });
+
+  // Generar 9 módulos en orden
+  const cards = [];
+  for (let n = 1; n <= 9; n++) {
+    const b = byNum[n];
+    const title = MODULE_TITLES[n] || `Módulo ${n}`;
+    if (!b) {
+      cards.push(`
+        <div class="module-row">
+          <div class="module-head">
+            <div>
+              <div class="module-num">Módulo ${n}</div>
+              <div class="module-title">${escapeHtml(title)}</div>
+            </div>
+            <div class="module-score" style="color:var(--muted-2);">—</div>
+          </div>
+          <div class="module-bar"><div class="module-bar-fill" style="width:0%"></div></div>
+          <div class="module-meta">
+            <span>Sin intentos</span>
+            <span class="module-meta-status">Por hacer</span>
+          </div>
+        </div>
+      `);
+    } else {
+      const pct = Math.round(100 * b.best_score / b.total);
+      const isPassed = pct >= 70;
+      const isMastery = pct >= 80;
+      const rowClass = isMastery ? 'mastery' : isPassed ? 'passed' : '';
+      const status = isMastery ? 'Maestría' : isPassed ? 'Aprobado' : 'A repasar';
+      cards.push(`
+        <div class="module-row ${rowClass}">
+          <div class="module-head">
+            <div>
+              <div class="module-num">Módulo ${n}</div>
+              <div class="module-title">${escapeHtml(title)}</div>
+            </div>
+            <div class="module-score">${b.best_score}<span class="module-score-total">/${b.total}</span></div>
+          </div>
+          <div class="module-bar"><div class="module-bar-fill" style="width:${pct}%"></div></div>
+          <div class="module-meta">
+            <span>${pct}% aciertos</span>
+            <span class="module-meta-status">${status}</span>
+          </div>
+        </div>
+      `);
+    }
+  }
+
+  return `<div class="modules-grid">${cards.join('')}</div>`;
+}
+
+load();
+</script>
+</body>
+</html>

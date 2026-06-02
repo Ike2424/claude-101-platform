@@ -325,6 +325,11 @@ app.get('/app', requireAuth, requirePaid, (_req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'app.html'));
 });
 
+// Página de progreso del usuario
+app.get('/app/progreso', requireAuth, requirePaid, (_req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'progreso.html'));
+});
+
 app.get('/account', requireAuth, (_req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'account.html'));
 });
