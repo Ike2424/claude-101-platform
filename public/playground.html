@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Playground de prompts · Claude 101</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Geist:wght@300..700&family=Geist+Mono:wght@400..600&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<style>
+:root{
+  --bg:#F4EFE3; --bg-2:#EFE9DA; --card:#FBF8F0;
+  --ink:#1C1A16; --ink-2:#3A352D; --muted:#756B5B; --muted-2:#A39782;
+  --line:#E1D8C2; --line-2:#CFC4AA;
+  --accent:#C8542B; --olive:#4F5D38; --gold:#B08436;
+  --display:'Fraunces',Georgia,serif;
+  --body:'Geist',system-ui,sans-serif;
+  --mono:'Geist Mono',ui-monospace,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{min-height:100vh;background:var(--bg);color:var(--ink);font-family:var(--body);-webkit-font-smoothing:antialiased;}
+body{background-image:radial-gradient(circle at 12% 8%,rgba(200,84,43,.05) 0%,transparent 40%),radial-gradient(circle at 88% 92%,rgba(79,93,56,.04) 0%,transparent 40%);}
+
+.top{display:flex;align-items:center;justify-content:space-between;padding:18px 28px;border-bottom:1px solid var(--line);background:rgba(251,248,240,.75);backdrop-filter:blur(8px);position:sticky;top:0;z-index:10;}
+.brand{font-family:var(--display);font-style:italic;font-size:18px;color:var(--ink);}
+.brand em{font-style:normal;color:var(--accent);}
+.brand-tag{margin-left:8px;font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-style:normal;}
+.nav-actions{display:flex;align-items:center;gap:10px;}
+.btn{display:inline-flex;align-items:center;gap:6px;background:transparent;border:1px solid var(--line-2);color:var(--ink-2);font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:9px 14px;border-radius:100px;cursor:pointer;text-decoration:none;transition:all .2s;}
+.btn:hover{border-color:var(--ink-2);color:var(--ink);}
+
+.container{max-width:1080px;margin:0 auto;padding:40px 28px 80px;}
+.hero{margin-bottom:32px;}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;}
+.hero h1{font-family:var(--display);font-style:italic;font-weight:400;font-size:clamp(36px,5vw,52px);line-height:1.1;letter-spacing:-0.02em;color:var(--ink);margin-bottom:14px;}
+.hero h1 em{font-style:normal;color:var(--accent);}
+.hero p{font-size:16px;color:var(--muted);max-width:60ch;line-height:1.5;}
+
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+
+.panel{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:24px;}
+.panel-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.panel-title{font-family:var(--display);font-size:20px;font-weight:600;color:var(--ink);}
+.panel-title em{font-style:italic;color:var(--accent);}
+.panel-sub{font-size:12px;color:var(--muted);}
+
+.prompt-input{width:100%;min-height:260px;background:transparent;border:1px solid var(--line);border-radius:12px;padding:14px;font-family:var(--mono);font-size:13px;line-height:1.55;color:var(--ink-2);resize:vertical;outline:none;transition:border-color .2s;}
+.prompt-input:focus{border-color:var(--accent);}
+.prompt-input::placeholder{color:var(--muted-2);font-style:italic;}
+
+.actions{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap;}
+.btn-primary{background:var(--ink);color:var(--bg);border-color:var(--ink);font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:11px 22px;border-radius:100px;cursor:pointer;border:1px solid var(--ink);transition:all .2s;}
+.btn-primary:hover{background:var(--accent);border-color:var(--accent);}
+.btn-ghost{background:transparent;color:var(--muted);border:1px solid var(--line-2);font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:11px 18px;border-radius:100px;cursor:pointer;transition:all .2s;}
+.btn-ghost:hover{color:var(--ink);border-color:var(--ink-2);}
+
+.score-circle{display:flex;align-items:center;gap:14px;background:var(--bg-2);border-radius:14px;padding:14px 18px;margin-bottom:18px;}
+.score-ring{position:relative;width:64px;height:64px;flex-shrink:0;}
+.score-ring svg{width:100%;height:100%;transform:rotate(-90deg);}
+.score-ring-bg{fill:none;stroke:var(--line);stroke-width:6;}
+.score-ring-fill{fill:none;stroke-width:6;stroke-linecap:round;transition:stroke-dashoffset .8s ease, stroke .8s ease;}
+.score-text{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:20px;font-weight:600;color:var(--ink);}
+.score-label{flex:1;}
+.score-label-title{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);}
+.score-label-status{font-family:var(--display);font-size:18px;font-weight:600;color:var(--ink);margin-top:2px;}
+
+.check-list{display:flex;flex-direction:column;gap:10px;}
+.check{display:flex;align-items:flex-start;gap:12px;background:var(--bg-2);border:1px solid var(--line);border-radius:12px;padding:12px 14px;}
+.check.pass{background:rgba(79,93,56,.06);border-color:var(--olive);}
+.check.fail{background:rgba(200,84,43,.04);border-color:rgba(200,84,43,.25);}
+.check-icon{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:12px;font-weight:600;background:var(--bg);color:var(--muted);border:1px solid var(--line-2);}
+.check.pass .check-icon{background:var(--olive);color:var(--bg);border-color:var(--olive);}
+.check.fail .check-icon{background:var(--accent);color:var(--bg);border-color:var(--accent);}
+.check-content{flex:1;min-width:0;}
+.check-name{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:3px;}
+.check-tip{font-size:12px;color:var(--muted);line-height:1.4;}
+
+.empty-state{text-align:center;padding:60px 20px;color:var(--muted);}
+.empty-icon{font-size:36px;margin-bottom:12px;opacity:.5;}
+.empty-text{font-size:14px;}
+
+.examples{margin-top:24px;}
+.examples-title{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;}
+.example{background:var(--bg-2);border:1px solid var(--line);border-radius:10px;padding:10px 14px;font-family:var(--mono);font-size:11px;color:var(--ink-2);line-height:1.5;cursor:pointer;margin-bottom:8px;transition:all .2s;}
+.example:hover{border-color:var(--accent);}
+.example-label{font-family:var(--body);font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px;}
+
+@media (max-width:880px){
+  .top{padding:14px 18px;}
+  .container{padding:24px 18px 60px;}
+  .hero h1{font-size:30px;}
+  .grid{grid-template-columns:1fr;gap:18px;}
+  .panel{padding:18px;}
+}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="brand">Claude<em>·101</em> <span class="brand-tag">Playground</span></div>
+  <div class="nav-actions">
+    <a href="/app/curso" class="btn">← Curso</a>
+    <a href="/app/glosario" class="btn">Glosario</a>
+  </div>
+</div>
+
+<div class="container">
+  <div class="hero">
+    <div class="eyebrow">Práctica del módulo 3</div>
+    <h1>Analiza tu <em>prompt</em></h1>
+    <p>Pega un prompt y obtén feedback automático sobre qué le falta según las técnicas del curso. Sin llamar a Claude — análisis local con las heurísticas que enseñamos en M3 (anatomía del buen prompt) y M4 (técnicas avanzadas).</p>
+  </div>
+
+  <div class="grid">
+    <div class="panel">
+      <div class="panel-head">
+        <div class="panel-title">Tu <em>prompt</em></div>
+        <div class="panel-sub" id="charCount">0 caracteres</div>
+      </div>
+      <textarea class="prompt-input" id="promptInput" placeholder="Escribe o pega tu prompt aquí...&#10;&#10;Ejemplo: 'Como editor senior de revista cultural, escribe una intro de 200 palabras al artículo X, evitando jerga técnica.'"></textarea>
+      <div class="actions">
+        <button class="btn-primary" id="analyzeBtn">Analizar</button>
+        <button class="btn-ghost" id="clearBtn">Vaciar</button>
+      </div>
+
+      <div class="examples">
+        <div class="examples-title">Ejemplos para probar</div>
+        <div class="example" data-example="Hazme un email."><div class="example-label">Demasiado vago</div>Hazme un email.</div>
+        <div class="example" data-example="Resume este informe en 5 bullets, máximo 20 palabras cada uno, para mi CEO."><div class="example-label">Bien estructurado</div>Resume este informe en 5 bullets, máximo 20 palabras cada uno, para mi CEO.</div>
+        <div class="example" data-example="Como editor senior de revista cultural, escribe una intro de 200 palabras al artículo X, evitando jerga técnica. Audiencia: público adulto interesado pero no especializado. Tono cercano, sin platitudes."><div class="example-label">Excelente</div>Como editor senior de revista cultural, escribe una intro de 200 palabras al artículo X, evitando jerga técnica...</div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-head">
+        <div class="panel-title">Feedback <em>automático</em></div>
+        <div class="panel-sub" id="analyzeStatus">Aún no hay análisis</div>
+      </div>
+      <div id="results">
+        <div class="empty-state">
+          <div class="empty-icon">🔍</div>
+          <div class="empty-text">Pega un prompt en la izquierda y pulsa <strong>Analizar</strong>.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const CHECKS = [
+  {
+    id: 'length',
+    name: 'Longitud razonable',
+    test: (p) => p.length >= 40 && p.length <= 2000,
+    tipPass: 'Buena longitud — ni vago ni saturado.',
+    tipFail: (p) => p.length < 40
+      ? 'Demasiado corto. Un buen prompt necesita al menos contexto + tarea — normalmente 40+ caracteres.'
+      : 'Muy largo. Prompts >2000 caracteres suelen ser candidatos a usar XML tags o archivos adjuntos (M4).'
+  },
+  {
+    id: 'task',
+    name: 'Tarea con verbo claro',
+    test: (p) => /\b(escribe|redacta|hazme|analiza|resume|reescribe|extrae|crea|genera|traduce|clasifica|compara|explica|describe|propon|sugiere|piensa|haz|prepara|elabora|estructura|diseña|optimiza)\b/i.test(p),
+    tipPass: 'Verbo de acción detectado — Claude sabe qué hacer.',
+    tipFail: () => 'No detecté un verbo de acción claro. Empieza con "Resume", "Escribe", "Analiza", "Reescribe", etc.'
+  },
+  {
+    id: 'audience',
+    name: 'Audiencia o destinatario',
+    test: (p) => /\b(para mi|para un|para una|al cliente|al director|al CEO|al equipo|para el|para la|audiencia|destinatario|lector|público|dirigido a|para que|le envío|para que vean)\b/i.test(p) || /\b(amigo|jefe|compañero|empleado|alumno|estudiante|usuario|profesor)\b/i.test(p),
+    tipPass: 'Audiencia identificada — el tono se calibra al destinatario.',
+    tipFail: () => 'No vi a quién va dirigido. Añade "para mi CEO", "para un cliente B2B", "para mi equipo"… Cambia drásticamente la respuesta.'
+  },
+  {
+    id: 'context',
+    name: 'Contexto de la situación',
+    test: (p) => /\b(porque|ya que|debido a|el problema es|la situación es|el contexto|en mi empresa|en mi trabajo|en mi sector|llevamos|tenemos|hemos|vamos a|estamos)\b/i.test(p) || p.length > 200,
+    tipPass: 'Hay contexto suficiente sobre la situación.',
+    tipFail: () => 'Falta contexto sobre la situación: qué pasó antes, qué quieres conseguir, qué barrera hay. Una línea más sube mucho la calidad.'
+  },
+  {
+    id: 'format',
+    name: 'Formato esperado',
+    test: (p) => /\b(en bullets|en lista|tabla|párrafo|json|csv|markdown|bullets|en 3 puntos|en 5 puntos|sección|secciones|listado|formato|estructura|estilo|tono)\b/i.test(p),
+    tipPass: 'Formato definido — Claude sabe en qué forma entregar.',
+    tipFail: () => 'No especificaste formato. ¿Bullets? ¿Párrafo? ¿Tabla? ¿Cuántas líneas? Sin esto Claude decide por ti.'
+  },
+  {
+    id: 'length-restriction',
+    name: 'Restricción de longitud',
+    test: (p) => /\b(máximo|max|min|mínimo|al menos|no más de|menos de|alrededor de|aproximadamente|en torno a|\d+\s*(palabras|líneas|caracteres|párrafos|bullets|frases|tweets))\b/i.test(p),
+    tipPass: 'Longitud especificada — evita respuestas infladas.',
+    tipFail: () => '"Que sea breve" es ambiguo. Especifica: "máx 100 palabras", "3 bullets", "5 frases". Mucho más eficaz.'
+  },
+  {
+    id: 'tone',
+    name: 'Tono o estilo',
+    test: (p) => /\b(tono|formal|informal|cercano|profesional|coloquial|académico|directo|sobrio|amistoso|sin emojis|sin jerga|sin clichés|estilo|voz)\b/i.test(p),
+    tipPass: 'Tono indicado — calibra la voz de la respuesta.',
+    tipFail: () => 'Sin tono especificado, Claude usará uno por defecto. "Tono cercano profesional", "sobrio", "directo" — cambia mucho.'
+  },
+  {
+    id: 'role',
+    name: 'Rol o persona (M4)',
+    test: (p) => /\b(como (un|una|el|la)?|actúa como|eres (un|una|el|la)?|en el rol de|en mi rol de|desde la perspectiva de)\s+\w+/i.test(p) || /\b(soy un|soy una)\s+\w+/i.test(p),
+    tipPass: 'Rol definido — calibra criterio y vocabulario implícitos.',
+    tipFail: () => 'Asignar un rol específico ("Actúa como editor senior", "Eres consultora con 15 años") sube la calidad sin tener que enumerar criterios. Técnica del M4.'
+  },
+  {
+    id: 'examples',
+    name: 'Ejemplos (Few-shot M4)',
+    test: (p) => /\b(por ejemplo|ejemplo:|ejemplos:|así:|tipo:|input:|output:|antes:|después:|<ejemplo|aquí va|como esto)\b/i.test(p) || /```/.test(p),
+    tipPass: 'Hay ejemplos — Claude clona el patrón.',
+    tipFail: () => 'Para tareas con formato específico, dar 2-3 ejemplos del output deseado es mucho más eficaz que describirlo en palabras. Técnica few-shot del M4.'
+  },
+  {
+    id: 'constraints',
+    name: 'Restricciones explícitas',
+    test: (p) => /\b(sin|evita|no incluyas|no uses|sin (que|usar|incluir)|evitando|excluyendo|no hagas|no respondas)\b/i.test(p),
+    tipPass: 'Tienes restricciones — defines también lo que NO quieres.',
+    tipFail: () => 'Decir lo que NO quieres es tan importante como lo que sí: "sin emojis", "sin jerga", "evita platitudes". Te ahorra iteraciones.'
+  },
+  {
+    id: 'double-negation',
+    name: 'Sin doble negación',
+    test: (p) => !(/\bno\s+(\w+\s+){0,3}\bno\b/i.test(p) || /\bsin\s+(\w+\s+){0,3}\bsin\b/i.test(p)),
+    tipPass: 'Sin construcciones negativas confusas.',
+    tipFail: () => 'Detecto dobles negaciones ("no olvides no…"). Reescribe en positivo: "Asegúrate de X" en lugar de "no olvides no Y".'
+  },
+  {
+    id: 'single-task',
+    name: 'Una tarea por prompt',
+    test: (p) => {
+      const verbs = (p.match(/\b(escribe|redacta|hazme|analiza|resume|reescribe|extrae|crea|genera|traduce|clasifica|compara|explica|describe)\b/gi) || []).length;
+      return verbs <= 3;
+    },
+    tipPass: 'Una tarea clara — mejor calidad que multitarea.',
+    tipFail: () => 'Detecto varias tareas distintas. Multitarea diluye calidad. Encadénalas: un prompt por paso, usa el output del anterior.'
+  }
+];
+
+const promptInput = document.getElementById('promptInput');
+const analyzeBtn = document.getElementById('analyzeBtn');
+const clearBtn = document.getElementById('clearBtn');
+const resultsEl = document.getElementById('results');
+const charCountEl = document.getElementById('charCount');
+const statusEl = document.getElementById('analyzeStatus');
+
+function updateCharCount() {
+  const n = promptInput.value.length;
+  charCountEl.textContent = `${n} caracter${n === 1 ? '' : 'es'}`;
+}
+promptInput.addEventListener('input', updateCharCount);
+
+function analyze() {
+  const prompt = promptInput.value.trim();
+  if (!prompt) {
+    resultsEl.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">⚠️</div>
+        <div class="empty-text">Escribe primero un prompt para analizar.</div>
+      </div>`;
+    statusEl.textContent = 'Sin prompt';
+    return;
+  }
+
+  const results = CHECKS.map(c => {
+    const pass = c.test(prompt);
+    return {
+      id: c.id,
+      name: c.name,
+      pass,
+      tip: pass ? c.tipPass : (typeof c.tipFail === 'function' ? c.tipFail(prompt) : c.tipFail)
+    };
+  });
+
+  const passed = results.filter(r => r.pass).length;
+  const total = results.length;
+  const score = Math.round(100 * passed / total);
+  const status = score >= 85 ? 'Excelente' : score >= 65 ? 'Sólido' : score >= 40 ? 'A mejorar' : 'Muy básico';
+  const ringColor = score >= 85 ? 'var(--olive)' : score >= 65 ? 'var(--gold)' : 'var(--accent)';
+  statusEl.textContent = `${passed} de ${total} criterios`;
+
+  const circumference = 2 * Math.PI * 28;
+  const offset = circumference * (1 - score / 100);
+
+  resultsEl.innerHTML = `
+    <div class="score-circle">
+      <div class="score-ring">
+        <svg viewBox="0 0 64 64">
+          <circle class="score-ring-bg" cx="32" cy="32" r="28"></circle>
+          <circle class="score-ring-fill" cx="32" cy="32" r="28" stroke="${ringColor}"
+            stroke-dasharray="${circumference}" stroke-dashoffset="${offset}"></circle>
+        </svg>
+        <div class="score-text">${score}</div>
+      </div>
+      <div class="score-label">
+        <div class="score-label-title">Puntuación heurística</div>
+        <div class="score-label-status">${status}</div>
+      </div>
+    </div>
+    <div class="check-list">
+      ${results.map(r => `
+        <div class="check ${r.pass ? 'pass' : 'fail'}">
+          <div class="check-icon">${r.pass ? '✓' : '!'}</div>
+          <div class="check-content">
+            <div class="check-name">${r.name}</div>
+            <div class="check-tip">${r.tip}</div>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
+
+analyzeBtn.addEventListener('click', analyze);
+clearBtn.addEventListener('click', () => {
+  promptInput.value = '';
+  updateCharCount();
+  resultsEl.innerHTML = `
+    <div class="empty-state">
+      <div class="empty-icon">🔍</div>
+      <div class="empty-text">Pega un prompt en la izquierda y pulsa <strong>Analizar</strong>.</div>
+    </div>`;
+  statusEl.textContent = 'Aún no hay análisis';
+  promptInput.focus();
+});
+
+// Cmd/Ctrl+Enter para analizar
+promptInput.addEventListener('keydown', (e) => {
+  if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
+    e.preventDefault();
+    analyze();
+  }
+});
+
+// Ejemplos
+document.querySelectorAll('.example').forEach(el => el.addEventListener('click', () => {
+  promptInput.value = el.dataset.example;
+  updateCharCount();
+  promptInput.focus();
+  analyze();
+}));
+
+updateCharCount();
+</script>
+</body>
+</html>

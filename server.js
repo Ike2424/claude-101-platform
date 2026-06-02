@@ -335,6 +335,11 @@ app.get('/app/glosario', requireAuth, requirePaid, (_req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'glosario.html'));
 });
 
+// Playground de prompts
+app.get('/app/playground', requireAuth, requirePaid, (_req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'playground.html'));
+});
+
 // Resumenes PDF
 app.get('/app/resumenes', requireAuth, requirePaid, (_req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'resumenes.html'));
