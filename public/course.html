@@ -2827,5 +2827,43 @@ document.addEventListener('keydown', (e) => {
   });
 })();
 </script>
+
+<script>
+// === Instructor Mode gating — allowlist ==
+(function gateInstructorMode() {
+  const ADMIN_EMAILS = [
+    'ikemasatsangulo1@gmail.com',
+    'emabranding@gmail.com',
+    'enrique.tactoagencia@gmail.com',
+    'enrique@tactoagencia.com'
+  ];
+
+  const btn = document.getElementById('modeToggle');
+  if (!btn) return;
+
+  // Oculto por defecto hasta saber el email — evita parpadeo
+  btn.style.visibility = 'hidden';
+  btn.style.pointerEvents = 'none';
+
+  fetch('/api/auth/me', { credentials: 'same-origin' })
+    .then(r => r.ok ? r.json() : null)
+    .then(data => {
+      const email = (data && data.user && data.user.email || '').toLowerCase().trim();
+      if (email && ADMIN_EMAILS.includes(email)) {
+        btn.style.visibility = 'visible';
+        btn.style.pointerEvents = '';
+      } else {
+        // No es admin — quitar el botón del DOM y forzar adminMode false
+        btn.parentNode && btn.parentNode.removeChild(btn);
+        try { if (typeof window.adminMode !== 'undefined') window.adminMode = false; } catch(e){}
+      }
+    })
+    .catch(() => {
+      // Si falla la API, mejor ocultar (no es admin por defecto)
+      try { btn.parentNode && btn.parentNode.removeChild(btn); } catch(e){}
+    });
+})();
+</script>
+
 </body>
 </html>
