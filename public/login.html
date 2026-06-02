@@ -120,5 +120,122 @@ async function sendLink(e) {
 }
 </script>
 <script src="/track.js"></script>
+
+<script>
+// Mejoras de UX para login.html — autorelleno desde localStorage + auto-envio
+
+(function smartLogin() {
+  const SAVED_EMAIL_KEY = 'c101_last_email';
+
+  // 1) Autorellenar email desde localStorage
+  const emailInput = document.getElementById('email');
+  if (!emailInput) return;
+
+  const savedEmail = (() => {
+    try { return localStorage.getItem(SAVED_EMAIL_KEY) || ''; }
+    catch { return ''; }
+  })();
+
+  // 2) Si hay error en URL ('expired', 'used', etc.) y email guardado, mostrar
+  //    UI especial "te mandamos otro enlace en 3s, [cancelar]"
+  const sp = new URLSearchParams(location.search);
+  const errType = sp.get('error');
+  const nextUrl = sp.get('next');
+
+  if (savedEmail) {
+    emailInput.value = savedEmail;
+    // Cambiar el botón al texto que aclare
+    const sendBtn = document.getElementById('sendBtn');
+    if (sendBtn) sendBtn.textContent = `Enviar enlace a ${savedEmail}`;
+
+    // Mostrar enlace "cambiar email" debajo del input
+    const form = document.getElementById('loginForm');
+    if (form && !document.getElementById('changeEmailLink')) {
+      const changeLink = document.createElement('a');
+      changeLink.id = 'changeEmailLink';
+      changeLink.href = '#';
+      changeLink.textContent = 'Cambiar email';
+      changeLink.style.cssText = 'display:block;font-size:13px;color:var(--muted);text-align:center;margin-top:14px;text-decoration:underline;';
+      changeLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        try { localStorage.removeItem(SAVED_EMAIL_KEY); } catch {}
+        emailInput.value = '';
+        emailInput.focus();
+        if (sendBtn) sendBtn.textContent = 'Enviar enlace de acceso';
+        changeLink.remove();
+        // Cancelar countdown si existe
+        if (window._loginCountdown) {
+          clearInterval(window._loginCountdown);
+          window._loginCountdown = null;
+          const ind = document.getElementById('autoSendIndicator');
+          if (ind) ind.remove();
+        }
+      });
+      form.appendChild(changeLink);
+    }
+
+    // Auto-envio si NO hay error grave en la URL
+    const errorPreventsAutoSend = (errType === 'used' || errType === 'invalid' || errType === 'expired');
+    if (!errorPreventsAutoSend) {
+      autoSendCountdown(savedEmail);
+    }
+  }
+
+  // 3) Hook al envío del form para guardar el email
+  const form = document.getElementById('loginForm');
+  if (form) {
+    form.addEventListener('submit', () => {
+      const v = (emailInput.value || '').trim().toLowerCase();
+      if (v && v.includes('@')) {
+        try { localStorage.setItem(SAVED_EMAIL_KEY, v); } catch {}
+      }
+    });
+  }
+
+  // 4) Preservar ?next= en el redirect del magic link
+  if (nextUrl) {
+    try {
+      // Guardar en sessionStorage para que /app/auth/me lo use post-login
+      sessionStorage.setItem('c101_post_login_next', nextUrl);
+    } catch {}
+  }
+
+  function autoSendCountdown(email) {
+    // No enviar si ya hay alerts (errores previos)
+    const existingAlerts = document.querySelectorAll('#alerts .alert-error');
+    if (existingAlerts.length > 0) return;
+
+    let secs = 3;
+    const indicator = document.createElement('div');
+    indicator.id = 'autoSendIndicator';
+    indicator.style.cssText = 'text-align:center;margin:12px 0;padding:12px 16px;background:var(--bg-2);border:1px solid var(--line);border-radius:10px;font-size:13px;color:var(--ink-2);';
+    indicator.innerHTML = `Enviando enlace automáticamente en <strong id="autoSendSecs">${secs}</strong>s · <a href="#" id="cancelAutoSend" style="color:var(--accent);text-decoration:underline;">Cancelar</a>`;
+
+    const sendBtn = document.getElementById('sendBtn');
+    if (sendBtn && sendBtn.parentNode) sendBtn.parentNode.insertBefore(indicator, sendBtn);
+
+    document.getElementById('cancelAutoSend').addEventListener('click', (e) => {
+      e.preventDefault();
+      clearInterval(window._loginCountdown);
+      window._loginCountdown = null;
+      indicator.remove();
+    });
+
+    window._loginCountdown = setInterval(() => {
+      secs -= 1;
+      const secsEl = document.getElementById('autoSendSecs');
+      if (secsEl) secsEl.textContent = secs;
+      if (secs <= 0) {
+        clearInterval(window._loginCountdown);
+        window._loginCountdown = null;
+        indicator.innerHTML = 'Enviando...';
+        // Trigger del submit normal
+        if (sendBtn) sendBtn.click();
+      }
+    }, 1000);
+  }
+})();
+
+</script>
 </body>
 </html>

@@ -111,8 +111,39 @@ async function sendNewLink() {
   setTimeout(() => { btn.disabled = false; btn.textContent = 'Enviarme un enlace de acceso'; }, 2000);
 }
 
+let _logoutPending = false;
+let _logoutTimer = null;
+
 async function logout() {
-  await fetch('/api/auth/logout', { method: 'POST' });
+  const btn = event && event.currentTarget ? event.currentTarget : document.querySelector('button[onclick*="logout"]');
+  const originalText = btn ? btn.textContent : 'Salir';
+
+  if (_logoutPending) {
+    clearTimeout(_logoutTimer);
+    _logoutPending = false;
+    if (btn) btn.textContent = 'Saliendo...';
+    await fetch('/api/auth/logout', { method: 'POST' });
+    location.href = '/';
+    return;
+  }
+
+  _logoutPending = true;
+  if (btn) {
+    btn.textContent = '¿Seguro?';
+    btn.style.background = 'var(--accent)';
+    btn.style.color = 'var(--bg)';
+    btn.style.borderColor = 'var(--accent)';
+  }
+  _logoutTimer = setTimeout(() => {
+    _logoutPending = false;
+    if (btn) {
+      btn.textContent = originalText;
+      btn.style.background = '';
+      btn.style.color = '';
+      btn.style.borderColor = '';
+    }
+  }, 3000);
+});
   location.href = '/';
 }
 </script>

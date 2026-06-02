@@ -71,11 +71,63 @@ async function loadUser() {
 }
 loadUser();
 
+let _logoutPending = false;
+let _logoutTimer = null;
+let _logoutBtn = null;
+let _logoutOriginal = '';
+
 async function logout() {
-  await fetch('/api/auth/logout', { method: 'POST' });
+  if (!_logoutBtn) {
+    _logoutBtn = document.querySelector('button.logout-btn[onclick*="logout"]') || document.querySelector('button[onclick*="logout()"]');
+    if (_logoutBtn) _logoutOriginal = _logoutBtn.textContent;
+  }
+
+  if (_logoutPending) {
+    // Segundo click dentro del plazo — logout real
+    clearTimeout(_logoutTimer);
+    _logoutPending = false;
+    if (_logoutBtn) _logoutBtn.textContent = 'Saliendo...';
+    await fetch('/api/auth/logout', { method: 'POST' });
+    location.href = '/';
+    return;
+  }
+
+  // Primer click — pedir confirmación
+  _logoutPending = true;
+  if (_logoutBtn) {
+    _logoutBtn.textContent = '¿Seguro?';
+    _logoutBtn.style.background = 'var(--accent)';
+    _logoutBtn.style.color = 'var(--bg)';
+    _logoutBtn.style.borderColor = 'var(--accent)';
+  }
+  _logoutTimer = setTimeout(() => {
+    _logoutPending = false;
+    if (_logoutBtn) {
+      _logoutBtn.textContent = _logoutOriginal || 'Salir';
+      _logoutBtn.style.background = '';
+      _logoutBtn.style.color = '';
+      _logoutBtn.style.borderColor = '';
+    }
+  }, 3000);
+});
   location.href = '/';
 }
 </script>
 <script src="/track.js"></script>
+
+<script>
+// Guardar el email del usuario logueado para que /login lo autorrellene la próxima vez
+(function saveEmailForLogin() {
+  fetch('/api/auth/me', { credentials: 'same-origin' })
+    .then(r => r.ok ? r.json() : null)
+    .then(data => {
+      if (data && data.authenticated && data.user && data.user.email) {
+        try { localStorage.setItem('c101_last_email', data.user.email.toLowerCase()); } catch {}
+      }
+    })
+    .catch(() => {});
+})();
+
+</script>
 </body>
 </html>
