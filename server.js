@@ -135,7 +135,7 @@ app.use(vhost);
 
 // ============================================================
 // 4) Seguridad — Helmet con CSP relajada para nuestras necesidades.
-// IMPORTANTE: 'script-src-attr' y 'style-src-attr' permiten inline event
+// IMPORTANTE: 'script-src-attr https://cdnjs.cloudflare.com' y 'style-src-attr' permiten inline event
 // handlers (onsubmit, onclick, oninput) y estilos inline en atributos HTML,
 // que el frontend de la landing usa para los formularios de checkout/login.
 // Sin esto, los formularios no disparan el JS.
@@ -333,6 +333,11 @@ app.get('/app/progreso', requireAuth, requirePaid, (_req, res) => {
 // Glosario interactivo cruzado
 app.get('/app/glosario', requireAuth, requirePaid, (_req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'glosario.html'));
+});
+
+// Resumenes PDF
+app.get('/app/resumenes', requireAuth, requirePaid, (_req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'resumenes.html'));
 });
 
 app.get('/account', requireAuth, (_req, res) => {
