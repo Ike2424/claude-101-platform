@@ -1408,21 +1408,48 @@ const COURSE = [
         summary: 'Una introducción al asistente de IA creado por Anthropic y la filosofía detrás de su diseño.',
         defaultVideo: 'claude-101-videos/L1-1-slides.html',
         body: `
-          <h3>El origen</h3>
-          <p>Claude es un asistente de inteligencia artificial desarrollado por <strong>Anthropic</strong>, una empresa fundada en 2021 con un enfoque distintivo: construir sistemas de IA que sean a la vez <strong>útiles, honestos e inofensivos</strong>. No es un detalle menor. Esa tríada de valores condiciona cómo Claude responde, qué decisiones toma y dónde establece sus límites.</p>
-          <h3>¿Qué puede hacer?</h3>
-          <p>Claude conversa en lenguaje natural, escribe textos, programa, analiza documentos, interpreta imágenes, razona sobre problemas complejos y crea archivos. Pero más allá del listado de capacidades, lo importante es entender que funciona como un <em>colaborador</em>: aporta criterio, hace preguntas cuando es útil y reconoce cuando no sabe algo.</p>
-          <div class="callout">
-            <div class="callout-label">Idea clave</div>
-            <p>Claude no es un buscador ni un oráculo. Funciona mejor cuando lo tratas como un colega informado al que le pides ayuda con tareas concretas, dándole contexto suficiente.</p>
-          </div>
-          <h3>¿Qué <em>no</em> es Claude?</h3>
-          <ul>
-            <li>No es infalible: puede equivocarse, especialmente con datos muy recientes o cifras específicas.</li>
-            <li>No tiene memoria automática entre conversaciones (salvo que actives funciones específicas).</li>
-            <li>No actúa por iniciativa propia: solo hace lo que le pides en cada turno.</li>
-          </ul>
-        `
+  <h3>De dónde viene Claude</h3>
+  <p>Claude es un asistente de inteligencia artificial desarrollado por <strong>Anthropic</strong>, una empresa fundada en 2021 en San Francisco por Dario y Daniela Amodei, antiguos directivos de OpenAI. Su salida no fue casual: se marcharon porque querían construir IA con un enfoque distinto al que veían dominante en la industria — un enfoque centrado en la seguridad y en entender por qué los modelos hacen lo que hacen.</p>
+  <p>Ese enfoque se traduce en una <strong>tríada de valores explícitos</strong> que condiciona cada decisión sobre cómo entrenar a Claude: útil, honesto e inofensivo. Y lo importante es que no es un eslogan de marketing — es un método. Anthropic publica investigación sobre cómo aterriza estos principios en el entrenamiento, y los resultados se notan en el día a día cuando comparas Claude con otros asistentes.</p>
+
+  <h3>Qué puede hacer en la práctica</h3>
+  <p>El listado de capacidades es largo: conversa en lenguaje natural, escribe textos profesionales, programa en decenas de lenguajes, analiza documentos largos (PDFs, hojas de cálculo, contratos), interpreta imágenes, razona sobre problemas complejos paso a paso, y puede crear archivos descargables como Word, Excel o PowerPoint.</p>
+  <p>Pero más allá del catálogo, lo que cambia tu forma de usarlo es entender que Claude no es una herramienta de un solo uso. Funciona como un <em>colaborador</em>: tú le aportas contexto, él aporta criterio. Te hace preguntas cuando algo le falta. Reconoce cuando no sabe. Te avisa cuando lo que pides tiene riesgos. Si lo tratas como un buscador, te frustrará. Si lo tratas como un colega informado al que le explicas lo que necesitas, será una de las herramientas más valiosas que tengas.</p>
+
+  <div class="callout">
+    <div class="callout-label">Idea clave</div>
+    <p>Claude no es un buscador ni un oráculo. Funciona mejor cuando lo tratas como un colega informado al que le pides ayuda con tareas concretas, dándole contexto suficiente. La diferencia entre un usuario frustrado y uno productivo casi siempre está ahí.</p>
+  </div>
+
+  <h3>El método del entrenamiento</h3>
+  <p>Anthropic entrena a Claude combinando varias técnicas, pero la más distintiva es <strong>Constitutional AI</strong>. En lugar de depender solo del feedback humano, le dan al modelo una "constitución" — una serie de principios escritos — y el modelo se evalúa contra ellos durante el entrenamiento. Esto produce un asistente que internaliza valores en lugar de seguir reglas rígidas.</p>
+  <p>El resultado práctico que vas a notar: Claude tiende a razonar grises en lugar de bloquear. Donde otros asistentes te dicen "no puedo hablar de esto" a cualquier tema sensible, Claude tiende a evaluar si hay daño real. Donde otros proyectan falsa certeza, Claude reconoce matices. Lo veremos con más profundidad en el módulo 9 BONUS.</p>
+
+  <h3>Qué <em>no</em> es Claude</h3>
+  <p>Para usarlo bien, tan importante como saber qué hace es saber qué no hace:</p>
+  <ul>
+    <li><strong>No es infalible.</strong> Puede equivocarse, especialmente con datos muy recientes (eventos del último mes), cifras específicas (porcentajes con coma decimal, fechas exactas) o nombres propios poco comunes. A esto se le llama "alucinación" y es consecuencia directa de cómo funciona — lo veremos en la lección 3.</li>
+    <li><strong>No tiene memoria automática entre conversaciones.</strong> Salvo que actives la función Memoria o uses Proyectos, cada nueva conversación empieza de cero. No recuerda lo que le contaste ayer.</li>
+    <li><strong>No actúa por iniciativa propia.</strong> Solo hace lo que le pides en cada turno. No te avisa si pasa algo, no monitoriza nada, no tiene "agenda". Para eso necesitas construir un agente, que es un concepto distinto que veremos en el M9.</li>
+    <li><strong>No accede a internet por defecto.</strong> Su conocimiento llega hasta una fecha de corte. Para preguntas sobre actualidad, hay que activar la búsqueda web — lo veremos en el M5.</li>
+    <li><strong>No es tu psicólogo, médico, ni abogado.</strong> Puede ayudarte a entender opciones, ordenar ideas, prepararte para conversaciones difíciles. Pero la decisión profesional sigue siendo del profesional.</li>
+  </ul>
+
+  <h3>Qué tipo de tareas se le dan mejor</h3>
+  <p>Si pudiéramos dibujar un mapa de en qué brilla y en qué cojea:</p>
+  <ul>
+    <li><strong>Brilla:</strong> escritura profesional, programación, análisis de documentos largos, razonamiento conceptual, resúmenes, traducción, brainstorming, debugging, preparación de presentaciones, conversación matizada sobre temas complejos.</li>
+    <li><strong>Cojea:</strong> cálculos numéricos largos sin código, datos muy recientes sin búsqueda web, decisiones de alto riesgo sin supervisión humana, tareas que requieren memoria persistente sin Proyectos.</li>
+  </ul>
+
+  <h3>Por qué esta lección importa</h3>
+  <p>Antes de aprender técnicas concretas (qué modelo elegir, cómo escribir prompts, qué herramientas combinar), conviene tener claro <em>con qué tipo de herramienta estás trabajando</em>. Eso evita las dos frustraciones más comunes:</p>
+  <ul>
+    <li>Esperar que Claude haga cosas que no puede hacer (acciones autónomas, datos en tiempo real sin configurar)</li>
+    <li>No aprovechar lo que sí puede hacer porque no sabías que existía (Proyectos, Skills, artifacts, MCP)</li>
+  </ul>
+  <p>En las siguientes lecciones de este módulo entramos en lo concreto: la familia de modelos (Haiku, Sonnet, Opus) y cómo elegir, cómo razona Claude por dentro, y qué lo distingue de otros asistentes del mercado.</p>
+`
       },
       {
         id: 'l1-2',
@@ -1431,20 +1458,63 @@ const COURSE = [
         summary: 'Haiku, Sonnet y Opus: cómo elegir el modelo adecuado según la tarea.',
         defaultVideo: 'claude-101-videos/L1-1-slides.html',
         body: `
-          <h3>Tres modelos, tres perfiles</h3>
-          <p>Anthropic ofrece una familia de modelos pensada para cubrir diferentes equilibrios entre velocidad, coste e inteligencia:</p>
-          <ul>
-            <li><strong>Haiku</strong> — Rápido y eficiente. Ideal para tareas ligeras, respuestas instantáneas o procesamiento en volumen.</li>
-            <li><strong>Sonnet</strong> — El equilibrio. Combina razonamiento sólido con tiempos de respuesta razonables. Es el más usado en el día a día.</li>
-            <li><strong>Opus</strong> — El más potente. Para problemas complejos, análisis profundo, escritura matizada o tareas que requieren razonamiento extenso.</li>
-          </ul>
-          <h3>¿Cómo elegir?</h3>
-          <p>Una regla práctica: empieza con <strong>Sonnet</strong>. Si necesitas pensar a fondo en algo complicado, sube a <strong>Opus</strong>. Si quieres respuestas inmediatas para tareas sencillas, baja a <strong>Haiku</strong>.</p>
-          <div class="callout">
-            <div class="callout-label">A tener en cuenta</div>
-            <p>Los modelos se actualizan periódicamente. Conviene revisar la documentación oficial en docs.claude.com para saber qué versión es la más reciente.</p>
-          </div>
-        `
+  <h3>Por qué hay varios modelos</h3>
+  <p>Una decisión de diseño que Anthropic tomó desde el principio fue ofrecer no un solo modelo, sino una <strong>familia</strong> con perfiles distintos. Tres categorías que cubren los compromisos típicos entre velocidad, capacidad y coste: <strong>Haiku</strong>, <strong>Sonnet</strong> y <strong>Opus</strong>. Los nombres vienen del mundo de la poesía, lo cual encaja con la sensibilidad estética que Anthropic le da al producto.</p>
+  <p>Lo importante de esta familia: los tres modelos <em>comparten constitución y entrenamiento base</em>. Lo que cambia es la potencia de razonamiento y la velocidad. Eso significa que cambiar entre ellos no te obliga a reaprender cómo hablarle — el mismo prompt funciona, solo con resultados de distinta profundidad.</p>
+
+  <h3>Haiku: el rápido</h3>
+  <p>Haiku es el modelo más ligero. Velocidad alta, coste bajo. Está diseñado para tareas donde la respuesta tiene que llegar rápido o donde vas a procesar muchas peticiones en serie. Pensemos en un chatbot de atención al cliente que tiene que responder en menos de 2 segundos: Haiku es el candidato. O un proceso que clasifica miles de tickets de soporte al día: Haiku.</p>
+  <p>El precio es que su capacidad de razonamiento profundo es menor. Para preguntas factuales, clasificación, resúmenes cortos, respuestas estructuradas — perfecto. Para análisis estratégico, escritura matizada o problemas con muchos pasos lógicos encadenados — se le nota.</p>
+
+  <h3>Sonnet: el equilibrio</h3>
+  <p>Sonnet es el modelo intermedio y, en la práctica, el que más vas a usar. Es donde la curva precio/calidad está más equilibrada. Razonamiento sólido, velocidad razonable, coste moderado. Para el 80% de las tareas profesionales del día a día — escritura, análisis, programación habitual, resúmenes, propuestas — Sonnet es la elección por defecto.</p>
+  <p>Anthropic actualiza Sonnet con frecuencia (Claude Sonnet 4, Claude Sonnet 4.5, etc.). Cada versión nueva mejora capacidad sin cambiar la propuesta de valor: el "modelo del día a día".</p>
+
+  <h3>Opus: el potente</h3>
+  <p>Opus es el modelo más capaz. Profundidad de razonamiento mucho mayor, mejor manejo de tareas multipaso, mejor en problemas que requieren entender contexto complejo. El precio: más caro y más lento que Sonnet.</p>
+  <p>Sirve para tareas donde la calidad del razonamiento importa más que la velocidad o el coste: estrategia empresarial, escritura compleja con matices, análisis de documentos largos y técnicos, debugging de bugs raros, diseño de sistemas. Para una redacción rápida o un resumen sencillo, usar Opus es desperdiciar dinero — Sonnet lo hace igual de bien.</p>
+
+  <h3>Cómo elegir en la práctica</h3>
+  <p>La regla práctica que funciona el 95% de las veces:</p>
+  <ol>
+    <li><strong>Empieza con Sonnet.</strong> Es el default razonable para casi todo.</li>
+    <li><strong>Sube a Opus si la tarea se complica.</strong> Si tras intentar con Sonnet ves que la respuesta no tiene la profundidad que necesitas — razonamiento débil, matices perdidos, decisiones simplistas — sube. Lo bueno es que puedes hacerlo a mitad de conversación sin perder contexto.</li>
+    <li><strong>Baja a Haiku si la tarea es trivial o de volumen.</strong> Clasificar emails, extraer datos estructurados, respuestas muy cortas. Si la tarea no necesita criterio, Haiku ahorra dinero y tiempo.</li>
+  </ol>
+
+  <div class="callout">
+    <div class="callout-label">Regla de oro</div>
+    <p>Empieza siempre por Sonnet. Es la elección segura. Solo cambia si tienes una razón concreta (tarea muy compleja → Opus; tarea trivial a volumen → Haiku). No uses Opus "por si acaso" — pagas más y vas más lento sin ganar nada.</p>
+  </div>
+
+  <h3>Cambiar de modelo a mitad de conversación</h3>
+  <p>Una funcionalidad que muchos usuarios nuevos no descubren: puedes <strong>cambiar el modelo en cualquier momento dentro de la misma conversación</strong>, sin perder el contexto. Esto es muy útil en flujos como:</p>
+  <ul>
+    <li>Empiezas explorando una idea con Sonnet, ves que tiene profundidad → cambias a Opus para análisis detallado.</li>
+    <li>Pides un esbozo con Opus, luego para generar variaciones bajas a Sonnet.</li>
+    <li>Estás explorando código con Sonnet, te encuentras con un bug muy oscuro → subes a Opus solo para ese diagnóstico.</li>
+  </ul>
+
+  <h3>Versionado y disponibilidad</h3>
+  <p>Los modelos se actualizan con regularidad. Cada cierto tiempo Anthropic publica versiones nuevas (Sonnet 4, 4.5, etc.) con capacidades mejoradas. Tu suscripción te da acceso a las versiones más recientes — no tienes que cambiar nada.</p>
+  <p>La disponibilidad depende del plan:</p>
+  <ul>
+    <li><strong>Plan gratuito:</strong> uso limitado, prioriza Sonnet, acceso a Opus restringido o no disponible según el momento.</li>
+    <li><strong>Plan Pro:</strong> acceso amplio a Sonnet y Opus, sin las restricciones del gratuito.</li>
+    <li><strong>Plan Team / Enterprise:</strong> mismo acceso + funciones colaborativas + workspace compartido.</li>
+  </ul>
+
+  <h3>Más allá de la familia: Claude Code y agentes</h3>
+  <p>La misma familia de modelos alimenta otros productos: <strong>Claude Code</strong> (CLI para desarrolladores que opera sobre tu repo) usa los mismos modelos. Los agentes que construyas con el SDK también. Esto es importante porque significa que lo que aprendes sobre cómo hablar a Sonnet u Opus se transfiere a esos otros contextos.</p>
+
+  <h3>Lo que te llevas</h3>
+  <p>No tienes que recordar especificaciones técnicas. Solo tres ideas:</p>
+  <ul>
+    <li>Hay tres modelos: rápido (Haiku), equilibrado (Sonnet), potente (Opus).</li>
+    <li>La regla por defecto es Sonnet, y solo cambias por razón concreta.</li>
+    <li>Comparten "carácter" — cambiar de uno a otro no te obliga a reaprender.</li>
+  </ul>
+`
       },
       {
         id: 'l1-3',
@@ -1453,17 +1523,58 @@ const COURSE = [
         summary: 'Una mirada honesta a cómo procesa, piensa y comete errores este tipo de modelo.',
         defaultVideo: 'claude-101-videos/L1-1-slides.html',
         body: `
-          <h3>Predicción, no recuperación</h3>
-          <p>Claude genera texto prediciendo qué viene a continuación basándose en patrones aprendidos durante su entrenamiento. No "consulta una base de datos" cuando responde una pregunta de cultura general: genera la respuesta más probable según lo aprendido. Esto tiene dos consecuencias importantes:</p>
-          <ul>
-            <li>Puede sonar muy seguro incluso cuando se equivoca (las llamadas <em>alucinaciones</em>).</li>
-            <li>Funciona mejor cuanto más claro y específico es el contexto que recibe.</li>
-          </ul>
-          <h3>Pensamiento extendido</h3>
-          <p>Los modelos modernos pueden "pensar" antes de responder, dedicando más tiempo a razonar paso a paso en problemas complejos. Esto mejora notablemente la calidad en matemáticas, lógica, código y análisis multipaso.</p>
-          <h3>Límite de contexto</h3>
-          <p>Claude tiene una <strong>ventana de contexto</strong>: la cantidad de texto que puede tener "en la cabeza" en cada conversación. Es muy amplia (cientos de páginas), pero no infinita. Conversaciones muy largas o documentos enormes pueden empezar a olvidar el principio.</p>
-        `
+  <h3>Predicción, no recuperación</h3>
+  <p>Para usar bien a Claude, hace falta entender cómo razona por dentro. Y aquí hay una idea contraintuitiva: Claude <strong>no consulta una base de datos</strong> cuando responde. No tiene "memoria" en el sentido en que la entendemos los humanos. Lo que hace es <em>predecir</em> qué texto viene a continuación basándose en patrones aprendidos durante su entrenamiento.</p>
+  <p>Imagina que entrenas a alguien leyendo enormes cantidades de texto: libros, papers, código, conversaciones, manuales. Esa persona no recuerda cada frase, pero ha internalizado patrones — cómo suelen estructurarse las explicaciones, qué tipo de respuesta sigue a qué tipo de pregunta, qué razonamientos llevan a qué conclusiones. Cuando le preguntas algo, no busca la respuesta en su archivo mental. La <em>genera</em> aplicando esos patrones.</p>
+  <p>Esto tiene dos consecuencias enormes para cómo lo usas:</p>
+  <ul>
+    <li><strong>Puede sonar muy seguro incluso cuando se equivoca.</strong> Su tono de certeza viene de qué tan común es ese patrón en el entrenamiento, no de qué tan correcto es. Esto es lo que llamamos "alucinación".</li>
+    <li><strong>Funciona mucho mejor cuanto más claro es el contexto.</strong> El contexto reduce ambigüedad. Si le das un buen contexto, la "predicción más probable" coincide con lo que realmente necesitas. Si el contexto es vago, predice lo que es más probable en general — y eso puede no ser lo que querías.</li>
+  </ul>
+
+  <h3>Alucinaciones: por qué pasan</h3>
+  <p>Una alucinación es cuando Claude genera información que parece correcta pero es falsa. Una cita inventada con un autor real. Una cifra precisa que no existe. Una fecha equivocada. Un libro que no se ha escrito. Cuanto más específica y "factual" es la pregunta, más riesgo hay.</p>
+  <p>¿Por qué pasa? Porque la generación predice "el texto más probable", y a veces ese texto no coincide con la realidad. El modelo no tiene un mecanismo interno de verificación contra hechos. No "sabe" qué sabe y qué no sabe — solo sabe predecir.</p>
+  <p>Las zonas calientes donde más alucina:</p>
+  <ul>
+    <li>Cifras precisas con muchos decimales (23.7%, 1.847M)</li>
+    <li>Fechas exactas</li>
+    <li>Nombres propios poco conocidos</li>
+    <li>Referencias bibliográficas y citas</li>
+    <li>Datos sobre eventos posteriores a su fecha de corte</li>
+    <li>Información sobre productos o empresas pequeñas</li>
+  </ul>
+  <p><strong>Estrategia práctica:</strong> verifica todo dato factual relevante. Si la decisión depende del dato, no te fíes solo de Claude — comprueba contra una fuente externa.</p>
+
+  <h3>Pensamiento extendido (Chain of Thought)</h3>
+  <p>Los modelos modernos pueden <strong>"pensar" antes de responder</strong>, dedicando más tiempo a razonar paso a paso en problemas complejos. Esto se llama "extended thinking" o "chain of thought" — lo veremos en profundidad en el M4. Mejora notablemente la calidad en matemáticas, lógica, código y análisis multipaso.</p>
+  <p>La idea es sencilla: en lugar de soltar la respuesta directamente, el modelo "piensa en voz alta" — explora opciones, revisa pasos, descarta hipótesis. Como un humano que piensa antes de hablar en una entrevista difícil. Para ti, esto significa que pidiendo explícitamente "razona paso a paso" obtienes respuestas más precisas en problemas complejos.</p>
+
+  <h3>La ventana de contexto</h3>
+  <p>Claude tiene una <strong>ventana de contexto</strong>: la cantidad de texto que puede tener "en la cabeza" en cada conversación. Es muy amplia — cientos de páginas — pero no infinita. Conversaciones muy largas o documentos enormes pueden empezar a olvidar el principio.</p>
+  <p>Para entenderlo mejor: piensa en la ventana de contexto como una mesa de trabajo. Todo lo que esté en la mesa, Claude lo ve. Si la mesa se llena, las cosas más viejas se caen al suelo y Claude deja de tenerlas en cuenta. La mesa actual es enorme — pero conviene saberlo cuando trabajas con documentos muy grandes o conversaciones muy largas.</p>
+  <p>Trucos para gestionar el contexto:</p>
+  <ul>
+    <li>Para conversaciones largas: si notas que pierde el hilo, resume y empieza nueva.</li>
+    <li>Para documentos grandes: sube como archivo (PDF, Word, Excel) en lugar de pegar texto. Claude los procesa mejor.</li>
+    <li>Para flujos recurrentes: usa Proyectos, donde el contexto permanente se mantiene fuera de la ventana de la conversación.</li>
+  </ul>
+
+  <div class="callout">
+    <div class="callout-label">Lo crítico</div>
+    <p>Claude predice texto, no recuerda hechos. Esa frase resume su funcionamiento y sus límites. Cuanto mejor contexto le das, mejor predice. Cuanta más certeza factual necesitas, más debes verificar lo que dice.</p>
+  </div>
+
+  <h3>Por qué entender esto te hace mejor usuario</h3>
+  <p>Saber cómo razona te cambia la forma de usarlo:</p>
+  <ul>
+    <li>Dejas de pedirle datos que cambian rápido sin activar búsqueda web. Sabes que su conocimiento tiene fecha de corte.</li>
+    <li>Dejas de confiar ciegamente en cifras y citas concretas. Sabes que ese es su talón de Aquiles.</li>
+    <li>Empiezas a dar contexto rico en cada prompt. Sabes que es lo que más mueve la calidad de la respuesta.</li>
+    <li>Cuando algo te suena raro, pides que justifique paso a paso. Sabes que ese formato reduce errores lógicos.</li>
+    <li>Usas a Claude como colaborador, no como oráculo. Sabes que su valor está en ayudarte a pensar, no en sustituir tu juicio.</li>
+  </ul>
+`
       },
       {
         id: 'l1-4',
@@ -1472,17 +1583,62 @@ const COURSE = [
         summary: 'Qué hace especial a Claude frente a otras alternativas del mercado.',
         defaultVideo: 'claude-101-videos/L1-1-slides.html',
         body: `
-          <h3>Filosofía de diseño</h3>
-          <p>Aunque comparte muchas capacidades con otros asistentes (ChatGPT, Gemini, etc.), Claude se distingue en varios aspectos:</p>
-          <ul>
-            <li><strong>Estilo de escritura</strong>: Tiende a producir texto más natural, menos formulaico, mejor estructurado para lectura humana.</li>
-            <li><strong>Honestidad calibrada</strong>: Reconoce con frecuencia sus límites y matiza sus respuestas en lugar de afirmar con falsa seguridad.</li>
-            <li><strong>Razonamiento ético matizado</strong>: Aborda temas sensibles con criterio en lugar de bloquear de forma rígida.</li>
-            <li><strong>Manejo de contextos largos</strong>: Sobresale al trabajar con documentos extensos y mantener coherencia.</li>
-          </ul>
-          <h3>¿Es mejor que los demás?</h3>
-          <p>Depende de la tarea. La mejor manera de saberlo es probar el mismo prompt en varios asistentes y comparar. Lo que sí es cierto es que Claude tiene una <em>personalidad</em> propia: directa, reflexiva y con un punto editorial.</p>
-        `
+  <h3>Por qué este tema importa</h3>
+  <p>Si has llegado hasta aquí, probablemente conoces otros asistentes de IA: ChatGPT (OpenAI), Gemini (Google), Copilot (Microsoft), Mistral, etc. ¿Por qué elegir Claude? La respuesta no es "porque es objetivamente mejor". Cada modelo tiene fortalezas distintas, y la elección depende del caso de uso. Pero hay rasgos en los que Claude destaca de forma reconocible, y vale la pena saber cuáles para decidir cuándo aprovecharlos.</p>
+  <p>Lo importante: <em>no es competencia de quién es mejor</em>. Es entender en qué brilla cada herramienta y combinarlas con criterio. Muchos profesionales usan varios asistentes en paralelo: Claude para textos largos y análisis matizado, GitHub Copilot para autocompletar código, Perplexity para investigación con fuentes citadas.</p>
+
+  <h3>Filosofía de diseño</h3>
+  <p>Anthropic optimiza explícitamente para <strong>razonamiento honesto y matizado</strong>. Esto se nota en varias dimensiones:</p>
+
+  <h3>1. Estilo de escritura</h3>
+  <p>Si pides a Claude que te ayude a escribir algo extenso, vas a notar diferencia. Tiende a producir texto más <strong>natural, menos formulaico y mejor estructurado para lectura humana</strong>. Menos emoji-bombing. Menos uso reflejo de listas con bullets cuando un párrafo bien escrito funcionaría mejor. Menos "Como modelo de lenguaje yo no puedo...". Más estructura editorial: introducción que ancla, desarrollo con ideas claras, transiciones suaves, conclusión que no es solo "en resumen".</p>
+  <p>Por eso muchos copywriters, editores y profesionales del contenido usan Claude para drafting. Y por eso muchos lo perciben como "más maduro" en lectura larga.</p>
+
+  <h3>2. Honestidad calibrada</h3>
+  <p>Cuando Claude no sabe algo o no está seguro, suele decirlo. Cuando hay matices en una pregunta, suele mencionarlos en lugar de proyectar falsa certeza. Cuando una respuesta tiene varios lados defendibles, los reconoce.</p>
+  <p>Esto contrasta con la tendencia general de los modelos a sonar siempre seguros (porque generar texto inseguro penaliza en muchos entrenamientos basados en feedback humano — la gente prefiere respuestas con tono confiado). Anthropic explícitamente entrena en contra de esa tendencia: prefieren un modelo que diga "no estoy seguro" cuando aplique.</p>
+  <p>El efecto práctico: cuando Claude expresa duda, suele ser señal real. Cuando responde con seguridad, también lo es (con la excepción de las alucinaciones, que ya vimos). Es un asistente que tiene <em>opinión calibrada</em>.</p>
+
+  <h3>3. Razonamiento ético matizado</h3>
+  <p>Esta es la diferencia más visible cuando comparas asistentes en temas sensibles. Otros asistentes tienden a bloqueos rígidos: cualquier mención de temas como salud, política, finanzas personales, dilemas éticos, contenido para adultos, etc., dispara un mensaje genérico de "no puedo ayudar con esto". Es seguro pero frustrante cuando tu uso es legítimo.</p>
+  <p>Claude, gracias al método Constitutional AI, tiende a <strong>razonar el daño potencial</strong> antes de bloquear. Si pides ayuda con un análisis político para un trabajo académico, no se bloquea — te ayuda manteniendo neutralidad. Si pides información médica sobre una enfermedad de un familiar, no se bloquea — te ayuda con la salvedad de que no sustituye al médico. Si pides ayuda con un contrato complejo, no se bloquea — te ayuda dejando claro qué necesita validación legal.</p>
+  <p>El precio: a veces Claude "se moja" más que otros asistentes y eso puede generar incomodidad para quienes prefieren respuestas más cautas. Pero para la mayoría de uso profesional, el matiz es lo que lo hace útil.</p>
+
+  <h3>4. Manejo de contextos largos</h3>
+  <p>Claude sobresale al trabajar con documentos extensos y mantener coherencia en conversaciones largas. Si le subes un contrato de 80 páginas y le preguntas por una cláusula específica, lo encuentra. Si llevas 200 mensajes hablando del mismo proyecto, mantiene el hilo.</p>
+  <p>Otros modelos también tienen ventanas de contexto amplias hoy en día, pero Claude está entrenado específicamente para aprovecharlas bien — no solo para "tenerlas".</p>
+
+  <h3>5. Programación</h3>
+  <p>Para muchos desarrolladores, Claude es la mejor opción del mercado para tareas de código. Razonamiento profundo sobre código heredado, debugging de bugs sutiles, refactor con criterio. Y con Claude Code, ese razonamiento opera directamente sobre tu repo.</p>
+  <p>No quiere decir que sea mejor para todo. Para autocompletar inline mientras tecleas, GitHub Copilot está más integrado. Para tareas de codificación específicas de algunos lenguajes especializados, otros modelos pueden encajar. Pero para razonamiento sobre código a nivel arquitectura o debugging complejo, Claude destaca.</p>
+
+  <h3>¿Es Claude mejor que ChatGPT, Gemini, etc.?</h3>
+  <p>La respuesta honesta es: <strong>depende</strong>. Cada modelo tiene un perfil:</p>
+  <ul>
+    <li><strong>Claude</strong> brilla en escritura matizada, razonamiento profundo, código, contextos largos.</li>
+    <li><strong>ChatGPT</strong> tiene ecosistema muy maduro de plugins, GPTs personalizados, integraciones múltiples.</li>
+    <li><strong>Gemini</strong> integra bien con el ecosistema Google (Drive, Workspace).</li>
+    <li><strong>Perplexity</strong> está especializado en búsqueda y respuestas con fuentes verificables.</li>
+    <li><strong>Mistral</strong> tiene modelos open source que puedes correr tú mismo.</li>
+  </ul>
+  <p>La mejor manera de saber cuál te encaja a ti es <strong>probar el mismo prompt en varios y comparar</strong>. Tu mejor benchmark eres tú haciendo tu trabajo real, no los benchmarks técnicos.</p>
+
+  <div class="callout">
+    <div class="callout-label">Lo que sí es cierto</div>
+    <p>Claude tiene una <em>personalidad</em> propia: directa, reflexiva, con punto editorial, dispuesta a matizar. Si esa voz te encaja con cómo trabajas, será una de las herramientas más valiosas que tengas. Si prefieres respuestas siempre confiadas y formulaicas, otro modelo puede encajarte más.</p>
+  </div>
+
+  <h3>Cómo elegir en el día a día</h3>
+  <p>Si estás empezando, mi recomendación práctica:</p>
+  <ul>
+    <li>Elige uno como herramienta principal (este curso te ayuda a sacarle el máximo a Claude).</li>
+    <li>Conoce 1-2 alternativas y úsalas para casos específicos donde brillen más.</li>
+    <li>No te enganches a un solo modelo religiosamente — el espacio cambia rápido.</li>
+  </ul>
+
+  <h3>Has terminado el M1</h3>
+  <p>Ya sabes qué es Claude, cómo está organizado en familia de modelos, cómo razona por dentro y qué lo distingue. Tienes el mapa mental para empezar a usarlo bien. En el M2 entramos en lo concreto: cómo acceder a Claude, cómo se ve la interfaz, cómo organizar tu trabajo con conversaciones, proyectos y estilos.</p>
+`
       }
     ]
   },
