@@ -2121,17 +2121,40 @@ Lenguaje claro, frases cortas, sin tecnicismos.
         summary: 'Cómo Anthropic entrena Claude para ser útil, honesto e inofensivo. Y por qué eso te importa.',
         defaultVideo: 'claude-101-videos/L9-1-slides.html',
         body: `
-          <h3>Qué es Constitutional AI</h3>
-          <p>Anthropic no entrena Claude solo con feedback humano (RLHF). Usa un proceso llamado <strong>Constitutional AI</strong>: el modelo se autoevalúa contra una <em>constitución</em> de principios escritos (basados en la Declaración de Derechos Humanos, términos de uso de Apple, principios de Anthropic, etc.) y se autorefuerza.</p>
-          <h3>Por qué te importa a ti</h3>
-          <ul>
-            <li><strong>Claude se niega menos de manera ciega.</strong> Razona en lugar de bloquear todo lo que suene incómodo.</li>
-            <li><strong>Da contexto cuando no está seguro.</strong> En lugar de inventar, dice "no tengo certeza".</li>
-            <li><strong>Mantiene posturas matizadas</strong> en temas sensibles, sin convertirse en cómplice ni en censor.</li>
-          </ul>
-          <h3>La familia Claude</h3>
-          <p>Haiku, Sonnet y Opus comparten la misma constitución y el mismo enfoque de entrenamiento. La diferencia es <strong>capacidad de razonamiento y velocidad</strong>, no valores. Por eso un Haiku y un Opus rechazan las mismas cosas — solo que el Opus razona más profundo sobre ellas.</p>
-        `
+  <h3>De dónde viene el "carácter" de Claude</h3>
+  <p>Cuando hablas con Claude y notas algo distinto frente a otros asistentes — esa tendencia a matizar, a reconocer límites, a razonar grises en lugar de bloquearlos — no es casualidad. Es el resultado directo de un método de entrenamiento llamado <strong>Constitutional AI</strong>, desarrollado por Anthropic en 2022 y refinado desde entonces.</p>
+  <p>Para entender por qué importa, hay que situarlo frente al método más común: <em>Reinforcement Learning from Human Feedback</em> (RLHF). Con RLHF, humanos puntúan respuestas del modelo y este aprende a producir las que más nota sacan. Funciona, pero tiene dos problemas: depende del criterio (a veces contradictorio) de los anotadores, y no escala bien — si quieres millones de comparaciones, necesitas miles de anotadores con coherencia entre sí.</p>
+
+  <h3>Cómo funciona Constitutional AI</h3>
+  <p>Constitutional AI da un paso adicional. El modelo se evalúa <em>a sí mismo</em> contra una constitución escrita de principios. Esa constitución no es una lista de prohibiciones; es un conjunto de ideas como "responde de forma útil dentro de los límites éticos", "evita estereotipos dañinos", "reconoce cuando una pregunta tiene capas o requiere matiz". Está basada en cosas como la Declaración Universal de Derechos Humanos, los términos de uso de plataformas grandes, y los principios propios de Anthropic.</p>
+  <p>El bucle es: el modelo genera una respuesta, luego se le pide que critique su propia respuesta contra los principios, y luego que la reescriba mejorándola según esa crítica. Repetido muchas veces sobre muchísimos ejemplos, produce un modelo que internaliza esos valores como parte de cómo responde por defecto.</p>
+
+  <h3>Qué te cambia a ti como usuario</h3>
+  <p>Tres consecuencias prácticas que vas a notar:</p>
+  <ul>
+    <li><strong>Menos bloqueos ciegos.</strong> Donde otros asistentes te dicen "no puedo responder eso" a cualquier mención de un tema sensible, Claude tiende a evaluar si hay daño real. Si te ayuda a entender una enfermedad, no se bloquea solo porque el tema sea médico. Si te ayuda con un análisis de competencia, no se bloquea porque mencione una empresa real.</li>
+    <li><strong>Posturas matizadas.</strong> En temas controvertidos o con múltiples lados defendibles, Claude tiende a reconocer los grises, mapear posiciones distintas y dar contexto. Donde otros proyectan falsa certeza, Claude dice "depende de qué priorices".</li>
+    <li><strong>Honestidad calibrada sobre lo que no sabe.</strong> Cuando llega al límite de su conocimiento, lo declara en lugar de inventar. No siempre — alucinar es parte de cómo funciona la predicción — pero la frecuencia con la que reconoce sus límites es notable.</li>
+  </ul>
+
+  <h3>La constitución no es secreta</h3>
+  <p>Anthropic publicó un resumen de los principios que componen la constitución de Claude. Algunos ejemplos textuales (traducidos):</p>
+  <ul>
+    <li>"Por favor, elige la respuesta que tenga las propiedades positivas más deseables: amable, respetuosa, considerada, no controvertida, ética, moralmente consciente, sabia, juiciosa, agradable, positiva, interesante, honesta y útil."</li>
+    <li>"Elige la respuesta que muestre menos disposición a ser cómplice en cualquier tipo de acción dañina hacia humanos."</li>
+    <li>"Elige la respuesta más reflexiva, respetuosa y cordial, especialmente al tratar temas controvertidos."</li>
+  </ul>
+  <p>Lo interesante: son principios <em>generales</em>, no reglas específicas. El modelo tiene que interpretarlos contextualmente. Eso explica por qué a veces Claude dice "no" donde otros dirían "sí" — y al revés.</p>
+
+  <h3>Misma constitución, distinta capacidad</h3>
+  <p>Aquí hay un punto crucial para tu día a día: <strong>Haiku, Sonnet y Opus comparten la misma constitución</strong>. No son tres "personalidades" distintas. La diferencia entre ellos es capacidad de razonamiento, velocidad y coste — no valores ni voz.</p>
+  <p>Esto tiene una implicación práctica que ahorra problemas: lo que escribes para Sonnet sigue funcionando si subes a Opus. No tienes que reaprender el "carácter" del modelo. Un Haiku se niega a las mismas cosas que un Opus; solo que el Opus razona más a fondo antes de responder.</p>
+
+  <div class="callout">
+    <div class="callout-label">Para llevarte</div>
+    <p>Constitutional AI no es marketing. Es un método de entrenamiento concreto que produce un modelo cuyo "carácter" puedes anticipar: matizado, honesto sobre sus límites, reacio al bloqueo ciego. Si lo entiendes, sabes cuándo Claude va a brillar frente a alternativas — y cuándo otra herramienta encaja mejor.</p>
+  </div>
+`
       },
       {
         id: 'l9-2',
@@ -2140,13 +2163,74 @@ Lenguaje claro, frases cortas, sin tecnicismos.
         summary: 'Por qué Claude entiende mejor un prompt en markdown que en texto plano. Y cómo combinarlo con XML.',
         defaultVideo: 'claude-101-videos/L9-1-slides.html',
         body: `
-          <h3>Markdown semántico</h3>
-          <p>Claude está entrenado con millones de documentos en markdown. Cuando estructuras tu prompt con headers, listas y bloques de código, Claude lo procesa como información jerarquizada, no como un muro de texto.</p>
-          <h3>Patrón ganador: Markdown + XML</h3>
-          <p>Las etiquetas XML delimitan secciones que Claude debe tratar como bloques aislados. El markdown estructura el contenido dentro.</p>
-          <h3>Cuándo usar archivos .md</h3>
-          <p>Si tu prompt supera 200 líneas, considera subirlo como archivo .md. Claude trata cada sección como un bloque conceptual y puede referirse a ella con precisión ("según la sección 3.2 de tu documento...").</p>
-        `
+  <h3>Por qué Claude responde mejor cuando le hablas en Markdown</h3>
+  <p>Hay un patrón que verás repetido entre quienes dominan Claude: estructuran sus prompts con headers, listas y bloques de código. No es una manía. Es que Claude se entrenó leyendo cantidades enormes de documentación técnica, README de GitHub, posts de blog, y todos esos documentos están escritos en Markdown. Cuando le pasas un prompt con esa estructura, lo procesa como información jerarquizada — entiende qué es contexto, qué es tarea, qué es ejemplo — en lugar de tratarlo como un muro de texto plano.</p>
+
+  <h3>Markdown semántico vs decorativo</h3>
+  <p>No estoy hablando de que el output sea "bonito" en pantalla. Hablo de que la estructura tiene <em>significado</em> para el modelo. Un <code>#</code> dice "esto es el título principal". Un <code>##</code> dice "esto es una sección dentro del título". Un guion al principio de una línea dice "esto es un ítem de una lista que comparte categoría con los otros guiones". Cada una de esas marcas es una pista que reduce ambigüedad.</p>
+  <p>Compáralo con texto plano. Si escribes:</p>
+  <pre><code>Tarea es resumir el informe. Para mi CEO. Sin jerga. Máximo 5 bullets. Audiencia técnica pero no especializada. Tono cercano.</code></pre>
+  <p>Claude lo procesa como una sopa donde cada frase reclama el mismo peso. Pero si escribes:</p>
+  <pre><code># Tarea
+Resumir el informe.
+
+## Audiencia
+- Mi CEO
+- Perfil técnico pero no especializado
+
+## Formato
+- Máximo 5 bullets
+- Sin jerga corporativa
+
+## Tono
+Cercano.</code></pre>
+  <p>Tienes el mismo contenido pero con relaciones claras. La sección "Audiencia" agrupa dos hechos relacionados. "Formato" agrupa dos restricciones que pertenecen al mismo dominio. Y el header "Tarea" jerárquicamente domina sobre las demás porque es <code>#</code> y las otras son <code>##</code>.</p>
+
+  <h3>Cuándo te merece la pena</h3>
+  <p>No es para todos los prompts. Si le pides "tradúceme esta frase al inglés", añadirle headers es ruido. Pero hay tres situaciones donde el Markdown semántico marca diferencia visible:</p>
+  <ul>
+    <li><strong>Prompts con múltiples partes diferenciadas:</strong> contexto + ejemplos + datos + tarea. Sin estructura, Claude tiene que adivinar dónde acaba uno y empieza otro. Con estructura, sabe exactamente qué es qué.</li>
+    <li><strong>Prompts largos (más de 200 líneas):</strong> a partir de cierto tamaño, sin Markdown Claude se pierde en la mitad. Las secciones le sirven de mapa para volver a anclarse.</li>
+    <li><strong>Cuando incluyes código:</strong> SIEMPRE en bloques <code>```</code>. Sin esos triple backticks, Claude puede confundir indentación, caracteres especiales o líneas truncadas. Con ellos, sabe que es código y lo procesa con cuidado.</li>
+  </ul>
+
+  <h3>El patrón ganador: Markdown + XML</h3>
+  <p>Para prompts complejos, hay un patrón que funciona mejor que cualquier técnica individual: <strong>etiquetas XML para separar bloques + Markdown dentro de cada bloque para estructurar contenido</strong>.</p>
+  <pre><code>&lt;contexto&gt;
+# Quién soy
+CMO de una pyme de Granada que vende suplementos naturales.
+
+# Situación actual
+- 2 años en el mercado
+- 800 clientes recurrentes
+- Crecimiento 30% interanual
+- Margen del 45%
+&lt;/contexto&gt;
+
+&lt;ejemplos&gt;
+## Email anterior que funcionó
+[texto del email…]
+
+## Email anterior que NO funcionó
+[texto del email…]
+&lt;/ejemplos&gt;
+
+&lt;tarea&gt;
+Redacta un email de reactivación para clientes que no han comprado en 60 días.
+- Máximo 120 palabras
+- Tono igual al primer ejemplo
+- Evita lo que falló en el segundo ejemplo
+&lt;/tarea&gt;</code></pre>
+  <p>Con esta estructura, Claude tiene cero ambigüedad: sabe que el contexto es contexto, los ejemplos son material de referencia, y la tarea es lo que debe ejecutar.</p>
+
+  <h3>Cuando subir el prompt como archivo .md</h3>
+  <p>Si tu prompt llega a 200 líneas, conviene dejar de pegarlo y empezar a <strong>subirlo como archivo .md</strong>. Claude trata el archivo como un bloque conceptual unitario y puede referirse a secciones específicas con precisión ("según la sección 3.2 de tu documento, recomiendo X"). Además, la conversación queda limpia: tu mensaje es "aplica el manual adjunto a este caso", no un muro de texto.</p>
+
+  <div class="callout">
+    <div class="callout-label">La regla práctica</div>
+    <p>Cuanto más estructurado tu prompt, menos tiene que adivinar Claude. Headers para jerarquía, listas para enumeraciones, bloques de código para código, etiquetas XML para separar bloques diferenciados. Es la diferencia entre hablar a un colega organizado y a uno desordenado.</p>
+  </div>
+`
       },
       {
         id: 'l9-3',
@@ -2155,13 +2239,78 @@ Lenguaje claro, frases cortas, sin tecnicismos.
         summary: 'El formato .skill para empaquetar habilidades reutilizables que Claude carga bajo demanda.',
         defaultVideo: 'claude-101-videos/L9-1-slides.html',
         body: `
-          <h3>Qué es una Skill</h3>
-          <p>Una <strong>Skill</strong> es un directorio con un SKILL.md y archivos auxiliares que define una capacidad específica. Claude la carga cuando detecta que el usuario necesita esa habilidad.</p>
-          <h3>Estructura mínima</h3>
-          <p>El SKILL.md tiene frontmatter YAML (name, description) y el cuerpo describe cuándo y cómo usar la skill. Los archivos auxiliares pueden ser scripts, plantillas, ejemplos.</p>
-          <h3>Por qué importan</h3>
-          <p>Las Skills te permiten <strong>componer flujos repetibles</strong> sin reinventar el prompt cada vez. Anthropic publica las suyas oficiales (docx, pdf, xlsx, etc.) y la comunidad las suyas en marketplaces.</p>
-        `
+  <h3>Qué problema resuelven las Skills</h3>
+  <p>Imagina que tienes un flujo que repites: cada mes generas un reporte ejecutivo con la misma estructura, tono y plantilla. Sin Skills, cada vez le tienes que explicar a Claude qué quieres: pegar la plantilla, dar ejemplos del estilo, listar las reglas… Es repetitivo y frágil — si un día se te olvida algún detalle, el reporte sale distinto.</p>
+  <p>Las <strong>Skills</strong> resuelven exactamente esto. Son la forma de <em>empaquetar</em> un flujo concreto (con todas sus reglas, plantillas y ejemplos) en una unidad reutilizable que Claude carga automáticamente cuando detecta que la necesitas.</p>
+
+  <h3>Anatomía de una Skill</h3>
+  <p>Una Skill es una carpeta con esta estructura básica:</p>
+  <pre><code>generar-reporte-mensual/
+├── SKILL.md           ← el archivo principal, obligatorio
+├── plantilla.docx     ← recurso auxiliar
+├── ejemplos/
+│   ├── q1-2024.docx
+│   ├── q2-2024.docx
+│   └── q3-2024.docx
+└── scripts/
+    └── graficar.py    ← script opcional</code></pre>
+  <p>El archivo <code>SKILL.md</code> es el cerebro. Tiene dos partes:</p>
+  <ul>
+    <li><strong>Frontmatter YAML</strong> al principio, con <code>name</code> y <code>description</code>. La descripción es lo que Claude lee para decidir si esta skill aplica a lo que el usuario está pidiendo. Por eso debe ser específica y precisa.</li>
+    <li><strong>Cuerpo Markdown</strong> con instrucciones detalladas: cuándo usar la skill, cómo aplicarla, qué archivos auxiliares consultar, qué pasos seguir.</li>
+  </ul>
+  <p>Los archivos auxiliares pueden ser cualquier cosa: plantillas .docx, hojas .xlsx, scripts .py, ejemplos .md, datos .json. Claude tiene acceso a ellos cuando carga la skill.</p>
+
+  <h3>Cómo se activa una Skill</h3>
+  <p>Esta es la magia. Tú no le dices a Claude "carga la skill X". Claude lee la <code>description</code> del frontmatter de cada skill disponible y <strong>decide solo</strong> cuándo aplicar una. Si la descripción dice "úsala cuando el usuario pida generar un reporte mensual", y el usuario escribe "hazme el reporte de junio", Claude carga la skill automáticamente.</p>
+  <p>Por eso la descripción es crítica. Si es vaga ("ayuda con reportes"), Claude puede no detectar cuándo aplica. Si es precisa ("genera reporte ejecutivo mensual con plantilla corporativa, usado cuando el usuario pide 'reporte de [mes]', 'informe mensual' o equivalentes"), la activación es fiable.</p>
+
+  <h3>Skills oficiales vs propias</h3>
+  <p>Anthropic publica Skills oficiales para tareas comunes: <code>docx</code> (Word), <code>xlsx</code> (Excel), <code>pdf</code>, <code>pptx</code>. Cuando le pides a Claude un archivo Word, se carga la skill <code>docx</code> automáticamente y aplica las mejores prácticas para generar el archivo correctamente.</p>
+  <p>Pero el verdadero valor está en las <strong>Skills propias</strong>. Las tuyas, hechas para tus flujos:</p>
+  <ul>
+    <li>Skill "redactar email a cliente": plantilla + tu tono + ejemplos de emails tuyos previos</li>
+    <li>Skill "analizar venta semanal": qué métricas mirar, qué umbrales son normales, formato de reporte</li>
+    <li>Skill "generar oferta comercial": plantilla legal + cláusulas que sí/no incluir + tu pricing</li>
+  </ul>
+
+  <h3>Ejemplo: una Skill mínima</h3>
+  <pre><code>--- SKILL.md ---
+name: resumir-articulo-academico
+description: Resume artículos científicos extrayendo objetivo, método, resultados y limitaciones. Úsalo cuando el usuario suba un PDF académico y pida "resume", "extrae lo importante", o equivalentes.
+
+# Cómo resumir un artículo académico
+
+## Output esperado
+Resumen estructurado en 4 secciones:
+1. **Objetivo**: qué se preguntan los autores
+2. **Método**: cómo intentan responderlo
+3. **Resultados**: qué encuentran
+4. **Limitaciones**: qué no responde, qué condiciones aplican
+
+## Reglas
+- Máximo 50 palabras por sección
+- Evita jerga del área salvo si no hay equivalente común
+- Si el método tiene fallos evidentes, menciónalos en Limitaciones
+- Si el artículo cita un estudio previo relevante, añade una línea final "Contexto: [artículo previo y por qué importa]"
+
+## Ejemplos
+Consulta ejemplos/quimica.md, ejemplos/psicologia.md, ejemplos/economia.md.</code></pre>
+
+  <h3>Cuándo crear una Skill y cuándo no</h3>
+  <ul>
+    <li><strong>Sí crear Skill cuando:</strong> tienes un flujo repetitivo (semanal/mensual), hay una plantilla o estructura específica, varios miembros del equipo deben producir output consistente, o el contexto necesario es grande (te ahorra explicarlo cada vez).</li>
+    <li><strong>No crear Skill cuando:</strong> es una tarea puntual, la estructura cambia mucho cada vez, o no tienes ejemplos de cómo debe quedar el output. En esos casos un Estilo o un Proyecto es mejor.</li>
+  </ul>
+
+  <h3>El ecosistema de Skills</h3>
+  <p>Más allá de las oficiales, hay marketplaces de la comunidad donde se publican Skills para tareas concretas: análisis financiero, escritura legal, generación de specs técnicas, post-mortems de incidentes, etc. Puedes instalarlas, modificarlas, combinarlas. El sistema está pensado para componer flujos.</p>
+
+  <div class="callout">
+    <div class="callout-label">Para llevarte</div>
+    <p>Una Skill = una capacidad empaquetada + activable automáticamente. Si haces algo más de tres veces con la misma estructura, considera convertirlo en Skill. Te ahorras la fricción de re-explicar el contexto cada vez, y ganas consistencia.</p>
+  </div>
+`
       },
       {
         id: 'l9-4',
@@ -2170,13 +2319,62 @@ Lenguaje claro, frases cortas, sin tecnicismos.
         summary: 'Del prompt monolítico al sistema agéntico que planifica, ejecuta y se autoevalúa.',
         defaultVideo: 'claude-101-videos/L9-1-slides.html',
         body: `
-          <h3>Qué hace un agente diferente de un prompt</h3>
-          <p>Un prompt es una pregunta-respuesta. Un <strong>agente</strong> es un bucle: planifica qué pasos dar, ejecuta el primero (usando tools), evalúa el resultado, y vuelve a planificar hasta terminar la tarea.</p>
-          <h3>Claude Agent SDK</h3>
-          <p>Anthropic ofrece el <strong>Claude Agent SDK</strong> (Python y TypeScript) para construir agentes en pocas líneas. Defines las tools que el agente puede usar y el system prompt que define su rol. El SDK gestiona el bucle automáticamente.</p>
-          <h3>Patrón "agente revisor de PRs"</h3>
-          <p>Tools: leer archivo del repo, ejecutar tests, postear comentario en GitHub. System prompt: "Eres revisor senior. Lee el diff, identifica 3 problemas, ejecuta tests, comenta." Con ~50 líneas tienes un agente funcional.</p>
-        `
+  <h3>De un prompt a un agente: el salto conceptual</h3>
+  <p>Un prompt es una interacción cerrada: tú preguntas, Claude responde, y se acabó. Un <strong>agente</strong> es algo distinto — es un sistema que recibe un objetivo (no una pregunta), y entra en un bucle: piensa qué pasos dar, ejecuta el primero, evalúa el resultado, decide el siguiente, y repite hasta terminar.</p>
+  <p>La diferencia es activa vs pasiva. Un prompt produce texto. Un agente <em>hace cosas</em>: lee archivos, llama APIs, envía emails, escribe en bases de datos, posta en Slack. En la lección siguiente vamos a construir uno desde cero. Esta lección es para entender por qué importa la distinción y cuándo merece la pena cruzar la frontera.</p>
+
+  <h3>Anatomía mínima de un agente</h3>
+  <p>Cualquier agente útil tiene tres componentes esenciales:</p>
+  <ul>
+    <li><strong>Objetivo</strong>: no una pregunta puntual sino una meta que requiere varios pasos. "Clasifica los emails de soporte de hoy y responde los rutinarios" es un objetivo. "¿Qué hora es?" no lo es.</li>
+    <li><strong>Tools</strong>: las funciones que el agente puede invocar para actuar sobre el mundo. <code>leer_email(id)</code>, <code>enviar_respuesta(email_id, texto)</code>, <code>marcar_como_revisado(id)</code>. Tú las defines, y el agente decide cuándo usarlas.</li>
+    <li><strong>Bucle</strong>: el patrón "planifica → ejecuta una tool → evalúa el resultado → replanifica". Sigue hasta cumplir el objetivo, llegar a un límite de pasos, o detectar que no puede avanzar.</li>
+  </ul>
+
+  <h3>El bucle agéntico en detalle</h3>
+  <p>Si miras por dentro un agente sencillo, lo que pasa es esto:</p>
+  <ol>
+    <li>El sistema le da a Claude el objetivo + una lista de tools disponibles con sus descripciones.</li>
+    <li>Claude responde con: "para empezar, voy a llamar a <code>tool_X</code> con estos argumentos". (No ejecuta nada todavía — solo dice qué quiere ejecutar.)</li>
+    <li>El sistema ejecuta <code>tool_X(args)</code> de verdad, recoge el resultado y se lo devuelve a Claude.</li>
+    <li>Claude evalúa el resultado: "ok, ahora sé Y. Mi siguiente paso es llamar a <code>tool_Z</code> con estos argumentos".</li>
+    <li>Repite 3-4 hasta que Claude diga "he terminado" o se llegue a un límite de iteraciones.</li>
+  </ol>
+  <p>Es un patrón sorprendentemente potente para algo tan simple. Y es la base de todo lo que llamamos "agentes" hoy.</p>
+
+  <h3>Patrones útiles de agentes</h3>
+  <p>Tres formatos típicos que vas a encontrar:</p>
+  <ul>
+    <li><strong>Agente de procesamiento por lote</strong>: cada noche revisa 200 tickets nuevos y los clasifica. Tools: leer_tickets(), clasificar(), guardar_clasificacion(). Sin interacción humana en el medio.</li>
+    <li><strong>Agente colaborativo</strong>: trabaja contigo en algo, pregunta cuando hay decisiones importantes. "He encontrado 3 bugs en el código que pediste revisar. ¿Quieres que arregle todos o priorizamos?". Tú decides; el agente ejecuta.</li>
+    <li><strong>Agente autónomo de fondo</strong>: monitoriza algo y actúa cuando se cumple una condición. Vigila tu repo de GitHub, y cuando aparece una issue con cierto tag, hace un primer análisis y comenta.</li>
+  </ul>
+
+  <h3>Cuándo SÍ un agente, cuándo NO</h3>
+  <p>Es tentador resolver todo con agentes después de verlos funcionar. Pero es overkill para muchas tareas. Reglas prácticas:</p>
+  <ul>
+    <li><strong>Sí agente cuando:</strong> hay un objetivo que requiere varios pasos encadenados, los pasos dependen del resultado del anterior, y hay acciones reales en el mundo (no solo generar texto).</li>
+    <li><strong>No agente cuando:</strong> la tarea es Q&A simple, todo se resuelve con un prompt bien estructurado, o no hay tools que Claude necesite invocar para terminar.</li>
+  </ul>
+  <p>Mucha gente construye un agente cuando lo que necesitaba era un buen prompt. Es más caro de mantener, más impredecible, y consume más tokens.</p>
+
+  <h3>Los riesgos reales</h3>
+  <p>Un agente actúa en el mundo. Eso implica responsabilidades:</p>
+  <ul>
+    <li><strong>Acciones irreversibles</strong>: borrar archivos, enviar emails, transferir dinero, ejecutar código en producción. Para estas, el patrón es "el agente propone, el humano aprueba". No le des permiso de hacerlas solo.</li>
+    <li><strong>Bucles infinitos</strong>: si el agente no encuentra cómo terminar, puede iterar indefinidamente. Pon límite de pasos máximo (típicamente 20-50).</li>
+    <li><strong>Costes</strong>: cada paso del bucle es una llamada a la API. Un agente mal diseñado puede consumir miles de tokens por tarea. Mide.</li>
+    <li><strong>Prompt injection</strong>: si el agente lee contenido que puede contener instrucciones maliciosas (emails de terceros, páginas web), un atacante puede intentar hacerle ejecutar acciones que no debe. Hay que aislar contextos.</li>
+  </ul>
+
+  <h3>Anthropic Agent SDK</h3>
+  <p>Para construir agentes con Claude, Anthropic publica el <strong>Claude Agent SDK</strong> en Python y TypeScript. Te quita el trabajo de gestionar el bucle manualmente — tú defines tools y system prompt, y el SDK hace el resto. En la siguiente lección lo veremos en código.</p>
+
+  <div class="callout">
+    <div class="callout-label">Para llevarte</div>
+    <p>Un agente = objetivo + tools + bucle. Es más potente que un prompt pero también más complejo. Úsalo cuando lo que necesitas es acción multipaso en el mundo real, no cuando un buen prompt resuelve. La próxima lección construye uno desde cero.</p>
+  </div>
+`
       },
       {
         id: 'l9-5',
@@ -2185,15 +2383,309 @@ Lenguaje claro, frases cortas, sin tecnicismos.
         summary: 'El estándar abierto para conectar Claude a tus datos y herramientas, sin reescribir nada.',
         defaultVideo: 'claude-101-videos/L9-1-slides.html',
         body: `
-          <h3>El problema que resuelve</h3>
-          <p>Cada agente reinventaba cómo darle a Claude acceso a Notion, Slack, GitHub… Cada integración era custom. <strong>MCP</strong> (Model Context Protocol) estandariza esto: cualquier servidor MCP puede ser usado por cualquier cliente MCP.</p>
-          <h3>Arquitectura</h3>
-          <p><strong>MCP Server</strong>: expone tools y resources (ej: "buscar en Notion"). <strong>MCP Client</strong>: Claude (en Claude.ai, Claude Code, tu propia app). El cliente descubre las tools del servidor y las usa.</p>
-          <h3>Cómo lo usas</h3>
-          <p>Como usuario: en Claude.ai → Settings → MCP → "Add server". Como developer: SDKs en TypeScript y Python. Defines tools como funciones y cualquier cliente MCP puede consumirlas.</p>
+  <h3>El problema que resuelve MCP</h3>
+  <p>Antes de MCP, cada vez que querías que Claude (o cualquier modelo) accediera a una herramienta o dato externo — Notion, Slack, GitHub, tu base de datos — tenías que escribir la integración custom. Definir cómo se llaman las funciones, qué parámetros aceptan, cómo se autentican, cómo se devuelven los resultados. Cada agente reinventaba lo mismo. Si querías que Claude trabajara con 5 apps distintas, tenías 5 integraciones diferentes, cada una con sus particularidades.</p>
+  <p><strong>Model Context Protocol (MCP)</strong> es la solución a este "integration hell". Es un estándar abierto que define <em>cómo</em> un modelo (cliente) se conecta a una herramienta externa (servidor). Si la app expone un servidor MCP siguiendo el protocolo, cualquier cliente compatible puede usarla sin reescribir nada.</p>
+
+  <h3>Arquitectura: servidor y cliente</h3>
+  <p>El modelo es simple:</p>
+  <ul>
+    <li><strong>MCP Server</strong>: software que <em>expone</em> capacidades. Puede ser oficial (Notion publica su MCP server) o de terceros. Define qué tools ofrece (ej: <code>search_pages</code>, <code>create_note</code>), qué resources expone (ej: lista de páginas del workspace), y cómo se autentica.</li>
+    <li><strong>MCP Client</strong>: software que <em>consume</em>. Claude (en Claude.ai, Claude Code, o cualquier app que use Claude API) puede actuar como cliente. Descubre las tools del servidor, decide cuándo usarlas, y las invoca.</li>
+    <li><strong>Protocolo</strong>: la especificación abierta de cómo se comunican. Mensajes JSON estructurados, descubrimiento de capacidades, manejo de errores. La spec está publicada y mantenida por Anthropic con contribuciones de la comunidad.</li>
+  </ul>
+
+  <h3>Por qué importa: reusabilidad</h3>
+  <p>El cambio real es la <em>reusabilidad</em>. Si Notion publica su servidor MCP oficial:</p>
+  <ul>
+    <li>Tú lo conectas a Claude.ai → Claude puede leer/escribir en tu Notion</li>
+    <li>Yo lo conecto a mi agente custom → mi agente puede leer/escribir en mi Notion</li>
+    <li>Otro lo conecta a una herramienta de productividad → su app puede leer/escribir Notion</li>
+  </ul>
+  <p>Mismo servidor, distintos clientes, todos funcionan. Y para Notion: una sola integración escrita, accesible desde cualquier herramienta de IA compatible. Ganan todos.</p>
+
+  <h3>Conectores existentes (ejemplos)</h3>
+  <p>El ecosistema MCP crece cada semana. Algunos ejemplos de servidores que ya existen:</p>
+  <ul>
+    <li><strong>Apps de productividad</strong>: Google Drive, Notion, Asana, Linear, Jira</li>
+    <li><strong>Comunicación</strong>: Slack, Gmail, Calendar, Discord</li>
+    <li><strong>Código</strong>: GitHub, GitLab, Sentry, monitoring</li>
+    <li><strong>Bases de datos</strong>: Postgres, SQLite (lectura segura), Airtable</li>
+    <li><strong>Búsqueda y web</strong>: Brave Search, Exa, Wayback Machine</li>
+  </ul>
+  <p>Y crece. Si una app tiene API pública, casi seguro hay un servidor MCP para ella (oficial o de la comunidad), o se puede hacer en pocas horas.</p>
+
+  <h3>Cómo lo usas como usuario</h3>
+  <p>En Claude.ai (web/escritorio): Settings → MCP → "Add server". Eliges de la lista de conectores oficiales o pegas la URL/comando de uno custom. Autorizas permisos (lectura solo, lectura+escritura, scope específico). Listo — Claude ya puede usar esas tools cuando sean relevantes.</p>
+  <p>En Claude Code: configuras en el archivo de config del proyecto qué servidores MCP cargar al iniciar. Útil cuando los datos viven en tu repo o en herramientas asociadas (issues, CI/CD).</p>
+
+  <h3>Cómo lo usas como developer</h3>
+  <p>Hay SDKs oficiales en TypeScript y Python. Construir un servidor propio para una API custom es relativamente sencillo:</p>
+  <pre><code>// TS, pseudocódigo
+import { Server } from "@modelcontextprotocol/sdk";
+
+const server = new Server({ name: "mi-app-mcp", version: "1.0.0" });
+
+server.tool("buscar_clientes", "Busca clientes por nombre", {
+  query: "string"
+}, async ({ query }) => {
+  const results = await db.clientes.find(query);
+  return { content: results };
+});
+
+server.tool("crear_factura", "Crea factura para cliente", {
+  cliente_id: "string",
+  importe: "number"
+}, async ({ cliente_id, importe }) => {
+  const factura = await db.facturas.create({ cliente_id, importe });
+  return { content: factura };
+});
+
+server.listen();</code></pre>
+  <p>Con ~30 líneas, tu sistema interno está expuesto vía MCP. Claude (o cualquier otro cliente) puede usarlo sin saber cómo es tu BD por dentro.</p>
+
+  <h3>Seguridad: permisos y aislamiento</h3>
+  <p>Antes de conectar un servidor MCP, revisa:</p>
+  <ul>
+    <li><strong>Quién lo publica</strong>: oficial (más confiable) vs comunidad (revisa código si toca datos sensibles)</li>
+    <li><strong>Qué permisos pide</strong>: lee-solo vs lee+escribe. Si solo necesitas leer datos, no autorices escritura.</li>
+    <li><strong>Qué scope</strong>: ¿acceso a TODO tu workspace o a un proyecto específico? Restringe lo máximo posible.</li>
+  </ul>
+  <p>MCP es estándar abierto, lo cual significa que cualquiera puede publicar uno. Confía pero verifica.</p>
+
+  <div class="callout">
+    <div class="callout-label">Para llevarte</div>
+    <p>MCP convierte a Claude en un hub interoperable entre tus apps. Servidor expone, cliente consume, protocolo estandariza. Si tu trabajo cruza varias herramientas, MCP elimina el copy-paste entre ellas. Como developer, te ahorra reinventar integraciones para cada app.</p>
+  </div>
+`
+      },
+      {
+        id: 'l9-6',
+        title: 'Construye tu primer agente',
+        emphasis: 'tu primer agente',
+        summary: 'Tutorial práctico: del cero a un agente funcional con Claude Agent SDK en 50 líneas de código.',
+        defaultVideo: 'claude-101-videos/L9-6-slides.html',
+        body: `
+          <h3>Lo que vamos a construir</h3>
+          <p>Vamos a construir un agente real, no un ejemplo de juguete. Le vamos a dar un objetivo concreto: <em>revisar emails de soporte entrantes, clasificarlos por categoría, responder los rutinarios automáticamente y escalar los complejos a un humano</em>. Es una tarea que cualquier equipo pequeño tiene, que duele de verdad cuando crece, y que se resuelve perfectamente con un agente.</p>
+          <p>Lo construiremos en Python con el <strong>Claude Agent SDK</strong>. Necesitas tres cosas: Python 3.10+, una clave API de Anthropic, y unos 30 minutos. El agente final tiene ~80 líneas de código.</p>
+
+          <h3>Paso 0: instalación</h3>
+          <pre><code># Crear entorno virtual (opcional pero recomendado)
+python3 -m venv venv
+source venv/bin/activate  # En Windows: venv\Scripts\activate
+
+# Instalar Agent SDK
+pip install anthropic
+
+# Configurar la API key (consíguela en console.anthropic.com)
+export ANTHROPIC_API_KEY="sk-ant-..."</code></pre>
+          <p>Esto te deja listo para usar tanto el SDK directo como construir agentes con loop manual. El "Agent SDK" no es un paquete separado todavía — el patrón está en el cliente principal de Anthropic.</p>
+
+          <h3>Paso 1: define las tools</h3>
+          <p>Las tools son las acciones que tu agente puede ejecutar. Cada una es una función Python normal con un esquema JSON que describe sus parámetros. El agente decide cuándo invocar cada una.</p>
+          <pre><code># tools.py
+EMAILS_FAKE = [
+    {"id": "e1", "from": "ana@cliente.com", "asunto": "Cómo cancelo mi suscripción"},
+    {"id": "e2", "from": "carlos@cliente.com", "asunto": "Vuestro producto no funciona, exijo reembolso ya"},
+    {"id": "e3", "from": "lara@cliente.com", "asunto": "¿Tenéis envío a Canarias?"},
+]
+RESPUESTAS_ENVIADAS = []
+ESCALADOS = []
+
+def leer_emails_pendientes() -&gt; list[dict]:
+    """Devuelve los emails que aún no se han procesado."""
+    return EMAILS_FAKE
+
+def enviar_respuesta(email_id: str, texto: str) -&gt; dict:
+    """Envía una respuesta al cliente por email."""
+    RESPUESTAS_ENVIADAS.append({"id": email_id, "texto": texto})
+    return {"status": "enviado", "email_id": email_id}
+
+def escalar_a_humano(email_id: str, razon: str) -&gt; dict:
+    """Marca el email como complejo y lo manda al humano de soporte."""
+    ESCALADOS.append({"id": email_id, "razon": razon})
+    return {"status": "escalado", "email_id": email_id}</code></pre>
+          <p>Para este tutorial, los datos son fake en listas Python — así puedes ejecutar todo localmente sin tocar email real. En producción, <code>leer_emails_pendientes</code> haría una llamada a Gmail/IMAP, <code>enviar_respuesta</code> usaría tu cliente de email, etc.</p>
+
+          <h3>Paso 2: describe las tools al modelo</h3>
+          <p>Claude necesita saber qué tools existen y cuándo usarlas. Lo hacemos con descripciones JSON que pasamos en cada llamada:</p>
+          <pre><code># tool_schemas.py
+TOOLS = [
+    {
+        "name": "leer_emails_pendientes",
+        "description": "Devuelve la lista de emails de soporte aún no procesados. Úsalo al empezar para ver qué hay que tratar.",
+        "input_schema": {"type": "object", "properties": {}, "required": []}
+    },
+    {
+        "name": "enviar_respuesta",
+        "description": "Envía una respuesta automática a un email del cliente. Úsalo solo cuando el caso sea claramente rutinario y la respuesta no requiera juicio humano.",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "email_id": {"type": "string", "description": "ID del email a responder"},
+                "texto": {"type": "string", "description": "Texto de la respuesta, en español, tono profesional cercano, máximo 100 palabras"}
+            },
+            "required": ["email_id", "texto"]
+        }
+    },
+    {
+        "name": "escalar_a_humano",
+        "description": "Marca un email para que lo revise un agente humano de soporte. Úsalo cuando el caso involucre reembolsos, quejas formales, queja con tono agresivo, o cualquier situación que requiera juicio.",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "email_id": {"type": "string"},
+                "razon": {"type": "string", "description": "Por qué necesita revisión humana"}
+            },
+            "required": ["email_id", "razon"]
+        }
+    }
+]</code></pre>
+          <p>La calidad de las descripciones determina la calidad de las decisiones del agente. Una descripción vaga ("envía email") deja a Claude adivinando. Una específica ("envía solo si claramente rutinario, no si hay queja formal") guía decisiones acertadas.</p>
+
+          <h3>Paso 3: el bucle del agente</h3>
+          <p>Aquí está el núcleo. El bucle: pedimos a Claude qué quiere hacer, ejecutamos su petición, le mostramos el resultado, repetimos hasta que diga "he terminado".</p>
+          <pre><code># agente.py
+import anthropic
+from tools import leer_emails_pendientes, enviar_respuesta, escalar_a_humano
+from tool_schemas import TOOLS
+
+# Mapa de nombre → función real
+EXECUTORS = {
+    "leer_emails_pendientes": leer_emails_pendientes,
+    "enviar_respuesta": enviar_respuesta,
+    "escalar_a_humano": escalar_a_humano,
+}
+
+SYSTEM_PROMPT = """Eres un agente de soporte al cliente para una pyme.
+Tu objetivo: procesar los emails entrantes de hoy.
+- Casos rutinarios (preguntas sobre envíos, horarios, info pública): responde directamente con tono profesional cercano.
+- Casos complejos (reembolsos, quejas formales, tono agresivo del cliente): escala a humano con razón clara.
+- Cuando hayas procesado todos los emails de la lista, termina diciendo 'Procesados X emails: Y respondidos, Z escalados'.
+"""
+
+def correr_agente(max_pasos: int = 20):
+    client = anthropic.Anthropic()
+    messages = [{"role": "user", "content": "Procesa los emails pendientes."}]
+    paso = 0
+
+    while paso &lt; max_pasos:
+        paso += 1
+        print(f"\n--- Paso {paso} ---")
+
+        response = client.messages.create(
+            model="claude-sonnet-4-6",
+            max_tokens=2048,
+            system=SYSTEM_PROMPT,
+            tools=TOOLS,
+            messages=messages,
+        )
+
+        # ¿El agente quiere ejecutar tools?
+        if response.stop_reason == "tool_use":
+            tool_results = []
+            for block in response.content:
+                if block.type == "tool_use":
+                    name = block.name
+                    args = block.input
+                    print(f"  → Llamando a {name}({args})")
+                    result = EXECUTORS[name](**args)
+                    print(f"    ✓ {result}")
+                    tool_results.append({
+                        "type": "tool_result",
+                        "tool_use_id": block.id,
+                        "content": str(result),
+                    })
+            messages.append({"role": "assistant", "content": response.content})
+            messages.append({"role": "user", "content": tool_results})
+            continue
+
+        # ¿El agente terminó?
+        if response.stop_reason == "end_turn":
+            texto_final = next(
+                (b.text for b in response.content if b.type == "text"),
+                ""
+            )
+            print(f"\n✅ Agente terminó: {texto_final}")
+            return
+
+        print(f"⚠ Stop reason inesperado: {response.stop_reason}")
+        return
+
+    print("⚠ Máximo de pasos alcanzado, parando.")
+
+if __name__ == "__main__":
+    correr_agente()</code></pre>
+
+          <h3>Paso 4: ejecútalo</h3>
+          <pre><code>python agente.py</code></pre>
+          <p>Si todo está bien configurado, deberías ver algo como:</p>
+          <pre><code>--- Paso 1 ---
+  → Llamando a leer_emails_pendientes({})
+    ✓ [{'id': 'e1', ...}, {'id': 'e2', ...}, {'id': 'e3', ...}]
+
+--- Paso 2 ---
+  → Llamando a enviar_respuesta({'email_id': 'e3', 'texto': 'Hola Lara, ...'})
+    ✓ {'status': 'enviado', 'email_id': 'e3'}
+
+--- Paso 3 ---
+  → Llamando a escalar_a_humano({'email_id': 'e2', 'razon': 'tono agresivo, exige reembolso'})
+    ✓ {'status': 'escalado', 'email_id': 'e2'}
+
+--- Paso 4 ---
+  → Llamando a enviar_respuesta({'email_id': 'e1', 'texto': 'Hola Ana, ...'})
+    ✓ {'status': 'enviado', 'email_id': 'e1'}
+
+--- Paso 5 ---
+✅ Agente terminó: Procesados 3 emails: 2 respondidos, 1 escalado</code></pre>
+          <p>Ya tienes un agente funcional. Procesa, decide, actúa, reporta. En unas 80 líneas.</p>
+
+          <h3>Qué acaba de pasar</h3>
+          <p>Conceptualmente, lo que el modelo hizo:</p>
+          <ol>
+            <li><strong>Vio el objetivo</strong> en el system prompt y la primera petición</li>
+            <li><strong>Decidió que necesitaba info</strong> antes de actuar → llamó a <code>leer_emails_pendientes</code></li>
+            <li><strong>Evaluó cada email</strong>: el de Lara es pregunta pública sobre envíos (rutinario), el de Carlos es queja agresiva con exigencia de reembolso (complejo), el de Ana es duda admin (rutinario)</li>
+            <li><strong>Aplicó la política del system prompt</strong>: rutinarios → enviar respuesta. Complejos → escalar.</li>
+            <li><strong>Decidió que había terminado</strong> cuando ya no quedaban emails y reportó el resumen</li>
+          </ol>
+          <p>Todo eso lo decidió el modelo, no tú. Tú solo proporcionaste objetivo, tools y reglas.</p>
+
+          <h3>Mejorando el agente</h3>
+          <p>Este es el esqueleto. Para producción, los siguientes pasos típicos son:</p>
+          <ul>
+            <li><strong>Persistencia</strong>: guardar resultados en BD, no en memoria. Para que reintente si se cae.</li>
+            <li><strong>Observabilidad</strong>: logging estructurado de cada paso. Para entender qué pasó cuando algo sale raro.</li>
+            <li><strong>Aprobación humana</strong> en pasos críticos: en lugar de enviar email automáticamente, mostrar borrador para que un humano apruebe. El SDK soporta este patrón con un solo cambio.</li>
+            <li><strong>Límites por dominio</strong>: presupuesto máximo de tokens por ejecución, número máximo de respuestas automáticas por hora, etc.</li>
+            <li><strong>Tools más ricas</strong>: en lugar de "enviar respuesta", añade "buscar en docs internas", "consultar historial del cliente", "verificar estado de pedido". Más tools = decisiones más informadas.</li>
+          </ul>
+
+          <h3>Variaciones que puedes hacer</h3>
+          <p>Cambia el objetivo y las tools, y el mismo esqueleto resuelve casos muy distintos:</p>
+          <ul>
+            <li><strong>Revisor de PRs en GitHub</strong>: tools = leer_diff, ejecutar_tests, postear_comentario. System prompt: "Eres revisor senior. Identifica problemas, ejecuta tests, comenta."</li>
+            <li><strong>Asistente de research</strong>: tools = buscar_web, leer_pdf, guardar_nota. System prompt: "Investiga el tema X. Busca, evalúa, sintetiza. Termina con un resumen + fuentes."</li>
+            <li><strong>Operador de marketing</strong>: tools = analizar_metricas, generar_creatividad, publicar_post. System prompt: "Cada lunes, analiza KPIs, propone 3 posts para esta semana, publica los aprobados."</li>
+          </ul>
+
+          <h3>Costes y monitorización</h3>
+          <p>Cada llamada al modelo cuesta tokens. Un agente típico hace 5-15 llamadas por ejecución. Con Sonnet, son unos pocos céntimos por ejecución completa. Para uso intensivo, monitoriza:</p>
+          <ul>
+            <li>Tokens consumidos por agente por día</li>
+            <li>Coste medio por tarea completada</li>
+            <li>Tasa de éxito (terminó vs llegó al límite de pasos)</li>
+            <li>Tasa de escalamiento (qué % requiere humano)</li>
+          </ul>
+          <p>Si los costes se disparan, casi siempre es porque el agente se mete en bucles innecesarios. Solución: descripciones de tools más claras, system prompt con criterios de terminación más explícitos, o reducir el max_pasos a la baja para acotar daño.</p>
+
+          <h3>Cuándo NO usar este patrón</h3>
+          <p>Repito lo de la lección anterior porque es importante: si la tarea se puede resolver con un prompt bien estructurado, NO la conviertas en agente. El overhead no compensa. Indicadores de que SÍ vale la pena agente: hay que tomar varias decisiones secuenciales basadas en resultados intermedios, hay acciones reales en el mundo, o la tarea se repite a menudo y cada ejecución necesita criterio.</p>
+
           <div class="callout">
-            <div class="callout-label">Has terminado el módulo 9 BONUS</div>
-            <p>Conoces Constitutional AI, markdown semántico, Skills, agentes y MCP. Lo que sigue es <strong>construir cosas reales</strong>. Empieza por algo pequeño: un agente que te resuma los emails del día, una skill que automatice una tarea repetitiva tuya.</p>
+            <div class="callout-label">Tu primer ejercicio</div>
+            <p>Coge este código tal cual, ejecútalo, y modifica el system prompt o las tools para que resuelva una tarea real tuya. La diferencia entre "leer sobre agentes" y "entender agentes" es haber ejecutado uno y haberlo modificado. Si tienes Python instalado y la API key, es 30 minutos.</p>
           </div>
         `
       }
