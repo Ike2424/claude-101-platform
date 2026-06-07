@@ -364,6 +364,24 @@ app.use('/claude-101-videos', requireAuth, requirePaid,
 
 app.use('/api/course', requireAuth, requirePaid, courseRouter);
 
+// 7.5) BLINDAJE DEL CONTENIDO DE PAGO
+// express.static (extensions:['html']) serviría /course, /glosario.html, etc.
+// SIN login+pago. Forzamos auth+pago en el acceso DIRECTO.
+const PAID_PAGES = new Set([
+  '/course', '/course.html',
+  '/glosario', '/glosario.html',
+  '/resumenes', '/resumenes.html',
+  '/playground', '/playground.html',
+  '/progreso', '/progreso.html',
+  '/app.html',
+]);
+app.use((req, res, next) => {
+  if (req.method === 'GET' && PAID_PAGES.has(req.path)) {
+    return requireAuth(req, res, () => requirePaid(req, res, next));
+  }
+  next();
+});
+
 // ============================================================
 // 8) Static público
 // ============================================================
