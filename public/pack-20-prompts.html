@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>20 Prompts para Claude - Claude 101</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; line-height: 1.6; color: #1a1a1a; }
+    @media print { body { margin: 0; } .no-print { display: none; } }
+    
+    .cover {
+      background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+      color: white;
+      padding: 80px 40px;
+      text-align: center;
+      page-break-after: always;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .cover h1 { font-size: 56px; font-weight: 700; margin-bottom: 10px; }
+    .cover .accent { color: #ff6b35; font-size: 28px; font-weight: 400; }
+    .cover p { font-size: 14px; opacity: 0.8; margin-top: 20px; }
+    .cover .footer { margin-top: 60px; font-size: 12px; opacity: 0.6; }
+    
+    .page { page-break-after: always; padding: 40px; min-height: 100vh; }
+    .page h2 { font-size: 16px; color: #1a1a1a; margin-bottom: 25px; border-bottom: 2px solid #ff6b35; padding-bottom: 10px; }
+    
+    .prompt-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .prompt-item {
+      border-left: 4px solid #ff6b35;
+      padding: 15px;
+      background: #f9f9f9;
+      page-break-inside: avoid;
+    }
+    .prompt-cat { font-size: 8px; font-weight: 700; color: white; background: #ff6b35; display: inline-block; padding: 4px 8px; margin-bottom: 6px; }
+    .prompt-title { font-size: 12px; font-weight: 700; color: #1a1a1a; margin-bottom: 6px; }
+    .prompt-desc { font-size: 10px; color: #666; line-height: 1.5; }
+    
+    .info-page { padding: 40px; page-break-before: always; }
+    .info-page h2 { font-size: 18px; margin-bottom: 15px; border-bottom: 2px solid #ff6b35; padding-bottom: 10px; }
+    .info-page ol { margin-left: 20px; margin-bottom: 20px; }
+    .info-page li { margin-bottom: 10px; font-size: 11px; }
+    .resources { margin-top: 25px; }
+    .resources h3 { font-size: 12px; font-weight: 700; margin-bottom: 10px; }
+    .resources p { font-size: 10px; margin-bottom: 6px; color: #ff6b35; }
+    .bottom { position: fixed; bottom: 30px; text-align: center; font-size: 9px; color: #999; width: 100%; }
+    
+    @media screen { 
+      .no-print { display: block; }
+      .btn-download { background: #ff6b35; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 12px; }
+      .header { padding: 20px; background: #f5f5f5; text-align: center; margin-bottom: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="no-print header">
+  <h1>20 Prompts para Claude</h1>
+  <button class="btn-download" onclick="window.print()">📥 Descargar como PDF</button>
+</div>
+
+<!-- PORTADA -->
+<div class="cover">
+  <h1>20 PROMPTS</h1>
+  <div class="accent">Para Claude</div>
+  <p>Los mejores prompts para sacarle el máximo a Claude</p>
+  <div class="footer">Claude 101 · academia101.com</div>
+</div>
+
+<!-- PÁGINA 1 -->
+<div class="page">
+  <h2>PROMPTS 1–4</h2>
+  <div class="prompt-grid">
+    <div class="prompt-item">
+      <div class="prompt-cat">ANÁLISIS</div>
+      <div class="prompt-title">DAFO Completo</div>
+      <div class="prompt-desc">Análisis Debilidades-Amenazas-Fortalezas-Oportunidades con estrategias de mejora</div>
+    </div>
+    <div class="prompt-item">
+      <div class="prompt-cat">ANÁLISIS</div>
+      <div class="prompt-title">Extrae Insights</div>
+      <div class="prompt-desc">Identifica los 5 puntos clave de documentos largos</div>
+    </div>
+    <div class="prompt-item">
+      <div class="prompt-cat">ANÁLISIS</div>
+      <div class="prompt-title">Análisis Sentimiento</div>
+      <div class="prompt-desc">Evalúa tono y sentimiento de feedback de clientes</div>
+    </div>
+    <div class="prompt-item">
+      <div class="prompt-cat">COPYWRITING</div>
+      <div class="prompt-title">Genera Titulares</div>
+      <div class="prompt-desc">Headlines que captan atención y destacan beneficios</div>
+    </div>
+  </div>
+</div>
+
+<!-- PÁGINA 2 -->
+<div class="page">
+  <h2>PROMPTS 5–8</h2>
+  <div class="prompt-grid">
+    <div class="prompt-item">
+      <div class="prompt-cat">COPYWRITING</div>
+      <div class="prompt-title">Email de Ventas</div>
+      <div class="prompt-desc">Crea emails persuasivos sin ser spam</div>
+    </div>
+    <div class="prompt-item">
+      <div class="prompt-cat">COPYWRITING</div>
+      <div class="prompt-title">Call-to-Action</div>
+      <div class="prompt-desc">CTAs claros, urgentes y orientados a resultados</div>
+    </div>
+    <div class="prompt-item">
+      <div class="prompt-cat">CONTENIDO</div>
+      <div class="prompt-title">Esquema Blog Post</div>
+      <div class="prompt-desc">Planifica estructura de artículos para SEO</div>
+    </div>
+    <div class="prompt-item">
+      <div class="prompt-cat">CONTENIDO</div>
+      <div class="prompt-title">Resumen Ejecutivo</div>
+      <div class="prompt-desc">Condensa documentos sin perder lo importante</div>
+    </div>
+  </div>
+</div>
+
+<!-- PÁGINA 3 -->
+<div class="page">
+  <h2>PROMPTS 9–16</h2>
+  <div class="prompt-grid">
+    <div class="prompt-item">
+      <div class="prompt-cat">CONTENIDO</div>
+      <div class="prompt-title">Audiencia & Tone</div>
+      <div class="prompt-desc">Adapta contenido para públicos específicos</div>
+    </div>
+    <div class="prompt-item">
+      <div class="prompt-cat">PRODUCTIVO</div>
+      <div class="prompt-title">Brainstorm</div>
+      <div class="prompt-desc">Genera ideas sistemáticas y categorizadas</div>
+    </div>
+    <div class="prompt-item">
+      <div class="prompt-cat">PRODUCTIVO</div>
+      <div class="prompt-title">Plan 30 días</div>
+      <div class="prompt-desc">Convierte una idea en plan ejecutable</div>
+    </div>
+    <div class="prompt-item">
+      <div class="prompt-cat">PRODUCTIVO</div>
+      <div class="prompt-title">Preguntas Críticas</div>
+      <div class="prompt-desc">Identifica lo que aún no se preguntó</div>
+    </div>
+    <div class="prompt-item">
+      <div class="prompt-cat">AVANZADO</div>
+      <div class="prompt-title">Roleplay Experto</div>
+      <div class="prompt-desc">Obtén perspectiva de un experto con experiencia</div>
+    </div>
+    <div class="prompt-item">
+      <div class="prompt-cat">AVANZADO</div>
+      <div class="prompt-title">Debating</div>
+      <div class="prompt-desc">Explora múltiples perspectivas equilibradas</div>
+    </div>
+    <div class="prompt-item">
+      <div class="prompt-cat">AVANZADO</div>
+      <div class="prompt-title">Mentoría</div>
+      <div class="prompt-desc">Recibe coaching tailored para tu situación</div>
+    </div>
+    <div class="prompt-item">
+      <div class="prompt-cat">ANÁLISIS</div>
+      <div class="prompt-title">Análisis Mercado</div>
+      <div class="prompt-desc">Identifica tendencias y oportunidades</div>
+    </div>
+  </div>
+</div>
+
+<!-- PÁGINA 4 -->
+<div class="page">
+  <h2>PROMPTS 17–20</h2>
+  <div class="prompt-grid">
+    <div class="prompt-item">
+      <div class="prompt-cat">COPYWRITING</div>
+      <div class="prompt-title">Propuesta de Valor</div>
+      <div class="prompt-desc">Articula tu propuesta de forma clara</div>
+    </div>
+    <div class="prompt-item">
+      <div class="prompt-cat">CONTENIDO</div>
+      <div class="prompt-title">Keywords SEO</div>
+      <div class="prompt-desc">Identifica keywords y oportunidades de ranking</div>
+    </div>
+    <div class="prompt-item">
+      <div class="prompt-cat">PRODUCTIVO</div>
+      <div class="prompt-title">Decisiones</div>
+      <div class="prompt-desc">Analiza opciones y decide con claridad</div>
+    </div>
+    <div class="prompt-item">
+      <div class="prompt-cat">AVANZADO</div>
+      <div class="prompt-title">Estrategia</div>
+      <div class="prompt-desc">Desarrolla estrategia a largo plazo</div>
+    </div>
+  </div>
+  
+  <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #eee;">
+    <h3 style="font-size: 12px; margin-bottom: 8px;">Cómo usar estos prompts:</h3>
+    <ol style="font-size: 10px; margin-left: 20px;">
+      <li>Copia el prompt que necesites</li>
+      <li>Pégalo en claude.ai</li>
+      <li>Personaliza según tu contexto</li>
+      <li>Experimenta y refina</li>
+    </ol>
+  </div>
+</div>
+
+<!-- PÁGINA INFO -->
+<div class="info-page">
+  <h2>Cómo usar estos prompts</h2>
+  
+  <ol>
+    <li><strong>Copia:</strong> Selecciona el prompt que necesites de este documento</li>
+    <li><strong>Pega:</strong> Abre claude.ai y pega el prompt completo en el chat</li>
+    <li><strong>Personaliza:</strong> Reemplaza [placeholders] con tu contexto específico</li>
+    <li><strong>Itera:</strong> Refina basándote en los resultados que obtienes</li>
+  </ol>
+  
+  <div class="resources">
+    <h3>💡 Tips:</h3>
+    <p>• Los mejores resultados vienen de iteración y refinamiento</p>
+    <p>• Claude es muy flexible — experimenta con variaciones</p>
+    <p>• Usa los prompts como base, no como verdad absoluta</p>
+  </div>
+  
+  <div class="resources" style="margin-top: 30px;">
+    <h3>📚 Más recursos Claude 101</h3>
+    <p>📖 Blog: academia101.com/blog</p>
+    <p>🎓 Curso: Acceso vitalicio a 8 módulos progresivos</p>
+    <p>💬 Support: hola@academia101.com</p>
+  </div>
+  
+  <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #eee; font-size: 9px; color: #999;">
+    <p>© 2026 Claude 101 · Hecho por Tacto Agencia</p>
+    <p>Este documento puede ser impreso o compartido libremente</p>
+  </div>
+</div>
+
+</body>
+</html>

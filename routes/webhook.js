@@ -3,7 +3,7 @@ import { logger } from '../lib/logger.js';
 import express from 'express';
 import { stripe, WEBHOOK_SECRET } from '../lib/stripe.js';
 import { one, exec, isUniqueViolation } from '../lib/db.js';
-import { sendMagicLink } from '../lib/mail.js';
+import { sendMagicLink, sendWelcomeEmail } from '../lib/mail.js';
 import { makeMagicToken } from '../lib/token.js';
 
 const router = Router();
@@ -111,6 +111,7 @@ router.post('/', express.raw({ type: 'application/json' }), async (req, res) => 
         );
         const link = `${PUBLIC_URL}/api/auth/verify?token=${encodeURIComponent(raw)}`;
         await sendMagicLink({ to: email, link });
+        await sendWelcomeEmail({ to: email });
         logger.info(`[webhook] Acceso concedido y magic link enviado a ${email}`);
       } catch (err) {
         logger.error({ err: err }, 'Error enviando magic link tras pago:');
