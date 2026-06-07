@@ -108,13 +108,7 @@ router.post('/', checkoutLimiter, async (req, res) => {
       raw: err?.raw?.message,
     }, 'Error creando checkout:');
     // Devolver detalle del error para diagnosticar (sin filtrar secrets)
-    res.status(500).json({
-      error: 'No se pudo iniciar el pago.',
-      stripe_error: err?.message || 'sin mensaje',
-      stripe_type: err?.type || null,
-      stripe_code: err?.code || null,
-      stripe_status: err?.statusCode || null,
-    });
+    res.status(500).json({ error: 'No se pudo iniciar el pago. Inténtalo de nuevo en un momento.' });
   }
 });
 

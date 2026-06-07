@@ -28,10 +28,11 @@ export function vhost(req, _res, next) {
   if (!root) return next();
 
   const host = String(req.headers.host || '').toLowerCase().split(':')[0];
-  if (!host.endsWith(root)) return next();
+  // Exigir límite de punto: 'claude101.com' o '*.claude101.com', no 'evilclaude101.com'
+  if (host !== root && !host.endsWith('.' + root)) return next();
 
   // Extraer subdominio (todo lo que está antes del root)
-  let sub = host.slice(0, host.length - root.length).replace(/\.$/, '');
+  let sub = host === root ? '' : host.slice(0, host.length - root.length - 1);
   if (!sub || sub === 'www') return next();
 
   const target = SUBDOMAIN_TO_PATH[sub];
