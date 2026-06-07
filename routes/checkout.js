@@ -66,6 +66,9 @@ router.post('/', checkoutLimiter, async (req, res) => {
     const session = await stripe.checkout.sessions.create({
       mode: 'payment',
       payment_method_types: ['card'],
+      // Recuperación de carrito abandonado: Stripe envía un email con enlace
+      // para terminar el pago si la sesión caduca sin completarse.
+      after_expiration: { recovery: { enabled: true, allow_promotion_codes: false } },
       customer_email: email,
       line_items: [{
         price_data: {
