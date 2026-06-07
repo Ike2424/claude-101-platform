@@ -124,4 +124,23 @@ router.get('/validate-coupon', async (req, res) => {
   res.json({ ok: true, discount_pct: v.coupon.discount_pct, code: v.coupon.code });
 });
 
+// GET /api/checkout/session-summary?session_id=cs_...
+router.get('/session-summary', async (req, res) => {
+  try {
+    const id = String(req.query.session_id || '').trim();
+    if (!id.startsWith('cs_')) return res.status(400).json({ error: 'session_id inválido' });
+    const s = await stripe.checkout.sessions.retrieve(id);
+    if (s.payment_status !== 'paid') return res.json({ paid: false });
+    return res.json({
+      paid: true,
+      transaction_id: s.payment_intent || s.id,
+      value: (s.amount_total || 0) / 100,
+      currency: (s.currency || 'eur').toUpperCase(),
+    });
+  } catch (err) {
+    logger.error({ err: err?.message }, 'session-summary error');
+    return res.status(500).json({ error: 'No se pudo recuperar la sesión' });
+  }
+});
+
 export default router;

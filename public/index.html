@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+<!-- Google Analytics 4 -->
+<script src="/ga.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Claude 101 · Curso de Claude AI en español · 49€</title>
@@ -870,6 +872,7 @@ async function startCheckout(e) {
   btn.innerHTML = '<span class="spin"></span> Redirigiendo…';
   btn.disabled = true;
   if (window.track) window.track('checkout_started', { coupon });
+  if (window.gtag) gtag('event', 'begin_checkout', { currency: 'EUR', value: 49.00, items: [{ item_id: 'claude-101', item_name: 'Curso Claude 101', price: 49.00, quantity: 1 }] });
   try {
     const res = await fetch('/api/checkout', {
       method: 'POST',

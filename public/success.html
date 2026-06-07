@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+<!-- Google Analytics 4 -->
+<script src="/ga.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>¡Bienvenido a Claude 101!</title>
@@ -46,5 +48,24 @@ h1 em { font-style: normal; color: var(--accent); }
   </div>
 </div>
 <script src="/track.js"></script>
+<script>
+(function () {
+  var sid = new URLSearchParams(location.search).get('session_id');
+  if (!sid) return;
+  fetch('/api/checkout/session-summary?session_id=' + encodeURIComponent(sid))
+    .then(function (r) { return r.json(); })
+    .then(function (d) {
+      if (d && d.paid && window.gtag) {
+        gtag('event', 'purchase', {
+          transaction_id: d.transaction_id,
+          value: d.value,
+          currency: d.currency,
+          items: [{ item_id: 'claude-101', item_name: 'Curso Claude 101', price: d.value, quantity: 1 }]
+        });
+      }
+    })
+    .catch(function () {});
+})();
+</script>
 </body>
 </html>

@@ -145,13 +145,13 @@ app.use(helmet({
     useDefaults: true,
     directives: {
       'default-src': ["'self'"],
-      'script-src': ["'self'", "'unsafe-inline'", 'https://cdnjs.cloudflare.com'], // inline + cdnjs (html2pdf para descargar certificado)
+      'script-src': ["'self'", "'unsafe-inline'", 'https://cdnjs.cloudflare.com', 'https://www.googletagmanager.com'], // inline + cdnjs + Google Analytics
       'script-src-attr': ["'unsafe-inline'"],      // inline event handlers (onsubmit, onclick, oninput)
       'style-src': ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
       'style-src-attr': ["'unsafe-inline'"],       // inline style attributes
       'font-src': ["'self'", 'https://fonts.gstatic.com', 'data:'],
       'img-src': ["'self'", 'data:', 'https:'],
-      'connect-src': ["'self'", 'https://api.stripe.com'],
+      'connect-src': ["'self'", 'https://api.stripe.com', 'https://www.googletagmanager.com', 'https://www.google-analytics.com', 'https://*.google-analytics.com', 'https://*.analytics.google.com', 'https://region1.google-analytics.com'],
       'frame-src': ["'self'", 'https://js.stripe.com', 'https://hooks.stripe.com'],
       'object-src': ["'none'"],
       'base-uri': ["'self'"],
