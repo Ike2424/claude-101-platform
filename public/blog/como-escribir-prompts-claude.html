@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<!-- Google Analytics 4 -->
+<script src="/ga.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cómo escribir prompts para Claude: guía con ejemplos · Claude 101</title>
+<meta name="description" content="Cómo escribir prompts efectivos para Claude: las 4 partes de un buen prompt, etiquetas XML y ejemplos copiables. Guía de prompt engineering en español.">
+<link rel="canonical" href="/blog/como-escribir-prompts-claude">
+<link rel="alternate" hreflang="es-ES" href="https://academia101.com/blog/como-escribir-prompts-claude">
+<link rel="alternate" hreflang="es-419" href="https://academia101.com/blog/como-escribir-prompts-claude">
+<link rel="alternate" hreflang="es" href="https://academia101.com/blog/como-escribir-prompts-claude">
+<link rel="alternate" hreflang="x-default" href="https://academia101.com/blog/como-escribir-prompts-claude">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Geist:wght@300..700&family=Geist+Mono:wght@400..600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles-shared.css">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Cómo escribir prompts para Claude: guía con ejemplos">
+<meta property="og:description" content="Cómo escribir prompts efectivos para Claude: las 4 partes de un buen prompt, etiquetas XML y ejemplos copiables. Guía de prompt engineering en español.">
+<meta property="og:image" content="/og-image.svg">
+<meta property="og:locale" content="es_ES">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "Article", "headline": "Cómo escribir prompts para Claude: guía con ejemplos", "description": "Cómo escribir prompts efectivos para Claude: las 4 partes de un buen prompt, etiquetas XML y ejemplos copiables. Guía de prompt engineering en español.", "datePublished": "2026-06-07", "dateModified": "2026-06-07", "author": {"@type": "Organization", "name": "Claude 101", "url": "https://academia101.com"}, "publisher": {"@type": "Organization", "name": "Tacto Agencia SLU", "url": "https://academia101.com"}, "image": "https://academia101.com/og-image.svg", "inLanguage": "es", "mainEntityOfPage": "https://academia101.com/blog/como-escribir-prompts-claude"}
+</script>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "¿Qué es un buen prompt para Claude?", "acceptedAnswer": {"@type": "Answer", "text": "Uno que incluye rol o contexto, una tarea concreta, los datos necesarios y el formato de salida deseado. Cuanto más claro y específico, mejor responde."}}, {"@type": "Question", "name": "¿Para qué sirven las etiquetas XML en Claude?", "acceptedAnswer": {"@type": "Answer", "text": "Sirven para separar las instrucciones de los datos (por ejemplo, etiquetas como instrucciones, email o documento), lo que ayuda a Claude a entender exactamente qué hacer sin mezclar partes."}}, {"@type": "Question", "name": "¿Es mejor decirle a la IA qué hacer o qué no hacer?", "acceptedAnswer": {"@type": "Answer", "text": "Es más efectivo decirle qué hacer. Las instrucciones en positivo (\"usa un tono conversacional\") funcionan mejor que las negativas (\"no seas formal\")."}}]}
+</script>
+<style>
+.article-wrap { max-width: 720px; margin: 0 auto; padding: 48px 0 80px; }
+.article-meta { display: flex; gap: 14px; align-items: center; font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-bottom: 20px; }
+.article-meta .cat { color: var(--accent); }
+.article-wrap h1 { font-family: var(--display); font-style: italic; font-size: clamp(32px, 4.5vw, 52px); line-height: 1.1; margin-bottom: 18px; }
+.article-wrap h1 em { font-style: normal; color: var(--accent); }
+.article-wrap .lede { font-size: 19px; color: var(--ink-2); line-height: 1.6; margin-bottom: 36px; }
+.article-wrap h2 { font-family: var(--display); font-size: 28px; margin: 40px 0 14px; }
+.article-wrap h2 em { font-style: italic; color: var(--accent); }
+.article-wrap h3 { font-family: var(--display); font-size: 21px; margin: 24px 0 8px; }
+.article-wrap p, .article-wrap li { font-size: 16px; color: var(--ink-2); line-height: 1.75; }
+.article-wrap p { margin-bottom: 14px; }
+.article-wrap ul, .article-wrap ol { margin: 12px 0 14px 22px; }
+.article-wrap blockquote { border-left: 3px solid var(--accent); padding: 8px 0 8px 20px; font-family: var(--display); font-style: italic; font-size: 19px; color: var(--ink); margin: 24px 0; }
+.article-wrap table { width:100%; border-collapse:collapse; margin:16px 0; font-size:14px; }
+.article-wrap th, .article-wrap td { border:1px solid var(--line); padding:10px 12px; text-align:left; vertical-align:top; }
+.article-wrap th { background: var(--card); font-family: var(--mono); font-size:11px; letter-spacing:.06em; text-transform:uppercase; }
+.prompt-box { font-family: var(--mono); background: var(--bg-2); padding: 12px; border-radius: 8px; font-size: 13px; }
+.faq-q { font-family: var(--display); font-size: 19px; margin: 20px 0 6px; }
+.step-card { background: var(--card); border: 1px solid var(--line); border-radius: var(--r-lg); padding: 24px; margin: 16px 0; }
+.step-card h3 { margin-top: 0; }
+.step-card .pill { display: inline-block; background: var(--accent-soft); color: var(--accent); padding: 4px 10px; border-radius: var(--r-pill); font-family: var(--mono); font-size: 10px; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 10px; }
+.cta-end { background: linear-gradient(135deg, var(--accent), var(--gold)); color: var(--bg); border-radius: var(--r-xl); padding: 36px; text-align: center; margin: 48px 0 0; }
+.cta-end h3 { color: var(--bg); font-family: var(--display); font-style: italic; font-size: 26px; margin-bottom: 10px; }
+.cta-end p { color: rgba(244,239,227,.85); margin-bottom: 18px; }
+.cta-end .btn { background: var(--bg); color: var(--ink); border-color: var(--bg); }
+</style>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/favicon.svg">
+</head>
+<body>
+<a href="#main" class="skip-link">Saltar al contenido</a>
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="brand">Claude<em>·101</em></a>
+    <div class="nav-links"><a href="/blog">← Blog</a><a href="/#precio" class="btn btn-ghost btn-sm">Comprar acceso</a></div>
+  </div>
+</nav>
+
+<main id="main" class="container">
+  <article class="article-wrap">
+    <div class="article-meta"><span class="cat">Prompting</span><span>· 7 min</span><span>· Junio 2026</span></div>
+    <h1>Cómo escribir <em>prompts</em> para Claude</h1>
+    <p class="lede">El 80% de los malos resultados con una IA no son culpa de la IA: son culpa del prompt. Aquí tienes el método para escribir instrucciones que funcionan a la primera, con ejemplos que puedes copiar.</p>
+
+<h2>¿Qué es un prompt?</h2>
+<p>Un prompt es la instrucción que le das a la IA. Escribir buenos prompts (lo que se llama <strong>prompt engineering</strong>) consiste en dar contexto y pedir con claridad para que el modelo responda con precisión y en el formato que quieres.</p>
+
+<h2>Las 4 partes de un buen prompt</h2>
+<ol>
+<li><strong>Rol o contexto:</strong> "Eres un abogado revisando un contrato…".</li>
+<li><strong>Tarea concreta:</strong> qué quieres exactamente, sin ambigüedad.</li>
+<li><strong>Datos o material:</strong> el texto, la tabla o el ejemplo sobre el que trabajar.</li>
+<li><strong>Formato de salida:</strong> "en 3 viñetas", "tabla", "máximo 100 palabras".</li>
+</ol>
+
+<h2>El truco que casi nadie usa: etiquetas XML</h2>
+<p>Claude responde especialmente bien cuando separas las partes del prompt con etiquetas tipo XML. Así distingue tus instrucciones de los datos sin confundirse:</p>
+<p class="prompt-box">&lt;instrucciones&gt; Clasifica el email en "venta", "soporte" o "queja" y extrae el nombre del cliente. &lt;/instrucciones&gt; &lt;email&gt; [pega aquí el email] &lt;/email&gt;</p>
+
+<h2>3 ejemplos copiables</h2>
+<div class="step-card">
+<span class="pill">Redacción</span>
+<h3>Reescribir con tono</h3>
+<p class="prompt-box">"Reescribe este texto con tono cercano y profesional, como un asesor que habla con un cliente valioso. Máximo 5 frases. Texto: [...]"</p>
+</div>
+<div class="step-card">
+<span class="pill">Análisis</span>
+<h3>Resumir con criterio</h3>
+<p class="prompt-box">"Resume este documento en decisiones, próximos pasos (con responsable) y temas pendientes. Máximo 200 palabras. Documento: [...]"</p>
+</div>
+<div class="step-card">
+<span class="pill">Ideas</span>
+<h3>Generar sin filtrar</h3>
+<p class="prompt-box">"Dame 20 ángulos para una campaña sobre [tema]. No filtres: quiero extremos, técnicos y emocionales. Una línea cada uno."</p>
+</div>
+
+<h2>Errores que arruinan un prompt</h2>
+<ul>
+<li><strong>Contexto irrelevante:</strong> Claude pondera todo lo que le das. Incluye solo lo necesario.</li>
+<li><strong>Instrucciones en negativo:</strong> "no seas formal" funciona peor que "usa un tono conversacional".</li>
+<li><strong>Pedir demasiado a la vez:</strong> divide tareas grandes en pasos.</li>
+</ul>
+<p>El prompting es iterativo: prueba, observa y refina. Para dominarlo, en el curso dedicamos un módulo entero a técnicas avanzadas. Antes, repasa <a href="/blog/como-usar-claude-ai-guia-completa">cómo usar Claude</a>.</p>
+<h2>Preguntas <em>frecuentes</em></h2>
+<p class="faq-q">¿Qué es un buen prompt para Claude?</p>
+<p>Uno que incluye rol o contexto, una tarea concreta, los datos necesarios y el formato de salida deseado. Cuanto más claro y específico, mejor responde.</p>
+<p class="faq-q">¿Para qué sirven las etiquetas XML en Claude?</p>
+<p>Sirven para separar las instrucciones de los datos (por ejemplo, etiquetas como instrucciones, email o documento), lo que ayuda a Claude a entender exactamente qué hacer sin mezclar partes.</p>
+<p class="faq-q">¿Es mejor decirle a la IA qué hacer o qué no hacer?</p>
+<p>Es más efectivo decirle qué hacer. Las instrucciones en positivo ("usa un tono conversacional") funcionan mejor que las negativas ("no seas formal").</p>
+
+
+    <div class="cta-end">
+      <h3>Conviértete en un usuario profesional</h3>
+      <p>En Claude 101 practicas prompting paso a paso, con plantillas reutilizables para tu trabajo real.</p>
+      <a href="/#precio" class="btn btn-lg" onclick="track('blog_cta_click', { post: 'como-escribir-prompts-claude' })">Ver Claude 101 →</a>
+    </div>
+  </article>
+</main>
+
+<footer class="foot">
+  <div class="foot-inner"><div class="foot-bottom"><a href="/" class="brand">Claude<em>·101</em></a><div><a href="/blog">Más artículos</a> · <a href="/terminos">Términos</a> · <a href="/contacto">Contacto</a></div></div></div>
+</footer>
+<script src="/track.js"></script>
+</body>
+</html>

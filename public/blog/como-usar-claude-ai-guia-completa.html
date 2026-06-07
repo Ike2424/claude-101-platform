@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<!-- Google Analytics 4 -->
+<script src="/ga.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cómo usar Claude AI: guía completa en español (2026) · Claude 101</title>
+<meta name="description" content="Guía completa en español para usar Claude AI de Anthropic: cómo entrar, los modelos, tu primer prompt y 5 casos prácticos. Paso a paso, sin tecnicismos.">
+<link rel="canonical" href="/blog/como-usar-claude-ai-guia-completa">
+<link rel="alternate" hreflang="es-ES" href="https://academia101.com/blog/como-usar-claude-ai-guia-completa">
+<link rel="alternate" hreflang="es-419" href="https://academia101.com/blog/como-usar-claude-ai-guia-completa">
+<link rel="alternate" hreflang="es" href="https://academia101.com/blog/como-usar-claude-ai-guia-completa">
+<link rel="alternate" hreflang="x-default" href="https://academia101.com/blog/como-usar-claude-ai-guia-completa">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Geist:wght@300..700&family=Geist+Mono:wght@400..600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles-shared.css">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Cómo usar Claude AI: guía completa en español (2026)">
+<meta property="og:description" content="Guía completa en español para usar Claude AI de Anthropic: cómo entrar, los modelos, tu primer prompt y 5 casos prácticos. Paso a paso, sin tecnicismos.">
+<meta property="og:image" content="/og-image.svg">
+<meta property="og:locale" content="es_ES">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "Article", "headline": "Cómo usar Claude AI: guía completa en español (2026)", "description": "Guía completa en español para usar Claude AI de Anthropic: cómo entrar, los modelos, tu primer prompt y 5 casos prácticos. Paso a paso, sin tecnicismos.", "datePublished": "2026-06-07", "dateModified": "2026-06-07", "author": {"@type": "Organization", "name": "Claude 101", "url": "https://academia101.com"}, "publisher": {"@type": "Organization", "name": "Tacto Agencia SLU", "url": "https://academia101.com"}, "image": "https://academia101.com/og-image.svg", "inLanguage": "es", "mainEntityOfPage": "https://academia101.com/blog/como-usar-claude-ai-guia-completa"}
+</script>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "¿Es Claude gratis?", "acceptedAnswer": {"@type": "Answer", "text": "Sí, Claude tiene una versión gratuita con límites de uso suficiente para aprender y para tareas habituales. El plan Pro (unos 20 USD/mes) añade más capacidad y acceso prioritario a los modelos más potentes."}}, {"@type": "Question", "name": "¿Necesito saber programar para usar Claude?", "acceptedAnswer": {"@type": "Answer", "text": "No. Claude se usa en lenguaje natural, escribiendo lo que quieres como se lo dirías a un compañero. Solo las funciones para desarrolladores requieren conocimientos técnicos."}}, {"@type": "Question", "name": "¿En qué se diferencia Claude de ChatGPT?", "acceptedAnswer": {"@type": "Answer", "text": "Claude suele destacar en redacción, análisis de documentos largos y programación; ChatGPT es más versátil en imágenes, voz e integraciones. No hay un ganador universal: depende de tu tarea."}}, {"@type": "Question", "name": "¿Claude funciona en español?", "acceptedAnswer": {"@type": "Answer", "text": "Sí, Claude entiende y responde en español con naturalidad, tanto de España como neutro de Latinoamérica."}}]}
+</script>
+<style>
+.article-wrap { max-width: 720px; margin: 0 auto; padding: 48px 0 80px; }
+.article-meta { display: flex; gap: 14px; align-items: center; font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-bottom: 20px; }
+.article-meta .cat { color: var(--accent); }
+.article-wrap h1 { font-family: var(--display); font-style: italic; font-size: clamp(32px, 4.5vw, 52px); line-height: 1.1; margin-bottom: 18px; }
+.article-wrap h1 em { font-style: normal; color: var(--accent); }
+.article-wrap .lede { font-size: 19px; color: var(--ink-2); line-height: 1.6; margin-bottom: 36px; }
+.article-wrap h2 { font-family: var(--display); font-size: 28px; margin: 40px 0 14px; }
+.article-wrap h2 em { font-style: italic; color: var(--accent); }
+.article-wrap h3 { font-family: var(--display); font-size: 21px; margin: 24px 0 8px; }
+.article-wrap p, .article-wrap li { font-size: 16px; color: var(--ink-2); line-height: 1.75; }
+.article-wrap p { margin-bottom: 14px; }
+.article-wrap ul, .article-wrap ol { margin: 12px 0 14px 22px; }
+.article-wrap blockquote { border-left: 3px solid var(--accent); padding: 8px 0 8px 20px; font-family: var(--display); font-style: italic; font-size: 19px; color: var(--ink); margin: 24px 0; }
+.article-wrap table { width:100%; border-collapse:collapse; margin:16px 0; font-size:14px; }
+.article-wrap th, .article-wrap td { border:1px solid var(--line); padding:10px 12px; text-align:left; vertical-align:top; }
+.article-wrap th { background: var(--card); font-family: var(--mono); font-size:11px; letter-spacing:.06em; text-transform:uppercase; }
+.prompt-box { font-family: var(--mono); background: var(--bg-2); padding: 12px; border-radius: 8px; font-size: 13px; }
+.faq-q { font-family: var(--display); font-size: 19px; margin: 20px 0 6px; }
+.step-card { background: var(--card); border: 1px solid var(--line); border-radius: var(--r-lg); padding: 24px; margin: 16px 0; }
+.step-card h3 { margin-top: 0; }
+.step-card .pill { display: inline-block; background: var(--accent-soft); color: var(--accent); padding: 4px 10px; border-radius: var(--r-pill); font-family: var(--mono); font-size: 10px; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 10px; }
+.cta-end { background: linear-gradient(135deg, var(--accent), var(--gold)); color: var(--bg); border-radius: var(--r-xl); padding: 36px; text-align: center; margin: 48px 0 0; }
+.cta-end h3 { color: var(--bg); font-family: var(--display); font-style: italic; font-size: 26px; margin-bottom: 10px; }
+.cta-end p { color: rgba(244,239,227,.85); margin-bottom: 18px; }
+.cta-end .btn { background: var(--bg); color: var(--ink); border-color: var(--bg); }
+</style>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/favicon.svg">
+</head>
+<body>
+<a href="#main" class="skip-link">Saltar al contenido</a>
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="brand">Claude<em>·101</em></a>
+    <div class="nav-links"><a href="/blog">← Blog</a><a href="/#precio" class="btn btn-ghost btn-sm">Comprar acceso</a></div>
+  </div>
+</nav>
+
+<main id="main" class="container">
+  <article class="article-wrap">
+    <div class="article-meta"><span class="cat">Guía</span><span>· 9 min</span><span>· Junio 2026</span></div>
+    <h1>Cómo usar <em>Claude AI</em>: guía completa en español</h1>
+    <p class="lede">Claude es una de las IA más capaces para trabajar, pero casi nadie le saca partido el primer día. Esta guía te lleva de cero a productivo: qué es, cómo entrar, qué modelo usar y cinco cosas útiles que puedes hacer hoy mismo.</p>
+
+<h2>¿Qué es Claude y quién lo creó?</h2>
+<p>Claude es un asistente de inteligencia artificial creado por <strong>Anthropic</strong>, una empresa de investigación en IA fundada en 2021 por Dario y Daniela Amodei. Funciona como un colaborador al que le pides tareas en lenguaje natural: redactar, resumir, analizar datos, programar o razonar sobre un problema. Destaca por la calidad de su escritura, el análisis de documentos largos y la programación.</p>
+
+<h2>¿Cómo acceder a Claude?</h2>
+<p>Tienes tres vías, todas con una versión gratuita para empezar:</p>
+<ul>
+<li><strong>Web:</strong> entra en <strong>claude.ai</strong> desde tu navegador (ordenador o computadora) e inicia sesión con tu email o cuenta de Google.</li>
+<li><strong>Escritorio:</strong> hay aplicación para Mac y Windows.</li>
+<li><strong>Móvil:</strong> apps para iOS y Android.</li>
+</ul>
+<p>No necesitas tarjeta para probarlo. La versión gratuita basta para aprender lo esencial.</p>
+
+<h2>Los tres modelos: Haiku, Sonnet y Opus</h2>
+<p>Claude es una <em>familia</em> de modelos. Elegir bien te ahorra tiempo y dinero:</p>
+<table>
+<tr><th>Modelo</th><th>Para qué</th></tr>
+<tr><td><strong>Haiku</strong></td><td>El más rápido. Tareas sencillas y de volumen.</td></tr>
+<tr><td><strong>Sonnet</strong></td><td>El equilibrado. Tu opción por defecto para el día a día.</td></tr>
+<tr><td><strong>Opus</strong></td><td>El más potente. Análisis complejos y razonamiento profundo.</td></tr>
+</table>
+<p>Regla práctica: <strong>empieza con Sonnet</strong> y sube a Opus solo cuando la tarea lo pida. Consulta siempre la última versión disponible en claude.ai.</p>
+
+<h2>Tu primer prompt en 5 minutos</h2>
+<p>Un buen prompt tiene contexto, tarea y formato. Prueba este:</p>
+<p class="prompt-box">"Eres mi asistente de redacción. Reescribe este email para que suene profesional pero cercano. Máximo 5 frases. Email: [pega tu borrador]."</p>
+<p>Compara el resultado con tu borrador original. Esa diferencia es el "clic" que hace que la gente empiece a usar Claude a diario.</p>
+
+<h2>5 cosas útiles que puedes hacer hoy</h2>
+<ul>
+<li><strong>Resumir</strong> un PDF, contrato o hilo de emails en 3 viñetas.</li>
+<li><strong>Reescribir</strong> mensajes difíciles con el tono correcto.</li>
+<li><strong>Analizar un Excel:</strong> pídele tendencias y anomalías, y que muestre los cálculos.</li>
+<li><strong>Explicarte</strong> un tema complejo con una analogía a tu nivel.</li>
+<li><strong>Generar ideas</strong> para una campaña, un nombre o una estructura.</li>
+</ul>
+
+<h2>Errores comunes al empezar</h2>
+<ol>
+<li><strong>Pedir sin contexto.</strong> Cuanta más información relevante das, mejor responde.</li>
+<li><strong>Conformarse con el primer intento.</strong> Itera: "más corto", "más cálido", "con ejemplos".</li>
+<li><strong>Creerte cifras sin verificar.</strong> Para datos críticos, activa la búsqueda web o contrasta.</li>
+</ol>
+<p>¿Quieres profundizar en cada punto? Tenemos guías dedicadas: <a href="/blog/que-es-claude-ia-anthropic">qué es Claude</a>, <a href="/blog/como-escribir-prompts-claude">cómo escribir prompts</a> y <a href="/blog/claude-gratis-vs-pro">Claude gratis vs Pro</a>.</p>
+<h2>Preguntas <em>frecuentes</em></h2>
+<p class="faq-q">¿Es Claude gratis?</p>
+<p>Sí, Claude tiene una versión gratuita con límites de uso suficiente para aprender y para tareas habituales. El plan Pro (unos 20 USD/mes) añade más capacidad y acceso prioritario a los modelos más potentes.</p>
+<p class="faq-q">¿Necesito saber programar para usar Claude?</p>
+<p>No. Claude se usa en lenguaje natural, escribiendo lo que quieres como se lo dirías a un compañero. Solo las funciones para desarrolladores requieren conocimientos técnicos.</p>
+<p class="faq-q">¿En qué se diferencia Claude de ChatGPT?</p>
+<p>Claude suele destacar en redacción, análisis de documentos largos y programación; ChatGPT es más versátil en imágenes, voz e integraciones. No hay un ganador universal: depende de tu tarea.</p>
+<p class="faq-q">¿Claude funciona en español?</p>
+<p>Sí, Claude entiende y responde en español con naturalidad, tanto de España como neutro de Latinoamérica.</p>
+
+
+    <div class="cta-end">
+      <h3>Del cero al proyecto final</h3>
+      <p>Esta guía es el primer paso. El curso Claude 101 te lleva mucho más lejos, con 8 módulos y casos reproducibles.</p>
+      <a href="/#precio" class="btn btn-lg" onclick="track('blog_cta_click', { post: 'como-usar-claude-ai-guia-completa' })">Ver Claude 101 →</a>
+    </div>
+  </article>
+</main>
+
+<footer class="foot">
+  <div class="foot-inner"><div class="foot-bottom"><a href="/" class="brand">Claude<em>·101</em></a><div><a href="/blog">Más artículos</a> · <a href="/terminos">Términos</a> · <a href="/contacto">Contacto</a></div></div></div>
+</footer>
+<script src="/track.js"></script>
+</body>
+</html>

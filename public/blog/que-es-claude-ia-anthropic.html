@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<!-- Google Analytics 4 -->
+<script src="/ga.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Qué es Claude y para qué sirve: la IA de Anthropic · Claude 101</title>
+<meta name="description" content="Qué es Claude, la IA de Anthropic: para qué sirve, quién lo creó y en qué se diferencia. Explicado claro y en español, con casos de uso reales.">
+<link rel="canonical" href="/blog/que-es-claude-ia-anthropic">
+<link rel="alternate" hreflang="es-ES" href="https://academia101.com/blog/que-es-claude-ia-anthropic">
+<link rel="alternate" hreflang="es-419" href="https://academia101.com/blog/que-es-claude-ia-anthropic">
+<link rel="alternate" hreflang="es" href="https://academia101.com/blog/que-es-claude-ia-anthropic">
+<link rel="alternate" hreflang="x-default" href="https://academia101.com/blog/que-es-claude-ia-anthropic">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Geist:wght@300..700&family=Geist+Mono:wght@400..600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles-shared.css">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Qué es Claude y para qué sirve: la IA de Anthropic explicada">
+<meta property="og:description" content="Qué es Claude, la IA de Anthropic: para qué sirve, quién lo creó y en qué se diferencia. Explicado claro y en español, con casos de uso reales.">
+<meta property="og:image" content="/og-image.svg">
+<meta property="og:locale" content="es_ES">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "Article", "headline": "Qué es Claude y para qué sirve: la IA de Anthropic explicada", "description": "Qué es Claude, la IA de Anthropic: para qué sirve, quién lo creó y en qué se diferencia. Explicado claro y en español, con casos de uso reales.", "datePublished": "2026-06-07", "dateModified": "2026-06-07", "author": {"@type": "Organization", "name": "Claude 101", "url": "https://academia101.com"}, "publisher": {"@type": "Organization", "name": "Tacto Agencia SLU", "url": "https://academia101.com"}, "image": "https://academia101.com/og-image.svg", "inLanguage": "es", "mainEntityOfPage": "https://academia101.com/blog/que-es-claude-ia-anthropic"}
+</script>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "¿Quién creó Claude?", "acceptedAnswer": {"@type": "Answer", "text": "Claude lo creó Anthropic, una empresa de investigación en inteligencia artificial fundada en 2021 por Dario y Daniela Amodei."}}, {"@type": "Question", "name": "¿Claude es gratis?", "acceptedAnswer": {"@type": "Answer", "text": "Sí, tiene un plan gratuito. También existe un plan Pro de pago (alrededor de 20 USD/mes) con más capacidad."}}, {"@type": "Question", "name": "¿Para qué se usa Claude en el trabajo?", "acceptedAnswer": {"@type": "Answer", "text": "Para redactar y reescribir textos, resumir y analizar documentos, trabajar con datos de hojas de cálculo, programar y estructurar ideas o decisiones."}}, {"@type": "Question", "name": "¿Claude se equivoca?", "acceptedAnswer": {"@type": "Answer", "text": "Como toda IA, puede cometer errores o \"alucinar\" datos. Para información crítica conviene activar la búsqueda web o verificar la respuesta."}}]}
+</script>
+<style>
+.article-wrap { max-width: 720px; margin: 0 auto; padding: 48px 0 80px; }
+.article-meta { display: flex; gap: 14px; align-items: center; font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-bottom: 20px; }
+.article-meta .cat { color: var(--accent); }
+.article-wrap h1 { font-family: var(--display); font-style: italic; font-size: clamp(32px, 4.5vw, 52px); line-height: 1.1; margin-bottom: 18px; }
+.article-wrap h1 em { font-style: normal; color: var(--accent); }
+.article-wrap .lede { font-size: 19px; color: var(--ink-2); line-height: 1.6; margin-bottom: 36px; }
+.article-wrap h2 { font-family: var(--display); font-size: 28px; margin: 40px 0 14px; }
+.article-wrap h2 em { font-style: italic; color: var(--accent); }
+.article-wrap h3 { font-family: var(--display); font-size: 21px; margin: 24px 0 8px; }
+.article-wrap p, .article-wrap li { font-size: 16px; color: var(--ink-2); line-height: 1.75; }
+.article-wrap p { margin-bottom: 14px; }
+.article-wrap ul, .article-wrap ol { margin: 12px 0 14px 22px; }
+.article-wrap blockquote { border-left: 3px solid var(--accent); padding: 8px 0 8px 20px; font-family: var(--display); font-style: italic; font-size: 19px; color: var(--ink); margin: 24px 0; }
+.article-wrap table { width:100%; border-collapse:collapse; margin:16px 0; font-size:14px; }
+.article-wrap th, .article-wrap td { border:1px solid var(--line); padding:10px 12px; text-align:left; vertical-align:top; }
+.article-wrap th { background: var(--card); font-family: var(--mono); font-size:11px; letter-spacing:.06em; text-transform:uppercase; }
+.prompt-box { font-family: var(--mono); background: var(--bg-2); padding: 12px; border-radius: 8px; font-size: 13px; }
+.faq-q { font-family: var(--display); font-size: 19px; margin: 20px 0 6px; }
+.step-card { background: var(--card); border: 1px solid var(--line); border-radius: var(--r-lg); padding: 24px; margin: 16px 0; }
+.step-card h3 { margin-top: 0; }
+.step-card .pill { display: inline-block; background: var(--accent-soft); color: var(--accent); padding: 4px 10px; border-radius: var(--r-pill); font-family: var(--mono); font-size: 10px; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 10px; }
+.cta-end { background: linear-gradient(135deg, var(--accent), var(--gold)); color: var(--bg); border-radius: var(--r-xl); padding: 36px; text-align: center; margin: 48px 0 0; }
+.cta-end h3 { color: var(--bg); font-family: var(--display); font-style: italic; font-size: 26px; margin-bottom: 10px; }
+.cta-end p { color: rgba(244,239,227,.85); margin-bottom: 18px; }
+.cta-end .btn { background: var(--bg); color: var(--ink); border-color: var(--bg); }
+</style>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/favicon.svg">
+</head>
+<body>
+<a href="#main" class="skip-link">Saltar al contenido</a>
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="brand">Claude<em>·101</em></a>
+    <div class="nav-links"><a href="/blog">← Blog</a><a href="/#precio" class="btn btn-ghost btn-sm">Comprar acceso</a></div>
+  </div>
+</nav>
+
+<main id="main" class="container">
+  <article class="article-wrap">
+    <div class="article-meta"><span class="cat">Fundamentos</span><span>· 6 min</span><span>· Junio 2026</span></div>
+    <h1>Qué es <em>Claude</em> y para qué sirve</h1>
+    <p class="lede">Si oyes hablar de Claude por todas partes pero no tienes claro qué es exactamente, aquí lo tienes explicado en dos minutos y sin tecnicismos.</p>
+
+<h2>¿Qué es Claude?</h2>
+<p>Claude es un asistente de inteligencia artificial creado por la empresa <strong>Anthropic</strong>. Es un modelo de lenguaje que entiende instrucciones en lenguaje natural y produce texto, código y análisis. Dicho simple: le pides cosas escribiendo, como a un colega muy capaz, y te responde al instante.</p>
+
+<h2>¿Quién hay detrás? Anthropic</h2>
+<p>Anthropic es una empresa de investigación en IA fundada en 2021 por <strong>Dario y Daniela Amodei</strong>, con un foco declarado en hacer IA fiable y segura. Esa filosofía se nota en Claude: tiende a reconocer matices y a avisar de sus límites en lugar de inventar con falsa seguridad.</p>
+
+<h2>¿Para qué sirve Claude?</h2>
+<p>Es una herramienta de trabajo transversal. Los usos más habituales entre profesionales:</p>
+<ul>
+<li><strong>Escribir y reescribir:</strong> emails, informes, propuestas, con el tono que pidas.</li>
+<li><strong>Resumir y analizar documentos</strong> largos (contratos, PDFs, transcripciones).</li>
+<li><strong>Analizar datos</strong> de una hoja de cálculo y explicar los hallazgos.</li>
+<li><strong>Programar:</strong> escribir, explicar y depurar código.</li>
+<li><strong>Pensar en voz alta:</strong> estructurar ideas, sopesar opciones, preparar decisiones.</li>
+</ul>
+
+<h2>¿En qué se diferencia de otras IA?</h2>
+<p>Frente a alternativas como ChatGPT o Gemini, Claude suele destacar en <strong>calidad de redacción</strong>, en el manejo de <strong>documentos muy largos</strong> y en <strong>programación</strong>. Otras herramientas pueden ser más fuertes en imágenes o voz. La elección correcta depende de para qué lo quieras; lo vemos en detalle en <a href="/blog/claude-vs-chatgpt-cual-elegir">Claude vs. ChatGPT</a>.</p>
+
+<h2>¿Cómo empiezo?</h2>
+<p>Entra en <strong>claude.ai</strong>, crea una cuenta gratuita y prueba una tarea real de tu trabajo. Si quieres una ruta paso a paso, lee <a href="/blog/como-usar-claude-ai-guia-completa">cómo usar Claude</a>.</p>
+<h2>Preguntas <em>frecuentes</em></h2>
+<p class="faq-q">¿Quién creó Claude?</p>
+<p>Claude lo creó Anthropic, una empresa de investigación en inteligencia artificial fundada en 2021 por Dario y Daniela Amodei.</p>
+<p class="faq-q">¿Claude es gratis?</p>
+<p>Sí, tiene un plan gratuito. También existe un plan Pro de pago (alrededor de 20 USD/mes) con más capacidad.</p>
+<p class="faq-q">¿Para qué se usa Claude en el trabajo?</p>
+<p>Para redactar y reescribir textos, resumir y analizar documentos, trabajar con datos de hojas de cálculo, programar y estructurar ideas o decisiones.</p>
+<p class="faq-q">¿Claude se equivoca?</p>
+<p>Como toda IA, puede cometer errores o "alucinar" datos. Para información crítica conviene activar la búsqueda web o verificar la respuesta.</p>
+
+
+    <div class="cta-end">
+      <h3>Pasa de "qué es" a "lo uso a diario"</h3>
+      <p>El curso Claude 101 te enseña a convertir Claude en una herramienta de trabajo real, en español y con casos prácticos.</p>
+      <a href="/#precio" class="btn btn-lg" onclick="track('blog_cta_click', { post: 'que-es-claude-ia-anthropic' })">Ver Claude 101 →</a>
+    </div>
+  </article>
+</main>
+
+<footer class="foot">
+  <div class="foot-inner"><div class="foot-bottom"><a href="/" class="brand">Claude<em>·101</em></a><div><a href="/blog">Más artículos</a> · <a href="/terminos">Términos</a> · <a href="/contacto">Contacto</a></div></div></div>
+</footer>
+<script src="/track.js"></script>
+</body>
+</html>
