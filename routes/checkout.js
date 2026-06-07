@@ -69,6 +69,7 @@ router.post('/', checkoutLimiter, async (req, res) => {
       // Recuperación de carrito abandonado: Stripe envía un email con enlace
       // para terminar el pago si la sesión caduca sin completarse.
       after_expiration: { recovery: { enabled: true, allow_promotion_codes: false } },
+      expires_at: Math.floor(Date.now() / 1000) + 60 * 60, // la sesión caduca en 1h -> recovery más rápido
       customer_email: email,
       line_items: [{
         price_data: {
