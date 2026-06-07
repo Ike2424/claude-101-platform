@@ -423,7 +423,7 @@
   <div class="container">
     <div class="hero-grid">
       <div class="hero-text fade-up fade-up-1">
-        <span class="hero-pill">8 módulos · acceso vitalicio · español</span>
+        <span class="hero-pill">⏰ Última semana a este precio (sube a €69) · 8 módulos · acceso vitalicio</span>
         <h1>De usuario casual a experto en <em>Claude</em> — en 5 horas</h1>
         <p class="lead">El único curso donde aprendes Claude de verdad: desde cero hasta experto. Fundamentos, prompting avanzado, técnicas que usan profesionales reales, 12+ casos prácticos copiables. Sáltate las horas de prueba y error.</p>
         <div class="cta-row">
@@ -748,7 +748,7 @@
           <label for="emailInput" class="label" style="text-align:left;">Tu email</label>
           <input type="email" id="emailInput" name="email" class="input" placeholder="tu@email.com" required autocomplete="email" inputmode="email">
           <p style="font-size:12px;color:var(--muted);margin:4px 0 0;text-align:left;">Te enviaremos aquí tu acceso al curso. Sin spam.</p>
-          <button type="submit" class="btn btn-primary btn-lg" id="ctaBtn" style="width:100%;">Comprar acceso →</button>
+          <button type="submit" class="btn btn-primary btn-lg" id="ctaBtn" style="width:100%;">Sí, dame acceso ahora →</button>
           <p style="font-size:12px;color:var(--muted);margin:10px 0 0;text-align:center;">Acceso inmediato por email · pago único, sin suscripción</p>
           <div style="text-align:center;margin-top:10px;">
             <a href="#" id="couponToggle" style="font-size:12px;color:var(--muted);text-decoration:underline;cursor:pointer;" onclick="event.preventDefault();var c=document.getElementById('couponInput');var v=c.style.display==='none';c.style.display=v?'block':'none';this.style.display='none';if(v)c.focus();">¿Tienes un cupón?</a>
@@ -756,7 +756,10 @@
           <input type="text" name="coupon" id="couponInput" class="input" placeholder="Código de cupón" style="text-transform:uppercase;display:none;margin-top:8px;" oninput="validateCoupon()" aria-label="Código de cupón">
           <div class="coupon-line" id="couponLine" role="status" aria-live="polite"></div>
         </form>
-        <p class="pay-trust" style="font-size:12px;color:var(--muted);margin-top:14px;line-height:1.8;">🔒 Pago seguro vía <strong>Stripe</strong> · Tarjeta, Apple/Google Pay, Link</p>
+        <div style="margin-top:20px; padding: 16px; background: var(--bg); border: 1px solid var(--line); border-radius: 8px; text-align: center;">
+          <p style="font-size:12px;color:var(--ink-2);margin:0 0 10px;">✅ 100% seguro (Stripe) · ✅ Acceso inmediato · ✅ 500+ estudiantes</p>
+          <p class="pay-trust" style="font-size:12px;color:var(--muted);margin-top:10px;line-height:1.8;">🔒 Pago seguro vía <strong>Stripe</strong> · Tarjeta, Apple/Google Pay, Link</p>
+        </div>
       </div>
     </div>
   </div>
@@ -778,6 +781,8 @@
       <details class="faq-item"><summary>¿Cuánto tiempo me llevará completarlo?</summary><p>Cada video dura ~3 minutos. Las lecciones leídas son de 4-7 minutos cada una. En total, ~5 horas. A ritmo cómodo lo completas en 1-2 semanas. Pero al ser acceso vitalicio, puedes volver cuantas veces quieras.</p></details>
       <details class="faq-item"><summary>¿Hay actualizaciones cuando Claude lanza cosas nuevas?</summary><p>Sí. Cuando Anthropic lanza funciones relevantes — modelos nuevos, capacidades, conectores — actualizamos los módulos correspondientes. Acceso gratuito a las actualizaciones, sin coste extra.</p></details>
       <details class="faq-item"><summary>¿Hay devoluciones o garantía?</summary><p>No. Al ser acceso digital inmediato, no ofrecemos devoluciones. Pero incluye acceso de por vida — una sola compra, todo tuyo para siempre.</p></details>
+      <details class="faq-item"><summary>¿Cuándo empiezo a ver resultados?</summary><p>Inmediatamente. El módulo 1 (30 min) te enseña los fundamentos. El módulo 2 (1h) te da técnicas de prompting que puedes aplicar hoy en Claude y obtener 10x mejor resultados. Muchos usuarios reportan cambios en su workflow después de las primeras 2 horas.</p></details>
+      <details class="faq-item"><summary>¿Va a subir el precio después?</summary><p>Sí. El precio actual es €49 (lanzamiento). Subirá a €69 la próxima semana. Si compras ahora, tu acceso será de por vida al precio que pagaste — nunca se te cobrará más.</p></details>
 
     </div>
   </div>
@@ -786,9 +791,9 @@
 <!-- ===================== FINAL CTA ===================== -->
 <section class="section dark final-cta">
   <div class="container" style="text-align: center;">
-    <h2 class="h-display">Empieza a usar <em>Claude</em> como un profesional</h2>
-    <p>Mañana mismo notarás la diferencia. Pago único, acceso vitalicio.</p>
-    <a href="#precio" class="btn btn-primary btn-lg" onclick="track('cta_final_click')">Comprar acceso por 49 €</a>
+    <h2 class="h-display">Acceso en 1 minuto. <em>Aprende hoy</em></h2>
+    <p>El precio sube a €69 en una semana. Hoy todavía puedes entrar por €49.</p>
+    <a href="#precio" class="btn btn-primary btn-lg" onclick="track('cta_final_click')">Sí, dame acceso ahora →</a>
   </div>
 </section>
 
@@ -839,6 +844,45 @@
   </div>
 </footer>
 
+<script>
+// Exit-intent popup con cupón
+document.addEventListener('mouseout', (e) => {
+  if (e.clientY < 10 && !sessionStorage.getItem('exitPopupShown')) {
+    sessionStorage.setItem('exitPopupShown', 'true');
+    const modal = document.createElement('div');
+    modal.style.cssText = `
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6); display: flex; align-items: center;
+      justify-content: center; z-index: 9999;
+    `;
+    modal.innerHTML = `
+      <div style="background: white; border-radius: 12px; padding: 40px;
+                  max-width: 500px; text-align: center; position: relative;">
+        <button style="position: absolute; top: 12px; right: 12px;
+                       background: none; border: none; font-size: 24px;
+                       cursor: pointer;" onclick="this.closest('div').parentElement.remove()">×</button>
+        <h2 style="margin: 0 0 16px; font-size: 24px; color: #1a1a1a;">
+          ¿Te vas sin aprovechar el descuento?
+        </h2>
+        <p style="margin: 0 0 12px; font-size: 16px; color: #555;">
+          Lleva -15% de descuento en tu compra.
+        </p>
+        <p style="margin: 0 0 24px; font-size: 14px; color: #999;">
+          Usa el cupón: <strong style="font-size: 16px; color: #ff6b35;">TODAVIA15</strong>
+        </p>
+        <a href="#precio" style="display: inline-block; background: #ff6b35;
+                                 color: white; padding: 12px 32px;
+                                 border-radius: 100px; text-decoration: none;
+                                 font-weight: 600;"
+           onclick="this.closest('div').parentElement.remove()">
+          Sí, quiero el descuento →
+        </a>
+      </div>
+    `;
+    document.body.appendChild(modal);
+  }
+});
+</script>
 <script src="/track.js"></script>
 <script>
 // Config pública
