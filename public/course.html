@@ -3103,14 +3103,8 @@ function render() {
 // ============================================
 // INIT
 // ============================================
-document.getElementById('videoModal').addEventListener('click', (e) => {
-  if (e.target.id === 'videoModal') closeModal();
-});
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') closeModal();
-  if (e.key === 'Enter' && document.getElementById('videoModal').classList.contains('open')) {
-    saveVideo();
-  }
 });
 
 // Hidratar progreso desde el servidor (si el usuario cambia de dispositivo, no pierde su progreso)
