@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<!-- Google Analytics 4 -->
+<script src="/ga.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Claude 101 · Todas las Lecciones · Slides</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Geist:wght@300..700&family=Geist+Mono:wght@400..600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F4EFE3; --bg-2:#EFE9DA; --card:#FBF8F0;
+  --ink:#1C1A16; --ink-2:#3A352D; --muted:#756B5B; --muted-2:#A39782;
+  --line:#E1D8C2; --line-2:#CFC4AA;
+  --accent:#C8542B; --accent-2:#8B3A1E; --olive:#4F5D38; --gold:#B08436;
+  --display:'Fraunces',Georgia,serif;
+  --body:'Geist',system-ui,sans-serif;
+  --mono:'Geist Mono',ui-monospace,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;min-height:100vh;min-height:100dvh;margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:var(--body);overflow:hidden;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent;}
+body{display:flex;flex-direction:column;background-image:radial-gradient(circle at 12% 8%,rgba(200,84,43,.05) 0%,transparent 40%),radial-gradient(circle at 88% 92%,rgba(79,93,56,.04) 0%,transparent 40%);}
+button{font-family:inherit;touch-action:manipulation;}
+
+/* HEADER */
+.header{flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:max(12px,env(safe-area-inset-top)) max(20px,env(safe-area-inset-right)) 12px max(20px,env(safe-area-inset-left));border-bottom:1px solid var(--line);background:rgba(251,248,240,.7);backdrop-filter:blur(8px);z-index:10;gap:10px;}
+.header-left{display:flex;align-items:center;gap:14px;min-width:0;}
+.exit-btn{display:inline-flex;align-items:center;gap:6px;background:transparent;border:1px solid var(--line-2);color:var(--ink-2);font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:7px 12px;border-radius:100px;cursor:pointer;transition:all .2s;flex-shrink:0;min-height:34px;}
+.exit-btn:hover{border-color:var(--accent);color:var(--accent);}
+.exit-btn-arrow{font-size:14px;line-height:1;}
+.brand{font-family:var(--display);font-style:italic;font-size:15px;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.brand em{font-style:normal;color:var(--accent);}
+.brand-tag{margin-left:8px;font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-style:normal;}
+.slide-counter{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.08em;flex-shrink:0;}
+.slide-counter strong{color:var(--ink);font-weight:600;}
+
+/* STAGE */
+.stage{flex:1;min-height:0;position:relative;overflow:hidden;}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 32px;opacity:0;pointer-events:none;transform:translateY(16px);transition:opacity .5s cubic-bezier(.2,.8,.2,1),transform .5s cubic-bezier(.2,.8,.2,1);overflow-y:auto;}
+.slide.active{opacity:1;pointer-events:auto;transform:translateY(0);}
+.slide-inner{width:100%;max-width:780px;display:flex;flex-direction:column;align-items:center;gap:16px;}
+
+/* TYPOGRAPHY */
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:4px;}
+h1.title{font-family:var(--display);font-style:italic;font-weight:400;font-size:clamp(32px,5vw,56px);letter-spacing:-0.025em;color:var(--ink);line-height:1.1;text-align:center;max-width:18ch;}
+h1.title em{font-style:normal;color:var(--accent);}
+h2.title{font-family:var(--display);font-weight:400;font-size:clamp(26px,3.5vw,42px);letter-spacing:-0.015em;color:var(--ink);text-align:center;max-width:22ch;}
+h2.title em{font-style:italic;color:var(--accent);}
+.subtitle{font-size:16px;color:var(--muted);text-align:center;max-width:48ch;line-height:1.5;}
+.prompt-text{font-size:17px;color:var(--ink-2);text-align:center;max-width:50ch;line-height:1.5;margin-bottom:8px;}
+.prompt-text strong{color:var(--ink);}
+
+/* CHIPS / BUTTONS */
+.chips{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:12px;}
+.chip{background:var(--card);border:1px solid var(--line);border-radius:100px;padding:10px 18px;font-family:var(--body);font-size:14px;color:var(--ink-2);cursor:pointer;transition:all .2s;user-select:none;}
+.chip:hover{border-color:var(--ink-2);transform:translateY(-2px);}
+.chip.selected{background:var(--ink);color:var(--bg);border-color:var(--ink);}
+.chip.correct{background:rgba(79,93,56,.12);border-color:var(--olive);color:var(--olive);font-weight:600;}
+.chip.wrong{background:rgba(200,84,43,.08);border-color:var(--accent);color:var(--accent-2);}
+.chip.disabled{pointer-events:none;opacity:.55;}
+
+/* MULTIPLE CHOICE STACK */
+.choices{display:flex;flex-direction:column;gap:10px;width:100%;max-width:540px;margin-top:8px;}
+.choice{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 18px;font-size:15px;color:var(--ink-2);cursor:pointer;text-align:left;transition:all .2s;display:flex;align-items:center;gap:12px;}
+.choice:hover{border-color:var(--ink-2);}
+.choice-letter{width:26px;height:26px;border-radius:50%;background:var(--bg-2);color:var(--muted);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:11px;font-weight:600;flex-shrink:0;}
+.choice.correct{background:rgba(79,93,56,.10);border-color:var(--olive);color:var(--olive);}
+.choice.correct .choice-letter{background:var(--olive);color:var(--bg);}
+.choice.wrong{background:rgba(200,84,43,.06);border-color:var(--accent);color:var(--accent-2);}
+.choice.wrong .choice-letter{background:var(--accent);color:var(--bg);}
+.choice.disabled{pointer-events:none;opacity:.55;}
+
+/* FEEDBACK */
+.feedback{margin-top:14px;padding:12px 18px;background:var(--card);border:1px solid var(--line);border-left:4px solid var(--olive);border-radius:10px;font-size:14px;color:var(--ink-2);max-width:540px;opacity:0;transform:translateY(8px);transition:all .3s;display:none;}
+.feedback.show{opacity:1;transform:translateY(0);display:block;}
+.feedback.wrong{border-left-color:var(--accent);}
+.feedback strong{color:var(--ink);}
+
+/* FOOTER NAV */
+.footer{flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:12px max(20px,env(safe-area-inset-right)) max(12px,env(safe-area-inset-bottom)) max(20px,env(safe-area-inset-left));border-top:1px solid var(--line);background:rgba(251,248,240,.7);gap:12px;}
+.nav-btn{display:inline-flex;align-items:center;gap:6px;background:var(--card);border:1px solid var(--line-2);color:var(--ink-2);font-family:var(--body);font-size:12px;padding:8px 14px;border-radius:100px;cursor:pointer;transition:all .2s;}
+.nav-btn:hover{border-color:var(--ink-2);color:var(--ink);}
+.nav-btn.primary{background:var(--ink);color:var(--bg);border-color:var(--ink);}
+.nav-btn.primary:hover{background:var(--accent);border-color:var(--accent);}
+.nav-btn.disabled{opacity:.5;pointer-events:none;}
+.progress-dots{display:flex;gap:6px;align-items:center;}
+.progress-dot{width:6px;height:6px;border-radius:50%;background:var(--line);transition:all .2s;}
+.progress-dot.active{background:var(--accent);width:20px;border-radius:3px;}
+
+@media(max-width:900px){
+  .slide-inner{gap:8px;}
+  .subtitle{font-size:13px;line-height:1.4;}
+  .prompt-text{font-size:13px;}
+}
+@media(hover:none){
+  .chip:hover,.choice:hover,.tf-btn:hover,.model-card:hover,.nav-btn:hover,.response-card:hover,.match-item:hover,.exit-btn:hover,.context-btn:hover{
+    transform:none;
+    background:var(--card);
+    border-color:var(--line);
+    color:var(--ink-2);
+  }
+  .nav-btn.primary:hover{background:var(--ink);border-color:var(--ink);color:var(--bg);}
+}
+</style>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/favicon.svg">
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <button class="exit-btn" id="exitBtn" type="button" aria-label="Volver a los módulos del curso">
+      <span class="exit-btn-arrow">←</span><span class="exit-btn-label">Salir</span>
+    </button>
+    <div class="brand">Claude<em>·101</em> <span class="brand-tag">Todas las Lecciones</span></div>
+  </div>
+  <div class="slide-counter"><strong id="slideNum">1</strong> <span style="opacity:.5;">/</span> <span id="slideTotal">38</span></div>
+</div>
+
+<div class="stage" id="stage">
+
+  <!-- MÓDULO 1 - L1-1: ¿Qué es Claude? -->
+  <div class="slide active" data-slide="1">
+    <div class="slide-inner">
+      <div class="eyebrow">Módulo 1 · Lección 1</div>
+      <h1 class="title">¿Qué es <em>Claude</em>?</h1>
+      <p class="subtitle">Claude es un asistente de IA creado por Anthropic, fundada en 2021 por quienes salieron de OpenAI. Su filosofía: útil, honesto, inofensivo.</p>
+      <div class="chips">
+        <button class="chip">De dónde viene</button>
+        <button class="chip">Qué puede hacer</button>
+        <button class="chip">Cómo se entrena</button>
+        <button class="chip">Qué NO es</button>
+      </div>
+      <p style="font-family:var(--mono);font-size:11px;color:var(--muted);margin-top:14px;letter-spacing:.08em;text-transform:uppercase;">Pulsa <strong style="color:var(--ink);">Siguiente</strong> para continuar</p>
+    </div>
+  </div>
+
+  <!-- MÓDULO 1 - L1-2: La familia de modelos -->
+  <div class="slide" data-slide="2">
+    <div class="slide-inner">
+      <div class="eyebrow">Módulo 1 · Lección 2</div>
+      <h2 class="title">La familia: <em>Haiku, Sonnet, Opus</em></h2>
+      <p class="prompt-text">Tres perfiles distintos, misma constitución y valores.</p>
+      <div class="choices">
+        <button class="choice"><span class="choice-letter">A</span><span><strong>Haiku</strong> — Rápido y barato. Para volumen y velocidad.</span></button>
+        <button class="choice"><span class="choice-letter">B</span><span><strong>Sonnet</strong> — Equilibrio. El que más vas a usar en el día a día.</span></button>
+        <button class="choice"><span class="choice-letter">C</span><span><strong>Opus</strong> — El más capaz. Para problemas complejos y razonamiento profundo.</span></button>
+      </div>
+      <div class="feedback show"><strong>Regla de oro:</strong> Empieza siempre por Sonnet. Sube a Opus si lo necesitas, baja a Haiku si quieres velocidad.</div>
+    </div>
+  </div>
+
+  <!-- MÓDULO 1 - L1-3: Cómo razona Claude -->
+  <div class="slide" data-slide="3">
+    <div class="slide-inner">
+      <div class="eyebrow">Módulo 1 · Lección 3</div>
+      <h2 class="title">Cómo <em>razona</em> Claude</h2>
+      <p class="prompt-text">Claude no consulta una base de datos. Predice el texto más probable basado en patrones de su entrenamiento.</p>
+      <div class="choices">
+        <button class="choice"><span class="choice-letter">A</span><span>Recupera información de una BD interna</span></button>
+        <button class="choice"><span class="choice-letter">B</span><span>Genera la respuesta más probable según patrones</span></button>
+        <button class="choice"><span class="choice-letter">C</span><span>Busca en internet en tiempo real</span></button>
+      </div>
+      <div class="feedback show"><strong>Correcto es B.</strong> Eso explica por qué alucina: puede sonar muy seguro incluso cuando se equivoca. Y por qué el contexto es crítico: cuanto mejor contexto, mejor su predicción.</div>
+    </div>
+  </div>
+
+  <!-- MÓDULO 1 - L1-4: Diferencias con otros asistentes -->
+  <div class="slide" data-slide="4">
+    <div class="slide-inner">
+      <div class="eyebrow">Módulo 1 · Lección 4</div>
+      <h2 class="title">Claude vs otros <em>asistentes</em></h2>
+      <p class="prompt-text">¿En qué destaca Claude frente a ChatGPT, Gemini y otros?</p>
+      <div class="choices">
+        <button class="choice"><span class="choice-letter">A</span><span>Escritura matizada, razonamiento profundo, mejor con código y contextos largos</span></button>
+        <button class="choice"><span class="choice-letter">B</span><span>Es objetivamente mejor en todo</span></button>
+        <button class="choice"><span class="choice-letter">C</span><span>No tiene diferencias significativas</span></button>
+      </div>
+      <div class="feedback show"><strong>Es la A.</strong> Claude brilla por su carácter: matizado, honesto sobre sus límites, y refractario al bloqueo ciego. Pero cada herramienta tiene su nicho.</div>
+    </div>
+  </div>
+
+  <!-- MÓDULO 2 - L2-1: Cómo acceder a Claude -->
+  <div class="slide" data-slide="5">
+    <div class="slide-inner">
+      <div class="eyebrow">Módulo 2 · Lección 1</div>
+      <h2 class="title">Cómo acceder a <em>Claude</em></h2>
+      <p class="prompt-text">Las cuatro puertas de entrada.</p>
+      <div class="choices">
+        <button class="choice"><span class="choice-letter">A</span><span><strong>Claude.ai</strong> — Web pública. El punto de entrada habitual.</span></button>
+        <button class="choice"><span class="choice-letter">B</span><span><strong>App móvil</strong> — iOS y Android, misma experiencia optimizada.</span></button>
+        <button class="choice"><span class="choice-letter">C</span><span><strong>App de escritorio</strong> — Mac y Windows. Para uso intensivo.</span></button>
+        <button class="choice"><span class="choice-letter">D</span><span><strong>API y Claude Code</strong> — Para desarrolladores que lo integren.</span></button>
+      </div>
+      <div class="feedback show"><strong>Todas son correctas.</strong> Elige según tu caso de uso: casual (web/móvil), intensivo (escritorio), o técnico (API/Code).</div>
+    </div>
+  </div>
+
+  <!-- MÓDULO 2 - L2-2: Anatomía de la interfaz -->
+  <div class="slide" data-slide="6">
+    <div class="slide-inner">
+      <div class="eyebrow">Módulo 2 · Lección 2</div>
+      <h2 class="title">Anatomía de la <em>interfaz</em></h2>
+      <p class="prompt-text">Los elementos clave de Claude.ai</p>
+      <div class="choices">
+        <button class="choice"><span class="choice-letter">A</span><span><strong>Caja de mensaje</strong> — Donde escribes y adjuntas archivos</span></button>
+        <button class="choice"><span class="choice-letter">B</span><span><strong>Selector de modelo</strong> — Elige Sonnet, Opus o Haiku</span></button>
+        <button class="choice"><span class="choice-letter">C</span><span><strong>Historial</strong> — Conversaciones anteriores organizadas</span></button>
+        <button class="choice"><span class="choice-letter">D</span><span><strong>Proyectos</strong> — Espacios para agrupar conversaciones con contexto</span></button>
+      </div>
+      <div class="feedback show"><strong>Todas son elementos clave.</strong> Aprender a navegar estos espacios acelera tu productividad.</div>
+    </div>
+  </div>
+
+  <!-- MÓDULO 2 - L2-3: Conversaciones, proyectos y estilos -->
+  <div class="slide" data-slide="7">
+    <div class="slide-inner">
+      <div class="eyebrow">Módulo 2 · Lección 3</div>
+      <h2 class="title">Conversaciones, <em>Proyectos</em> y Estilos</h2>
+      <p class="prompt-text">Tres formas de organizar tu trabajo.</p>
+      <div class="choices">
+        <button class="choice"><span class="choice-letter">A</span><span><strong>Conversación</strong> — Punto a punto. Conversación aislada.</span></button>
+        <button class="choice"><span class="choice-letter">B</span><span><strong>Proyecto</strong> — Contexto persistente. Archivos + conversaciones + memoria.</span></button>
+        <button class="choice"><span class="choice-letter">C</span><span><strong>Estilos</strong> — Tu "voz" personalizada. Cómo quieres que Claude te responda.</span></button>
+      </div>
+      <div class="feedback show"><strong>Úsalos así:</strong> Conversaciones para lo puntual, Proyectos para trabajo en curso, Estilos para personalizar la voz de Claude.</div>
+    </div>
+  </div>
+
+  <!-- MÓDULO 3 - L3-1: La ciencia de escribir buenos prompts -->
+  <div class="slide" data-slide="8">
+    <div class="slide-inner">
+      <div class="eyebrow">Módulo 3 · Lección 1</div>
+      <h2 class="title">La ciencia de los <em>buenos prompts</em></h2>
+      <p class="prompt-text">No es suerte. Son patrones que funcionan.</p>
+      <div class="choices">
+        <button class="choice"><span class="choice-letter">A</span><span>Contexto claro + Tarea específica + Formato esperado</span></button>
+        <button class="choice"><span class="choice-letter">B</span><span>Cuanto más largo el prompt, mejor la respuesta</span></button>
+        <button class="choice"><span class="choice-letter">C</span><span>Los prompts cortos son siempre más efectivos</span></button>
+      </div>
+      <div class="feedback show"><strong>Es la A.</strong> La fórmula ganadora: contexto (quién soy, qué necesito) + tarea (qué haces exactamente) + formato (cómo quiero la respuesta).</div>
+    </div>
+  </div>
+
+  <!-- MÓDULO 3 - L3-2: Patrones de prompts que funcionan -->
+  <div class="slide" data-slide="9">
+    <div class="slide-inner">
+      <div class="eyebrow">Módulo 3 · Lección 2</div>
+      <h2 class="title">Patrones que <em>funcionan</em></h2>
+      <p class="prompt-text">Tres arquitecturas de prompts reutilizables.</p>
+      <div class="choices">
+        <button class="choice"><span class="choice-letter">A</span><span><strong>Q&A pura</strong> — Pregunta directa. Para lo rápido.</span></button>
+        <button class="choice"><span class="choice-letter">B</span><span><strong>Instrucciones + Ejemplos</strong> — Dices la regla, das ejemplos. Para precisión.</span></button>
+        <button class="choice"><span class="choice-letter">C</span><span><strong>Role-play</strong> — "Eres experto en X". Para exploración.</span></button>
+      </div>
+      <div class="feedback show"><strong>Úsalos según el caso:</strong> Q&A para velocidad, Instrucciones+Ejemplos para consistencia, Role-play para creatividad.</div>
+    </div>
+  </div>
+
+  <!-- MÓDULO 3 - L3-3: Markdown como input estructurado -->
+  <div class="slide" data-slide="10">
+    <div class="slide-inner">
+      <div class="eyebrow">Módulo 3 · Lección 3</div>
+      <h2 class="title">Markdown como <em>input</em></h2>
+      <p class="prompt-text">Estructura tus prompts para que Claude entienda mejor.</p>
+      <div class="choices">
+        <button class="choice"><span class="choice-letter">A</span><span>Headers = secciones. Claridad sobre qué es qué.</span></button>
+        <button class="choice"><span class="choice-letter">B</span><span>XML tags = bloques. Separación explícita de contextos.</span></button>
+        <button class="choice"><span class="choice-letter">C</span><span>Ambas combinadas = poder máximo. Markdown + XML = clarity y scope.</span></button>
+      </div>
+      <div class="feedback show"><strong>Es la C.</strong> La fórmula ganadora para prompts complejos: XML para separar bloques, Markdown dentro para estructurar cada bloque.</div>
+    </div>
+  </div>
+
+  <!-- MÓDULO 4 - L4-1: Qué es un workflow -->
+  <div class="slide" data-slide="11">
+    <div class="slide-inner">
+      <div class="eyebrow">Módulo 4 · Lección 1</div>
+      <h2 class="title">Qué es un <em>workflow</em></h2>
+      <p class="prompt-text">Un patrón repetible: entrada → Claude → salida útil.</p>
+      <div class="choices">
+        <button class="choice"><span class="choice-letter">A</span><span>Una conversación puntual con Claude</span></button>
+        <button class="choice"><span class="choice-letter">B</span><span>Un proceso que se repite frecuentemente con el mismo patrón</span></button>
+        <button class="choice"><span class="choice-letter">C</span><span>Una forma de usar Claude en una aplicación</span></button>
+      </div>
+      <div class="feedback show"><strong>Es la B.</strong> Workflows son procesos que repites: "cada lunes genero reporte", "cada email nuevo lo clasifico", "cada documento lo recopilo". El patrón es igual, solo cambia el input.</div>
+    </div>
+  </div>
+
+  <!-- MÓDULO 4 - L4-2: Cómo detectar un buen workflow -->
+  <div class="slide" data-slide="12">
+    <div class="slide-inner">
+      <div class="eyebrow">Módulo 4 · Lección 2</div>
+      <h2 class="title">Detectar un buen <em>workflow</em></h2>
+      <p class="prompt-text">¿Cuándo vale la pena sistematizar?</p>
+      <div class="choices">
+        <button class="choice"><span class="choice-letter">A</span><span>Lo haces más de 3 veces al mes, siempre con la misma estructura</span></button>
+        <button class="choice"><span class="choice-letter">B</span><span>El resultado tiene que ser consistente (siempre el mismo tono/formato)</span></button>
+        <button class="choice"><span class="choice-letter">C</span><span>Te ahorraría fricción si fuera automático o semi-automático</span></button>
+        <button class="choice"><span class="choice-letter">D</span><span>Todas las anteriores</span></button>
+      </div>
+      <div class="feedback show"><strong>Es la D.</strong> Si cumple las tres, vale la pena convertirlo en workflow: ahorras tiempo, ganas consistencia, reduces fricción.</div>
+    </div>
+  </div>
+
+  <!-- MÓDULO 4 - L4-3: Implementar tu primer workflow -->
+  <div class="slide" data-slide="13">
+    <div class="slide-inner">
+      <div class="eyebrow">Módulo 4 · Lección 3</div>
+      <h2 class="title">Tu primer <em>workflow</em></h2>
+      <p class="prompt-text">Los pasos mínimos para sistematizar un proceso.</p>
+      <div class="choices">
+        <button class="choice"><span class="choice-letter">1</span><span>Identifica: ¿qué tareas repito?</span></button>
+        <button class="choice"><span class="choice-letter">2</span><span>Documenta: ¿cuál es el prompt exacto que uso cada vez?</span></button>
+        <button class="choice"><span class="choice-letter">3</span><span>Optimiza: ¿puedo mejorar el prompt para que sea más consistente?</span></button>
+        <button class="choice"><span class="choice-letter">4</span><span>Automatiza: ¿puedo ahorrar clicks creando un atajo o un script?</span></button>
+      </div>
+      <div class="feedback show"><strong>Así de simple.</strong> Estos 4 pasos convierten fricción en fluidez.</div>
+    </div>
+  </div>
+
+  <!-- MÓDULO 4 - L4-4: Cuándo NOT hacer un workflow -->
+  <div class="slide" data-slide="14">
+    <div class="slide-inner">
+      <div class="eyebrow">Módulo 4 · Lección 4</div>
+      <h2 class="title">Cuándo NO hacer un <em>workflow</em></h2>
+      <p class="prompt-text">Invertir en sistematizar no siempre compensa.</p>
+      <div class="choices">
+        <button class="choice"><span class="choice-letter">A</span><span>La tarea es puntual (solo la haces una vez)</span></button>
+        <button class="choice"><span class="choice-letter">B</span><span>El output varía mucho cada vez (no hay patrón)</span></button>
+        <button class="choice"><span class="choice-letter">C</span><span>El overhead de sistematizar es mayor que el ahorro</span></button>
+        <button class="choice"><span class="choice-letter">D</span><span>Todas las anteriores</span></button>
+      </div>
+      <div class="feedback show"><strong>Es la D.</strong> Workflows son inversión. Solo merecen la pena si el ROI es claro.</div>
+    </div>
+  </div>
+
+  <!-- MÓDULO 5 - L5-1: Por qué buscar información -->
+  <div class="slide" data-slide="15">
+    <div class="slide-inner">
+      <div class="eyebrow">Módulo 5 · Lección 1</div>
+      <h2 class="title">Por qué buscar <em>información</em></h2>
+      <p class="prompt-text">Claude tiene fecha de corte. Tu información está viva.</p>
+      <div class="choices">
+        <button class="choice"><span class="choice-letter">A</span><span>Claude conoce de todo hasta mayo de 2025, nada más</span></button>
+        <button class="choice"><span class="choice-letter">B</span><span>Si necesitas actualidad, tienes que darle contexto</span></button>
+        <button class="choice"><span class="choice-letter">C</span><span>Para temas en movimiento (noticias, precios, eventos), búsqueda es vital</span></button>
+      </div>
+      <div class="feedback show"><strong>Todas son correctas.</strong> La búsqueda en Claude te da acceso a información actual. Sin ella, solo tienes entrenamiento.</div>
+    </div>
+  </div>
+
+  <!-- MÓDULO 5 - L5-2: Técnicas de búsqueda -->
+  <div class="slide" data-slide="16">
+    <div class="slide-inner">
+      <div class="eyebrow">Módulo 5 · Lección 2</div>
+      <h2 class="title">Técnicas de <em>búsqueda</em></h2>
+      <p class="prompt-text">Cómo activar búsqueda en Claude.</p>
+      <div class="choices">
+        <button class="choice"><span class="choice-letter">A</span><span>En claude.ai: activa la opción "Search the web" antes de preguntar</span></button>
+        <button class="choice"><span class="choice-letter">B</span><span>Sé específico en lo que buscas. Palabras clave claras.</span></button>
+        <button class="choice"><span class="choice-letter">C</span><span>Puedes ver las fuentes que Claude encontró y consultó</span></button>
+      </div>
+      <div class="feedback show"><strong>Todas son correctas.</strong> Búsqueda es explícita: tú activas, Claude ejecuta, tienes trazabilidad de fuentes.</div>
+    </div>
+  </div>
+
+  <!-- MÓDULO 5 - L5-3: Interpretación de resultados -->
+  <div class="slide" data-slide="17">
+    <div class="slide-inner">
+      <div class="eyebrow">Módulo 5 · Lección 3</div>
+      <h2 class="title">Interpretar <em>resultados</em></h2>
+      <p class="prompt-text">¿Es fiable lo que Claude encontró?</p>
+      <div class="choices">
+        <button class="choice"><span class="choice-letter">A</span><span>Revisa siempre las fuentes que Claude citó</span></button>
+        <button class="choice"><span class="choice-letter">B</span><span>Si busca noticias recientes, puede haber falsos positivos</span></button>
+        <button class="choice"><span class="choice-letter">C</span><span>Para decisiones críticas, verifica directamente la fuente</span></button>
+      </div>
+      <div class="feedback show"><strong>Todas importan.</strong> Búsqueda mejora la información, pero sigue siendo responsabilidad tuya verificar.</div>
+    </div>
+  </div>
+
+  <!-- MÓDULO 6 - L6-1: Qué es un archivo y por qué importa -->
+  <div class="slide" data-slide="18">
+    <div class="slide-inner">
+      <div class="eyebrow">Módulo 6 · Lección 1</div>
+      <h2 class="title">Qué es un <em>archivo</em></h2>
+      <p class="prompt-text">Los archivos son contexto estructurado. Claude los entiende mejor que texto pegado.</p>
+      <div class="choices">
+        <button class="choice"><span class="choice-letter">A</span><span>Puedes subir PDFs, Excels, Docs, imágenes, código</span></button>
+        <button class="choice"><span class="choice-letter">B</span><span>Claude extrae información y la integra en la conversación</span></button>
+        <button class="choice"><span class="choice-letter">C</span><span>Mejor subir que pegar: menos ruido, mejor procesamiento</span></button>
+      </div>
+      <div class="feedback show"><strong>Todas correctas.</strong> Archivos = mejor contexto. Usa esta vía para documentos, tablas, código.</div>
+    </div>
+  </div>
+
+  <!-- MÓDULO 6 - L6-2: Trabajar con imágenes -->
+  <div class="slide" data-slide="19">
+    <div class="slide-inner">
+      <div class="eyebrow">Módulo 6 · Lección 2</div>
+      <h2 class="title">Trabajar con <em>imágenes</em></h2>
+      <p class="prompt-text">Claude entiende imágenes. Úsalas para contexto visual.</p>
+      <div class="choices">
+        <button class="choice"><span class="choice-letter">A</span><span>Sube captura de pantalla, diagrama, o fotografía</span></button>
+        <button class="choice"><span class="choice-letter">B</span><span>Claude describe lo que ve, extrae texto, analiza el contenido</span></button>
+        <button class="choice"><span class="choice-letter">C</span><span>Particularmente útil para UI/UX feedback y diagramas técnicos</span></button>
+      </div>
+      <div class="feedback show"><strong>Todas son correctas.</strong> Imágenes son poderosas. Una captura vale mil palabras.</div>
+    </div>
+  </div>
+
+  <!-- MÓDULO 6 - L6-3: Análisis de documentos complejos -->
+  <div class="slide" data-slide="20">
+    <div class="slide-inner">
+      <div class="eyebrow">Módulo 6 · Lección 3</div>
+      <h2 class="title">Documentos <em>complejos</em></h2>
+      <p class="prompt-text">PDFs, contratos, reportes largos — Claude los maneja.</p>
+      <div class="choices">
+        <button class="choice"><span class="choice-letter">A</span><span>Sube el documento, pregunta sobre secciones específicas</span></button>
+        <button class="choice"><span class="choice-letter">B</span><span">Claude puede buscar cláusulas, extraer datos, hacer resúmenes</span></button>
+        <button class="choice"><span class="choice-letter">C</span><span>Para documentos >100 páginas, sé específico en tu pregunta</span></button>
+      </div>
+      <div class="feedback show"><strong>Todas correctas.</strong> Los documentos complejos son el caso de uso estrella de Claude.</div>
+    </div>
+  </div>
+
+  <!-- MÓDULO 7 - L7-1: Por qué artifacts -->
+  <div class="slide" data-slide="21">
+    <div class="slide-inner">
+      <div class="eyebrow">Módulo 7 · Lección 1</div>
+      <h2 class="title">Por qué <em>artifacts</em></h2>
+      <p class="prompt-text">Cuando Claude genera código o contenido, los artifacts lo hacen visible y editable.</p>
+      <div class="choices">
+        <button class="choice"><span class="choice-letter">A</span><span>Artifact = ventana separada para código, HTML, Markdown</span></button>
+        <button class="choice"><span class="choice-letter">B</span><span>Es donde ves lo que Claude creó sin mezcla de chat</span></button>
+        <button class="choice"><span class="choice-letter">C</span><span>Puedes copiar, descargar, iterar sobre el artifact</span></button>
+      </div>
+      <div class="feedback show"><strong>Todas correctas.</strong> Artifacts separan generación de colaboración. Hace la vida más limpia.</div>
+    </div>
+  </div>
+
+  <!-- MÓDULO 7 - L7-2: Tipos de artifacts -->
+  <div class="slide" data-slide="22">
+    <div class="slide-inner">
+      <div class="eyebrow">Módulo 7 · Lección 2</div>
+      <h2 class="title">Tipos de <em>artifacts</em></h2>
+      <p class="prompt-text">Diferentes tipos de contenido, diferentes artifacts.</p>
+      <div class="choices">
+        <button class="choice"><span class="choice-letter">A</span><span><strong>Código</strong> — Ejecutable. Python, JavaScript, etc.</span></button>
+        <button class="choice"><span class="choice-letter">B</span><span><strong>HTML/React</strong> — Visualizable. Interfaces, demos.</span></button>
+        <button class="choice"><span class="choice-letter">C</span><span><strong>Markdown/Documento</strong> — Descargable. Reportes, guías.</span></button>
+      </div>
+      <div class="feedback show"><strong>Todos existen.</strong> Claude auto-detecta el tipo y abre la ventana correcta.</div>
+    </div>
+  </div>
+
+  <!-- MÓDULO 7 - L7-3: Iteración sobre artifacts -->
+  <div class="slide" data-slide="23">
+    <div class="slide-inner">
+      <div class="eyebrow">Módulo 7 · Lección 3</div>
+      <h2 class="title">Iterar sobre <em>artifacts</em></h2>
+      <p class="prompt-text">Los artifacts no son finales. Itera hasta que sea perfecto.</p>
+      <div class="choices">
+        <button class="choice"><span class="choice-letter">A</span><span>Pide cambios desde el chat: "cambia el color a azul"</span></button>
+        <button class="choice"><span class="choice-letter">B</span><span>Claude actualiza el artifact sin perder el historial</span></button>
+        <button class="choice"><span class="choice-letter">C</span><span>Puedes editar directamente el artifact si prefieres</span></button>
+      </div>
+      <div class="feedback show"><strong>Todas son correctas.</strong> Artifacts son vivos. Colabora hasta que esté perfecto.</div>
+    </div>
+  </div>
+
+  <!-- MÓDULO 7 - L7-4: Compartir artifacts -->
+  <div class="slide" data-slide="24">
+    <div class="slide-inner">
+      <div class="eyebrow">Módulo 7 · Lección 4</div>
+      <h2 class="title">Compartir <em>artifacts</em></h2>
+      <p class="prompt-text">¿Cómo entregar lo que creaste?</p>
+      <div class="choices">
+        <button class="choice"><span class="choice-letter">A</span><span>Copia el código directamente del artifact</span></button>
+        <button class="choice"><span class="choice-letter">B</span><span>Descarga como archivo (Markdown, HTML, etc.)</span></button>
+        <button class="choice"><span class="choice-letter">C</span><span>Comparte el link de la conversación completa</span></button>
+      </div>
+      <div class="feedback show"><strong>Depende del caso.</strong> Para código: copia. Para documentos: descarga. Para colaboración: link.</div>
+    </div>
+  </div>
+
+  <!-- MÓDULO 8 - L8-1: Por qué razonamiento profundo -->
+  <div class="slide" data-slide="25">
+    <div class="slide-inner">
+      <div class="eyebrow">Módulo 8 · Lección 1</div>
+      <h2 class="title">Razonamiento <em>profundo</em></h2>
+      <p class="prompt-text">Para problemas complejos, deja que Claude piense más.</p>
+      <div class="choices">
+        <button class="choice"><span class="choice-letter">A</span><span>Extended Thinking permite que Claude dedique más tiempo a razonar</span></button>
+        <button class="choice"><span class="choice-letter">B</span><span>Mejora notablemente en matemáticas, lógica y análisis</span></button>
+        <button class="choice"><span class="choice-letter">C</span><span>Es más lento y más caro, úsalo solo cuando lo necesites</span></button>
+      </div>
+      <div class="feedback show"><strong>Todas correctas.</strong> Razonamiento profundo = pedir que piense paso a paso, internamente.</div>
+    </div>
+  </div>
+
+  <!-- MÓDULO 8 - L8-2: Cuándo usar extended thinking -->
+  <div class="slide" data-slide="26">
+    <div class="slide-inner">
+      <div class="eyebrow">Módulo 8 · Lección 2</div>
+      <h2 class="title">Cuándo usar <em>Extended Thinking</em></h2>
+      <p class="prompt-text">No para todo. Solo cuando valga la pena.</p>
+      <div class="choices">
+        <button class="choice"><span class="choice-letter">✓</span><span>Problemas matemáticos complejos</span></button>
+        <button class="choice"><span class="choice-letter">✓</span><span>Debugging de código difícil</span></button>
+        <button class="choice"><span class="choice-letter">✓</span><span>Análisis de dilemas o decisiones estratégicas</span></button>
+        <button class="choice"><span class="choice-letter">✗</span><span>Preguntas simples o búsquedas de hechos</span></button>
+      </div>
+      <div class="feedback show"><strong>Equilibrio.</strong> Extended Thinking es una herramienta, no un botón para todas partes.</div>
+    </div>
+  </div>
+
+  <!-- MÓDULO 8 - L8-3: Trabajar con agentes -->
+  <div class="slide" data-slide="27">
+    <div class="slide-inner">
+      <div class="eyebrow">Módulo 8 · Lección 3</div>
+      <h2 class="title">Qué es un <em>agente</em></h2>
+      <p class="prompt-text">Un sistema que recibe un objetivo y entra en un bucle de planificación y ejecución.</p>
+      <div class="choices">
+        <button class="choice"><span class="choice-letter">A</span><span>Un prompt es pasivo. Un agente es activo.</span></button>
+        <button class="choice"><span class="choice-letter">B</span><span>El agente decide qué tools usar y en qué orden</span></button>
+        <button class="choice"><span class="choice-letter">C</span><span>Útil para automatización, no para Q&A puntual</span></button>
+      </div>
+      <div class="feedback show"><strong>Todas correctas.</strong> Los agentes son para workflows complejos. Los prompts para todo lo demás.</div>
+    </div>
+  </div>
+
+  <!-- MÓDULO 8 - L8-4: El futuro de la IA conversacional -->
+  <div class="slide" data-slide="28">
+    <div class="slide-inner">
+      <div class="eyebrow">Módulo 8 · Lección 4</div>
+      <h2 class="title">El futuro de Claude</h2>
+      <p class="prompt-text">Tendencias próximas que ya están aquí.</p>
+      <div class="choices">
+        <button class="choice"><span class="choice-letter">A</span><span>Modelos más especializados (medicina, derecho, código)</span></button>
+        <button class="choice"><span class="choice-letter">B</span><span>Mejor razonamiento automático sin extended thinking</span></button>
+        <button class="choice"><span class="choice-letter">C</span><span>Integración más profunda con aplicaciones de trabajo</span></button>
+        <button class="choice"><span class="choice-letter">D</span><span>Todas las anteriores</span></button>
+      </div>
+      <div class="feedback show"><strong>Es la D.</strong> El futuro no es un modelo, es un ecosistema de Claude integrado en tu trabajo.</div>
+    </div>
+  </div>
+
+  <!-- MÓDULO 9 - L9-1: Constitutional AI y carácter -->
+  <div class="slide" data-slide="29">
+    <div class="slide-inner">
+      <div class="eyebrow">Módulo 9 (Bonus) · Lección 1</div>
+      <h2 class="title">Constitutional <em>AI</em></h2>
+      <p class="prompt-text">Por qué Claude tiene el "carácter" que tiene.</p>
+      <div class="choices">
+        <button class="choice"><span class="choice-letter">A</span><span>Constitutional AI entrena al modelo contra principios escritos</span></button>
+        <button class="choice"><span class="choice-letter">B</span><span>El modelo se auto-evalúa durante el entrenamiento</span></button>
+        <button class="choice"><span class="choice-letter">C</span><span>Resultado: Claude es matizado, honesto, sin bloqueos ciegos</span></button>
+      </div>
+      <div class="feedback show"><strong>Todas correctas.</strong> Constitutional AI es el método, no un parámetro. Define quién es Claude.</div>
+    </div>
+  </div>
+
+  <!-- MÓDULO 9 - L9-2: Markdown como input estructurado -->
+  <div class="slide" data-slide="30">
+    <div class="slide-inner">
+      <div class="eyebrow">Módulo 9 (Bonus) · Lección 2</div>
+      <h2 class="title">Skills: capacidades <em>empaquetadas</em></h2>
+      <p class="prompt-text">Convertir un flujo repetido en una herramienta reutilizable.</p>
+      <div class="choices">
+        <button class="choice"><span class="choice-letter">A</span><span>Una Skill = carpeta con instrucciones + ejemplos + recursos</span></button>
+        <button class="choice"><span class="choice-letter">B</span><span>Claude las detecta automáticamente cuando aplica</span></button>
+        <button class="choice"><span class="choice-letter">C</span><span>Te ahorran explicar el contexto cada vez que repites</span></button>
+      </div>
+      <div class="feedback show"><strong>Todas correctas.</strong> Skills = flujos sistematizados. Crea una cuando la necesites más de 3 veces.</div>
+    </div>
+  </div>
+
+  <!-- MÓDULO 9 - L9-3: Cómo construir un agente -->
+  <div class="slide" data-slide="31">
+    <div class="slide-inner">
+      <div class="eyebrow">Módulo 9 (Bonus) · Lección 3</div>
+      <h2 class="title">Construir un <em>agente</em></h2>
+      <p class="prompt-text">De la idea a la acción automatizada.</p>
+      <div class="choices">
+        <button class="choice"><span class="choice-letter">A</span><span>1. Define el objetivo (no pregunta, meta que requiere pasos)</span></button>
+        <button class="choice"><span class="choice-letter">B</span><span>2. Define las tools (qué puede hacer el agente)</span></button>
+        <button class="choice"><span class="choice-letter">C</span><span>3. Construye el bucle (planifica → ejecuta → evalúa → repite)</span></button>
+      </div>
+      <div class="feedback show"><strong>Los tres son necesarios.</strong> Sin uno de ellos, no tienes agente.</div>
+    </div>
+  </div>
+
+  <!-- MÓDULO 9 - L9-4: Agentes en la práctica -->
+  <div class="slide" data-slide="32">
+    <div class="slide-inner">
+      <div class="eyebrow">Módulo 9 (Bonus) · Lección 4</div>
+      <h2 class="title">Agentes <em>en la práctica</em></h2>
+      <p class="prompt-text">Tres patrones que funcionan en el mundo real.</p>
+      <div class="choices">
+        <button class="choice"><span class="choice-letter">A</span><span><strong>Batch</strong>: procesa 100 items sin parar</span></button>
+        <button class="choice"><span class="choice-letter">B</span><span><strong>Colaborativo</strong>: te pregunta antes de actuar</span></button>
+        <button class="choice"><span class="choice-letter">C</span><span><strong>De fondo</strong>: monitoriza y actúa automáticamente</span></button>
+      </div>
+      <div class="feedback show"><strong>Elige según tu caso.</strong> Batch para volumen, colaborativo para criterio, fondo para vigilancia.</div>
+    </div>
+  </div>
+
+  <!-- MÓDULO 9 - L9-5: MCP - Model Context Protocol -->
+  <div class="slide" data-slide="33">
+    <div class="slide-inner">
+      <div class="eyebrow">Módulo 9 (Bonus) · Lección 5</div>
+      <h2 class="title">MCP: conectar <em>todo</em></h2>
+      <p class="prompt-text">El estándar que une Claude con tus herramientas.</p>
+      <div class="choices">
+        <button class="choice"><span class="choice-letter">A</span><span>MCP Server = lo que tu app expone a Claude</span></button>
+        <button class="choice"><span class="choice-letter">B</span><span>MCP Client = Claude usando esa app</span></button>
+        <button class="choice"><span class="choice-letter">C</span><span>Resultado: conecta Notion, Slack, GitHub, tu BD, sin reescribir</span></button>
+      </div>
+      <div class="feedback show"><strong>Todas correctas.</strong> MCP es el futuro de la integración. Un servidor, muchos clientes.</div>
+    </div>
+  </div>
+
+  <!-- MÓDULO 9 - L9-6: Tu primer agente -->
+  <div class="slide" data-slide="34">
+    <div class="slide-inner">
+      <div class="eyebrow">Módulo 9 (Bonus) · Lección 6</div>
+      <h2 class="title">Construye tu <em>primer agente</em></h2>
+      <p class="prompt-text">De 0 a agente funcional en 30 minutos.</p>
+      <div class="choices">
+        <button class="choice"><span class="choice-letter">1</span><span>Define qué problema automático necesitas resolver</span></button>
+        <button class="choice"><span class="choice-letter">2</span><span>Define las tools que el agente puede invocar</span></button>
+        <button class="choice"><span class="choice-letter">3</span><span>Escribe el prompt objetivo con criterios de término</span></button>
+        <button class="choice"><span class="choice-letter">4</span><span>Ejecuta el bucle y mira cómo trabaja</span></button>
+      </div>
+      <div class="feedback show"><strong>Es accesible.</strong> El código es simple. El concepto es poderoso. Inténtalo hoy.</div>
+    </div>
+  </div>
+
+  <!-- Slide final - Recap -->
+  <div class="slide" data-slide="35">
+    <div class="slide-inner">
+      <div class="eyebrow">Resumen</div>
+      <h1 class="title">Felicitaciones: completaste <em>Claude 101</em></h1>
+      <p class="subtitle">Ahora tienes el mapa. Los próximos pasos son tuyos: practica, itera, construye.</p>
+      <p class="prompt-text" style="margin-top:24px; font-size:15px;">Recuerda:</p>
+      <div style="text-align:center; color:var(--ink-2); line-height:1.8; font-size:14px;">
+        <p><strong>Sonnet es tu default.</strong> Haiku si necesitas velocidad, Opus si la tarea lo merece.</p>
+        <p><strong>El contexto es rey.</strong> Mejor contexto, mejores respuestas.</p>
+        <p><strong>Itera.</strong> Tus primeros prompts no serán perfectos. Mejóralos.</p>
+        <p><strong>Automatiza.</strong> Si lo repites más de 3 veces, vale la pena sistematizar.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <button class="nav-btn" id="prevBtn">← Anterior</button>
+  <div class="progress-dots" id="progressDots"></div>
+  <button class="nav-btn primary" id="nextBtn">Siguiente →</button>
+</div>
+
+<script>
+let currentSlide = 1;
+const totalSlides = 35;
+
+const exitBtn = document.getElementById('exitBtn');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+const slideNum = document.getElementById('slideNum');
+const slides = document.querySelectorAll('.slide');
+const stage = document.getElementById('stage');
+const progressDots = document.getElementById('progressDots');
+
+// Crear puntos de progreso
+for (let i = 1; i <= totalSlides; i++) {
+  const dot = document.createElement('div');
+  dot.className = 'progress-dot' + (i === 1 ? ' active' : '');
+  dot.dataset.slide = i;
+  dot.addEventListener('click', () => goToSlide(i));
+  progressDots.appendChild(dot);
+}
+
+function updateSlide() {
+  slides.forEach(s => s.classList.remove('active'));
+  slides[currentSlide - 1].classList.add('active');
+  slideNum.textContent = currentSlide;
+
+  prevBtn.classList.toggle('disabled', currentSlide === 1);
+  nextBtn.classList.toggle('disabled', currentSlide === totalSlides);
+
+  document.querySelectorAll('.progress-dot').forEach((dot, idx) => {
+    dot.classList.toggle('active', idx + 1 === currentSlide);
+  });
+}
+
+function goToSlide(n) {
+  currentSlide = Math.max(1, Math.min(n, totalSlides));
+  updateSlide();
+}
+
+prevBtn.addEventListener('click', () => goToSlide(currentSlide - 1));
+nextBtn.addEventListener('click', () => goToSlide(currentSlide + 1));
+
+exitBtn.addEventListener('click', () => {
+  window.location.href = '/app';
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowLeft') goToSlide(currentSlide - 1);
+  if (e.key === 'ArrowRight') goToSlide(currentSlide + 1);
+});
+
+updateSlide();
+</script>
+</body>
+</html>
