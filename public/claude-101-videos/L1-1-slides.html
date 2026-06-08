@@ -10,193 +10,83 @@
 <style>
 :root{--bg:#F4EFE3;--bg-2:#EFE9DA;--card:#FBF8F0;--ink:#1C1A16;--ink-2:#3A352D;--muted:#756B5B;--muted-2:#A39782;--line:#E1D8C2;--line-2:#CFC4AA;--accent:#C8542B;--accent-2:#8B3A1E;--olive:#4F5D38;--gold:#B08436;--display:'Fraunces',Georgia,serif;--body:'Geist',system-ui,sans-serif;--mono:'Geist Mono',ui-monospace,monospace;}
 *{box-sizing:border-box;margin:0;padding:0;}
-html,body{height:100%;min-height:100vh;min-height:100dvh;margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:var(--body);overflow:hidden;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;min-height:100vh;background:var(--bg);color:var(--ink);font-family:var(--body);overflow:hidden;-webkit-font-smoothing:antialiased;}
 body{display:flex;flex-direction:column;background-image:radial-gradient(circle at 12% 8%,rgba(200,84,43,.05) 0%,transparent 40%),radial-gradient(circle at 88% 92%,rgba(79,93,56,.04) 0%,transparent 40%);}
-button{font-family:inherit;touch-action:manipulation;}
-.header{flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:12px 20px;border-bottom:1px solid var(--line);background:rgba(251,248,240,.7);backdrop-filter:blur(8px);z-index:10;gap:10px;}
-.header-left{display:flex;align-items:center;gap:14px;min-width:0;}
-.exit-btn{display:inline-flex;align-items:center;gap:6px;background:transparent;border:1px solid var(--line-2);color:var(--ink-2);font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:7px 12px;border-radius:100px;cursor:pointer;transition:all .2s;flex-shrink:0;min-height:34px;}
+.header{flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:12px 20px;border-bottom:1px solid var(--line);background:rgba(251,248,240,.7);backdrop-filter:blur(8px);z-index:10;}
+.exit-btn{background:transparent;border:1px solid var(--line-2);color:var(--ink-2);font-family:var(--mono);font-size:10px;padding:7px 12px;border-radius:100px;cursor:pointer;transition:all .2s;}
 .exit-btn:hover{border-color:var(--accent);color:var(--accent);}
 .brand{font-family:var(--display);font-style:italic;font-size:15px;color:var(--ink);}
 .brand em{font-style:normal;color:var(--accent);}
-.brand-tag{margin-left:8px;font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);}
-.slide-counter{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.08em;flex-shrink:0;}
-.slide-counter strong{color:var(--ink);font-weight:600;}
-.stage{flex:1;min-height:0;position:relative;overflow:hidden;}
-.slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 32px;opacity:0;pointer-events:none;transform:translateY(16px);transition:opacity .5s cubic-bezier(.2,.8,.2,1),transform .5s cubic-bezier(.2,.8,.2,1);overflow-y:auto;}
+.slide-counter{font-family:var(--mono);font-size:11px;color:var(--muted);}
+.stage{flex:1;position:relative;overflow:hidden;}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 32px;opacity:0;pointer-events:none;transform:translateY(16px);transition:opacity .5s,transform .5s;overflow-y:auto;}
 .slide.active{opacity:1;pointer-events:auto;transform:translateY(0);}
 .slide-inner{width:100%;max-width:780px;display:flex;flex-direction:column;align-items:center;gap:16px;}
-.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:4px;}
-h2.title{font-family:var(--display);font-weight:400;font-size:clamp(26px,3.5vw,42px);letter-spacing:-0.015em;color:var(--ink);text-align:center;max-width:22ch;}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);}
+h2.title{font-family:var(--display);font-weight:400;font-size:clamp(26px,3.5vw,42px);color:var(--ink);text-align:center;max-width:22ch;}
 h2.title em{font-style:italic;color:var(--accent);}
 .subtitle{font-size:16px;color:var(--muted);text-align:center;max-width:48ch;line-height:1.5;}
 .choices{display:flex;flex-direction:column;gap:10px;width:100%;max-width:540px;margin-top:8px;}
 .choice{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 18px;font-size:15px;color:var(--ink-2);cursor:pointer;text-align:left;transition:all .2s;display:flex;align-items:center;gap:12px;}
 .choice:hover{border-color:var(--ink-2);}
 .choice-letter{width:26px;height:26px;border-radius:50%;background:var(--bg-2);color:var(--muted);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:11px;font-weight:600;flex-shrink:0;}
-.feedback{margin-top:14px;padding:12px 18px;background:var(--card);border:1px solid var(--line);border-left:4px solid var(--olive);border-radius:10px;font-size:14px;color:var(--ink-2);max-width:540px;opacity:0;transform:translateY(8px);transition:all .3s;display:none;}
-.feedback.show{opacity:1;transform:translateY(0);display:block;}
-.footer{flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:12px 20px;border-top:1px solid var(--line);background:rgba(251,248,240,.7);gap:12px;}
-.nav-btn{display:inline-flex;align-items:center;gap:6px;background:var(--card);border:1px solid var(--line-2);color:var(--ink-2);font-family:var(--body);font-size:12px;padding:8px 14px;border-radius:100px;cursor:pointer;transition:all .2s;}
-.nav-btn:hover{border-color:var(--ink-2);color:var(--ink);}
+.feedback{margin-top:14px;padding:12px 18px;background:var(--card);border:1px solid var(--line);border-left:4px solid var(--olive);border-radius:10px;font-size:14px;color:var(--ink-2);max-width:540px;}
+.footer{flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:12px 20px;border-top:1px solid var(--line);background:rgba(251,248,240,.7);}
+.nav-btn{background:var(--card);border:1px solid var(--line-2);color:var(--ink-2);font-family:var(--body);font-size:12px;padding:8px 14px;border-radius:100px;cursor:pointer;transition:all .2s;}
+.nav-btn:hover{border-color:var(--ink-2);}
 .nav-btn.primary{background:var(--ink);color:var(--bg);border-color:var(--ink);}
-.nav-btn.primary:hover{background:var(--accent);border-color:var(--accent);}
 .nav-btn.disabled{opacity:.5;pointer-events:none;}
-.progress-dots{display:flex;gap:6px;align-items:center;}
-.progress-dot{width:6px;height:6px;border-radius:50%;background:var(--line);transition:all .2s;cursor:pointer;}
+.progress-dots{display:flex;gap:6px;}
+.progress-dot{width:6px;height:6px;border-radius:50%;background:var(--line);cursor:pointer;transition:all .2s;}
 .progress-dot.active{background:var(--accent);width:20px;border-radius:3px;}
 </style>
 </head>
 <body>
 <div class="header">
-  <div class="header-left">
-    <button class="exit-btn" id="exitBtn">← Salir</button>
-    <div class="brand">Claude<em>·101</em></div>
-  </div>
-  <div class="slide-counter"><strong id="slideNum">1</strong> / <span id="slideTotal">10</span></div>
+  <button class="exit-btn" id="exitBtn">← Salir</button>
+  <div class="brand">Claude<em>·101</em></div>
+  <div class="slide-counter"><strong id="slideNum">1</strong> / <span>10</span></div>
 </div>
-<div class="stage" id="stage">
-
-  <div class="slide active" data-slide="1">
-    <div class="slide-inner">
-      <div class="eyebrow">Lección 1-1</div>
-      <h2 class="title">¿Qué es Claude?</h2>
-      <p class="subtitle">Slide 1 de 10</p>
-      <div class="choices">
-        <button class="choice"><span class="choice-letter">A</span><span>Opción 1 del slide 1</span></button>
-        <button class="choice"><span class="choice-letter">B</span><span>Opción 2 del slide 1</span></button>
-        <button class="choice"><span class="choice-letter">C</span><span>Opción 3 del slide 1</span></button>
-      </div>
-      <div class="feedback show"><strong>Info:</strong> Contenido específico del slide 1 de la lección 1-1.</div>
-    </div>
-  </div>
-
-  <div class="slide" data-slide="2">
-    <div class="slide-inner">
-      <div class="eyebrow">Lección 1-1</div>
-      <h2 class="title">¿Qué es Claude?</h2>
-      <p class="subtitle">Slide 2 de 10</p>
-      <div class="choices">
-        <button class="choice"><span class="choice-letter">A</span><span>Opción 1 del slide 2</span></button>
-        <button class="choice"><span class="choice-letter">B</span><span>Opción 2 del slide 2</span></button>
-        <button class="choice"><span class="choice-letter">C</span><span>Opción 3 del slide 2</span></button>
-      </div>
-      <div class="feedback show"><strong>Info:</strong> Contenido específico del slide 2 de la lección 1-1.</div>
-    </div>
-  </div>
-
-  <div class="slide" data-slide="3">
-    <div class="slide-inner">
-      <div class="eyebrow">Lección 1-1</div>
-      <h2 class="title">¿Qué es Claude?</h2>
-      <p class="subtitle">Slide 3 de 10</p>
-      <div class="choices">
-        <button class="choice"><span class="choice-letter">A</span><span>Opción 1 del slide 3</span></button>
-        <button class="choice"><span class="choice-letter">B</span><span>Opción 2 del slide 3</span></button>
-        <button class="choice"><span class="choice-letter">C</span><span>Opción 3 del slide 3</span></button>
-      </div>
-      <div class="feedback show"><strong>Info:</strong> Contenido específico del slide 3 de la lección 1-1.</div>
-    </div>
-  </div>
-
-  <div class="slide" data-slide="4">
-    <div class="slide-inner">
-      <div class="eyebrow">Lección 1-1</div>
-      <h2 class="title">¿Qué es Claude?</h2>
-      <p class="subtitle">Slide 4 de 10</p>
-      <div class="choices">
-        <button class="choice"><span class="choice-letter">A</span><span>Opción 1 del slide 4</span></button>
-        <button class="choice"><span class="choice-letter">B</span><span>Opción 2 del slide 4</span></button>
-        <button class="choice"><span class="choice-letter">C</span><span>Opción 3 del slide 4</span></button>
-      </div>
-      <div class="feedback show"><strong>Info:</strong> Contenido específico del slide 4 de la lección 1-1.</div>
-    </div>
-  </div>
-
-  <div class="slide" data-slide="5">
-    <div class="slide-inner">
-      <div class="eyebrow">Lección 1-1</div>
-      <h2 class="title">¿Qué es Claude?</h2>
-      <p class="subtitle">Slide 5 de 10</p>
-      <div class="choices">
-        <button class="choice"><span class="choice-letter">A</span><span>Opción 1 del slide 5</span></button>
-        <button class="choice"><span class="choice-letter">B</span><span>Opción 2 del slide 5</span></button>
-        <button class="choice"><span class="choice-letter">C</span><span>Opción 3 del slide 5</span></button>
-      </div>
-      <div class="feedback show"><strong>Info:</strong> Contenido específico del slide 5 de la lección 1-1.</div>
-    </div>
-  </div>
-
-  <div class="slide" data-slide="6">
-    <div class="slide-inner">
-      <div class="eyebrow">Lección 1-1</div>
-      <h2 class="title">¿Qué es Claude?</h2>
-      <p class="subtitle">Slide 6 de 10</p>
-      <div class="choices">
-        <button class="choice"><span class="choice-letter">A</span><span>Opción 1 del slide 6</span></button>
-        <button class="choice"><span class="choice-letter">B</span><span>Opción 2 del slide 6</span></button>
-        <button class="choice"><span class="choice-letter">C</span><span>Opción 3 del slide 6</span></button>
-      </div>
-      <div class="feedback show"><strong>Info:</strong> Contenido específico del slide 6 de la lección 1-1.</div>
-    </div>
-  </div>
-
-  <div class="slide" data-slide="7">
-    <div class="slide-inner">
-      <div class="eyebrow">Lección 1-1</div>
-      <h2 class="title">¿Qué es Claude?</h2>
-      <p class="subtitle">Slide 7 de 10</p>
-      <div class="choices">
-        <button class="choice"><span class="choice-letter">A</span><span>Opción 1 del slide 7</span></button>
-        <button class="choice"><span class="choice-letter">B</span><span>Opción 2 del slide 7</span></button>
-        <button class="choice"><span class="choice-letter">C</span><span>Opción 3 del slide 7</span></button>
-      </div>
-      <div class="feedback show"><strong>Info:</strong> Contenido específico del slide 7 de la lección 1-1.</div>
-    </div>
-  </div>
-
-  <div class="slide" data-slide="8">
-    <div class="slide-inner">
-      <div class="eyebrow">Lección 1-1</div>
-      <h2 class="title">¿Qué es Claude?</h2>
-      <p class="subtitle">Slide 8 de 10</p>
-      <div class="choices">
-        <button class="choice"><span class="choice-letter">A</span><span>Opción 1 del slide 8</span></button>
-        <button class="choice"><span class="choice-letter">B</span><span>Opción 2 del slide 8</span></button>
-        <button class="choice"><span class="choice-letter">C</span><span>Opción 3 del slide 8</span></button>
-      </div>
-      <div class="feedback show"><strong>Info:</strong> Contenido específico del slide 8 de la lección 1-1.</div>
-    </div>
-  </div>
-
-  <div class="slide" data-slide="9">
-    <div class="slide-inner">
-      <div class="eyebrow">Lección 1-1</div>
-      <h2 class="title">¿Qué es Claude?</h2>
-      <p class="subtitle">Slide 9 de 10</p>
-      <div class="choices">
-        <button class="choice"><span class="choice-letter">A</span><span>Opción 1 del slide 9</span></button>
-        <button class="choice"><span class="choice-letter">B</span><span>Opción 2 del slide 9</span></button>
-        <button class="choice"><span class="choice-letter">C</span><span>Opción 3 del slide 9</span></button>
-      </div>
-      <div class="feedback show"><strong>Info:</strong> Contenido específico del slide 9 de la lección 1-1.</div>
-    </div>
-  </div>
-
-  <div class="slide" data-slide="10">
-    <div class="slide-inner">
-      <div class="eyebrow">Lección 1-1</div>
-      <h2 class="title">¿Qué es Claude?</h2>
-      <p class="subtitle">Slide 10 de 10</p>
-      <div class="choices">
-        <button class="choice"><span class="choice-letter">A</span><span>Opción 1 del slide 10</span></button>
-        <button class="choice"><span class="choice-letter">B</span><span>Opción 2 del slide 10</span></button>
-        <button class="choice"><span class="choice-letter">C</span><span>Opción 3 del slide 10</span></button>
-      </div>
-      <div class="feedback show"><strong>Info:</strong> Contenido específico del slide 10 de la lección 1-1.</div>
-    </div>
-  </div>
-</div>
+<div class="stage" id="stage"><div class="slide active" data-slide="1">
+      <div class="slide-inner">
+        <div class="eyebrow">Lección 1-1</div><h2 class="title">¿Qué es <em>Claude</em>?</h2>
+        <p class="subtitle">Claude es un asistente de IA creado por Anthropic. Aprendes a trabajar con él desde cero hasta ser experto en 5 horas.</p></div></div>
+<div class="slide" data-slide="2">
+      <div class="slide-inner">
+        <div class="eyebrow">Lección 1-1</div><h2 class="title">Quién creó <em>Claude</em>?</h2>
+        <div class="choices"><button class="choice"><span class="choice-letter">A</span><span>Anthropic, fundada en 2021 por ex-miembros de OpenAI</span></button><button class="choice"><span class="choice-letter">B</span><span>Google DeepMind</span></button><button class="choice"><span class="choice-letter">C</span><span>Meta AI</span></button></div><div class="feedback show"><strong>→ Correcto. Dario y Daniela Amodei fundaron Anthropic con visión en seguridad de IA.</strong></div></div></div>
+<div class="slide" data-slide="3">
+      <div class="slide-inner">
+        <div class="eyebrow">Lección 1-1</div><h2 class="title">Qué diferencia a <em>Claude</em> de ChatGPT?</h2>
+        <div class="choices"><button class="choice"><span class="choice-letter">A</span><span>Razonamiento más profundo, mejor con contextos largos, más honesto sobre límites</span></button><button class="choice"><span class="choice-letter">B</span><span>Siempre es más rápido</span></button><button class="choice"><span class="choice-letter">C</span><span>No tiene limitaciones</span></button></div><div class="feedback show"><strong>→ Claude destaca por matiz, honestidad y capacidad de razonamiento profundo.</strong></div></div></div>
+<div class="slide" data-slide="4">
+      <div class="slide-inner">
+        <div class="eyebrow">Lección 1-1</div><h2 class="title">En qué se especializa <em>Claude</em>?</h2>
+        <div class="choices"><button class="choice"><span class="choice-letter">A</span><span>Solo chatbot</span></button><button class="choice"><span class="choice-letter">B</span><span>Escritura, código, análisis, razonamiento complejo y procesamiento de contextos largos</span></button><button class="choice"><span class="choice-letter">C</span><span>Solo imágenes</span></button></div><div class="feedback show"><strong>→ Claude es versátil: excela en escritura, programación, análisis y pensamiento estructurado.</strong></div></div></div>
+<div class="slide" data-slide="5">
+      <div class="slide-inner">
+        <div class="eyebrow">Lección 1-1</div><h2 class="title">¿Cómo se entrena Claude?</h2>
+        <div class="choices"><button class="choice"><span class="choice-letter">A</span><span>Constitutional AI: con criterios de valores, no solo datos</span></button><button class="choice"><span class="choice-letter">B</span><span>Memoriza una base de datos</span></button><button class="choice"><span class="choice-letter">C</span><span>Busca en internet en tiempo real</span></button></div><div class="feedback show"><strong>→ Constitutional AI enseña a Claude mediante principios de seguridad y valores.</strong></div></div></div>
+<div class="slide" data-slide="6">
+      <div class="slide-inner">
+        <div class="eyebrow">Lección 1-1</div><h2 class="title">¿Cuál es el cutoff de conocimiento de Claude?</h2>
+        <div class="choices"><button class="choice"><span class="choice-letter">A</span><span>Abril de 2024</span></button><button class="choice"><span class="choice-letter">B</span><span>Tiempo real</span></button><button class="choice"><span class="choice-letter">C</span><span>2023</span></button></div><div class="feedback show"><strong>→ Claude 3.5 fue entrenado hasta abril 2024. Para info actual, usa búsqueda web.</strong></div></div></div>
+<div class="slide" data-slide="7">
+      <div class="slide-inner">
+        <div class="eyebrow">Lección 1-1</div><h2 class="title">Qué NO puede hacer Claude?</h2>
+        <div class="choices"><button class="choice"><span class="choice-letter">A</span><span>Navegar internet sin ser explícitamente pedido</span></button><button class="choice"><span class="choice-letter">B</span><span>Recordar conversaciones previas (cada chat es independiente)</span></button><button class="choice"><span class="choice-letter">C</span><span>Ambas</span></button></div><div class="feedback show"><strong>→ Correcto. Claude no recuerda entre chats y necesitas activar búsqueda web.</strong></div></div></div>
+<div class="slide" data-slide="8">
+      <div class="slide-inner">
+        <div class="eyebrow">Lección 1-1</div><h2 class="title">Filosofía de Anthropic: Útil, Honesto, Inofensivo</h2>
+        <div class="choices"><button class="choice"><span class="choice-letter">A</span><span>Útil = responde lo que preguntas sin evasivas</span></button><button class="choice"><span class="choice-letter">B</span><span>Honesto = admite cuando no sabe, explica límites</span></button><button class="choice"><span class="choice-letter">C</span><span>Inofensivo = rechaza peticiones dañinas</span></button></div><div class="feedback show"><strong>→ Los tres pilares crean el equilibrio único de Claude.</strong></div></div></div>
+<div class="slide" data-slide="9">
+      <div class="slide-inner">
+        <div class="eyebrow">Lección 1-1</div><h2 class="title">¿A quién está dirigido Claude?</h2>
+        <div class="choices"><button class="choice"><span class="choice-letter">A</span><span>Solo programadores</span></button><button class="choice"><span class="choice-letter">B</span><span>Profesionales de marketing, escritores, devs, analistas, creativos — cualquiera</span></button><button class="choice"><span class="choice-letter">C</span><span>Solo empresas grandes</span></button></div><div class="feedback show"><strong>→ Claude es para personas que trabajan y quieren multiplicar productividad.</strong></div></div></div>
+<div class="slide" data-slide="10">
+      <div class="slide-inner">
+        <div class="eyebrow">Lección 1-1</div><h2 class="title">Próximo: <em>La familia de modelos</em></h2>
+        <p class="subtitle">En la siguiente lección aprenderás las 3 versiones de Claude y cuándo usar cada una.</p></div></div></div>
 <div class="footer">
   <button class="nav-btn" id="prevBtn">← Anterior</button>
   <div class="progress-dots" id="progressDots"></div>
@@ -238,12 +128,10 @@ function goToSlide(n) {
 prevBtn.addEventListener('click', () => goToSlide(currentSlide - 1));
 nextBtn.addEventListener('click', () => goToSlide(currentSlide + 1));
 exitBtn.addEventListener('click', () => window.parent.location.href = '/app');
-
 document.addEventListener('keydown', (e) => {
   if (e.key === 'ArrowLeft') goToSlide(currentSlide - 1);
   if (e.key === 'ArrowRight') goToSlide(currentSlide + 1);
 });
-
 updateSlide();
 </script>
 </body>

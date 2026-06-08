@@ -3,172 +3,73 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Claude 101 · L2-2 · Anatomía de la interfaz</title>
+<title>Claude 101 · L2-2</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Geist:wght@300..700&family=Geist+Mono:wght@400..600&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#F4EFE3;--bg-2:#EFE9DA;--card:#FBF8F0;--ink:#1C1A16;--ink-2:#3A352D;--muted:#756B5B;--muted-2:#A39782;--line:#E1D8C2;--line-2:#CFC4AA;--accent:#C8542B;--accent-2:#8B3A1E;--olive:#4F5D38;--gold:#B08436;--display:'Fraunces',Georgia,serif;--body:'Geist',system-ui,sans-serif;--mono:'Geist Mono',ui-monospace,monospace;}
+:root{--bg:#F4EFE3;--bg-2:#EFE9DA;--card:#FBF8F0;--ink:#1C1A16;--ink-2:#3A352D;--muted:#756B5B;--muted-2:#A39782;--line:#E1D8C2;--line-2:#CFC4AA;--accent:#C8542B;--accent-2:#8B3A1E;--olive:#4F5D38;--display:'Fraunces',Georgia,serif;--body:'Geist',system-ui,sans-serif;--mono:'Geist Mono',ui-monospace,monospace;}
 *{box-sizing:border-box;margin:0;padding:0;}
-html,body{height:100%;min-height:100vh;min-height:100dvh;margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:var(--body);overflow:hidden;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;min-height:100vh;background:var(--bg);color:var(--ink);font-family:var(--body);overflow:hidden;-webkit-font-smoothing:antialiased;}
 body{display:flex;flex-direction:column;background-image:radial-gradient(circle at 12% 8%,rgba(200,84,43,.05) 0%,transparent 40%),radial-gradient(circle at 88% 92%,rgba(79,93,56,.04) 0%,transparent 40%);}
-button{font-family:inherit;touch-action:manipulation;}
-.header{flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:12px 20px;border-bottom:1px solid var(--line);background:rgba(251,248,240,.7);backdrop-filter:blur(8px);z-index:10;gap:10px;}
-.header-left{display:flex;align-items:center;gap:14px;min-width:0;}
-.exit-btn{display:inline-flex;align-items:center;gap:6px;background:transparent;border:1px solid var(--line-2);color:var(--ink-2);font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:7px 12px;border-radius:100px;cursor:pointer;transition:all .2s;flex-shrink:0;min-height:34px;}
+.header{flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:12px 20px;border-bottom:1px solid var(--line);background:rgba(251,248,240,.7);backdrop-filter:blur(8px);z-index:10;}
+.exit-btn{background:transparent;border:1px solid var(--line-2);color:var(--ink-2);font-family:var(--mono);font-size:10px;padding:7px 12px;border-radius:100px;cursor:pointer;transition:all .2s;}
 .exit-btn:hover{border-color:var(--accent);color:var(--accent);}
 .brand{font-family:var(--display);font-style:italic;font-size:15px;color:var(--ink);}
 .brand em{font-style:normal;color:var(--accent);}
-.brand-tag{margin-left:8px;font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);}
-.slide-counter{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.08em;flex-shrink:0;}
-.slide-counter strong{color:var(--ink);font-weight:600;}
-.stage{flex:1;min-height:0;position:relative;overflow:hidden;}
-.slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 32px;opacity:0;pointer-events:none;transform:translateY(16px);transition:opacity .5s cubic-bezier(.2,.8,.2,1),transform .5s cubic-bezier(.2,.8,.2,1);overflow-y:auto;}
+.slide-counter{font-family:var(--mono);font-size:11px;color:var(--muted);}
+.stage{flex:1;position:relative;overflow:hidden;}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 32px;opacity:0;pointer-events:none;transform:translateY(16px);transition:opacity .5s,transform .5s;overflow-y:auto;}
 .slide.active{opacity:1;pointer-events:auto;transform:translateY(0);}
 .slide-inner{width:100%;max-width:780px;display:flex;flex-direction:column;align-items:center;gap:16px;}
-.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:4px;}
-h2.title{font-family:var(--display);font-weight:400;font-size:clamp(26px,3.5vw,42px);letter-spacing:-0.015em;color:var(--ink);text-align:center;max-width:22ch;}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);}
+h2.title{font-family:var(--display);font-weight:400;font-size:clamp(26px,3.5vw,42px);color:var(--ink);text-align:center;max-width:22ch;}
 h2.title em{font-style:italic;color:var(--accent);}
 .subtitle{font-size:16px;color:var(--muted);text-align:center;max-width:48ch;line-height:1.5;}
 .choices{display:flex;flex-direction:column;gap:10px;width:100%;max-width:540px;margin-top:8px;}
-.choice{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 18px;font-size:15px;color:var(--ink-2);cursor:pointer;text-align:left;transition:all .2s;display:flex;align-items:center;gap:12px;}
+.choice{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 18px;font-size:15px;color:var(--ink-2);cursor:pointer;display:flex;align-items:center;gap:12px;transition:all .2s;}
 .choice:hover{border-color:var(--ink-2);}
 .choice-letter{width:26px;height:26px;border-radius:50%;background:var(--bg-2);color:var(--muted);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:11px;font-weight:600;flex-shrink:0;}
-.feedback{margin-top:14px;padding:12px 18px;background:var(--card);border:1px solid var(--line);border-left:4px solid var(--olive);border-radius:10px;font-size:14px;color:var(--ink-2);max-width:540px;opacity:0;transform:translateY(8px);transition:all .3s;display:none;}
-.feedback.show{opacity:1;transform:translateY(0);display:block;}
-.footer{flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:12px 20px;border-top:1px solid var(--line);background:rgba(251,248,240,.7);gap:12px;}
-.nav-btn{display:inline-flex;align-items:center;gap:6px;background:var(--card);border:1px solid var(--line-2);color:var(--ink-2);font-family:var(--body);font-size:12px;padding:8px 14px;border-radius:100px;cursor:pointer;transition:all .2s;}
-.nav-btn:hover{border-color:var(--ink-2);color:var(--ink);}
-.nav-btn.primary{background:var(--ink);color:var(--bg);border-color:var(--ink);}
-.nav-btn.primary:hover{background:var(--accent);border-color:var(--accent);}
+.feedback{margin-top:14px;padding:12px 18px;background:var(--card);border:1px solid var(--line);border-left:4px solid var(--olive);border-radius:10px;font-size:14px;color:var(--ink-2);max-width:540px;}
+.footer{flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:12px 20px;border-top:1px solid var(--line);background:rgba(251,248,240,.7);}
+.nav-btn{background:var(--card);border:1px solid var(--line-2);color:var(--ink-2);padding:8px 14px;border-radius:100px;cursor:pointer;transition:all .2s;font-size:12px;}
+.nav-btn:hover{border-color:var(--ink-2);}
+.nav-btn.primary{background:var(--ink);color:var(--bg);}
 .nav-btn.disabled{opacity:.5;pointer-events:none;}
-.progress-dots{display:flex;gap:6px;align-items:center;}
-.progress-dot{width:6px;height:6px;border-radius:50%;background:var(--line);transition:all .2s;cursor:pointer;}
+.progress-dots{display:flex;gap:6px;}
+.progress-dot{width:6px;height:6px;border-radius:50%;background:var(--line);cursor:pointer;}
 .progress-dot.active{background:var(--accent);width:20px;border-radius:3px;}
 </style>
 </head>
 <body>
 <div class="header">
-  <div class="header-left">
-    <button class="exit-btn" id="exitBtn">← Salir</button>
-    <div class="brand">Claude<em>·101</em></div>
-  </div>
-  <div class="slide-counter"><strong id="slideNum">1</strong> / <span id="slideTotal">8</span></div>
+  <button class="exit-btn" id="exitBtn">← Salir</button>
+  <div class="brand">Claude<em>·101</em></div>
+  <div class="slide-counter"><strong id="slideNum">1</strong> / <span>6</span></div>
 </div>
-<div class="stage" id="stage">
-
-  <div class="slide active" data-slide="1">
-    <div class="slide-inner">
-      <div class="eyebrow">Lección 2-2</div>
-      <h2 class="title">Anatomía de la interfaz</h2>
-      <p class="subtitle">Slide 1 de 8</p>
-      <div class="choices">
-        <button class="choice"><span class="choice-letter">A</span><span>Opción 1 del slide 1</span></button>
-        <button class="choice"><span class="choice-letter">B</span><span>Opción 2 del slide 1</span></button>
-        <button class="choice"><span class="choice-letter">C</span><span>Opción 3 del slide 1</span></button>
-      </div>
-      <div class="feedback show"><strong>Info:</strong> Contenido específico del slide 1 de la lección 2-2.</div>
-    </div>
-  </div>
-
-  <div class="slide" data-slide="2">
-    <div class="slide-inner">
-      <div class="eyebrow">Lección 2-2</div>
-      <h2 class="title">Anatomía de la interfaz</h2>
-      <p class="subtitle">Slide 2 de 8</p>
-      <div class="choices">
-        <button class="choice"><span class="choice-letter">A</span><span>Opción 1 del slide 2</span></button>
-        <button class="choice"><span class="choice-letter">B</span><span>Opción 2 del slide 2</span></button>
-        <button class="choice"><span class="choice-letter">C</span><span>Opción 3 del slide 2</span></button>
-      </div>
-      <div class="feedback show"><strong>Info:</strong> Contenido específico del slide 2 de la lección 2-2.</div>
-    </div>
-  </div>
-
-  <div class="slide" data-slide="3">
-    <div class="slide-inner">
-      <div class="eyebrow">Lección 2-2</div>
-      <h2 class="title">Anatomía de la interfaz</h2>
-      <p class="subtitle">Slide 3 de 8</p>
-      <div class="choices">
-        <button class="choice"><span class="choice-letter">A</span><span>Opción 1 del slide 3</span></button>
-        <button class="choice"><span class="choice-letter">B</span><span>Opción 2 del slide 3</span></button>
-        <button class="choice"><span class="choice-letter">C</span><span>Opción 3 del slide 3</span></button>
-      </div>
-      <div class="feedback show"><strong>Info:</strong> Contenido específico del slide 3 de la lección 2-2.</div>
-    </div>
-  </div>
-
-  <div class="slide" data-slide="4">
-    <div class="slide-inner">
-      <div class="eyebrow">Lección 2-2</div>
-      <h2 class="title">Anatomía de la interfaz</h2>
-      <p class="subtitle">Slide 4 de 8</p>
-      <div class="choices">
-        <button class="choice"><span class="choice-letter">A</span><span>Opción 1 del slide 4</span></button>
-        <button class="choice"><span class="choice-letter">B</span><span>Opción 2 del slide 4</span></button>
-        <button class="choice"><span class="choice-letter">C</span><span>Opción 3 del slide 4</span></button>
-      </div>
-      <div class="feedback show"><strong>Info:</strong> Contenido específico del slide 4 de la lección 2-2.</div>
-    </div>
-  </div>
-
-  <div class="slide" data-slide="5">
-    <div class="slide-inner">
-      <div class="eyebrow">Lección 2-2</div>
-      <h2 class="title">Anatomía de la interfaz</h2>
-      <p class="subtitle">Slide 5 de 8</p>
-      <div class="choices">
-        <button class="choice"><span class="choice-letter">A</span><span>Opción 1 del slide 5</span></button>
-        <button class="choice"><span class="choice-letter">B</span><span>Opción 2 del slide 5</span></button>
-        <button class="choice"><span class="choice-letter">C</span><span>Opción 3 del slide 5</span></button>
-      </div>
-      <div class="feedback show"><strong>Info:</strong> Contenido específico del slide 5 de la lección 2-2.</div>
-    </div>
-  </div>
-
-  <div class="slide" data-slide="6">
-    <div class="slide-inner">
-      <div class="eyebrow">Lección 2-2</div>
-      <h2 class="title">Anatomía de la interfaz</h2>
-      <p class="subtitle">Slide 6 de 8</p>
-      <div class="choices">
-        <button class="choice"><span class="choice-letter">A</span><span>Opción 1 del slide 6</span></button>
-        <button class="choice"><span class="choice-letter">B</span><span>Opción 2 del slide 6</span></button>
-        <button class="choice"><span class="choice-letter">C</span><span>Opción 3 del slide 6</span></button>
-      </div>
-      <div class="feedback show"><strong>Info:</strong> Contenido específico del slide 6 de la lección 2-2.</div>
-    </div>
-  </div>
-
-  <div class="slide" data-slide="7">
-    <div class="slide-inner">
-      <div class="eyebrow">Lección 2-2</div>
-      <h2 class="title">Anatomía de la interfaz</h2>
-      <p class="subtitle">Slide 7 de 8</p>
-      <div class="choices">
-        <button class="choice"><span class="choice-letter">A</span><span>Opción 1 del slide 7</span></button>
-        <button class="choice"><span class="choice-letter">B</span><span>Opción 2 del slide 7</span></button>
-        <button class="choice"><span class="choice-letter">C</span><span>Opción 3 del slide 7</span></button>
-      </div>
-      <div class="feedback show"><strong>Info:</strong> Contenido específico del slide 7 de la lección 2-2.</div>
-    </div>
-  </div>
-
-  <div class="slide" data-slide="8">
-    <div class="slide-inner">
-      <div class="eyebrow">Lección 2-2</div>
-      <h2 class="title">Anatomía de la interfaz</h2>
-      <p class="subtitle">Slide 8 de 8</p>
-      <div class="choices">
-        <button class="choice"><span class="choice-letter">A</span><span>Opción 1 del slide 8</span></button>
-        <button class="choice"><span class="choice-letter">B</span><span>Opción 2 del slide 8</span></button>
-        <button class="choice"><span class="choice-letter">C</span><span>Opción 3 del slide 8</span></button>
-      </div>
-      <div class="feedback show"><strong>Info:</strong> Contenido específico del slide 8 de la lección 2-2.</div>
-    </div>
-  </div>
-</div>
+<div class="stage" id="stage"><div class="slide active" data-slide="1">
+        <div class="slide-inner">
+          <div class="eyebrow">Lección 2-2</div><h2 class="title">Partes de <em>claude.ai</em></h2>
+          <p class="subtitle">Caja de mensaje, selector de modelo, proyectos, historial. Aquí es donde sucede todo.</p></div></div>
+<div class="slide" data-slide="2">
+        <div class="slide-inner">
+          <div class="eyebrow">Lección 2-2</div><h2 class="title">En la interfaz de Claude: ¿dónde escribes?</h2>
+          <div class="choices"><button class="choice"><span class="choice-letter">A</span><span>Caja de mensaje en la base (con botón de envío)</span></button><button class="choice"><span class="choice-letter">B</span><span>En el historial</span></button><button class="choice"><span class="choice-letter">C</span><span>Solo en móvil</span></button></div><div class="feedback show"><strong>→ Caja de mensaje = donde escribes prompts y adjuntas archivos.</strong></div></div></div>
+<div class="slide" data-slide="3">
+        <div class="slide-inner">
+          <div class="eyebrow">Lección 2-2</div><h2 class="title">¿Dónde cambias de modelo (Haiku/Sonnet/Opus)?</h2>
+          <div class="choices"><button class="choice"><span class="choice-letter">A</span><span>Selector superior (muestra modelo actual)</span></button><button class="choice"><span class="choice-letter">B</span><span>No se puede cambiar</span></button><button class="choice"><span class="choice-letter">C</span><span>En settings</span></button></div><div class="feedback show"><strong>→ Selector superior: cambias modelo al instante.</strong></div></div></div>
+<div class="slide" data-slide="4">
+        <div class="slide-inner">
+          <div class="eyebrow">Lección 2-2</div><h2 class="title">¿Qué son "Proyectos" en Claude?</h2>
+          <div class="choices"><button class="choice"><span class="choice-letter">A</span><span>Espacios con contexto persistente, archivos y memoria</span></button><button class="choice"><span class="choice-letter">B</span><span>Lo mismo que conversaciones</span></button><button class="choice"><span class="choice-letter">C</span><span>Carpetas del historial</span></button></div><div class="feedback show"><strong>→ Proyectos = conversaciones + archivos + contexto persistente.</strong></div></div></div>
+<div class="slide" data-slide="5">
+        <div class="slide-inner">
+          <div class="eyebrow">Lección 2-2</div><h2 class="title">En tu historial: puedes...</h2>
+          <div class="choices"><button class="choice"><span class="choice-letter">A</span><span>Buscar chats antiguos, eliminar, organizar por proyecto</span></button><button class="choice"><span class="choice-letter">B</span><span>Solo ver</span></button><button class="choice"><span class="choice-letter">C</span><span>No hay historial</span></button></div><div class="feedback show"><strong>→ Historial es funcional: busca, ordena, gestiona.</strong></div></div></div>
+<div class="slide" data-slide="6">
+        <div class="slide-inner">
+          <div class="eyebrow">Lección 2-2</div><h2 class="title">Siguiente: conversaciones vs proyectos</h2>
+          <p class="subtitle">Ent la siguiente lección, cuándo usar cada uno.</p></div></div></div>
 <div class="footer">
   <button class="nav-btn" id="prevBtn">← Anterior</button>
   <div class="progress-dots" id="progressDots"></div>
@@ -176,7 +77,7 @@ h2.title em{font-style:italic;color:var(--accent);}
 </div>
 <script>
 let currentSlide = 1;
-const totalSlides = 8;
+const totalSlides = 6;
 const slides = document.querySelectorAll('.slide');
 const exitBtn = document.getElementById('exitBtn');
 const prevBtn = document.getElementById('prevBtn');
@@ -210,12 +111,10 @@ function goToSlide(n) {
 prevBtn.addEventListener('click', () => goToSlide(currentSlide - 1));
 nextBtn.addEventListener('click', () => goToSlide(currentSlide + 1));
 exitBtn.addEventListener('click', () => window.parent.location.href = '/app');
-
 document.addEventListener('keydown', (e) => {
   if (e.key === 'ArrowLeft') goToSlide(currentSlide - 1);
   if (e.key === 'ArrowRight') goToSlide(currentSlide + 1);
 });
-
 updateSlide();
 </script>
 </body>
