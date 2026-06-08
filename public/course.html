@@ -1304,7 +1304,30 @@
 
   /* Por defecto en desktop, ocultar X del sidebar */
   .sidebar-close { display: none; }
-  
+
+  /* Estilos para bloques de código */
+  pre {
+    overflow-x: auto;
+    overflow-y: auto;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 11px;
+    line-height: 1.4;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+    max-width: 100%;
+    max-height: 400px;
+  }
+
+  code {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    font-family: var(--mono);
+    font-size: 11px;
+  }
+
 </style>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="apple-touch-icon" href="/favicon.svg">
