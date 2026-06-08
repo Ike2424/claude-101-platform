@@ -5,71 +5,152 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Claude 101 · L2-3</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Geist:wght@300..700&family=Geist+Mono:wght@400..600&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#F4EFE3;--bg-2:#EFE9DA;--card:#FBF8F0;--ink:#1C1A16;--ink-2:#3A352D;--muted:#756B5B;--muted-2:#A39782;--line:#E1D8C2;--line-2:#CFC4AA;--accent:#C8542B;--accent-2:#8B3A1E;--olive:#4F5D38;--display:'Fraunces',Georgia,serif;--body:'Geist',system-ui,sans-serif;--mono:'Geist Mono',ui-monospace,monospace;}
+:root{--bg:#F4EFE3;--bg-2:#EFE9DA;--card:#FBF8F0;--ink:#1C1A16;--ink-2:#3A352D;--muted:#756B5B;--line:#E1D8C2;--accent:#C8542B;--olive:#4F5D38;--display:'Fraunces',Georgia,serif;--body:'Geist',system-ui,sans-serif;--mono:'Geist Mono',ui-monospace,monospace;}
 *{box-sizing:border-box;margin:0;padding:0;}
-html,body{height:100%;min-height:100vh;background:var(--bg);color:var(--ink);font-family:var(--body);overflow:hidden;-webkit-font-smoothing:antialiased;}
+html,body{height:100%;background:var(--bg);color:var(--ink);font-family:var(--body);overflow:hidden;}
 body{display:flex;flex-direction:column;background-image:radial-gradient(circle at 12% 8%,rgba(200,84,43,.05) 0%,transparent 40%),radial-gradient(circle at 88% 92%,rgba(79,93,56,.04) 0%,transparent 40%);}
-.header{flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:12px 20px;border-bottom:1px solid var(--line);background:rgba(251,248,240,.7);backdrop-filter:blur(8px);z-index:10;}
-.exit-btn{background:transparent;border:1px solid var(--line-2);color:var(--ink-2);font-family:var(--mono);font-size:10px;padding:7px 12px;border-radius:100px;cursor:pointer;transition:all .2s;}
+.header{flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:12px 20px;border-bottom:1px solid var(--line);background:rgba(251,248,240,.7);backdrop-filter:blur(8px);}
+.exit-btn{background:transparent;border:1px solid var(--line-2);color:var(--ink-2);font-family:var(--mono);font-size:10px;padding:7px 12px;border-radius:100px;cursor:pointer;transition:.2s;}
 .exit-btn:hover{border-color:var(--accent);color:var(--accent);}
-.brand{font-family:var(--display);font-style:italic;font-size:15px;color:var(--ink);}
-.brand em{font-style:normal;color:var(--accent);}
-.slide-counter{font-family:var(--mono);font-size:11px;color:var(--muted);}
+.brand{font-family:var(--display);font-style:italic;font-size:15px;}
+.brand em{color:var(--accent);}
 .stage{flex:1;position:relative;overflow:hidden;}
-.slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 32px;opacity:0;pointer-events:none;transform:translateY(16px);transition:opacity .5s,transform .5s;overflow-y:auto;}
-.slide.active{opacity:1;pointer-events:auto;transform:translateY(0);}
-.slide-inner{width:100%;max-width:780px;display:flex;flex-direction:column;align-items:center;gap:16px;}
+.slide{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;pointer-events:none;transform:scale(.95);transition:all .5s cubic-bezier(.2,.8,.2,1);overflow-y:auto;}
+.slide.active{opacity:1;pointer-events:auto;transform:scale(1);}
+.slide-inner{width:100%;max-width:600px;display:flex;flex-direction:column;align-items:center;gap:20px;text-align:center;}
+.intro-slide{gap:32px;}
 .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);}
-h2.title{font-family:var(--display);font-weight:400;font-size:clamp(26px,3.5vw,42px);color:var(--ink);text-align:center;max-width:22ch;}
-h2.title em{font-style:italic;color:var(--accent);}
-.subtitle{font-size:16px;color:var(--muted);text-align:center;max-width:48ch;line-height:1.5;}
-.choices{display:flex;flex-direction:column;gap:10px;width:100%;max-width:540px;margin-top:8px;}
-.choice{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 18px;font-size:15px;color:var(--ink-2);cursor:pointer;display:flex;align-items:center;gap:12px;transition:all .2s;}
-.choice:hover{border-color:var(--ink-2);}
-.choice-letter{width:26px;height:26px;border-radius:50%;background:var(--bg-2);color:var(--muted);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:11px;font-weight:600;flex-shrink:0;}
-.feedback{margin-top:14px;padding:12px 18px;background:var(--card);border:1px solid var(--line);border-left:4px solid var(--olive);border-radius:10px;font-size:14px;color:var(--ink-2);max-width:540px;}
+.title{font-family:var(--display);font-size:clamp(32px,6vw,56px);line-height:1.1;font-weight:400;}
+.title em{font-style:italic;color:var(--accent);}
+.subtitle{font-size:16px;color:var(--muted);line-height:1.5;}
+.intro-icon{font-size:48px;animation:bounce 2s infinite;}
+
+.flip-card{cursor:pointer;perspective:1000px;height:240px;width:100%;max-width:500px;}
+.flip-inner{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d;}
+.flip-card.flipped .flip-inner{transform:rotateY(180deg);}
+.flip-front,.flip-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;border-radius:16px;border:2px solid var(--line);background:var(--card);}
+.flip-back{transform:rotateY(180deg);background:linear-gradient(135deg,rgba(79,93,56,.1) 0%,rgba(200,84,43,.1) 100%);border-color:var(--accent);}
+.flip-front p,.flip-back p{font-size:18px;font-weight:500;color:var(--ink);}
+.flip-front small,.flip-back small{font-size:11px;color:var(--muted);margin-top:12px;}
+
+.quiz-question{font-size:22px;color:var(--ink);margin-bottom:20px;}
+.quiz-options{display:flex;flex-direction:column;gap:12px;width:100%;max-width:500px;}
+.quiz-option{background:var(--card);border:2px solid var(--line);border-radius:12px;padding:16px;cursor:pointer;display:flex;align-items:center;gap:12px;transition:all .3s;text-align:left;}
+.quiz-option:hover{border-color:var(--accent);transform:translateX(4px);}
+.quiz-option.correct{background:rgba(79,93,56,.15);border-color:var(--olive);}
+.quiz-option.wrong{background:rgba(200,84,43,.15);border-color:var(--accent);}
+.option-letter{display:flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;background:var(--accent);color:white;font-weight:600;flex-shrink:0;}
+.quiz-option.correct .option-letter{background:var(--olive);}
+.option-text{flex:1;font-size:15px;color:var(--ink-2);}
+.check-mark{font-size:18px;opacity:0;transition:.3s;}
+.quiz-option.answered .check-mark{opacity:1;}
+.quiz-feedback{margin-top:16px;padding:12px 16px;background:var(--card);border-left:4px solid var(--olive);border-radius:8px;font-size:14px;color:var(--ink-2);}
+.quiz-feedback.hidden{display:none;}
+.quiz-feedback.show{display:block;animation:slideIn .3s ease;}
+
 .footer{flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:12px 20px;border-top:1px solid var(--line);background:rgba(251,248,240,.7);}
-.nav-btn{background:var(--card);border:1px solid var(--line-2);color:var(--ink-2);padding:8px 14px;border-radius:100px;cursor:pointer;transition:all .2s;font-size:12px;}
-.nav-btn:hover{border-color:var(--ink-2);}
-.nav-btn.primary{background:var(--ink);color:var(--bg);}
+.nav-btn{background:var(--card);border:1px solid var(--line-2);color:var(--ink-2);padding:8px 14px;border-radius:100px;cursor:pointer;font-size:12px;transition:.2s;}
+.nav-btn:hover{border-color:var(--accent);color:var(--accent);}
+.nav-btn.primary{background:var(--accent);color:white;border-color:var(--accent);}
 .nav-btn.disabled{opacity:.5;pointer-events:none;}
 .progress-dots{display:flex;gap:6px;}
-.progress-dot{width:6px;height:6px;border-radius:50%;background:var(--line);cursor:pointer;}
+.progress-dot{width:6px;height:6px;border-radius:50%;background:var(--line);cursor:pointer;transition:.2s;}
 .progress-dot.active{background:var(--accent);width:20px;border-radius:3px;}
+
+@keyframes bounce{0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)}}
+@keyframes slideIn{from{opacity:0;transform:translateY(-10px)} to{opacity:1;transform:translateY(0)}}
+@media(max-width:900px){.slide-inner{max-width:calc(100% - 32px)}.flip-card{height:200px}}
 </style>
 </head>
 <body>
 <div class="header">
   <button class="exit-btn" id="exitBtn">← Salir</button>
   <div class="brand">Claude<em>·101</em></div>
-  <div class="slide-counter"><strong id="slideNum">1</strong> / <span>6</span></div>
+  <div class="slide-counter"><strong id="slideNum">1</strong> / 5</div>
 </div>
-<div class="stage" id="stage"><div class="slide active" data-slide="1">
-        <div class="slide-inner">
-          <div class="eyebrow">Lección 2-3</div><h2 class="title">Conversaciones vs <em>Proyectos</em></h2>
-          <p class="subtitle">Conversación = puntual. Proyecto = trabajo en curso con contexto.</p></div></div>
-<div class="slide" data-slide="2">
-        <div class="slide-inner">
-          <div class="eyebrow">Lección 2-3</div><h2 class="title">¿Conversación es para...?</h2>
-          <div class="choices"><button class="choice"><span class="choice-letter">A</span><span>Preguntas rápidas, ayuda puntual, sin memoria entre chats</span></button><button class="choice"><span class="choice-letter">B</span><span>Todo</span></button><button class="choice"><span class="choice-letter">C</span><span>Nada</span></button></div><div class="feedback show"><strong>→ Conversación = sin estado. Perfecta para dudas rápidas.</strong></div></div></div>
-<div class="slide" data-slide="3">
-        <div class="slide-inner">
-          <div class="eyebrow">Lección 2-3</div><h2 class="title">¿Proyecto es para...?</h2>
-          <div class="choices"><button class="choice"><span class="choice-letter">A</span><span>Trabajo largo, documentos, código, contexto persistente entre chats</span></button><button class="choice"><span class="choice-letter">B</span><span>Solo email</span></button><button class="choice"><span class="choice-letter">C</span><span>No sirve</span></button></div><div class="feedback show"><strong>→ Proyecto = colaboración real. Mantienes contexto entre sesiones.</strong></div></div></div>
-<div class="slide" data-slide="4">
-        <div class="slide-inner">
-          <div class="eyebrow">Lección 2-3</div><h2 class="title">En un proyecto puedes...</h2>
-          <div class="choices"><button class="choice"><span class="choice-letter">A</span><span>Adjuntar archivos, dar instrucciones iniciales, Claude recuerda el contexto</span></button><button class="choice"><span class="choice-letter">B</span><span>Solo chatear</span></button><button class="choice"><span class="choice-letter">C</span><span>Nada especial</span></button></div><div class="feedback show"><strong>→ Proyecto mantiene memoria de contexto. Muy útil para workflows.</strong></div></div></div>
-<div class="slide" data-slide="5">
-        <div class="slide-inner">
-          <div class="eyebrow">Lección 2-3</div><h2 class="title">Cuándo creas un Proyecto nuevo:</h2>
-          <div class="choices"><button class="choice"><span class="choice-letter">A</span><span>Cuando vas a trabajar 2+ horas en algo o necesitas persistencia</span></button><button class="choice"><span class="choice-letter">B</span><span>Nunca</span></button><button class="choice"><span class="choice-letter">C</span><span>Siempre</span></button></div><div class="feedback show"><strong>→ Si vuelves al tema mañana: proyecto. Si es una consulta: conversación.</strong></div></div></div>
-<div class="slide" data-slide="6">
-        <div class="slide-inner">
-          <div class="eyebrow">Lección 2-3</div><h2 class="title">Regla: conoce la diferencia y elige</h2>
-          <p class="subtitle">Conversación o Proyecto: la elección correcta multiplica productividad.</p></div></div></div>
+<div class="stage" id="stage">
+  <div class="slide active" data-slide="1">
+    <div class="slide-inner intro-slide">
+      <div class="eyebrow">Lección 2-3</div>
+      <h1 class="title">Conversación vs <em>Proyecto</em></h1>
+      <p class="subtitle">Puntual vs duradero.</p>
+      <div class="intro-icon">→</div>
+    </div>
+  </div>
+
+  <div class="slide" data-slide="2">
+    <div class="slide-inner">
+      <div class="eyebrow">Lección 2-3</div>
+      <div class="flip-card" onclick="this.classList.toggle('flipped')">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <p>Conversación</p>
+            <small>Click para revelar</small>
+          </div>
+          <div class="flip-back">
+            <p>Preguntas rápidas. Sin memoria entre chats. Perfecta para dudas puntuales.</p>
+            <small>Click para ocultar</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide" data-slide="3">
+    <div class="slide-inner">
+      <div class="eyebrow">Lección 2-3</div>
+      <h2 class="quiz-question">¿Proyecto para qué?</h2>
+      <div class="quiz-options">
+        
+        <button class="quiz-option" onclick="checkAnswer(this, true, 'Proyecto mantiene memoria entre sesiones. Muy útil para workflows.')">
+          <span class="option-letter">A</span>
+          <span class="option-text">Trabajo largo con contexto persistente</span>
+          <span class="check-mark">✓</span>
+        </button>
+        <button class="quiz-option" onclick="checkAnswer(this, false, 'Proyecto mantiene memoria entre sesiones. Muy útil para workflows.')">
+          <span class="option-letter">B</span>
+          <span class="option-text">Solo email</span>
+          <span class="check-mark">✓</span>
+        </button>
+        <button class="quiz-option" onclick="checkAnswer(this, false, 'Proyecto mantiene memoria entre sesiones. Muy útil para workflows.')">
+          <span class="option-letter">C</span>
+          <span class="option-text">No sirve</span>
+          <span class="check-mark">✓</span>
+        </button>
+      </div>
+      <div class="quiz-feedback hidden"></div>
+    </div>
+  </div>
+
+  <div class="slide" data-slide="4">
+    <div class="slide-inner">
+      <div class="eyebrow">Lección 2-3</div>
+      <div class="flip-card" onclick="this.classList.toggle('flipped')">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <p>Cuándo crear Proyecto</p>
+            <small>Click para revelar</small>
+          </div>
+          <div class="flip-back">
+            <p>Cuando vas a trabajar 2+ horas o necesitas persistencia. Si vuelves mañana: Proyecto.</p>
+            <small>Click para ocultar</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide" data-slide="5">
+    <div class="slide-inner intro-slide">
+      <div class="eyebrow">Lección 2-3</div>
+      <h1 class="title">✓ Completaste L2-3</h1>
+      <p class="subtitle">8 slides sobre diferencia</p>
+      <div class="intro-icon">→</div>
+    </div>
+  </div></div>
 <div class="footer">
   <button class="nav-btn" id="prevBtn">← Anterior</button>
   <div class="progress-dots" id="progressDots"></div>
@@ -77,7 +158,7 @@ h2.title em{font-style:italic;color:var(--accent);}
 </div>
 <script>
 let currentSlide = 1;
-const totalSlides = 6;
+const totalSlides = 5;
 const slides = document.querySelectorAll('.slide');
 const exitBtn = document.getElementById('exitBtn');
 const prevBtn = document.getElementById('prevBtn');
@@ -108,6 +189,17 @@ function goToSlide(n) {
   updateSlide();
 }
 
+function checkAnswer(btn, isCorrect, explanation) {
+  const options = btn.parentElement.querySelectorAll('.quiz-option');
+  options.forEach(opt => opt.classList.add('disabled'));
+  btn.classList.add('answered', isCorrect ? 'correct' : 'wrong');
+  
+  const feedback = btn.parentElement.nextElementSibling;
+  feedback.textContent = (isCorrect ? '✓ Correcto: ' : '✗ Incorrecto: ') + explanation;
+  feedback.classList.remove('hidden');
+  feedback.classList.add('show');
+}
+
 prevBtn.addEventListener('click', () => goToSlide(currentSlide - 1));
 nextBtn.addEventListener('click', () => goToSlide(currentSlide + 1));
 exitBtn.addEventListener('click', () => window.parent.location.href = '/app');
@@ -115,6 +207,7 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'ArrowLeft') goToSlide(currentSlide - 1);
   if (e.key === 'ArrowRight') goToSlide(currentSlide + 1);
 });
+
 updateSlide();
 </script>
 </body>

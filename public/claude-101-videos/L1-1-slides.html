@@ -3,90 +3,242 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Claude 101 · L1-1 · ¿Qué es Claude?</title>
+<title>Claude 101 · L1-1</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Geist:wght@300..700&family=Geist+Mono:wght@400..600&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#F4EFE3;--bg-2:#EFE9DA;--card:#FBF8F0;--ink:#1C1A16;--ink-2:#3A352D;--muted:#756B5B;--muted-2:#A39782;--line:#E1D8C2;--line-2:#CFC4AA;--accent:#C8542B;--accent-2:#8B3A1E;--olive:#4F5D38;--gold:#B08436;--display:'Fraunces',Georgia,serif;--body:'Geist',system-ui,sans-serif;--mono:'Geist Mono',ui-monospace,monospace;}
+:root{--bg:#F4EFE3;--bg-2:#EFE9DA;--card:#FBF8F0;--ink:#1C1A16;--ink-2:#3A352D;--muted:#756B5B;--line:#E1D8C2;--accent:#C8542B;--olive:#4F5D38;--display:'Fraunces',Georgia,serif;--body:'Geist',system-ui,sans-serif;--mono:'Geist Mono',ui-monospace,monospace;}
 *{box-sizing:border-box;margin:0;padding:0;}
-html,body{height:100%;min-height:100vh;background:var(--bg);color:var(--ink);font-family:var(--body);overflow:hidden;-webkit-font-smoothing:antialiased;}
+html,body{height:100%;background:var(--bg);color:var(--ink);font-family:var(--body);overflow:hidden;}
 body{display:flex;flex-direction:column;background-image:radial-gradient(circle at 12% 8%,rgba(200,84,43,.05) 0%,transparent 40%),radial-gradient(circle at 88% 92%,rgba(79,93,56,.04) 0%,transparent 40%);}
-.header{flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:12px 20px;border-bottom:1px solid var(--line);background:rgba(251,248,240,.7);backdrop-filter:blur(8px);z-index:10;}
-.exit-btn{background:transparent;border:1px solid var(--line-2);color:var(--ink-2);font-family:var(--mono);font-size:10px;padding:7px 12px;border-radius:100px;cursor:pointer;transition:all .2s;}
+.header{flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:12px 20px;border-bottom:1px solid var(--line);background:rgba(251,248,240,.7);backdrop-filter:blur(8px);}
+.exit-btn{background:transparent;border:1px solid var(--line-2);color:var(--ink-2);font-family:var(--mono);font-size:10px;padding:7px 12px;border-radius:100px;cursor:pointer;transition:.2s;}
 .exit-btn:hover{border-color:var(--accent);color:var(--accent);}
-.brand{font-family:var(--display);font-style:italic;font-size:15px;color:var(--ink);}
-.brand em{font-style:normal;color:var(--accent);}
-.slide-counter{font-family:var(--mono);font-size:11px;color:var(--muted);}
+.brand{font-family:var(--display);font-style:italic;font-size:15px;}
+.brand em{color:var(--accent);}
 .stage{flex:1;position:relative;overflow:hidden;}
-.slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 32px;opacity:0;pointer-events:none;transform:translateY(16px);transition:opacity .5s,transform .5s;overflow-y:auto;}
-.slide.active{opacity:1;pointer-events:auto;transform:translateY(0);}
-.slide-inner{width:100%;max-width:780px;display:flex;flex-direction:column;align-items:center;gap:16px;}
+.slide{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;pointer-events:none;transform:scale(.95);transition:all .5s cubic-bezier(.2,.8,.2,1);overflow-y:auto;}
+.slide.active{opacity:1;pointer-events:auto;transform:scale(1);}
+.slide-inner{width:100%;max-width:600px;display:flex;flex-direction:column;align-items:center;gap:20px;text-align:center;}
+.intro-slide{gap:32px;}
 .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);}
-h2.title{font-family:var(--display);font-weight:400;font-size:clamp(26px,3.5vw,42px);color:var(--ink);text-align:center;max-width:22ch;}
-h2.title em{font-style:italic;color:var(--accent);}
-.subtitle{font-size:16px;color:var(--muted);text-align:center;max-width:48ch;line-height:1.5;}
-.choices{display:flex;flex-direction:column;gap:10px;width:100%;max-width:540px;margin-top:8px;}
-.choice{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 18px;font-size:15px;color:var(--ink-2);cursor:pointer;text-align:left;transition:all .2s;display:flex;align-items:center;gap:12px;}
-.choice:hover{border-color:var(--ink-2);}
-.choice-letter{width:26px;height:26px;border-radius:50%;background:var(--bg-2);color:var(--muted);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:11px;font-weight:600;flex-shrink:0;}
-.feedback{margin-top:14px;padding:12px 18px;background:var(--card);border:1px solid var(--line);border-left:4px solid var(--olive);border-radius:10px;font-size:14px;color:var(--ink-2);max-width:540px;}
+.title{font-family:var(--display);font-size:clamp(32px,6vw,56px);line-height:1.1;font-weight:400;}
+.title em{font-style:italic;color:var(--accent);}
+.subtitle{font-size:16px;color:var(--muted);line-height:1.5;}
+.intro-icon{font-size:48px;animation:bounce 2s infinite;}
+
+.flip-card{cursor:pointer;perspective:1000px;height:240px;width:100%;max-width:500px;}
+.flip-inner{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d;}
+.flip-card.flipped .flip-inner{transform:rotateY(180deg);}
+.flip-front,.flip-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;border-radius:16px;border:2px solid var(--line);background:var(--card);}
+.flip-back{transform:rotateY(180deg);background:linear-gradient(135deg,rgba(79,93,56,.1) 0%,rgba(200,84,43,.1) 100%);border-color:var(--accent);}
+.flip-front p,.flip-back p{font-size:18px;font-weight:500;color:var(--ink);}
+.flip-front small,.flip-back small{font-size:11px;color:var(--muted);margin-top:12px;}
+
+.quiz-question{font-size:22px;color:var(--ink);margin-bottom:20px;}
+.quiz-options{display:flex;flex-direction:column;gap:12px;width:100%;max-width:500px;}
+.quiz-option{background:var(--card);border:2px solid var(--line);border-radius:12px;padding:16px;cursor:pointer;display:flex;align-items:center;gap:12px;transition:all .3s;text-align:left;}
+.quiz-option:hover{border-color:var(--accent);transform:translateX(4px);}
+.quiz-option.correct{background:rgba(79,93,56,.15);border-color:var(--olive);}
+.quiz-option.wrong{background:rgba(200,84,43,.15);border-color:var(--accent);}
+.option-letter{display:flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;background:var(--accent);color:white;font-weight:600;flex-shrink:0;}
+.quiz-option.correct .option-letter{background:var(--olive);}
+.option-text{flex:1;font-size:15px;color:var(--ink-2);}
+.check-mark{font-size:18px;opacity:0;transition:.3s;}
+.quiz-option.answered .check-mark{opacity:1;}
+.quiz-feedback{margin-top:16px;padding:12px 16px;background:var(--card);border-left:4px solid var(--olive);border-radius:8px;font-size:14px;color:var(--ink-2);}
+.quiz-feedback.hidden{display:none;}
+.quiz-feedback.show{display:block;animation:slideIn .3s ease;}
+
 .footer{flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:12px 20px;border-top:1px solid var(--line);background:rgba(251,248,240,.7);}
-.nav-btn{background:var(--card);border:1px solid var(--line-2);color:var(--ink-2);font-family:var(--body);font-size:12px;padding:8px 14px;border-radius:100px;cursor:pointer;transition:all .2s;}
-.nav-btn:hover{border-color:var(--ink-2);}
-.nav-btn.primary{background:var(--ink);color:var(--bg);border-color:var(--ink);}
+.nav-btn{background:var(--card);border:1px solid var(--line-2);color:var(--ink-2);padding:8px 14px;border-radius:100px;cursor:pointer;font-size:12px;transition:.2s;}
+.nav-btn:hover{border-color:var(--accent);color:var(--accent);}
+.nav-btn.primary{background:var(--accent);color:white;border-color:var(--accent);}
 .nav-btn.disabled{opacity:.5;pointer-events:none;}
 .progress-dots{display:flex;gap:6px;}
-.progress-dot{width:6px;height:6px;border-radius:50%;background:var(--line);cursor:pointer;transition:all .2s;}
+.progress-dot{width:6px;height:6px;border-radius:50%;background:var(--line);cursor:pointer;transition:.2s;}
 .progress-dot.active{background:var(--accent);width:20px;border-radius:3px;}
+
+@keyframes bounce{0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)}}
+@keyframes slideIn{from{opacity:0;transform:translateY(-10px)} to{opacity:1;transform:translateY(0)}}
+@media(max-width:900px){.slide-inner{max-width:calc(100% - 32px)}.flip-card{height:200px}}
 </style>
 </head>
 <body>
 <div class="header">
   <button class="exit-btn" id="exitBtn">← Salir</button>
   <div class="brand">Claude<em>·101</em></div>
-  <div class="slide-counter"><strong id="slideNum">1</strong> / <span>10</span></div>
+  <div class="slide-counter"><strong id="slideNum">1</strong> / 9</div>
 </div>
-<div class="stage" id="stage"><div class="slide active" data-slide="1">
-      <div class="slide-inner">
-        <div class="eyebrow">Lección 1-1</div><h2 class="title">¿Qué es <em>Claude</em>?</h2>
-        <p class="subtitle">Claude es un asistente de IA creado por Anthropic. Aprendes a trabajar con él desde cero hasta ser experto en 5 horas.</p></div></div>
-<div class="slide" data-slide="2">
-      <div class="slide-inner">
-        <div class="eyebrow">Lección 1-1</div><h2 class="title">Quién creó <em>Claude</em>?</h2>
-        <div class="choices"><button class="choice"><span class="choice-letter">A</span><span>Anthropic, fundada en 2021 por ex-miembros de OpenAI</span></button><button class="choice"><span class="choice-letter">B</span><span>Google DeepMind</span></button><button class="choice"><span class="choice-letter">C</span><span>Meta AI</span></button></div><div class="feedback show"><strong>→ Correcto. Dario y Daniela Amodei fundaron Anthropic con visión en seguridad de IA.</strong></div></div></div>
-<div class="slide" data-slide="3">
-      <div class="slide-inner">
-        <div class="eyebrow">Lección 1-1</div><h2 class="title">Qué diferencia a <em>Claude</em> de ChatGPT?</h2>
-        <div class="choices"><button class="choice"><span class="choice-letter">A</span><span>Razonamiento más profundo, mejor con contextos largos, más honesto sobre límites</span></button><button class="choice"><span class="choice-letter">B</span><span>Siempre es más rápido</span></button><button class="choice"><span class="choice-letter">C</span><span>No tiene limitaciones</span></button></div><div class="feedback show"><strong>→ Claude destaca por matiz, honestidad y capacidad de razonamiento profundo.</strong></div></div></div>
-<div class="slide" data-slide="4">
-      <div class="slide-inner">
-        <div class="eyebrow">Lección 1-1</div><h2 class="title">En qué se especializa <em>Claude</em>?</h2>
-        <div class="choices"><button class="choice"><span class="choice-letter">A</span><span>Solo chatbot</span></button><button class="choice"><span class="choice-letter">B</span><span>Escritura, código, análisis, razonamiento complejo y procesamiento de contextos largos</span></button><button class="choice"><span class="choice-letter">C</span><span>Solo imágenes</span></button></div><div class="feedback show"><strong>→ Claude es versátil: excela en escritura, programación, análisis y pensamiento estructurado.</strong></div></div></div>
-<div class="slide" data-slide="5">
-      <div class="slide-inner">
-        <div class="eyebrow">Lección 1-1</div><h2 class="title">¿Cómo se entrena Claude?</h2>
-        <div class="choices"><button class="choice"><span class="choice-letter">A</span><span>Constitutional AI: con criterios de valores, no solo datos</span></button><button class="choice"><span class="choice-letter">B</span><span>Memoriza una base de datos</span></button><button class="choice"><span class="choice-letter">C</span><span>Busca en internet en tiempo real</span></button></div><div class="feedback show"><strong>→ Constitutional AI enseña a Claude mediante principios de seguridad y valores.</strong></div></div></div>
-<div class="slide" data-slide="6">
-      <div class="slide-inner">
-        <div class="eyebrow">Lección 1-1</div><h2 class="title">¿Cuál es el cutoff de conocimiento de Claude?</h2>
-        <div class="choices"><button class="choice"><span class="choice-letter">A</span><span>Abril de 2024</span></button><button class="choice"><span class="choice-letter">B</span><span>Tiempo real</span></button><button class="choice"><span class="choice-letter">C</span><span>2023</span></button></div><div class="feedback show"><strong>→ Claude 3.5 fue entrenado hasta abril 2024. Para info actual, usa búsqueda web.</strong></div></div></div>
-<div class="slide" data-slide="7">
-      <div class="slide-inner">
-        <div class="eyebrow">Lección 1-1</div><h2 class="title">Qué NO puede hacer Claude?</h2>
-        <div class="choices"><button class="choice"><span class="choice-letter">A</span><span>Navegar internet sin ser explícitamente pedido</span></button><button class="choice"><span class="choice-letter">B</span><span>Recordar conversaciones previas (cada chat es independiente)</span></button><button class="choice"><span class="choice-letter">C</span><span>Ambas</span></button></div><div class="feedback show"><strong>→ Correcto. Claude no recuerda entre chats y necesitas activar búsqueda web.</strong></div></div></div>
-<div class="slide" data-slide="8">
-      <div class="slide-inner">
-        <div class="eyebrow">Lección 1-1</div><h2 class="title">Filosofía de Anthropic: Útil, Honesto, Inofensivo</h2>
-        <div class="choices"><button class="choice"><span class="choice-letter">A</span><span>Útil = responde lo que preguntas sin evasivas</span></button><button class="choice"><span class="choice-letter">B</span><span>Honesto = admite cuando no sabe, explica límites</span></button><button class="choice"><span class="choice-letter">C</span><span>Inofensivo = rechaza peticiones dañinas</span></button></div><div class="feedback show"><strong>→ Los tres pilares crean el equilibrio único de Claude.</strong></div></div></div>
-<div class="slide" data-slide="9">
-      <div class="slide-inner">
-        <div class="eyebrow">Lección 1-1</div><h2 class="title">¿A quién está dirigido Claude?</h2>
-        <div class="choices"><button class="choice"><span class="choice-letter">A</span><span>Solo programadores</span></button><button class="choice"><span class="choice-letter">B</span><span>Profesionales de marketing, escritores, devs, analistas, creativos — cualquiera</span></button><button class="choice"><span class="choice-letter">C</span><span>Solo empresas grandes</span></button></div><div class="feedback show"><strong>→ Claude es para personas que trabajan y quieren multiplicar productividad.</strong></div></div></div>
-<div class="slide" data-slide="10">
-      <div class="slide-inner">
-        <div class="eyebrow">Lección 1-1</div><h2 class="title">Próximo: <em>La familia de modelos</em></h2>
-        <p class="subtitle">En la siguiente lección aprenderás las 3 versiones de Claude y cuándo usar cada una.</p></div></div></div>
+<div class="stage" id="stage">
+  <div class="slide active" data-slide="1">
+    <div class="slide-inner intro-slide">
+      <div class="eyebrow">Lección 1-1</div>
+      <h1 class="title">¿Qué es <em>Claude</em>?</h1>
+      <p class="subtitle">Un asistente de IA creado por Anthropic para multiplicar tu productividad</p>
+      <div class="intro-icon">→</div>
+    </div>
+  </div>
+
+  <div class="slide" data-slide="2">
+    <div class="slide-inner">
+      <div class="eyebrow">Lección 1-1</div>
+      <div class="flip-card" onclick="this.classList.toggle('flipped')">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <p>¿Quién creó Claude?</p>
+            <small>Click para revelar</small>
+          </div>
+          <div class="flip-back">
+            <p>Anthropic, fundada en 2021 por ex-miembros de OpenAI (Dario y Daniela Amodei)</p>
+            <small>Click para ocultar</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide" data-slide="3">
+    <div class="slide-inner">
+      <div class="eyebrow">Lección 1-1</div>
+      <h2 class="quiz-question">Qué diferencia a Claude de ChatGPT?</h2>
+      <div class="quiz-options">
+        
+        <button class="quiz-option" onclick="checkAnswer(this, true, 'Claude destaca por su capacidad de razonamiento estructurado y honestidad técnica.')">
+          <span class="option-letter">A</span>
+          <span class="option-text">Razonamiento profundo, contextos largos, honestidad sobre límites</span>
+          <span class="check-mark">✓</span>
+        </button>
+        <button class="quiz-option" onclick="checkAnswer(this, false, 'Claude destaca por su capacidad de razonamiento estructurado y honestidad técnica.')">
+          <span class="option-letter">B</span>
+          <span class="option-text">Es más barato siempre</span>
+          <span class="check-mark">✓</span>
+        </button>
+        <button class="quiz-option" onclick="checkAnswer(this, false, 'Claude destaca por su capacidad de razonamiento estructurado y honestidad técnica.')">
+          <span class="option-letter">C</span>
+          <span class="option-text">No tiene limitaciones</span>
+          <span class="check-mark">✓</span>
+        </button>
+      </div>
+      <div class="quiz-feedback hidden"></div>
+    </div>
+  </div>
+
+  <div class="slide" data-slide="4">
+    <div class="slide-inner">
+      <div class="eyebrow">Lección 1-1</div>
+      <div class="flip-card" onclick="this.classList.toggle('flipped')">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <p>En qué se especializa Claude</p>
+            <small>Click para revelar</small>
+          </div>
+          <div class="flip-back">
+            <p>Escritura, código, análisis, razonamiento complejo, procesamiento de contextos largos (200K tokens)</p>
+            <small>Click para ocultar</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide" data-slide="5">
+    <div class="slide-inner">
+      <div class="eyebrow">Lección 1-1</div>
+      <h2 class="quiz-question">¿Cómo se entrena Claude?</h2>
+      <div class="quiz-options">
+        
+        <button class="quiz-option" onclick="checkAnswer(this, true, 'Constitutional AI enseña mediante principios, no solo datos.')">
+          <span class="option-letter">A</span>
+          <span class="option-text">Constitutional AI: con criterios de valores y seguridad</span>
+          <span class="check-mark">✓</span>
+        </button>
+        <button class="quiz-option" onclick="checkAnswer(this, false, 'Constitutional AI enseña mediante principios, no solo datos.')">
+          <span class="option-letter">B</span>
+          <span class="option-text">Memoriza una base de datos</span>
+          <span class="check-mark">✓</span>
+        </button>
+        <button class="quiz-option" onclick="checkAnswer(this, false, 'Constitutional AI enseña mediante principios, no solo datos.')">
+          <span class="option-letter">C</span>
+          <span class="option-text">Busca en internet en tiempo real</span>
+          <span class="check-mark">✓</span>
+        </button>
+      </div>
+      <div class="quiz-feedback hidden"></div>
+    </div>
+  </div>
+
+  <div class="slide" data-slide="6">
+    <div class="slide-inner">
+      <div class="eyebrow">Lección 1-1</div>
+      <div class="flip-card" onclick="this.classList.toggle('flipped')">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <p>Cutoff de conocimiento</p>
+            <small>Click para revelar</small>
+          </div>
+          <div class="flip-back">
+            <p>Abril de 2024. Para info más reciente, activa búsqueda web.</p>
+            <small>Click para ocultar</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide" data-slide="7">
+    <div class="slide-inner">
+      <div class="eyebrow">Lección 1-1</div>
+      <h2 class="quiz-question">¿Qué NO puede hacer Claude?</h2>
+      <div class="quiz-options">
+        
+        <button class="quiz-option" onclick="checkAnswer(this, true, 'Cada chat es independiente. Memoria requiere Proyectos.')">
+          <span class="option-letter">A</span>
+          <span class="option-text">Recordar conversaciones previas ni navegar web sin ser pedido</span>
+          <span class="check-mark">✓</span>
+        </button>
+        <button class="quiz-option" onclick="checkAnswer(this, false, 'Cada chat es independiente. Memoria requiere Proyectos.')">
+          <span class="option-letter">B</span>
+          <span class="option-text">Procesar imágenes</span>
+          <span class="check-mark">✓</span>
+        </button>
+        <button class="quiz-option" onclick="checkAnswer(this, false, 'Cada chat es independiente. Memoria requiere Proyectos.')">
+          <span class="option-letter">C</span>
+          <span class="option-text">Escribir código</span>
+          <span class="check-mark">✓</span>
+        </button>
+      </div>
+      <div class="quiz-feedback hidden"></div>
+    </div>
+  </div>
+
+  <div class="slide" data-slide="8">
+    <div class="slide-inner">
+      <div class="eyebrow">Lección 1-1</div>
+      <div class="flip-card" onclick="this.classList.toggle('flipped')">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <p>Filosofía: 3 pilares</p>
+            <small>Click para revelar</small>
+          </div>
+          <div class="flip-back">
+            <p>Útil (responde sin evasivas) + Honesto (admite límites) + Inofensivo (rechaza daño)</p>
+            <small>Click para ocultar</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide" data-slide="9">
+    <div class="slide-inner intro-slide">
+      <div class="eyebrow">Lección 1-1</div>
+      <h1 class="title">✓ Completaste L1-1</h1>
+      <p class="subtitle">10 slides sobre fundamentos de Claude</p>
+      <div class="intro-icon">→</div>
+    </div>
+  </div></div>
 <div class="footer">
   <button class="nav-btn" id="prevBtn">← Anterior</button>
   <div class="progress-dots" id="progressDots"></div>
@@ -94,7 +246,7 @@ h2.title em{font-style:italic;color:var(--accent);}
 </div>
 <script>
 let currentSlide = 1;
-const totalSlides = 10;
+const totalSlides = 9;
 const slides = document.querySelectorAll('.slide');
 const exitBtn = document.getElementById('exitBtn');
 const prevBtn = document.getElementById('prevBtn');
@@ -125,6 +277,17 @@ function goToSlide(n) {
   updateSlide();
 }
 
+function checkAnswer(btn, isCorrect, explanation) {
+  const options = btn.parentElement.querySelectorAll('.quiz-option');
+  options.forEach(opt => opt.classList.add('disabled'));
+  btn.classList.add('answered', isCorrect ? 'correct' : 'wrong');
+  
+  const feedback = btn.parentElement.nextElementSibling;
+  feedback.textContent = (isCorrect ? '✓ Correcto: ' : '✗ Incorrecto: ') + explanation;
+  feedback.classList.remove('hidden');
+  feedback.classList.add('show');
+}
+
 prevBtn.addEventListener('click', () => goToSlide(currentSlide - 1));
 nextBtn.addEventListener('click', () => goToSlide(currentSlide + 1));
 exitBtn.addEventListener('click', () => window.parent.location.href = '/app');
@@ -132,6 +295,7 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'ArrowLeft') goToSlide(currentSlide - 1);
   if (e.key === 'ArrowRight') goToSlide(currentSlide + 1);
 });
+
 updateSlide();
 </script>
 </body>
