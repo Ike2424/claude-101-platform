@@ -1,240 +1,136 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Claude 101 · L1-4</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Geist:wght@300..700&family=Geist+Mono:wght@400..600&display=swap" rel="stylesheet">
-<style>
-:root{--bg:#F4EFE3;--bg-2:#EFE9DA;--card:#FBF8F0;--ink:#1C1A16;--ink-2:#3A352D;--muted:#756B5B;--line:#E1D8C2;--accent:#C8542B;--olive:#4F5D38;--display:'Fraunces',Georgia,serif;--body:'Geist',system-ui,sans-serif;--mono:'Geist Mono',ui-monospace,monospace;}
-*{box-sizing:border-box;margin:0;padding:0;}
-html,body{height:100%;background:var(--bg);color:var(--ink);font-family:var(--body);overflow:hidden;}
-body{display:flex;flex-direction:column;background-image:radial-gradient(circle at 12% 8%,rgba(200,84,43,.05) 0%,transparent 40%),radial-gradient(circle at 88% 92%,rgba(79,93,56,.04) 0%,transparent 40%);}
-.header{flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:12px 20px;border-bottom:1px solid var(--line);background:rgba(251,248,240,.7);backdrop-filter:blur(8px);}
-.exit-btn{background:transparent;border:1px solid var(--line-2);color:var(--ink-2);font-family:var(--mono);font-size:10px;padding:7px 12px;border-radius:100px;cursor:pointer;transition:.2s;}
-.exit-btn:hover{border-color:var(--accent);color:var(--accent);}
-.brand{font-family:var(--display);font-style:italic;font-size:15px;}
-.brand em{color:var(--accent);}
-.stage{flex:1;position:relative;overflow:hidden;}
-.slide{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;pointer-events:none;transform:scale(.95);transition:all .5s cubic-bezier(.2,.8,.2,1);overflow-y:auto;}
-.slide.active{opacity:1;pointer-events:auto;transform:scale(1);}
-.slide-inner{width:100%;max-width:600px;display:flex;flex-direction:column;align-items:center;gap:20px;text-align:center;}
-.intro-slide{gap:32px;}
-.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);}
-.title{font-family:var(--display);font-size:clamp(32px,6vw,56px);line-height:1.1;font-weight:400;}
-.title em{font-style:italic;color:var(--accent);}
-.subtitle{font-size:16px;color:var(--muted);line-height:1.5;}
-.intro-icon{font-size:48px;animation:bounce 2s infinite;}
-
-.flip-card{cursor:pointer;perspective:1000px;height:240px;width:100%;max-width:500px;}
-.flip-inner{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d;}
-.flip-card.flipped .flip-inner{transform:rotateY(180deg);}
-.flip-front,.flip-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;border-radius:16px;border:2px solid var(--line);background:var(--card);}
-.flip-back{transform:rotateY(180deg);background:linear-gradient(135deg,rgba(79,93,56,.1) 0%,rgba(200,84,43,.1) 100%);border-color:var(--accent);}
-.flip-front p,.flip-back p{font-size:18px;font-weight:500;color:var(--ink);}
-.flip-front small,.flip-back small{font-size:11px;color:var(--muted);margin-top:12px;}
-
-.quiz-question{font-size:22px;color:var(--ink);margin-bottom:20px;}
-.quiz-options{display:flex;flex-direction:column;gap:12px;width:100%;max-width:500px;}
-.quiz-option{background:var(--card);border:2px solid var(--line);border-radius:12px;padding:16px;cursor:pointer;display:flex;align-items:center;gap:12px;transition:all .3s;text-align:left;}
-.quiz-option:hover{border-color:var(--accent);transform:translateX(4px);}
-.quiz-option.correct{background:rgba(79,93,56,.15);border-color:var(--olive);}
-.quiz-option.wrong{background:rgba(200,84,43,.15);border-color:var(--accent);}
-.option-letter{display:flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;background:var(--accent);color:white;font-weight:600;flex-shrink:0;}
-.quiz-option.correct .option-letter{background:var(--olive);}
-.option-text{flex:1;font-size:15px;color:var(--ink-2);}
-.check-mark{font-size:18px;opacity:0;transition:.3s;}
-.quiz-option.answered .check-mark{opacity:1;}
-.quiz-feedback{margin-top:16px;padding:12px 16px;background:var(--card);border-left:4px solid var(--olive);border-radius:8px;font-size:14px;color:var(--ink-2);}
-.quiz-feedback.hidden{display:none;}
-.quiz-feedback.show{display:block;animation:slideIn .3s ease;}
-
-.footer{flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:12px 20px;border-top:1px solid var(--line);background:rgba(251,248,240,.7);}
-.nav-btn{background:var(--card);border:1px solid var(--line-2);color:var(--ink-2);padding:8px 14px;border-radius:100px;cursor:pointer;font-size:12px;transition:.2s;}
-.nav-btn:hover{border-color:var(--accent);color:var(--accent);}
-.nav-btn.primary{background:var(--accent);color:white;border-color:var(--accent);}
-.nav-btn.disabled{opacity:.5;pointer-events:none;}
-.progress-dots{display:flex;gap:6px;}
-.progress-dot{width:6px;height:6px;border-radius:50%;background:var(--line);cursor:pointer;transition:.2s;}
-.progress-dot.active{background:var(--accent);width:20px;border-radius:3px;}
-
-@keyframes bounce{0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)}}
-@keyframes slideIn{from{opacity:0;transform:translateY(-10px)} to{opacity:1;transform:translateY(0)}}
-@media(max-width:900px){.slide-inner{max-width:calc(100% - 32px)}.flip-card{height:200px}}
-</style>
-</head>
-<body>
-<div class="header">
-  <button class="exit-btn" id="exitBtn">← Salir</button>
-  <div class="brand">Claude<em>·101</em></div>
-  <div class="slide-counter"><strong id="slideNum">1</strong> / 6</div>
-</div>
-<div class="stage" id="stage">
-  <div class="slide active" data-slide="1">
-    <div class="slide-inner intro-slide">
-      <div class="eyebrow">Lección 1-4</div>
-      <h1 class="title">Claude vs <em>ChatGPT vs Gemini</em></h1>
-      <p class="subtitle">No hay ganador. Hay mejor para cada caso.</p>
-      <div class="intro-icon">→</div>
-    </div>
-  </div>
-
-  <div class="slide" data-slide="2">
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Claude 101 · L1-4</title><style>:root{--bg:#F4EFE3;--bg-2:#EFE9DA;--card:#FBF8F0;--ink:#1C1A16;--ink-2:#3A352D;--muted:#756B5B;--line:#E1D8C2;--accent:#C8542B;--olive:#4F5D38;--display:'Fraunces';--body:'Geist';}*{box-sizing:border-box;margin:0;padding:0;}html,body{height:100%;background:var(--bg);color:var(--ink);font-family:var(--body),-apple-system,sans-serif;overflow:hidden;}body{display:flex;flex-direction:column;background-image:radial-gradient(circle at 12% 8%,rgba(200,84,43,.05) 0%,transparent 40%),radial-gradient(circle at 88% 92%,rgba(79,93,56,.04) 0%,transparent 40%);}button{cursor:pointer;font-family:inherit;border:none;transition:.2s;}button:hover{transform:translateY(-2px)}.header{flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:12px 20px;border-bottom:1px solid var(--line);background:rgba(251,248,240,.7);backdrop-filter:blur(8px);}.exit-btn{background:transparent;border:1px solid #ccc;color:var(--ink-2);font-family:monospace;font-size:10px;padding:7px 12px;border-radius:100px;}.exit-btn:hover{border-color:var(--accent);color:var(--accent);}.brand{font-family:var(--display);font-style:italic;font-size:15px;font-weight:500;}.brand em{color:var(--accent);}.stage{flex:1;position:relative;overflow:hidden;}.slide{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:32px;opacity:0;pointer-events:none;transform:scale(.95);transition:all .5s cubic-bezier(.2,.8,.2,1);overflow-y:auto;}.slide.active{opacity:1;pointer-events:auto;transform:scale(1);}.slide-inner{width:100%;max-width:700px;display:flex;flex-direction:column;align-items:center;gap:24px;text-align:center;}.eyebrow{font-family:monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);}.title{font-family:var(--display);font-size:clamp(32px,6vw,56px);line-height:1.1;font-weight:400;}.title em{font-style:italic;color:var(--accent);}.subtitle{font-size:18px;color:var(--muted);line-height:1.5;}.slide-text{font-size:15px;color:var(--ink-2);line-height:1.6;max-width:600px;margin-top:12px;}.intro-icon{font-size:48px;animation:bounce 2s infinite;}.flip-card{cursor:pointer;perspective:1000px;height:240px;width:100%;max-width:500px;}.flip-inner{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d;}.flip-card.flipped .flip-inner{transform:rotateY(180deg);}.flip-front,.flip-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;border-radius:16px;border:2px solid var(--line);background:var(--card);}.flip-back{transform:rotateY(180deg);background:linear-gradient(135deg,rgba(79,93,56,.1) 0%,rgba(200,84,43,.1) 100%);border-color:var(--accent);}.flip-front p,.flip-back p{font-size:16px;font-weight:500;color:var(--ink);}.flip-front small,.flip-back small{font-size:11px;color:var(--muted);margin-top:12px;}.comparison-title{font-size:22px;color:var(--ink);margin-bottom:16px;}.comparison-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;width:100%;max-width:600px;}.comparison-box{background:var(--card);border:2px solid var(--line);border-radius:12px;padding:20px;}.comparison-box h3{color:var(--accent);font-size:16px;margin-bottom:12px;}.comparison-box ul{list-style:none;padding:0;}.comparison-box li{font-size:14px;color:var(--ink-2);margin:8px 0;padding-left:20px;position:relative;}.comparison-box li:before{content:"✓";position:absolute;left:0;color:var(--olive);}.key-title,.example-title,.checklist-title{font-size:22px;color:var(--ink);margin-bottom:16px;}.key-list{list-style:none;padding:0;text-align:left;max-width:550px;margin:0 auto;}.key-list li{background:rgba(79,93,56,.05);border-left:4px solid var(--olive);padding:12px 16px;margin:8px 0;border-radius:6px;font-size:14px;color:var(--ink-2);}.example-code{background:rgba(28,26,22,.8);color:#fff;padding:16px;border-radius:8px;font-family:monospace;font-size:13px;text-align:left;max-width:550px;overflow-x:auto;margin:0;white-space:pre-wrap;word-wrap:break-word;}.checklist{display:flex;flex-direction:column;gap:12px;max-width:550px;text-align:left;margin:0 auto;}.checklist-item{display:flex;align-items:center;gap:12px;font-size:14px;color:var(--ink-2);}.checklist-item input{width:20px;height:20px;}.quiz-question{font-size:20px;color:var(--ink);margin-bottom:20px;}.quiz-options{display:flex;flex-direction:column;gap:12px;width:100%;max-width:550px;}.quiz-option{background:var(--card);border:2px solid var(--line);border-radius:12px;padding:16px;display:flex;align-items:center;gap:12px;text-align:left;}.quiz-option:hover{border-color:var(--accent);transform:translateX(4px);}.quiz-option.correct{background:rgba(79,93,56,.15);border-color:var(--olive);}.quiz-option.wrong{background:rgba(200,84,43,.15);border-color:var(--accent);}.option-letter{display:flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;background:var(--accent);color:white;font-weight:600;flex-shrink:0;}.quiz-option.correct .option-letter{background:var(--olive);}.option-text{flex:1;font-size:14px;color:var(--ink-2);}.check-mark{font-size:18px;opacity:0;transition:.3s;}.quiz-option.answered .check-mark{opacity:1;}.quiz-feedback{margin-top:16px;padding:12px 16px;background:var(--card);border-left:4px solid var(--olive);border-radius:8px;font-size:13px;color:var(--ink-2);max-width:550px;}.quiz-feedback.hidden{display:none;}.quiz-feedback.show{display:block;animation:slideIn .3s ease;}.footer{flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:12px 20px;border-top:1px solid var(--line);background:rgba(251,248,240,.7);}.nav-btn{background:var(--card);border:1px solid #ccc;color:var(--ink-2);padding:8px 14px;border-radius:100px;font-size:12px;}.nav-btn:hover{border-color:var(--accent);color:var(--accent);}.nav-btn.primary{background:var(--accent);color:white;border-color:var(--accent);}.nav-btn.disabled{opacity:.5;pointer-events:none;}.progress-dots{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;}.progress-dot{width:6px;height:6px;border-radius:50%;background:var(--line);cursor:pointer;transition:.2s;}.progress-dot.active{background:var(--accent);width:20px;border-radius:3px;}@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}@keyframes slideIn{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}@media(max-width:900px){.slide-inner{max-width:calc(100% - 64px)}.comparison-grid{grid-template-columns:1fr;}}</style></head><body><div class="header"><button class="exit-btn" id="exitBtn">← Salir</button><div class="brand">Claude<em>·101</em></div><div class="slide-counter"><strong id="slideNum">1</strong> / 15</div></div><div class="stage" id="stage"><div class="slide active" data-slide="1">
     <div class="slide-inner">
-      <div class="eyebrow">Lección 1-4</div>
-      <div class="flip-card" onclick="this.classList.toggle('flipped')">
-        <div class="flip-inner">
-          <div class="flip-front">
-            <p>Claude destaca en...</p>
-            <small>Click para revelar</small>
-          </div>
-          <div class="flip-back">
-            <p>Razonamiento profundo, honestidad sobre límites, contextos largos (200K tokens).</p>
-            <small>Click para ocultar</small>
-          </div>
+      <div class="eyebrow">Lección 1-4</div><h1 class="title">Claude vs <em>otros</em></h1>
+        <p class="subtitle">ChatGPT, Gemini, Grok</p>
+        <p class="slide-text">Cada modelo tiene fortalezas y debilidades. Entiende dónde Claude destaca y dónde no.</p>
+        <div class="intro-icon">→</div></div></div>
+<div class="slide" data-slide="2">
+    <div class="slide-inner">
+      <div class="eyebrow">Lección 1-4</div><h2 class="comparison-title">Claude vs ChatGPT</h2>
+      <div class="comparison-grid">
+        <div class="comparison-box">
+          <h3>Claude</h3>
+          <ul><li>Contexto: 200K</li><li>Razonamiento: ★★★★★</li><li>Honestidad: ★★★★★</li><li>Alucinaciones: Menos</li></ul>
+        </div>
+        <div class="comparison-box">
+          <h3>ChatGPT</h3>
+          <ul><li>Ecosistema: ★★★★★</li><li>GPTs: Extensible</li><li>Comunidad: Grande</li><li>Visión: Nativa</li></ul>
         </div>
       </div>
-    </div>
-  </div>
-
-  <div class="slide" data-slide="3">
+      <p class="slide-text">Claude gana en razonamiento. ChatGPT en ecosistema.</p></div></div>
+<div class="slide" data-slide="3">
     <div class="slide-inner">
-      <div class="eyebrow">Lección 1-4</div>
-      <h2 class="quiz-question">¿ChatGPT destaca en qué?</h2>
-      <div class="quiz-options">
-        
-        <button class="quiz-option" onclick="checkAnswer(this, true, 'ChatGPT tiene comunidad y integraciones. Elige según workflow.')">
-          <span class="option-letter">A</span>
-          <span class="option-text">Ecosistema maduro, GPT-4o para imágenes, plugins</span>
-          <span class="check-mark">✓</span>
-        </button>
-        <button class="quiz-option" onclick="checkAnswer(this, false, 'ChatGPT tiene comunidad y integraciones. Elige según workflow.')">
-          <span class="option-letter">B</span>
-          <span class="option-text">Siempre es mejor que Claude</span>
-          <span class="check-mark">✓</span>
-        </button>
-        <button class="quiz-option" onclick="checkAnswer(this, false, 'ChatGPT tiene comunidad y integraciones. Elige según workflow.')">
-          <span class="option-letter">C</span>
-          <span class="option-text">Cosa única suya</span>
-          <span class="check-mark">✓</span>
-        </button>
-      </div>
-      <div class="quiz-feedback hidden"></div>
-    </div>
-  </div>
-
-  <div class="slide" data-slide="4">
-    <div class="slide-inner">
-      <div class="eyebrow">Lección 1-4</div>
-      <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="eyebrow">Lección 1-4</div><div class="flip-card" onclick="this.classList.toggle('flipped')">
         <div class="flip-inner">
-          <div class="flip-front">
-            <p>Gemini (Google) para...</p>
-            <small>Click para revelar</small>
-          </div>
-          <div class="flip-back">
-            <p>Integración Google Workspace (Gmail, Docs, Meet). Análisis de video.</p>
-            <small>Click para ocultar</small>
-          </div>
+          <div class="flip-front"><p>ChatGPT: fortalezas</p><small>Click para revelar</small></div>
+          <div class="flip-back"><p>Enorme comunidad, miles de plugins, GPTs personalizados, interfaz pulida, voz nativa, búsqueda integrada.</p><small>Click para ocultar</small></div>
         </div>
       </div>
-    </div>
-  </div>
-
-  <div class="slide" data-slide="5">
+      <p class="slide-text">Es la opción más accesible para usuarios normales.</p></div></div>
+<div class="slide" data-slide="4">
     <div class="slide-inner">
-      <div class="eyebrow">Lección 1-4</div>
-      <h2 class="quiz-question">¿Cuál elegir?</h2>
-      <div class="quiz-options">
-        
-        <button class="quiz-option" onclick="checkAnswer(this, true, 'No hay ganador absoluto. Cada herramienta resuelve problemas distintos.')">
-          <span class="option-letter">A</span>
-          <span class="option-text">Prueba los 3. Cada uno es mejor para algo.</span>
-          <span class="check-mark">✓</span>
-        </button>
-        <button class="quiz-option" onclick="checkAnswer(this, false, 'No hay ganador absoluto. Cada herramienta resuelve problemas distintos.')">
-          <span class="option-letter">B</span>
-          <span class="option-text">Uno es objetivamente mejor</span>
-          <span class="check-mark">✓</span>
-        </button>
-        <button class="quiz-option" onclick="checkAnswer(this, false, 'No hay ganador absoluto. Cada herramienta resuelve problemas distintos.')">
-          <span class="option-letter">C</span>
-          <span class="option-text">No importa cuál uses</span>
-          <span class="check-mark">✓</span>
-        </button>
-      </div>
+      <div class="eyebrow">Lección 1-4</div><h2 class="quiz-question">¿Cuál modelo es mejor para razonamiento matemático?</h2>
+      <div class="quiz-options"><button class="quiz-option" onclick="checkAnswer(this, true, 'Claude sobresale en problemas de razonamiento paso a paso.')">
+        <span class="option-letter">A</span><span class="option-text">Claude (mejor CoT + menos alucinaciones)</span><span class="check-mark">✓</span></button><button class="quiz-option" onclick="checkAnswer(this, false, 'Claude sobresale en problemas de razonamiento paso a paso.')">
+        <span class="option-letter">B</span><span class="option-text">ChatGPT</span><span class="check-mark">✓</span></button><button class="quiz-option" onclick="checkAnswer(this, false, 'Claude sobresale en problemas de razonamiento paso a paso.')">
+        <span class="option-letter">C</span><span class="option-text">Gemini</span><span class="check-mark">✓</span></button></div>
       <div class="quiz-feedback hidden"></div>
-    </div>
-  </div>
+      <p class="slide-text">Esto es demostrado en benchmarks independientes.</p></div></div>
+<div class="slide" data-slide="5">
+    <div class="slide-inner">
+      <div class="eyebrow">Lección 1-4</div><div class="flip-card" onclick="this.classList.toggle('flipped')">
+        <div class="flip-inner">
+          <div class="flip-front"><p>Gemini: fortalezas</p><small>Click para revelar</small></div>
+          <div class="flip-back"><p>Integración Google, búsqueda en tiempo real, imágenes/vídeo/audio nativo, bajo costo, bueno para multimodal.</p><small>Click para ocultar</small></div>
+        </div>
+      </div>
+      <p class="slide-text">Es tu opción si usas Google Workspace.</p></div></div>
+<div class="slide" data-slide="6">
+    <div class="slide-inner">
+      <div class="eyebrow">Lección 1-4</div><h2 class="comparison-title">Contexto: tamaño real</h2>
+      <div class="comparison-grid">
+        <div class="comparison-box">
+          <h3>Claude</h3>
+          <ul><li>200K tokens = ~150 págs</li><li>Efectivo en práctica</li></ul>
+        </div>
+        <div class="comparison-box">
+          <h3>ChatGPT</h3>
+          <ul><li>128K tokens = ~100 págs</li><li>Menos en práctica</li></ul>
+        </div>
+      </div>
+      <p class="slide-text">Claude gana en cantidad usable de contexto.</p></div></div>
+<div class="slide" data-slide="7">
+    <div class="slide-inner">
+      <div class="eyebrow">Lección 1-4</div><h2 class="key-title">Cuándo usar cada uno</h2>
+      <ul class="key-list"><li>Claude: razonamiento complejo, documentos largos, escritura</li><li>ChatGPT: uso general, comunidad, plugins, GPTs</li><li>Gemini: integraciones Google, multimodal, búsqueda</li><li>Grok: beta, experimental, memes</li></ul>
+      <p class="slide-text">No es "mejor o peor", es "mejor para qué".</p></div></div>
+<div class="slide" data-slide="8">
+    <div class="slide-inner">
+      <div class="eyebrow">Lección 1-4</div><div class="flip-card" onclick="this.classList.toggle('flipped')">
+        <div class="flip-inner">
+          <div class="flip-front"><p>Alucinaciones: comparativa</p><small>Click para revelar</small></div>
+          <div class="flip-back"><p>Claude: menos. ChatGPT: moderadas. Gemini: pocas pero en áreas específicas. Ninguno es perfecto.</p><small>Click para ocultar</small></div>
+        </div>
+      </div>
+      <p class="slide-text">Todos alucinan. Claude es mejor en esto, pero no perfecto.</p></div></div>
+<div class="slide" data-slide="9">
+    <div class="slide-inner">
+      <div class="eyebrow">Lección 1-4</div><h2 class="example-title">Test real: análisis de contrato de 50 págs</h2>
+      <pre class="example-code">ChatGPT:
+- "No puedo procesar contexto tan largo"
 
-  <div class="slide" data-slide="6">
-    <div class="slide-inner intro-slide">
-      <div class="eyebrow">Lección 1-4</div>
-      <h1 class="title">✓ Completaste M1</h1>
-      <p class="subtitle">32 slides sobre fundamentos de Claude</p>
-      <div class="intro-icon">→</div>
-    </div>
-  </div></div>
-<div class="footer">
-  <button class="nav-btn" id="prevBtn">← Anterior</button>
-  <div class="progress-dots" id="progressDots"></div>
-  <button class="nav-btn primary" id="nextBtn">Siguiente →</button>
-</div>
-<script>
-let currentSlide = 1;
-const totalSlides = 6;
-const slides = document.querySelectorAll('.slide');
-const exitBtn = document.getElementById('exitBtn');
-const prevBtn = document.getElementById('prevBtn');
-const nextBtn = document.getElementById('nextBtn');
-const slideNum = document.getElementById('slideNum');
-const progressDots = document.getElementById('progressDots');
+Gemini:
+- Procesa pero pierde detalles
 
-for (let i = 1; i <= totalSlides; i++) {
-  const dot = document.createElement('div');
-  dot.className = 'progress-dot' + (i === 1 ? ' active' : '');
-  dot.addEventListener('click', () => goToSlide(i));
-  progressDots.appendChild(dot);
-}
-
-function updateSlide() {
-  slides.forEach(s => s.classList.remove('active'));
-  slides[currentSlide - 1].classList.add('active');
-  slideNum.textContent = currentSlide;
-  prevBtn.classList.toggle('disabled', currentSlide === 1);
-  nextBtn.classList.toggle('disabled', currentSlide === totalSlides);
-  document.querySelectorAll('.progress-dot').forEach((dot, idx) => {
-    dot.classList.toggle('active', idx + 1 === currentSlide);
-  });
-}
-
-function goToSlide(n) {
-  currentSlide = Math.max(1, Math.min(n, totalSlides));
-  updateSlide();
-}
-
-function checkAnswer(btn, isCorrect, explanation) {
-  const options = btn.parentElement.querySelectorAll('.quiz-option');
-  options.forEach(opt => opt.classList.add('disabled'));
-  btn.classList.add('answered', isCorrect ? 'correct' : 'wrong');
-  
-  const feedback = btn.parentElement.nextElementSibling;
-  feedback.textContent = (isCorrect ? '✓ Correcto: ' : '✗ Incorrecto: ') + explanation;
-  feedback.classList.remove('hidden');
-  feedback.classList.add('show');
-}
-
-prevBtn.addEventListener('click', () => goToSlide(currentSlide - 1));
-nextBtn.addEventListener('click', () => goToSlide(currentSlide + 1));
-exitBtn.addEventListener('click', () => window.parent.location.href = '/app');
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'ArrowLeft') goToSlide(currentSlide - 1);
-  if (e.key === 'ArrowRight') goToSlide(currentSlide + 1);
-});
-
-updateSlide();
-</script>
-</body>
-</html>
+Claude:
+- ✓ Análisis completo + riesgos legales
+- ✓ Mantiene consistencia</pre>
+      <p class="slide-text">Claude destaca aquí drásticamente.</p></div></div>
+<div class="slide" data-slide="10">
+    <div class="slide-inner">
+      <div class="eyebrow">Lección 1-4</div><h2 class="quiz-question">¿Cuál modelo integra mejor con Google Workspace?</h2>
+      <div class="quiz-options"><button class="quiz-option" onclick="checkAnswer(this, true, 'Gemini está integrado en Gmail, Docs, Sheets, etc.')">
+        <span class="option-letter">A</span><span class="option-text">Gemini (nativo en Google)</span><span class="check-mark">✓</span></button><button class="quiz-option" onclick="checkAnswer(this, false, 'Gemini está integrado en Gmail, Docs, Sheets, etc.')">
+        <span class="option-letter">B</span><span class="option-text">Claude</span><span class="check-mark">✓</span></button><button class="quiz-option" onclick="checkAnswer(this, false, 'Gemini está integrado en Gmail, Docs, Sheets, etc.')">
+        <span class="option-letter">C</span><span class="option-text">ChatGPT</span><span class="check-mark">✓</span></button></div>
+      <div class="quiz-feedback hidden"></div>
+      <p class="slide-text">Si vives en Google, Gemini es tu default.</p></div></div>
+<div class="slide" data-slide="11">
+    <div class="slide-inner">
+      <div class="eyebrow">Lección 1-4</div><h2 class="comparison-title">Costo: comparativa brutal</h2>
+      <div class="comparison-grid">
+        <div class="comparison-box">
+          <h3>Claude Sonnet</h3>
+          <ul><li>€3/M input</li><li>€9/M output</li><li>Mejor valor</li></ul>
+        </div>
+        <div class="comparison-box">
+          <h3>ChatGPT Plus</h3>
+          <ul><li>$20/mes</li><li>Ilimitado</li><li>Para uso pesado</li></ul>
+        </div>
+      </div>
+      <p class="slide-text">Por token, Claude gana. Por suscripción, ChatGPT.</p></div></div>
+<div class="slide" data-slide="12">
+    <div class="slide-inner">
+      <div class="eyebrow">Lección 1-4</div><div class="flip-card" onclick="this.classList.toggle('flipped')">
+        <div class="flip-inner">
+          <div class="flip-front"><p>Cuándo cambiar de modelo</p><small>Click para revelar</small></div>
+          <div class="flip-back"><p>Si Claude falla → ChatGPT. Si necesitas Google → Gemini. Si necesitas plugins → ChatGPT. Si quieres lo mejor en razonamiento → Claude.</p><small>Click para ocultar</small></div>
+        </div>
+      </div>
+      <p class="slide-text">Muchos usan múltiples modelos en paralelo.</p></div></div>
+<div class="slide" data-slide="13">
+    <div class="slide-inner">
+      <div class="eyebrow">Lección 1-4</div><h2 class="checklist-title">Decisión: qué modelo usar HOY</h2>
+      <div class="checklist"><div class="checklist-item"><input type="checkbox" checked disabled><span>¿Documento > 100 págs? → Claude</span></div><div class="checklist-item"><input type="checkbox" checked disabled><span>¿Necesitas plugins? → ChatGPT</span></div><div class="checklist-item"><input type="checkbox"  disabled><span>¿Usas Google Workspace? → Gemini</span></div><div class="checklist-item"><input type="checkbox" checked disabled><span>¿Razonamiento crítico? → Claude</span></div></div>
+      <p class="slide-text">Contesta estas 4 preguntas.</p></div></div>
+<div class="slide" data-slide="14">
+    <div class="slide-inner">
+      <div class="eyebrow">Lección 1-4</div><h2 class="key-title">Resumen: L1-4</h2>
+      <ul class="key-list"><li>Claude: razonamiento + contexto largo</li><li>ChatGPT: comunidad + plugins + accesibilidad</li><li>Gemini: Google + multimodal + búsqueda</li><li>No hay "mejor" — hay "mejor para ti"</li></ul>
+      <p class="slide-text">Ahora entiendes el panorama completo.</p></div></div>
+<div class="slide" data-slide="15">
+    <div class="slide-inner">
+      <div class="eyebrow">Lección 1-4</div><h1 class="title">✓ Completaste Módulo 1</h1>
+        <p class="subtitle">Fundamentos completos de Claude</p>
+        <p class="slide-text">Siguiente: cómo acceder a Claude en todas partes.</p>
+        <div class="intro-icon">→</div></div></div></div><div class="footer"><button class="nav-btn" id="prevBtn">← Anterior</button><div class="progress-dots" id="progressDots"></div><button class="nav-btn primary" id="nextBtn">Siguiente →</button></div><script>let currentSlide = 1;const totalSlides = 15;const slides = document.querySelectorAll('.slide');const exitBtn = document.getElementById('exitBtn');const prevBtn = document.getElementById('prevBtn');const nextBtn = document.getElementById('nextBtn');const slideNum = document.getElementById('slideNum');const progressDots = document.getElementById('progressDots');for(let i = 1;i<=totalSlides;i++){const dot = document.createElement('div');dot.className = 'progress-dot'+(i===1?' active':'');dot.addEventListener('click',() => goToSlide(i));progressDots.appendChild(dot);}function updateSlide(){slides.forEach(s => s.classList.remove('active'));slides[currentSlide-1].classList.add('active');slideNum.textContent = currentSlide;prevBtn.classList.toggle('disabled',currentSlide===1);nextBtn.classList.toggle('disabled',currentSlide===totalSlides);document.querySelectorAll('.progress-dot').forEach((dot,idx) => {dot.classList.toggle('active',idx+1===currentSlide);});}function goToSlide(n){currentSlide = Math.max(1,Math.min(n,totalSlides));updateSlide();}function checkAnswer(btn,isCorrect,explanation){const options = btn.parentElement.querySelectorAll('.quiz-option');options.forEach(opt => opt.classList.add('disabled'));btn.classList.add('answered',isCorrect?'correct':'wrong');const feedback = btn.parentElement.nextElementSibling;feedback.textContent = (isCorrect?'✓ Correcto: ':'✗ Incorrecto: ')+explanation;feedback.classList.remove('hidden');feedback.classList.add('show');}prevBtn.addEventListener('click',() => goToSlide(currentSlide-1));nextBtn.addEventListener('click',() => goToSlide(currentSlide+1));exitBtn.addEventListener('click',() => window.parent.location.href = '/app');document.addEventListener('keydown',(e) => {if(e.key==='ArrowLeft')goToSlide(currentSlide-1);if(e.key==='ArrowRight')goToSlide(currentSlide+1);});updateSlide();</script></body></html>
