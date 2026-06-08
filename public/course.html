@@ -379,6 +379,91 @@
     line-height: 1.55;
   }
 
+  /* === Lesson Content === */
+  .lesson-content {
+    padding: 48px 56px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .lesson-content h3 {
+    font-family: var(--display);
+    font-size: 24px;
+    font-weight: 400;
+    color: var(--ink);
+    margin: 32px 0 16px 0;
+    letter-spacing: -0.01em;
+    font-variation-settings: "opsz" 144, "SOFT" 40;
+  }
+
+  .lesson-content h3:first-child {
+    margin-top: 0;
+  }
+
+  .lesson-content p {
+    font-size: 15px;
+    color: var(--ink-2);
+    line-height: 1.7;
+    margin: 16px 0;
+  }
+
+  .lesson-content strong {
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  .lesson-content em {
+    color: var(--accent);
+    font-style: italic;
+  }
+
+  .lesson-content ul {
+    list-style: none;
+    padding: 0;
+    margin: 16px 0;
+  }
+
+  .lesson-content li {
+    font-size: 15px;
+    color: var(--ink-2);
+    line-height: 1.7;
+    margin: 12px 0;
+    padding-left: 28px;
+    position: relative;
+  }
+
+  .lesson-content li:before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .lesson-content .callout {
+    background: rgba(200, 84, 43, 0.08);
+    border-left: 4px solid var(--accent);
+    padding: 20px;
+    border-radius: 8px;
+    margin: 24px 0;
+  }
+
+  .lesson-content .callout-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  .lesson-content .callout p {
+    margin: 0;
+    color: var(--ink-2);
+  }
+
   /* === Video area === */
   .video-section {
     padding: 32px 56px;
@@ -1558,6 +1643,21 @@ const COURSE = [
         summary: 'Las distintas vías para empezar a usar Claude: web, móvil, escritorio y API.',
         defaultVideo: 'claude-101-videos/L2-1-slides.html',
         body: `
+    <h3>Las cuatro puertas de entrada a Claude</h3>
+    <ul>
+      <li><strong>Claude.ai</strong> — La web pública. Es el punto de entrada más común: abres el navegador, inicias sesión y empiezas a chatear inmediatamente sin instalar nada.</li>
+      <li><strong>App móvil (iOS/Android)</strong> — Misma experiencia que la web, optimizada para pantalla pequeña. Perfecta para usar Claude sobre la marcha.</li>
+      <li><strong>App de escritorio (Mac/Windows)</strong> — Para trabajo intensivo. Atajos de teclado, acceso rápido desde cualquier app, integración con tu sistema.</li>
+      <li><strong>API y Claude Code</strong> — Para desarrolladores. Integra Claude en tus propios productos o trabaja desde el terminal.</li>
+    </ul>
+    <h3>Planes y limitaciones</h3>
+    <p>Existe un plan <strong>gratuito</strong> con límites de mensajes mensuales, y planes de pago (<strong>Pro</strong>, <strong>Team</strong>, <strong>Enterprise</strong>) que ofrecen capacidad ilimitada, acceso prioritario a modelos nuevos y soporte.</p>
+    <div class="callout">
+      <div class="callout-label">Consejo</div>
+      <p>Si trabajas con Claude todos los días, Pro suele compensar. Si lo usas puntualmente, gratuito puede ser suficiente.</p>
+    </div>
+  `,
+        body: `
           <h3>Las cuatro puertas de entrada</h3>
           <ul>
             <li><strong>Claude.ai</strong> — La web pública. Es el punto de entrada habitual: abres el navegador, inicias sesión y empiezas a chatear.</li>
@@ -1580,6 +1680,18 @@ const COURSE = [
         summary: 'Recorrido por los elementos esenciales de la interfaz web de Claude.',
         defaultVideo: 'claude-101-videos/L2-2-slides.html',
         body: `
+    <h3>Lo que ves al entrar en Claude.ai</h3>
+    <ul>
+      <li><strong>Caja de mensaje</strong> — Donde escribes. Puedes adjuntar imágenes, PDFs, hojas de cálculo, código, archivos de audio. El botón "+" te abre el selector de adjuntos.</li>
+      <li><strong>Selector de modelo</strong> — Elige entre Haiku (rápido), Sonnet (balanceado) u Opus (potente). Default es Sonnet.</li>
+      <li><strong>Historial</strong> — Conversaciones previas, organizadas por fecha. Búsqueda integrada para encontrar chats antiguos.</li>
+      <li><strong>Proyectos</strong> — Espacios donde agrupar conversaciones que comparten contexto, archivos y configuración.</li>
+      <li><strong>Configuración</strong> — Preferencias de tema, privacidad, conectores activos (búsqueda web, código, etc.).</li>
+    </ul>
+    <h3>Las funciones contextuales</h3>
+    <p>Dentro del chat puedes activar herramientas: <strong>búsqueda web</strong> para info reciente, <strong>análisis profundo</strong> para problemas complejos, <strong>modo de investigación</strong> para temas académicos. Cada una cambia ligeramente cómo razona Claude.</p>
+  `,
+        body: `
           <h3>Lo que ves al entrar</h3>
           <ul>
             <li><strong>Caja de mensaje</strong> — Donde escribes. Puedes adjuntar imágenes, PDFs, hojas de cálculo, código y otros archivos.</li>
@@ -1598,6 +1710,21 @@ const COURSE = [
         emphasis: 'Proyectos',
         summary: 'Organizar tu trabajo con Claude usando proyectos y estilos personalizados.',
         defaultVideo: 'claude-101-videos/L2-3-slides.html',
+        body: `
+    <h3>Conversaciones: la unidad básica</h3>
+    <p>Es un hilo de chat donde Claude recuerda todo lo que dijiste. Si cambias drasticamente de tema o quieres empezar limpio, crea una conversación nueva. No mezcles 5 tareas distintas en un chat: se ensucia la memoria y Claude pierde precisión.</p>
+    <h3>Proyectos: para trabajo persistente</h3>
+    <p>A diferencia de conversaciones (que son efímeras), un Proyecto persiste. Puedes subir archivos una sola vez, definir el contexto, y Claude los recuerda en todos los chats del proyecto. Ideal para: escribir un libro, analizar una codebase, gestionar documentación.</p>
+    <h3>Cuándo usar qué</h3>
+    <ul>
+      <li><strong>Chat aislado:</strong> pregunta rápida, no necesitas recordarlo después</li>
+      <li><strong>Proyecto:</strong> trabajo que dura semanas/meses, necesitas coherencia y contexto persistente</li>
+    </ul>
+    <div class="callout">
+      <div class="callout-label">Práctica</div>
+      <p>Crea un Proyecto nuevo ahora: sube un documento tuyo (blog, código, email) y experimenta. Haz varias preguntas. Verás cómo Claude mantiene consistencia.</p>
+    </div>
+  `,
         body: `
           <h3>La conversación</h3>
           <p>Es la unidad básica: un hilo en el que Claude recuerda todo lo dicho. Si cambias de tema o quieres empezar limpio, crea una conversación nueva. No mezcles muchas tareas distintas en un único hilo: la memoria se ensucia.</p>
@@ -1645,6 +1772,26 @@ const COURSE = [
         summary: 'Los ingredientes esenciales para escribir instrucciones efectivas.',
         defaultVideo: 'claude-101-videos/L3-1-slides.html',
         body: `
+    <h3>El arte de dar instrucciones claras</h3>
+    <p>Un buen prompt tiene 4 elementos:</p>
+    <ul>
+      <li><strong>Rol/Contexto:</strong> "Eres un redactor técnico de software"</li>
+      <li><strong>Tarea clara:</strong> "Resume este artículo en 3 párrafos"</li>
+      <li><strong>Restricciones:</strong> "Máximo 150 palabras, sin jerga técnica"</li>
+      <li><strong>Formato esperado:</strong> "Salida como lista con bullets"</li>
+    </ul>
+    <h3>Errores comunes</h3>
+    <ul>
+      <li>Ser demasiado vago: "Hazme un plan" vs "Hazme un plan semanal de estudio de SQL con 10 horas de dedicación"</li>
+      <li>Esperar que Claude adivine el formato: siempre especifica JSON, Markdown, tabla, etc.</li>
+      <li>No dar ejemplos: mostrar un ejemplo de "cómo debe quedar" es 10x más potente que describirlo</li>
+    </ul>
+    <div class="callout">
+      <div class="callout-label">Regla de oro</div>
+      <p>Si tú como humano entiendas ambiguo el prompt, Claude también. Explica como si le dijeras a un compañero.</p>
+    </div>
+  `,
+        body: `
           <h3>Un buen prompt tiene cuatro partes</h3>
           <ul>
             <li><strong>Tarea</strong> — Qué quieres que haga, expresado con un verbo claro (escribe, analiza, traduce, propón…).</li>
@@ -1669,6 +1816,18 @@ const COURSE = [
         summary: 'Las tres palancas que más mejoran la calidad de cualquier respuesta.',
         defaultVideo: 'claude-101-videos/L3-2-slides.html',
         body: `
+    <h3>Chain of Thought (CoT): razonar paso a paso</h3>
+    <p>Cuando pides a Claude que <em>"razone paso a paso"</em> o <em>"muestre su trabajo"</em>, mejoras mucho la calidad en tareas complejas. Porque Claude escribe su razonamiento, y eso lo ancla a realidades objetivas mejor que generar una respuesta de golpe.</p>
+    <h3>Few-Shot Learning: ejemplos en el prompt</h3>
+    <p>En lugar de describir qué quieres, muestra 2-3 ejemplos de entrada/salida. Claude infiere el patrón y lo replica. Es especialmente potente para tareas específicas de dominio.</p>
+    <h3>Role-Playing: cambiar la personalidad</h3>
+    <p>A veces pedir a Claude que "asuma el rol de X" (profesor, abogado, crítico de cine) cambia la perspectiva y la calidad de la respuesta. Es útil para brainstorm o para obtener múltiples puntos de vista.</p>
+    <div class="callout">
+      <div class="callout-label">Experimentar</div>
+      <p>Toma un prompt que has usado. Añade "Razona paso a paso" o "Asume el rol de [experto]". Verás diferencias inmediatas.</p>
+    </div>
+  `,
+        body: `
           <h3>Contexto: cuanto más relevante, mejor</h3>
           <p>Claude no conoce tu negocio, tu equipo, tu tono ni tus restricciones. Dáselos. Pero sé selectivo: no es "cuanta más información, mejor", sino "<em>la información relevante</em>, mejor".</p>
           <h3>Claridad: una idea por frase</h3>
@@ -1688,6 +1847,14 @@ const COURSE = [
         emphasis: 'Ejemplos',
         summary: 'Casos reales de transformación de prompts.',
         defaultVideo: 'claude-101-videos/L3-3-slides.html',
+        body: `
+    <h3>Itera tu prompt, no duplicar esfuerzo</h3>
+    <p>El primer intento rara vez es perfecto. Ajusta pequeñas cosas: añade restricciones, cambia el tono, incluye ejemplos, pide formato distinto. Cada iteración te acerca a lo que necesitas.</p>
+    <h3>Mide: prompt antes vs después</h3>
+    <p>Para tareas repetitivas (generación de copywriting, análisis de tickets, code review), crea 2-3 versiones del prompt y prueba cada una con 10 ejemplos. Mide: calidad, tiempo de respuesta, tokens consumidos. Usa la ganadora.</p>
+    <h3>Optimización real: menos context, mejor resultado</h3>
+    <p>Contra intuición, a veces un prompt más corto y enfocado produce mejor output que uno largo con mucho contexto ruidoso. Prueba ambos antes de asumir que "más es mejor".</p>
+  `,
         body: `
           <h3>Caso 1: Resumen de reunión</h3>
           <div class="example">
@@ -1739,6 +1906,22 @@ const COURSE = [
         summary: 'Cómo conseguir que Claude piense antes de responder en problemas complejos.',
         defaultVideo: 'claude-101-videos/L4-1-slides.html',
         body: `
+    <h3>Escritura con Claude: desde borrador a pulido</h3>
+    <p>Claude es tu socio de escritura, no un generador de texto desechable. Usa este flujo:</p>
+    <ul>
+      <li><strong>Brainstorm:</strong> "dame 10 títulos para un email sobre cierre de producto"</li>
+      <li><strong>Draft:</strong> "escribe el email con el título #3, tono profesional cercano"</li>
+      <li><strong>Edit:</strong> "más breve, quita la segunda ronda de bullets"</li>
+      <li><strong>Revisar:</strong> "¿hay algo que suene corporativo o insincero?"</li>
+    </ul>
+    <h3>Análisis de datos y síntesis</h3>
+    <p>Claude puede leer archivos (CSV, JSON, PDF) y extraer insights. Carga tu spreadsheet de encuestas: "extrae los 5 temas más comunes en feedback".</p>
+    <div class="callout">
+      <div class="callout-label">Proceso iterativo</div>
+      <p>No pidas "escríbeme un artículo" en un prompt. Pide esbozo → título → intro → secciones → conclusión. Cada paso es más controlable.</p>
+    </div>
+  `,
+        body: `
           <h3>El truco del "piensa paso a paso"</h3>
           <p>En problemas con varias capas (matemáticas, lógica, planificación, análisis), pedirle a Claude que <strong>razone paso a paso antes de responder</strong> mejora drásticamente los resultados. Es lo que en inglés se llama <em>chain-of-thought prompting</em>.</p>
           <div class="example">
@@ -1754,6 +1937,14 @@ const COURSE = [
         emphasis: 'ejemplos',
         summary: 'Cómo guiar a Claude mostrándole ejemplos del resultado que esperas.',
         defaultVideo: 'claude-101-videos/L4-2-slides.html',
+        body: `
+    <h3>Análisis profundo: documentos grandes</h3>
+    <p>Claude puede procesar hasta 200K tokens (~150 páginas). Esto significa: carga un documento técnico de 50 págs y pide "extrae decisiones arquitectónicas" o "qué riesgos no se mencionan".</p>
+    <h3>Síntesis: de muchas fuentes a un resumen coherente</h3>
+    <p>Si tienes 3 reportes diferentes sobre el mismo tema, pide a Claude que sintetice: "¿en qué coinciden? ¿en qué difieren? ¿dónde hay contradicciones?".</p>
+    <h3>Fact-checking</h3>
+    <p>Claude es bueno identificando claims sin evidencia. Carga un artículo: "marca con [VERIFICAR] cualquier statement que sea específico y necesite referencia".</p>
+  `,
         body: `
           <h3>Mostrar es mejor que describir</h3>
           <p>Cuando el formato o el estilo es difícil de describir con palabras, dale ejemplos directamente. Esto se llama <strong>few-shot prompting</strong>: das varios pares de entrada/salida y Claude infiere el patrón.</p>
@@ -1777,6 +1968,14 @@ Ahora hazlo con: "Guía para empezar a correr"
         emphasis: 'Etiquetas',
         summary: 'Cómo usar etiquetas para organizar prompts complejos.',
         defaultVideo: 'claude-101-videos/L4-3-slides.html',
+        body: `
+    <h3>Brainstorm creativo: ideación sin límites</h3>
+    <p>Claude es excelente generando opciones. Dale un objetivo y pide variedad: "10 nombres para un producto de productividad que combina AI + calendario, desde corporativo hasta juguetón".</p>
+    <h3>Escritura creativa: historias, scripts, poesía</h3>
+    <p>Claude puede escribir ficción, guiones, poesía. Especifica el género, tono, límite de palabras y cualquier restricción (sin spoilers, final abierto, etc.).</p>
+    <h3>Remix creativo</h3>
+    <p>Toma un contenido existente y pide: "reescribe esto en tono de pirata" o "convierte esto en un tweet de máximo 280 caracteres". Es útil para adaptación de contenido a distintos canales.</p>
+  `,
         body: `
           <h3>Cuando el prompt empieza a ser largo</h3>
           <p>En prompts con varias secciones (instrucciones, documentos, ejemplos), las <strong>etiquetas XML</strong> ayudan a Claude a distinguir qué es qué. No es magia: es claridad estructural.</p>
@@ -1831,6 +2030,18 @@ Lenguaje claro, frases cortas, sin tecnicismos.
         summary: 'La función que convierte respuestas en código y documentos interactivos.',
         defaultVideo: 'claude-101-videos/L5-1-slides.html',
         body: `
+    <h3>Búsqueda web integrada</h3>
+    <p>Activa búsqueda web para que Claude consulte internet en tiempo real. Útil cuando necesitas datos de hoy: precios actuales, noticias recientes, resultados deportivos, cotizaciones. Tu contexto ya no tiene cutoff (abril 2024).</p>
+    <h3>Visión: análisis de imágenes</h3>
+    <p>Sube una imagen y Claude la analiza: "¿qué hay en esta foto?", "extrae el texto de esta captura", "analiza el diseño de esta pantalla". Funciona con imágenes, screenshots, diagramas.</p>
+    <h3>Análisis de PDFs y archivos</h3>
+    <p>Adjunta un PDF: Claude lo lee y responde preguntas sobre su contenido. Combine con búsqueda web para análisis híbrido: leer tu documento + buscar contexto externo.</p>
+    <div class="callout">
+      <div class="callout-label">Artifacts</div>
+      <p>Cuando pides a Claude que cree (código, HTML, documento), genera un archivo interactivo que puedes editar y descargar directamente.</p>
+    </div>
+  `,
+        body: `
           <h3>¿Qué es un artifact?</h3>
           <p>Un <strong>artifact</strong> es un bloque de contenido sustancial que aparece en un panel aparte de la conversación. Sirve para código, documentos largos, componentes interactivos, visualizaciones, juegos, prototipos web…</p>
           <h3>Cuándo aparecen</h3>
@@ -1849,6 +2060,14 @@ Lenguaje claro, frases cortas, sin tecnicismos.
         emphasis: 'Búsqueda',
         summary: 'Cómo y cuándo usar las capacidades de búsqueda online.',
         defaultVideo: 'claude-101-videos/L5-2-slides.html',
+        body: `
+    <h3>Integración con herramientas externas</h3>
+    <p>Claude puede conectarse a tus aplicaciones a través de APIs y webhooks. Así Claude puede: leer emails, crear tareas en Asana, postear en Slack, actualizar tu spreadsheet.</p>
+    <h3>MCP (Model Context Protocol)</h3>
+    <p>Estándar abierto que permite que Claude acceda a datos y tools sin código custom. Si tu herramienta soporta MCP, Claude la "ve" automáticamente.</p>
+    <h3>Automatización real</h3>
+    <p>Combine: acceso a APIs + Claude razonando sobre los datos + ejecución de acciones. Ejemplo: "cada mañana, revisa 100 tickets de soporte, clasifica por urgencia, responde los rutinarios, escala los complejos".</p>
+  `,
         body: `
           <h3>Cuándo necesitas búsqueda web</h3>
           <ul>
@@ -1911,6 +2130,16 @@ Lenguaje claro, frases cortas, sin tecnicismos.
         summary: 'Emails, informes, copy y todos los textos que produces cada día.',
         defaultVideo: 'claude-101-videos/L6-1-slides.html',
         body: `
+    <h3>Escritura de contenido: blogs, documentación, emails</h3>
+    <p>Claude es particularmente bueno en escritura profesional clara. Usa para: artículos de blog (da tema + audiencia), documentación técnica (da features + audiencia), emails comerciales (da objetivo + tono).</p>
+    <h3>Estructura editorial</h3>
+    <p>Para escritura larga, pide en fases: outline → desarrollo de secciones → transiciones → conclusión. Esto produce mejor resultado que pedir el artículo completo de una vez.</p>
+    <div class="callout">
+      <div class="callout-label">Tip de escritores profesionales</div>
+      <p>Muchos writers usan Claude para draft + edición propia. No es "escribir para ti", es "acelerar tu proceso". La voz sigue siendo tuya.</p>
+    </div>
+  `,
+        body: `
           <h3>El flujo recomendado</h3>
           <ol>
             <li><strong>Borrador rápido</strong> — Tú escribes (mal, sin pulir) lo esencial.</li>
@@ -1936,6 +2165,18 @@ Lenguaje claro, frases cortas, sin tecnicismos.
         summary: 'Cómo usar Claude para escribir, revisar y entender código.',
         defaultVideo: 'claude-101-videos/L6-2-slides.html',
         body: `
+    <h3>Código: generación, debugging, refactoring</h3>
+    <p>Claude es fuerte en muchos lenguajes. Úsalo para: generar código desde especificación, debuggear errors (pega el error + código), refactorizar (pide "mejora la legibilidad sin cambiar la lógica").</p>
+    <h3>Code review</h3>
+    <p>Pega un PR o función: "revisa este código, señala problemas de seguridad, rendimiento, estilo". Claude da feedback constructivo y propone mejoras.</p>
+    <h3>SQL, regex, bash</h3>
+    <p>Excelente para consultas SQL complejas, expresiones regulares confusas, scripts bash. "Necesito una query que..." o "dame un regex que matchee...".</p>
+    <div class="callout">
+      <div class="callout-label">Límites</div>
+      <p>Claude puede alucinar en código complejo o no bien probado. Siempre verifica el output antes de producción.</p>
+    </div>
+  `,
+        body: `
           <h3>Tareas en las que destaca</h3>
           <ul>
             <li>Escribir funciones, scripts y componentes desde una descripción.</li>
@@ -1955,6 +2196,14 @@ Lenguaje claro, frases cortas, sin tecnicismos.
         emphasis: 'Análisis',
         summary: 'Sacar conclusiones de PDFs, Excel, imágenes y conjuntos de datos.',
         defaultVideo: 'claude-101-videos/L6-3-slides.html',
+        body: `
+    <h3>Análisis de datos: CSV, JSON, spreadsheets</h3>
+    <p>Carga tu dataset: "extrae estadísticas, identifica outliers, sugiere qué métrica seguir". Claude lee datos y resume insights en segundos.</p>
+    <h3>Procesamiento de texto</h3>
+    <p>Tienes 1000 descripciones de productos sin categorizar: "clasifica estas descripciones en 5 categorías, justifica cada una". O "extrae el email de cada entrada".</p>
+    <h3>Limpieza de datos</h3>
+    <p>Muchos datos del mundo real están sucios. Pide a Claude: "normaliza estos nombres de país, corrige ortografía, identifica duplicados". Produce CSV limpio.</p>
+  `,
         body: `
           <h3>Sube y pregunta</h3>
           <p>Adjunta PDFs, hojas de cálculo, imágenes, documentos de texto. Claude puede leerlos directamente. Algunas tareas útiles:</p>
@@ -2001,6 +2250,18 @@ Lenguaje claro, frases cortas, sin tecnicismos.
         summary: 'Qué debes y qué no debes compartir nunca con un asistente de IA.',
         defaultVideo: 'claude-101-videos/L7-1-slides.html',
         body: `
+    <h3>Las alucinaciones: qué son, por qué pasan</h3>
+    <p>Claude predice tokens. A veces predice confiadamente algo falso. Ejemplo: inventa un study que no existe, o fecha de un evento incorrecta. No es mentira intencional — es predicción fallida.</p>
+    <h3>Datos outdated</h3>
+    <p>Conocimiento de Claude corta en abril 2024. Cualquier cosa después: eventos recientes, precios actuales, nuevos productos. Para esto, activa búsqueda web.</p>
+    <h3>Mitigación</h3>
+    <ul>
+      <li><strong>Para datos:</strong> "verifica estos datos" o usa búsqueda web</li>
+      <li><strong>Para hechos críticos:</strong> pide fuentes: "¿de dónde sacaste esto?"</li>
+      <li><strong>Para análisis:</strong> pide a Claude que señale incertidumbres: "¿en qué no estás seguro?"</li>
+    </ul>
+  `,
+        body: `
           <h3>Reglas claras</h3>
           <ul>
             <li><strong>No compartas</strong> datos personales de terceros sin permiso (clientes, empleados).</li>
@@ -2018,6 +2279,23 @@ Lenguaje claro, frases cortas, sin tecnicismos.
         emphasis: 'Verificación',
         summary: 'Por qué no debes creer todo lo que Claude te diga.',
         defaultVideo: 'claude-101-videos/L7-2-slides.html',
+        body: `
+    <h3>Privacidad: qué datos envías a Claude</h3>
+    <p>Todo lo que escribes en Claude se procesa en servidores de Anthropic. Por defecto, Anthropic <strong>no</strong> usa tus chats para entrenar modelos. Puedes optar por compartir feedback anónimo.</p>
+    <h3>Qué NO debes compartir</h3>
+    <ul>
+      <li>Contraseñas, API keys, tokens de autenticación</li>
+      <li>Datos personales identificables (DNI, pasaporte, datos bancarios)</li>
+      <li>Información médica o legal confidencial (sin encriptación tuya)</li>
+      <li>Código propietario de máxima confidencialidad</li>
+    </ul>
+    <h3>Buenas prácticas</h3>
+    <p>Usa Proyectos con restricción de datos sensibles. Offuscate: "tengo un cliente X en país Y, con ingresos Z" en lugar de datos reales. Para datos muy sensibles, encripta localmente primero.</p>
+    <div class="callout">
+      <div class="callout-label">Enterprise</div>
+      <p>Plan Enterprise ofrece contratos de privacidad más estrictos, almacenamiento aislado, datos no compartidos.</p>
+    </div>
+  `,
         body: `
           <h3>Las alucinaciones</h3>
           <p>Claude puede generar información que <em>parece</em> correcta pero no lo es: datos inventados, citas falsas, referencias a libros que no existen. Sucede menos que en otros modelos, pero sucede.</p>
@@ -2085,6 +2363,14 @@ Lenguaje claro, frases cortas, sin tecnicismos.
         summary: 'La herramienta para integrar Claude en el flujo de programación.',
         defaultVideo: 'claude-101-videos/L8-1-slides.html',
         body: `
+    <h3>Claude Code: terminal + editor integrados</h3>
+    <p>Claude Code es una herramienta para desarrolladores. Le pides a Claude que automatice algo, y Claude escribe código + lo ejecuta en tu terminal. Útil para: scripts, procesamiento de datos, generación de reportes, automatización.</p>
+    <h3>MCP: conectar tus herramientas</h3>
+    <p>Model Context Protocol es el estándar para conectar Claude a herramientas externas (GitHub, Slack, bases de datos). Si tu app soporta MCP, Claude la "ve" automáticamente.</p>
+    <h3>Agentes: Claude ejecutando múltiples pasos</h3>
+    <p>Un agente es un bucle donde Claude planifica → ejecuta una acción → evalúa → replanifica. Útil para: automatización de flujos, gestión de tareas, toma de decisiones.</p>
+  `,
+        body: `
           <h3>Qué es</h3>
           <p><strong>Claude Code</strong> es una herramienta de línea de comandos que trae las capacidades de Claude directamente al terminal. Permite que Claude lea, escriba y edite archivos en tu proyecto, ejecute comandos, y trabaje en tareas de programación con autonomía supervisada.</p>
           <h3>Para qué sirve</h3>
@@ -2105,6 +2391,18 @@ Lenguaje claro, frases cortas, sin tecnicismos.
         emphasis: 'conectores',
         summary: 'Cómo Claude se conecta con tus herramientas habituales.',
         defaultVideo: 'claude-101-videos/L8-2-slides.html',
+        body: `
+    <h3>Sistemas multi-agente</h3>
+    <p>Cuando un agente no es suficiente, orquesta varios: uno para análisis, otro para ejecución, otro para verificación. Comunican entre sí via APIs.</p>
+    <h3>RAG: Retrieval-Augmented Generation</h3>
+    <p>Técnica donde Claude primero busca documentos relevantes, luego genera respuesta basada en esos docs. Así evita alucinaciones sobre tus datos específicos.</p>
+    <h3>Production patterns</h3>
+    <p>En producción, típicamente: Claude + APIs que lo conectan a tu BD, + verificación humana para acciones críticas, + monitoreo de costos y latencia.</p>
+    <div class="callout">
+      <div class="callout-label">Próximo paso</div>
+      <p>Construye tu primer agente con Claude. No es tan complejo como suena: son ~50 líneas de código Python.</p>
+    </div>
+  `,
         body: `
           <h3>El protocolo MCP</h3>
           <p><strong>MCP</strong> (Model Context Protocol) es un estándar abierto que permite a Claude conectarse con apps externas: Google Drive, Notion, GitHub, Slack, Asana, Linear, Jira, Salesforce y muchas más.</p>
@@ -2181,6 +2479,20 @@ Lenguaje claro, frases cortas, sin tecnicismos.
         emphasis: 'Constitutional AI',
         summary: 'Cómo Anthropic entrena Claude para ser útil, honesto e inofensivo. Y por qué eso te importa.',
         defaultVideo: 'claude-101-videos/L9-1-slides.html',
+        body: `
+    <h3>Arquitectura escalable con Claude</h3>
+    <p>Cuando pasas de "Claude en mi chat" a "Claude en mi producto usado por 1000 usuarios", cambios arquitectónicos necesarios:</p>
+    <ul>
+      <li><strong>Caching:</strong> reutiliza computación cara (procesar el mismo documento 100 veces = gastar una vez)</li>
+      <li><strong>Batch processing:</strong> para volumen alto, envía en lotes en lugar de una por una</li>
+      <li><strong>Async queues:</strong> no esperes respuesta inmediata, encola y procesa en background</li>
+      <li><strong>Fallbacks:</strong> si Claude falla, qué haces? (Retry, human escalation, cached response)</li>
+    </ul>
+    <h3>Monitoreo</h3>
+    <p>En producción, monitorea: latencia, tasa de errores, costo por usuario, calidad del output. Alertas cuando algo anormal.</p>
+    <h3>Feedback loop</h3>
+    <p>Los mejores sistemas aprenden: recopila feedback de usuarios sobre la calidad de respuestas de Claude, iterar prompts basado en datos reales.</p>
+  `,
         body: `
   <h3>De dónde viene el "carácter" de Claude</h3>
   <p>Cuando hablas con Claude y notas algo distinto frente a otros asistentes — esa tendencia a matizar, a reconocer límites, a razonar grises en lugar de bloquearlos — no es casualidad. Es el resultado directo de un método de entrenamiento llamado <strong>Constitutional AI</strong>, desarrollado por Anthropic en 2022 y refinado desde entonces.</p>
