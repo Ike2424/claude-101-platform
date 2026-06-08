@@ -715,6 +715,13 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'ArrowRight') goToSlide(currentSlide + 1);
 });
 
+// Leer parámetro 'slide' de la URL
+const urlParams = new URLSearchParams(window.location.search);
+const slideParam = urlParams.get('slide');
+if (slideParam) {
+  currentSlide = Math.max(1, Math.min(parseInt(slideParam, 10), totalSlides));
+}
+
 updateSlide();
 </script>
 </body>
