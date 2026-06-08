@@ -5,17 +5,20 @@
 <script src="/ga.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Claude 101 · Lección 4.4 · Roles, personas y restricciones</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Geist:wght@300..700&family=Geist+Mono:wght@400..600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/claude-101-videos/_slides.css">
+<title>Claude 101 · Lección L4-4-slides.html</title>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/favicon.svg">
+<style>
+body { margin: 0; padding: 0; overflow: hidden; }
+iframe { width: 100%; height: 100vh; border: none; }
+</style>
 </head>
 <body>
+<iframe src="/claude-101-videos/ALL-LESSONS-slides.html?slide=14" allowfullscreen></iframe>
 <script>
-window.MODULE_DATA = {"module": 4, "lessonId": "l4-4", "lessonNumber": "4.4", "title": "Roles, personas y restricciones", "slides": [{"type": "intro", "title": "Usas <em>roles</em>", "subtitle": "Lo de \"actúa como…\" al principio.", "chips": ["Casi siempre", "A veces", "Nunca", "No sé qué cambia", "Solo para tareas técnicas"]}, {"type": "choice", "eyebrow": "Pregunta 1", "title": "¿Qué te da un <em>rol</em>?", "prompt": "Empezar el prompt con \"Actúa como editor senior de revista cultural\".", "options": ["Más tokens disponibles", "Calibra tono, nivel de detalle, criterio y vocabulario sin que tengas que especificarlos uno a uno", "Es solo decorativo", "Acceso a más datos"], "correct": 1, "feedback": "Calibra la voz entera. \"Editor senior\" implica criterio, vocabulario, prioridades. Es la forma más eficiente de fijar tono y profundidad."}, {"type": "reveal", "title": "Tres <em>palancas</em> de voz", "prompt": "Toca cada una.", "items": [{"icon": "🎭", "name": "Rol profesional", "tag": "Quién es", "body": "\"Eres consultora estratégica con 15 años en retail.\" Define experiencia, criterio y vocabulario. Más específico = mejor calibrado."}, {"icon": "🗺️", "name": "Persona", "tag": "Cómo es", "body": "\"Habla como un amigo cercano que se preocupa, no como un experto distante.\" Va sobre estilo y relación con el lector, no sobre conocimiento."}, {"icon": "🚫", "name": "Restricciones", "tag": "Qué no", "body": "\"Sin emojis, sin jerga corporativa, sin frases vacías como inspirador o transformacional.\" Define el \"no\" tan importante como el \"sí\"."}], "feedbackHead": "Bien.", "feedback": "Rol = experiencia. Persona = relación. Restricciones = qué evitar. Combinadas fijan la voz por completo."}, {"type": "tf", "title": "¿Mejor <em>específico</em> o genérico?", "statement": "\"Decir \"Actúa como un experto\" es tan efectivo como \"Actúa como CMO con 10 años en SaaS B2B\".\"", "correct": false, "feedback": "Falso. \"Experto\" es ruido. Cuanto más específico el rol, mejor calibra la respuesta. \"Experto\" puede ser cualquiera; \"CMO con 10 años en SaaS\" tiene criterio reconocible."}, {"type": "scenarios", "title": "Calibra el <em>rol</em>", "list": [{"text": "\"Quiero un análisis técnico de mi código en Python.\"", "options": ["\"Eres programador\"", "\"Eres ingeniero senior de Python con experiencia en código de producción y revisión de PRs\"", "Sin rol"], "correct": 1, "feedback": "Específico. \"Senior\", \"producción\", \"revisión de PRs\" cambia el nivel de profundidad y los puntos que Claude marcará."}, {"text": "\"Quiero un email cercano a mi cliente.\"", "options": ["\"Como CEO formal\"", "\"Como copy senior que escribe para clientes B2B con relación de años — cercano, profesional, sin servilismo\"", "Sin rol"], "correct": 1, "feedback": "La persona específica. Define la relación deseada y el tono evitando extremos."}, {"text": "\"Quiero un análisis estratégico sin platitudes.\"", "options": ["Sin restricciones", "\"Como estratega con experiencia. Evita términos vacíos como sinergia, disruptivo, transformacional. Sé concreto sobre trade-offs.\"", "Solo el rol"], "correct": 1, "feedback": "Combina rol + restricciones. La restricción sobre términos vacíos eleva la calidad sustantiva del análisis."}]}, {"type": "recap", "list": [{"q": "¿Por qué un rol específico funciona mejor?", "options": ["Es más educado", "Define experiencia, vocabulario y criterio implícitos que evitas tener que listar", "Activa más capacidad"], "correct": 1, "explain": "El rol es atajo a una mochila de habilidades implícitas. \"Senior\" implica criterio que no tienes que enumerar."}, {"q": "Restricciones útiles para escritura profesional:", "options": ["\"Que sea bueno\"", "\"Sin emojis, sin platitudes, máx X palabras, evita jerga corporativa\"", "\"Profesional\""], "correct": 1, "explain": "Concreto = efectivo. \"Profesional\" es subjetivo; las restricciones específicas son inequívocas."}]}, {"type": "final", "title": "Has terminado <em>M4</em>", "subtitle": "CoT, few-shot, XML, roles + restricciones. Cuatro técnicas que separan a quien usa Claude de quien lo domina. En M5: las herramientas que vienen con él.", "ctaLabel": "Marcar lección 4.4 completada →"}]};
+  const params = new URLSearchParams(window.location.search);
+  const slide = params.get('slide') || 14;
+  document.querySelector('iframe').src = '/claude-101-videos/ALL-LESSONS-slides.html?slide=' + slide;
 </script>
-<script src="/claude-101-videos/_slides.js"></script>
 </body>
 </html>

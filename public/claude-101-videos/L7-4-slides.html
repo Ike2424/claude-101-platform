@@ -5,17 +5,20 @@
 <script src="/ga.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Claude 101 · Lección 7.4 · Uso responsable y ético</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Geist:wght@300..700&family=Geist+Mono:wght@400..600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/claude-101-videos/_slides.css">
+<title>Claude 101 · Lección L7-4-slides.html</title>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/favicon.svg">
+<style>
+body { margin: 0; padding: 0; overflow: hidden; }
+iframe { width: 100%; height: 100vh; border: none; }
+</style>
 </head>
 <body>
+<iframe src="/claude-101-videos/ALL-LESSONS-slides.html?slide=24" allowfullscreen></iframe>
 <script>
-window.MODULE_DATA = {"module": 7, "lessonId": "l7-4", "lessonNumber": "7.4", "title": "Uso responsable y ético", "slides": [{"type": "intro", "title": "Tu <em>postura</em>", "subtitle": "Toca las cosas con las que te identificas.", "chips": ["Declaro cuando uso IA", "Verifico antes de publicar", "Doy crédito a humanos también", "No comparto datos de otros", "Aún no tengo política"]}, {"type": "choice", "eyebrow": "Pregunta 1", "title": "Política <em>realista</em>", "prompt": "Si gestionas un equipo, ¿qué política sobre IA tiene sentido?", "options": ["Prohibirla", "Aprobarla sin reglas", "Permitirla con reglas claras: qué datos no se comparten, cuándo declarar uso, cómo verificar", "Esconderla"], "correct": 2, "feedback": "Política con guardarraíles. Prohibir empuja al shadow IT. Aprobar todo expone. Reglas claras dan productividad sin sacrificar control."}, {"type": "reveal", "title": "Tres <em>principios</em> de uso", "prompt": "Toca cada uno.", "items": [{"icon": "🪪", "name": "Transparencia", "tag": "Declarar", "body": "Cuando publicas algo significativo asistido por IA, dilo. No tiene por qué ser un disclaimer enorme — basta con honestidad. En contextos profesionales (publicaciones, código), gana confianza."}, {"icon": "🧠", "name": "Criterio humano", "tag": "Responsable", "body": "Tú firmas el resultado. La IA es asistente, no autora. Si publicas un análisis o decides algo, la responsabilidad es tuya. Revisa antes de salir."}, {"icon": "🤝", "name": "Respeto a otros", "tag": "Ética", "body": "No compartas datos de otros sin permiso. No imites su voz para suplantar. No publiques contenido generado pasando por humano cuando importa."}], "feedbackHead": "Bien.", "feedback": "Transparencia, criterio, respeto. Tres principios que te dejan tranquilo y proteges tu reputación."}, {"type": "tf", "title": "Sobre <em>responsabilidad</em>", "statement": "\"Si Claude se equivoca en algo que publico, la responsabilidad es de Anthropic, no mía.\"", "correct": false, "feedback": "Falso. Tú publicas, tú firmas, tú respondes. La herramienta no asume responsabilidad por el output que tú decides usar. Revisa antes."}, {"type": "scenarios", "title": "Casos <em>éticos</em>", "list": [{"text": "\"Escribir reseñas de mi producto haciéndolas pasar por usuarios reales.\"", "options": ["Sí, ¿por qué no?", "No — es engañoso y suele ser ilegal", "Solo en una plataforma"], "correct": 1, "feedback": "No. Reseñas falsas son fraude al consumidor. Independiente de si las hace Claude o tú."}, {"text": "\"Usar Claude para redactar un artículo de opinión que publico en mi nombre.\"", "options": ["Sin más", "Bien si revisas, firmas con tu criterio y mantienes la responsabilidad editorial", "Mal siempre"], "correct": 1, "feedback": "Es legítimo. Como pedirle a un editor que te ayude. La clave es que tú firmas con tu criterio y respondes."}, {"text": "\"Escribir el discurso de cierre de una asociación profesional sin decir que usé IA.\"", "options": ["No pasa nada", "En contextos de confianza profesional, conviene declarar uso de IA si fue significativo", "Es obligatorio"], "correct": 1, "feedback": "En contextos de confianza/autoría, declarar es respetuoso. No es siempre obligatorio, pero gana confianza decirlo."}]}, {"type": "recap", "list": [{"q": "Tu responsabilidad cuando publicas con IA:", "options": ["Nula", "Total: tú firmas, tú revisas, tú respondes", "Compartida"], "correct": 1, "explain": "La herramienta no responde. Tú decides usar el output."}, {"q": "Política sensata para equipo:", "options": ["Prohibir todo", "Reglas claras sobre datos, declaración y verificación", "Sin política"], "correct": 1, "explain": "Guardarraíles permiten productividad sin perder control."}]}, {"type": "final", "title": "Has terminado <em>M7</em>", "subtitle": "Privacidad, verificación, límites y ética. Usas Claude como profesional responsable. En M8: el siguiente nivel — Claude Code, MCP y tu proyecto final.", "ctaLabel": "Marcar lección 7.4 completada →"}]};
+  const params = new URLSearchParams(window.location.search);
+  const slide = params.get('slide') || 24;
+  document.querySelector('iframe').src = '/claude-101-videos/ALL-LESSONS-slides.html?slide=' + slide;
 </script>
-<script src="/claude-101-videos/_slides.js"></script>
 </body>
 </html>

@@ -5,17 +5,20 @@
 <script src="/ga.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Claude 101 · Lección 8.4 · Proyecto final</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Geist:wght@300..700&family=Geist+Mono:wght@400..600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/claude-101-videos/_slides.css">
+<title>Claude 101 · Lección L8-4-slides.html</title>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/favicon.svg">
+<style>
+body { margin: 0; padding: 0; overflow: hidden; }
+iframe { width: 100%; height: 100vh; border: none; }
+</style>
 </head>
 <body>
+<iframe src="/claude-101-videos/ALL-LESSONS-slides.html?slide=28" allowfullscreen></iframe>
 <script>
-window.MODULE_DATA = {"module": 8, "lessonId": "l8-4", "lessonNumber": "8.4", "title": "Proyecto final", "slides": [{"type": "intro", "title": "¿Cómo te <em>imaginas</em> tu proyecto?", "subtitle": "Toca lo que se parezca.", "chips": ["Algo que me ahorre tiempo", "Algo creativo", "Algo para mi trabajo", "Algo personal", "Aún no lo sé"]}, {"type": "choice", "eyebrow": "Pregunta 1", "title": "Buen <em>proyecto final</em>", "prompt": "El criterio que sí merece la pena.", "options": ["Algo grande y ambicioso", "Una tarea tuya real, repetitiva, que te consume tiempo cada semana", "Algo que impresione", "Algo nuevo que no existía"], "correct": 1, "feedback": "Repetitivo + real + tuyo. Si te ahorra 1h/semana, vale más que un proyecto \"innovador\" que abandonas. Empieza por lo aburrido."}, {"type": "reveal", "title": "Cómo <em>diseñarlo</em>", "prompt": "Toca cada paso.", "items": [{"icon": "🎯", "name": "1. Elige la tarea", "tag": "Identifica", "body": "Una semana, anota qué haces más de 3 veces por día. La más aburrida y repetitiva es candidata. No la más glamurosa — la más alta-frecuencia."}, {"icon": "🧪", "name": "2. Diseña el prompt + plantilla", "tag": "Construye", "body": "Convierte la tarea en plantilla: prompt base + variables que cambian + ejemplos del output esperado. Pruébala 5 veces hasta que sea consistente."}, {"icon": "📈", "name": "3. Documenta y reutiliza", "tag": "Escala", "body": "Guárdalo como Estilo, Proyecto o snippet. Compartelo con tu equipo. Después de 4 semanas calcula el tiempo ahorrado."}], "feedbackHead": "Listo.", "feedback": "Tarea + plantilla + reutilización. Tres pasos. Lo importante: HAZLO. Un proyecto pequeño hecho > tres proyectos imaginados."}, {"type": "tf", "title": "<em>Calidad</em>", "statement": "\"Un proyecto final pequeño y útil te llevará más lejos que uno grande sin terminar.\"", "correct": true, "feedback": "Verdadero. La regla de oro: pequeño + hecho > grande + soñado. Si terminas algo, aprendes el ciclo completo. Si no terminas, no aprendes a integrar."}, {"type": "scenarios", "title": "¿Buen <em>proyecto</em>?", "list": [{"text": "\"Plantilla para escribir el resumen ejecutivo de informes semanales con tono de mi empresa.\"", "options": ["Muy pequeño", "Excelente: tarea real, repetitiva, valor inmediato", "Falta ambición"], "correct": 1, "feedback": "Excelente. Cumple los tres criterios: real, repetitivo, alto valor. Te ahorra 1-2 horas semanales."}, {"text": "\"Sistema de IA que aprenda solo a invertir en cripto.\"", "options": ["Ambicioso, vamos", "Demasiado grande, demasiado vago, alto riesgo financiero", "Sigue"], "correct": 1, "feedback": "No es proyecto final, es proyecto de empresa. Empieza por algo más acotado para aprender el flujo."}, {"text": "\"Asistente personal que organice mis emails y agenda.\"", "options": ["Empieza con lo más simple: clasificar emails entrantes en 3 categorías", "Hazlo todo", "No se puede"], "correct": 0, "feedback": "Descompone en piezas. Empieza por la pieza más simple que da valor (clasificar emails). Si funciona, sigues construyendo."}]}, {"type": "recap", "list": [{"q": "Criterio del proyecto final:", "options": ["Que sea grande", "Tarea real + repetitiva + tuya", "Que impresione"], "correct": 1, "explain": "Real, repetitivo, tuyo. Esos tres atributos garantizan valor inmediato."}, {"q": "¿Cuál es el siguiente paso real después de este curso?", "options": ["Hacer otro curso", "Elegir UNA tarea tuya y aplicar lo aprendido esta semana", "Esperar"], "correct": 1, "explain": "Aplicar. Sin aplicar, el curso es entretenimiento. Aplicar = aprender de verdad."}]}, {"type": "final", "title": "Has terminado <em>Claude 101</em>", "subtitle": "Acceso, prompting, técnicas, capacidades, casos, buenas prácticas, herramientas avanzadas. En M9 BONUS: desarrollo avanzado (Constitutional AI, Skills, agentes, MCP) para quienes quieran construir.", "ctaLabel": "Marcar lección 8.4 completada →"}]};
+  const params = new URLSearchParams(window.location.search);
+  const slide = params.get('slide') || 28;
+  document.querySelector('iframe').src = '/claude-101-videos/ALL-LESSONS-slides.html?slide=' + slide;
 </script>
-<script src="/claude-101-videos/_slides.js"></script>
 </body>
 </html>

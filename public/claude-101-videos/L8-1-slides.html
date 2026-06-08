@@ -5,17 +5,20 @@
 <script src="/ga.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Claude 101 · Lección 8.1 · Claude Code para desarrolladores</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Geist:wght@300..700&family=Geist+Mono:wght@400..600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/claude-101-videos/_slides.css">
+<title>Claude 101 · Lección L8-1-slides.html</title>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/favicon.svg">
+<style>
+body { margin: 0; padding: 0; overflow: hidden; }
+iframe { width: 100%; height: 100vh; border: none; }
+</style>
 </head>
 <body>
+<iframe src="/claude-101-videos/ALL-LESSONS-slides.html?slide=25" allowfullscreen></iframe>
 <script>
-window.MODULE_DATA = {"module": 8, "lessonId": "l8-1", "lessonNumber": "8.1", "title": "Claude Code para desarrolladores", "slides": [{"type": "intro", "title": "¿Programas?", "subtitle": "Para situarte.", "chips": ["A diario", "A veces", "Sé leer", "Aprendiendo", "No programo"]}, {"type": "choice", "eyebrow": "Pregunta 1", "title": "Qué es <em>Claude Code</em>", "prompt": "Lo más preciso.", "options": ["Un IDE visual nuevo", "CLI que opera Claude en tu terminal con acceso a tu repo: lee, propone diffs, ejecuta comandos", "Una extensión de VS Code", "Un nuevo modelo solo para código"], "correct": 1, "feedback": "CLI en terminal. Vives en tu repo. Le pides cambios, propone diffs, tú apruebas o no. Cambia el flujo de programar si lo adoptas."}, {"type": "reveal", "title": "Tres <em>cosas</em> que cambia", "prompt": "Toca cada una.", "items": [{"icon": "💻", "name": "Repo-aware", "tag": "Contexto", "body": "Tiene acceso a tu base de código. Cuando le pides algo, lee los archivos que necesita. No le tienes que pegar contexto."}, {"icon": "✏️", "name": "Edición por diff", "tag": "Cambios", "body": "Propone cambios como diffs visibles. Tú apruebas archivo por archivo. Mantienes el control, ganas velocidad."}, {"icon": "⚙️", "name": "Ejecuta comandos", "tag": "Tools", "body": "Puede ejecutar tests, instalar deps, correr scripts. Útil cuando un cambio requiere ver si tests pasan."}], "feedbackHead": "Listo.", "feedback": "Repo-aware, diffs, ejecución. Tres palancas que separan Claude Code de un chat con código."}, {"type": "tf", "title": "<em>Aprobación</em>", "statement": "\"Claude Code aplica los cambios al código directamente sin pedir confirmación.\"", "correct": false, "feedback": "Falso. Por defecto te muestra un diff y pides aprobación. Puedes configurar autopilot para acciones específicas, pero por seguridad lo normal es aprobar."}, {"type": "scenarios", "title": "Cuándo <em>usarlo</em>", "list": [{"text": "\"Bug en producción, hay que arreglar rápido en un componente de mi app.\"", "options": ["Buscar en Stack Overflow", "Claude Code en el repo + le pegas el error + propone fix", "Otra cosa"], "correct": 1, "feedback": "Claude Code. Lee el componente, ve el error, propone diff. Mucho más rápido que diagnosticar manual y pegar."}, {"text": "\"Refactor de un módulo de 800 líneas — quieres extraer helpers.\"", "options": ["Manual", "Claude Code: léelo, propone refactor por pasos, tests existentes deben seguir verde", "No usar IA"], "correct": 1, "feedback": "Claude Code. Por pasos, con tests como guardrail. Ahorras horas y reduces riesgo."}, {"text": "\"Empezar un blog personal nuevo en Next.js.\"", "options": ["Solo Claude Code", "Web claude.ai para arquitectura y decisiones, Claude Code para implementación", "Otra cosa"], "correct": 1, "feedback": "Combinación. Diálogo amplio sobre arquitectura primero en web, luego implementación en Code."}]}, {"type": "recap", "list": [{"q": "Quién debería empezar por Claude Code:", "options": ["Todos", "Devs que viven en terminal y/o VS Code", "Solo seniors"], "correct": 1, "explain": "Es para devs. Si no programas a diario, hay caminos más útiles."}, {"q": "Seguridad de Claude Code:", "options": ["Cambia sin avisar", "Por defecto propone diffs, tú apruebas", "No tiene controles"], "correct": 1, "explain": "Apruebas antes de aplicar. Mantienes control sobre tu repo."}]}, {"type": "final", "title": "Programa con <em>velocidad</em>", "subtitle": "Claude Code = Claude en tu terminal con tu repo. En la siguiente: conectores MCP — Claude conectado a tus apps.", "ctaLabel": "Marcar lección 8.1 completada →"}]};
+  const params = new URLSearchParams(window.location.search);
+  const slide = params.get('slide') || 25;
+  document.querySelector('iframe').src = '/claude-101-videos/ALL-LESSONS-slides.html?slide=' + slide;
 </script>
-<script src="/claude-101-videos/_slides.js"></script>
 </body>
 </html>

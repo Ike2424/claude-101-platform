@@ -5,17 +5,20 @@
 <script src="/ga.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Claude 101 · Lección 9.1 · Claude design y Constitutional AI</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Geist:wght@300..700&family=Geist+Mono:wght@400..600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/claude-101-videos/_slides.css">
+<title>Claude 101 · Lección L9-1-slides.html</title>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/favicon.svg">
+<style>
+body { margin: 0; padding: 0; overflow: hidden; }
+iframe { width: 100%; height: 100vh; border: none; }
+</style>
 </head>
 <body>
+<iframe src="/claude-101-videos/ALL-LESSONS-slides.html?slide=29" allowfullscreen></iframe>
 <script>
-window.MODULE_DATA = {"module": 9, "lessonId": "l9-1", "lessonNumber": "9.1", "title": "Claude design y Constitutional AI", "slides": [{"type": "intro", "title": "¿Has oído de <em>Constitutional AI</em>?", "subtitle": "Toca lo que aplique.", "chips": ["Sí, lo he leído", "Suena, pero no sé exacto", "No me suena", "Solo el nombre", "Estoy aquí para aprenderlo"]}, {"type": "choice", "eyebrow": "Pregunta 1", "title": "Qué es <em>Constitutional AI</em>", "prompt": "El método de entrenamiento que distingue a Claude.", "options": ["Solo RLHF como otros", "Modelo se autoevalúa contra una constitución escrita de principios y se autorefuerza", "Solo se entrena con leyes constitucionales", "Una marca registrada sin método"], "correct": 1, "feedback": "Constitutional AI. El modelo se evalúa contra principios escritos (basados en Derechos Humanos, principios de Anthropic, términos de uso, etc.) y se autorefuerza. Esto produce respuestas más matizadas — razona en lugar de bloquear."}, {"type": "reveal", "title": "Qué te <em>cambia</em> a ti", "prompt": "Tres consecuencias prácticas.", "items": [{"icon": "🎯", "name": "Menos bloqueos ciegos", "tag": "Razonado", "body": "Donde otros asistentes bloquean palabras o temas, Claude razona si hay daño real. Mantiene utilidad en zonas grises."}, {"icon": "🎤", "name": "Posturas matizadas", "tag": "Honesto", "body": "En temas controvertidos, reconoce grises, distintas posturas, costes y beneficios. No proyecta falsa certeza ni evade ciegamente."}, {"icon": "🤝", "name": "Mismos valores en familia", "tag": "Consistente", "body": "Haiku, Sonnet, Opus comparten constitución. La diferencia es capacidad, no carácter. Un Haiku se niega a lo mismo que Opus."}], "feedbackHead": "Listo.", "feedback": "Menos bloqueos, matiz, consistencia. Constitutional AI explica por qué Claude se siente \"maduro\" comparado con otros."}, {"type": "tf", "title": "Sobre <em>cambio entre modelos</em>", "statement": "\"Si cambias de Sonnet a Opus, la voz/criterio de Claude es distinta porque son modelos distintos.\"", "correct": false, "feedback": "Falso. Comparten constitución. Cambia capacidad y velocidad, no valores ni \"voz\". Lo que escribes en Sonnet sigue funcionando en Opus."}, {"type": "scenarios", "title": "Por qué <em>esto importa</em>", "list": [{"text": "\"Le pregunto sobre regulación de IA, tema controvertido.\"", "options": ["Bloquea", "Razona pros/contras de distintas posturas con matiz", "Solo opina"], "correct": 1, "feedback": "Razona. En lugar de evitar el tema, mapea posiciones, costes, beneficios. Útil en contextos profesionales."}, {"text": "\"Le pido ayuda con una conversación difícil con un colaborador.\"", "options": ["Solo lo correcto", "Reconoce que hay capas humanas, propone enfoques distintos con sus trade-offs", "Generaliza"], "correct": 1, "feedback": "Matiz humano. Trata la situación con la complejidad que tiene en lugar de aplicar reglas simplistas."}, {"text": "\"Le pido un análisis estratégico.\"", "options": ["Pinta optimista", "Mantiene matiz: opciones, qué cuestan, qué asume, qué podría salir mal", "Sin más"], "correct": 1, "feedback": "Honestidad calibrada. Si hay riesgos los menciona; si hay incertidumbre la reconoce."}]}, {"type": "recap", "list": [{"q": "¿Para qué te sirve saber esto?", "options": ["Examen", "Te ayuda a saber CON QUÉ tipo de asistente trabajas y cuándo se diferencia de otros", "Curiosidad"], "correct": 1, "explain": "Entiendes el \"carácter\" de Claude → lo usas mejor. Sabes en qué contextos brilla más que alternativas."}, {"q": "¿Qué comparten Haiku, Sonnet y Opus?", "options": ["Velocidad", "Constitución y valores", "Precio"], "correct": 1, "explain": "Valores y voz iguales. Capacidad y velocidad distintas. Eso te permite cambiar de modelo sin que rompa tu prompt."}]}, {"type": "final", "title": "Sabes <em>cómo se entrena</em>", "subtitle": "Constitutional AI explica el \"carácter\" de Claude. En la siguiente: markdown como input estructurado.", "ctaLabel": "Marcar lección 9.1 completada →"}]};
+  const params = new URLSearchParams(window.location.search);
+  const slide = params.get('slide') || 29;
+  document.querySelector('iframe').src = '/claude-101-videos/ALL-LESSONS-slides.html?slide=' + slide;
 </script>
-<script src="/claude-101-videos/_slides.js"></script>
 </body>
 </html>

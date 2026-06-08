@@ -5,17 +5,20 @@
 <script src="/ga.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Claude 101 · Lección 9.5 · MCP — Model Context Protocol</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Geist:wght@300..700&family=Geist+Mono:wght@400..600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/claude-101-videos/_slides.css">
+<title>Claude 101 · Lección L9-5-slides.html</title>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/favicon.svg">
+<style>
+body { margin: 0; padding: 0; overflow: hidden; }
+iframe { width: 100%; height: 100vh; border: none; }
+</style>
 </head>
 <body>
+<iframe src="/claude-101-videos/ALL-LESSONS-slides.html?slide=33" allowfullscreen></iframe>
 <script>
-window.MODULE_DATA = {"module": 9, "lessonId": "l9-5", "lessonNumber": "9.5", "title": "MCP — Model Context Protocol", "slides": [{"type": "intro", "title": "<em>MCP</em> profundizado", "subtitle": "Lo que ya sabes.", "chips": ["Lo he configurado", "Sé qué resuelve", "Solo nombre", "He construido un servidor", "Nada"]}, {"type": "choice", "eyebrow": "Pregunta 1", "title": "Qué resuelve <em>MCP</em>", "prompt": "En una frase.", "options": ["Modelo más rápido", "Estandariza cómo modelos de IA se conectan a herramientas y datos externos — un servidor MCP es usable por cualquier cliente compatible", "Plan de pago", "Permisos"], "correct": 1, "feedback": "Estandariza la conexión. Cada agente reinventaba cómo conectar Notion/Slack/GitHub. MCP da un protocolo común. Servidor expone, cliente consume."}, {"type": "reveal", "title": "Arquitectura <em>MCP</em>", "prompt": "Toca cada pieza.", "items": [{"icon": "🖥️", "name": "Server", "tag": "Expone", "body": "Software que expone tools y resources (ej: servidor MCP de Notion ofrece \"buscar página\", \"crear nota\"). Lo puede hacer el proveedor de la app o un tercero."}, {"icon": "👤", "name": "Client", "tag": "Consume", "body": "Claude (en Claude.ai, Claude Code, tu app). Descubre tools del servidor, decide cuándo usarlas, las ejecuta. Tú no las invocas — el modelo decide."}, {"icon": "🔗", "name": "Protocolo", "tag": "Estándar", "body": "Especificación abierta de cómo se comunican. Cliente sabe pedir lista de tools, recibir tools, ejecutar tools. Cualquier cliente puede usar cualquier server MCP."}], "feedbackHead": "Bien.", "feedback": "Server, client, protocolo. Estándar abierto. Reusabilidad real entre apps."}, {"type": "tf", "title": "Sobre <em>crear servidor</em>", "statement": "\"Puedes construir tu propio servidor MCP para que Claude acceda a tus datos internos.\"", "correct": true, "feedback": "Verdadero. Hay SDKs en TypeScript y Python. Defines tools como funciones, expones via MCP, Claude (o cualquier cliente compatible) las usa. Tu sistema interno se vuelve operable."}, {"type": "scenarios", "title": "Diseña con <em>MCP</em>", "list": [{"text": "\"Mi pyme tiene una base de datos interna con info de clientes. Quiero que Claude pueda consultarla.\"", "options": ["Subir CSVs", "Construir servidor MCP que exponga consultas seguras a esa BD", "No se puede"], "correct": 1, "feedback": "Servidor MCP propio. Defines qué consultas permites, Claude las usa cuando necesita info. Sin exportar datos."}, {"text": "\"Quiero que un equipo use Claude conectado a Notion y GitHub.\"", "options": ["Cada uno por su lado", "Conectar MCPs oficiales de Notion y GitHub — Claude opera sobre los dos", "No usar Claude"], "correct": 1, "feedback": "MCPs existentes. Notion y GitHub tienen servidores oficiales. Conectarlos da operatividad cruzada inmediata."}, {"text": "\"Quiero que un agente automatice tareas en mi CRM.\"", "options": ["Imposible", "Si el CRM tiene MCP server (oficial o tercero), conectarlo. Si no, construir uno sobre su API.", "Cambiar de CRM"], "correct": 1, "feedback": "Dos opciones. Si existe MCP del CRM, listo. Si no, construyes el server tú sobre la API. Ambas viables."}]}, {"type": "recap", "list": [{"q": "¿Por qué MCP es importante para el ecosistema?", "options": ["Es opcional", "Resuelve el \"integration hell\": cada agente no tiene que reinventar conexiones", "Es de pago"], "correct": 1, "explain": "Estándar abierto = interoperabilidad. Lo que escribes para Claude vale para otros clientes MCP."}, {"q": "Antes de conectar un MCP:", "options": ["Confías", "Revisas el proveedor y los permisos que pide", "Lo desactivas"], "correct": 1, "explain": "Permisos granulares. Confianza informada por origen del server y scope solicitado."}]}, {"type": "final", "title": "Has terminado <em>el curso completo</em>", "subtitle": "Constitutional AI, markdown, Skills, agentes y MCP. Tienes las piezas para no solo usar Claude — para construir con él. Lo siguiente es práctica deliberada: elige una tarea, construye algo pequeño, itera.", "ctaLabel": "Marcar lección 9.5 completada →"}]};
+  const params = new URLSearchParams(window.location.search);
+  const slide = params.get('slide') || 33;
+  document.querySelector('iframe').src = '/claude-101-videos/ALL-LESSONS-slides.html?slide=' + slide;
 </script>
-<script src="/claude-101-videos/_slides.js"></script>
 </body>
 </html>

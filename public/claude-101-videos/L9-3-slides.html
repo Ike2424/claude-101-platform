@@ -5,17 +5,20 @@
 <script src="/ga.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Claude 101 · Lección 9.3 · Skills de Claude</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Geist:wght@300..700&family=Geist+Mono:wght@400..600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/claude-101-videos/_slides.css">
+<title>Claude 101 · Lección L9-3-slides.html</title>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/favicon.svg">
+<style>
+body { margin: 0; padding: 0; overflow: hidden; }
+iframe { width: 100%; height: 100vh; border: none; }
+</style>
 </head>
 <body>
+<iframe src="/claude-101-videos/ALL-LESSONS-slides.html?slide=31" allowfullscreen></iframe>
 <script>
-window.MODULE_DATA = {"module": 9, "lessonId": "l9-3", "lessonNumber": "9.3", "title": "Skills de Claude", "slides": [{"type": "intro", "title": "<em>Skills</em>", "subtitle": "Toca lo que aplique.", "chips": ["Sé qué son", "Las he usado", "He creado alguna", "No tenía idea", "Lo confundo con Estilos"]}, {"type": "choice", "eyebrow": "Pregunta 1", "title": "Qué es una <em>Skill</em>", "prompt": "Lo más preciso.", "options": ["Un modelo distinto", "Carpeta con SKILL.md + archivos auxiliares que define una capacidad — Claude la carga cuando detecta que la necesita", "Un plan de pago", "Un prompt guardado"], "correct": 1, "feedback": "Carpeta con SKILL.md. Define cuándo y cómo se usa. Claude la detecta automáticamente y la activa. Empaqueta flujos reutilizables."}, {"type": "reveal", "title": "Anatomía de una <em>Skill</em>", "prompt": "Toca cada elemento.", "items": [{"icon": "📄", "name": "SKILL.md", "tag": "El cerebro", "body": "Archivo principal con frontmatter (name, description) + cuerpo. Describe qué hace, cuándo activarla, cómo usarla. Es lo que Claude lee para decidir cargarla."}, {"icon": "📁", "name": "Archivos auxiliares", "tag": "Recursos", "body": "Plantillas, scripts, ejemplos, datos. Lo que la skill necesita para hacer su trabajo. Pueden ser .docx, .py, .md, lo que aplique."}, {"icon": "🤖", "name": "Activación", "tag": "Automática", "body": "Claude detecta intención del usuario (ej: \"haz un reporte mensual\") y carga la skill correspondiente sin que el usuario tenga que invocarla."}], "feedbackHead": "Bien.", "feedback": "SKILL.md + auxiliares + activación automática. Tres elementos. Es lo que las hace tan potentes — reutilizas flujos completos."}, {"type": "tf", "title": "Sobre <em>publicación</em>", "statement": "\"Las Skills solo las puede crear Anthropic — los usuarios no podemos hacer nuestras propias Skills.\"", "correct": false, "feedback": "Falso. Cualquiera puede crear Skills. Anthropic publica las oficiales (docx, pdf, xlsx, etc.) y los usuarios crean las suyas para flujos específicos. Hay marketplaces de la comunidad."}, {"type": "scenarios", "title": "Buena <em>Skill</em>", "list": [{"text": "\"Genero reportes mensuales con la misma estructura y tono cada mes.\"", "options": ["Conversación normal", "Skill propia: plantilla + ejemplos + reglas en SKILL.md", "Solo Proyecto"], "correct": 1, "feedback": "Skill ideal. Tarea repetitiva con plantilla. Claude la detecta y aplica. Consistencia garantizada."}, {"text": "\"Pregunta puntual sobre física.\"", "options": ["Skill", "Conversación normal — no es repetitivo", "Proyecto"], "correct": 1, "feedback": "No necesita Skill. Es respuesta única. Las Skills brillan en lo recurrente."}, {"text": "\"Tengo un sistema interno de notas con formato muy específico.\"", "options": ["Pegar formato cada vez", "Skill con la plantilla + reglas + ejemplos de mi sistema", "Memorizar"], "correct": 1, "feedback": "Skill. Le ahorra explicar el formato cada vez. Claude lo carga automáticamente."}]}, {"type": "recap", "list": [{"q": "Diferencia entre Skill y Proyecto:", "options": ["Son lo mismo", "Proyecto agrupa conversaciones; Skill empaqueta una capacidad/flujo reutilizable que Claude activa solo", "Skills son de pago"], "correct": 1, "explain": "Distintos propósitos. Proyecto = contexto compartido. Skill = capacidad activable."}, {"q": "Cuándo crear una Skill propia:", "options": ["Para todo", "Cuando tienes un flujo que repites con estructura/formato consistente", "Nunca"], "correct": 1, "explain": "Repetición + consistencia = candidato a Skill. Si lo haces una vez al año, no merece la pena."}]}, {"type": "final", "title": "Empaqueta <em>habilidades</em>", "subtitle": "Skills = flujos reutilizables que Claude activa solo. En la siguiente: construir un agente.", "ctaLabel": "Marcar lección 9.3 completada →"}]};
+  const params = new URLSearchParams(window.location.search);
+  const slide = params.get('slide') || 31;
+  document.querySelector('iframe').src = '/claude-101-videos/ALL-LESSONS-slides.html?slide=' + slide;
 </script>
-<script src="/claude-101-videos/_slides.js"></script>
 </body>
 </html>

@@ -5,17 +5,20 @@
 <script src="/ga.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Claude 101 · Lección 4.1 · Cadenas de razonamiento (CoT)</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Geist:wght@300..700&family=Geist+Mono:wght@400..600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/claude-101-videos/_slides.css">
+<title>Claude 101 · Lección L4-1-slides.html</title>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/favicon.svg">
+<style>
+body { margin: 0; padding: 0; overflow: hidden; }
+iframe { width: 100%; height: 100vh; border: none; }
+</style>
 </head>
 <body>
+<iframe src="/claude-101-videos/ALL-LESSONS-slides.html?slide=11" allowfullscreen></iframe>
 <script>
-window.MODULE_DATA = {"module": 4, "lessonId": "l4-1", "lessonNumber": "4.1", "title": "Cadenas de razonamiento (CoT)", "slides": [{"type": "intro", "title": "Tu <em>experiencia</em> con CoT", "subtitle": "Toca lo que aplique.", "chips": ["He pedido \"razona paso a paso\"", "No sé qué es CoT", "Lo uso en mates", "Lo uso en código", "Nunca lo he usado"]}, {"type": "choice", "eyebrow": "Pregunta 1", "title": "Qué consigue <em>Chain of Thought</em>", "prompt": "Pides a Claude que razone paso a paso antes de responder. ¿Qué pasa?", "options": ["La respuesta es más larga, sin más", "Mejora la precisión en problemas de lógica, mates y multipaso", "Solo cambia el tono", "Se ralentiza sin beneficio"], "correct": 1, "feedback": "Mejora la precisión. Al \"pensar en voz alta\", Claude revisa cada paso antes del siguiente, reduce saltos lógicos y atrapa errores que harían fallar la respuesta directa."}, {"type": "reveal", "title": "Cómo <em>activar</em> CoT", "prompt": "Tres formas de pedirlo.", "items": [{"icon": "📝", "name": "Frase directa", "tag": "Más simple", "body": "\"Razona paso a paso antes de responder\" al final de tu prompt. Funciona el 90% de las veces para tareas estándar de razonamiento."}, {"icon": "🪜", "name": "Pasos numerados", "tag": "Estructurado", "body": "\"1) Identifica las variables. 2) Plantea la ecuación. 3) Resuélvela. 4) Verifica el resultado.\" Le marcas el camino, ideal cuando sabes los pasos óptimos."}, {"icon": "🧠", "name": "Modo pensamiento", "tag": "Extended", "body": "Algunos modelos (Opus en particular) tienen modo \"extended thinking\" que dedica explícitamente más tiempo a razonar. Útil en problemas complejos donde la calidad importa."}], "feedbackHead": "Listo.", "feedback": "Frase, pasos o modo extendido. Tres palancas para CoT según cuánto control quieras."}, {"type": "tf", "title": "Sobre <em>cuándo NO</em> usar CoT", "statement": "\"Pedir CoT en tareas creativas o de escritura emocional siempre mejora el resultado.\"", "correct": false, "feedback": "Falso. CoT brilla en lógica y multipaso. Para escritura creativa o emocional puede empeorar el flujo — Claude se \"explica\" en lugar de escribir. Úsalo donde haga falta."}, {"type": "scenarios", "title": "¿Usas <em>CoT</em>?", "list": [{"text": "\"Tengo un problema de geometría con 3 figuras encajadas y necesito calcular el área.\"", "options": ["Sin CoT", "Con CoT — pídele que razone paso a paso", "Cambiar de modelo"], "correct": 1, "feedback": "Con CoT. Geometría multipaso, exactamente lo que mejora CoT. Reduce errores de cálculo intermedio."}, {"text": "\"Quiero un poema sobre el otoño.\"", "options": ["Con CoT", "Sin CoT — es creativo, deja que fluya", "Pedir Opus"], "correct": 1, "feedback": "Sin CoT. Pedirle \"razona paso a paso\" antes de escribir un poema lo vuelve mecánico. Deja que escriba directamente."}, {"text": "\"Tengo que decidir entre 3 estrategias comerciales para mi empresa. Cada una con pros y contras.\"", "options": ["Sin CoT", "Con CoT — analiza cada una contra criterios y compara", "No usar Claude"], "correct": 1, "feedback": "Con CoT. Análisis multicriterio = perfecto para CoT. Define los criterios, evalúa cada opción, compara."}]}, {"type": "recap", "list": [{"q": "CoT funciona porque...", "options": ["Activa más memoria", "Obliga a Claude a verificar cada paso antes del siguiente, reduciendo errores acumulados", "Cambia el modelo"], "correct": 1, "explain": "Razonamiento explícito = menos saltos lógicos = menos errores acumulados. Es el mecanismo."}, {"q": "¿En qué problema NO ayuda CoT?", "options": ["Mates complejas", "Análisis de decisión", "Generar copy publicitario emocional"], "correct": 2, "explain": "Para copy emocional CoT estorba: Claude se mete a \"razonar\" cuando debería sentir."}]}, {"type": "final", "title": "Razonar <em>en voz alta</em>", "subtitle": "CoT para tareas que requieren lógica. En la siguiente: enseñar a Claude con ejemplos (few-shot).", "ctaLabel": "Marcar lección 4.1 completada →"}]};
+  const params = new URLSearchParams(window.location.search);
+  const slide = params.get('slide') || 11;
+  document.querySelector('iframe').src = '/claude-101-videos/ALL-LESSONS-slides.html?slide=' + slide;
 </script>
-<script src="/claude-101-videos/_slides.js"></script>
 </body>
 </html>

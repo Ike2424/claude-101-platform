@@ -5,17 +5,20 @@
 <script src="/ga.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Claude 101 · Lección 9.4 · Cómo construir un agente</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Geist:wght@300..700&family=Geist+Mono:wght@400..600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/claude-101-videos/_slides.css">
+<title>Claude 101 · Lección L9-4-slides.html</title>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/favicon.svg">
+<style>
+body { margin: 0; padding: 0; overflow: hidden; }
+iframe { width: 100%; height: 100vh; border: none; }
+</style>
 </head>
 <body>
+<iframe src="/claude-101-videos/ALL-LESSONS-slides.html?slide=32" allowfullscreen></iframe>
 <script>
-window.MODULE_DATA = {"module": 9, "lessonId": "l9-4", "lessonNumber": "9.4", "title": "Cómo construir un agente", "slides": [{"type": "intro", "title": "Tu <em>familiaridad</em> con agentes", "subtitle": "Toca lo que aplique.", "chips": ["He construido uno", "Sé qué son", "He oído el término", "No tenía idea", "Confundo con chatbot"]}, {"type": "choice", "eyebrow": "Pregunta 1", "title": "Agente vs <em>prompt</em>", "prompt": "La diferencia clave.", "options": ["Más caro", "Bucle: planifica → ejecuta tools → evalúa → itera hasta terminar. Un prompt es Q&A. Un agente actúa.", "Solo en código", "Igual con otro nombre"], "correct": 1, "feedback": "Bucle de acción. Planifica, ejecuta tools (lee archivo, llama API, manda email), evalúa el resultado, vuelve a planificar. Un prompt responde, un agente trabaja."}, {"type": "reveal", "title": "Tres <em>componentes</em>", "prompt": "Toca cada uno.", "items": [{"icon": "🎯", "name": "Objetivo", "tag": "Goal", "body": "No una pregunta — un objetivo: \"clasifica los emails de hoy y responde los rutinarios\". Algo que requiere varios pasos."}, {"icon": "🛠️", "name": "Tools", "tag": "Acciones", "body": "Funciones que el agente puede invocar: leer email, consultar CRM, enviar mensaje, escribir archivo. Tú las defines."}, {"icon": "🔁", "name": "Bucle", "tag": "Iteración", "body": "Planifica el siguiente paso, lo ejecuta, evalúa el resultado, replanifica. Sigue hasta cumplir el objetivo o llegar a un límite."}], "feedbackHead": "Listo.", "feedback": "Objetivo + tools + bucle. Tres componentes. Con el Claude Agent SDK puedes montar uno funcional en ~50 líneas."}, {"type": "tf", "title": "Sobre <em>complejidad</em>", "statement": "\"Construir un agente útil requiere meses de desarrollo y un equipo de IA.\"", "correct": false, "feedback": "Falso. Con el Claude Agent SDK (Python o TypeScript), un agente que automatiza una tarea concreta puede salir en una tarde. La complejidad escala con el alcance, no es barrera de entrada."}, {"type": "scenarios", "title": "Diseña un <em>agente</em>", "list": [{"text": "\"Quiero un agente que cada mañana resuma mis emails sin leer.\"", "options": ["Complejo", "Tools: leer email + clasificar + extraer info clave + enviar resumen. Loop simple.", "No se puede"], "correct": 1, "feedback": "Diseño claro. Tools definidos, loop simple (procesar cada email, generar resumen final). Sale en una tarde."}, {"text": "\"Quiero un agente que revise PRs de mi repo y sugiera mejoras.\"", "options": ["Imposible", "Tools: leer diff + analizar código + comentar en PR. Loop por archivo.", "Solo para empresas"], "correct": 1, "feedback": "Buen agente. Tools sobre GitHub API + lectura de código. Loop por archivo o por hunk. Útil de verdad."}, {"text": "\"Quiero un agente que reserve vuelos por mí pagando con mi tarjeta.\"", "options": ["Genial", "Cuidado: acción financiera real, alta consecuencia — requiere guardrails fuertes", "Inviable"], "correct": 1, "feedback": "Acciones financieras = mucho cuidado. Agentes pueden hacer cosas, pero confirmar antes de pagar es indispensable. Empieza por casos sin movimiento de dinero."}]}, {"type": "recap", "list": [{"q": "Para empezar a construir agentes:", "options": ["Esperar al curso avanzado", "Claude Agent SDK + un objetivo concreto + 50 líneas", "Solo si pagas Enterprise"], "correct": 1, "explain": "SDK + alcance pequeño. Si quieres aprender, empieza por algo simple en una tarde."}, {"q": "¿Qué cuidado tener con agentes?", "options": ["Ninguno", "Acciones con consecuencias reales (dinero, comunicación pública) requieren confirmación humana", "Solo testar"], "correct": 1, "explain": "Más capacidad = más riesgo. Guardrails proporcionales a la consecuencia."}]}, {"type": "final", "title": "Construyes <em>cosas</em>", "subtitle": "Objetivo + tools + bucle. Con el SDK empiezas hoy. En la última lección: MCP, el protocolo que conecta agentes con el mundo.", "ctaLabel": "Marcar lección 9.4 completada →"}]};
+  const params = new URLSearchParams(window.location.search);
+  const slide = params.get('slide') || 32;
+  document.querySelector('iframe').src = '/claude-101-videos/ALL-LESSONS-slides.html?slide=' + slide;
 </script>
-<script src="/claude-101-videos/_slides.js"></script>
 </body>
 </html>

@@ -5,17 +5,20 @@
 <script src="/ga.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Claude 101 · Lección 8.3 · Recursos para seguir aprendiendo</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Geist:wght@300..700&family=Geist+Mono:wght@400..600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/claude-101-videos/_slides.css">
+<title>Claude 101 · Lección L8-3-slides.html</title>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/favicon.svg">
+<style>
+body { margin: 0; padding: 0; overflow: hidden; }
+iframe { width: 100%; height: 100vh; border: none; }
+</style>
 </head>
 <body>
+<iframe src="/claude-101-videos/ALL-LESSONS-slides.html?slide=27" allowfullscreen></iframe>
 <script>
-window.MODULE_DATA = {"module": 8, "lessonId": "l8-3", "lessonNumber": "8.3", "title": "Recursos para seguir aprendiendo", "slides": [{"type": "intro", "title": "Tu <em>siguiente paso</em>", "subtitle": "Cuál de estos te interesa más.", "chips": ["Docs oficiales", "Comunidades", "Newsletters", "Hacer cosas", "Cursos avanzados"]}, {"type": "choice", "eyebrow": "Pregunta 1", "title": "<em>Mejor forma</em> de aprender", "prompt": "Quieres dominar Claude más allá de este curso.", "options": ["Releerlo todo", "Usarlo a diario en cosas reales tuyas + revisar docs cuando atascas", "Esperar al curso avanzado", "Leer todos los papers"], "correct": 1, "feedback": "Práctica deliberada. Usar en cosas reales + docs como mapa cuando atascas. Las skills útiles vienen del uso, no de leer."}, {"type": "reveal", "title": "Tres <em>fuentes</em>", "prompt": "Toca cada una.", "items": [{"icon": "📚", "name": "docs.claude.com", "tag": "Oficial", "body": "Mapa siempre actualizado: nuevos modelos, capacidades, ejemplos de prompting, casos de uso por sector. El primer lugar al que volver."}, {"icon": "👥", "name": "Comunidades", "tag": "Aprender entre pares", "body": "Reddit r/ClaudeAI, Discord oficial, Twitter/X de Anthropic. Gente compartiendo prompts, trucos, casos de uso reales."}, {"icon": "📰", "name": "Newsletters", "tag": "Curaduría", "body": "Anthropic Blog, Rundown AI, otras. Te traen lo importante semanalmente, evitas estar todo el día revisando."}], "feedbackHead": "Listo.", "feedback": "Docs como mapa, comunidades como aprendizaje entre pares, newsletters como curaduría. Tres frentes complementarios."}, {"type": "tf", "title": "Sobre <em>cursos</em>", "statement": "\"Para dominar Claude solo necesitas un curso completo, no práctica diaria.\"", "correct": false, "feedback": "Falso. Los cursos dan estructura inicial pero las habilidades vienen de uso real. Aplica a una tarea tuya cada semana — eso te lleva mucho más lejos que cualquier curso."}, {"type": "scenarios", "title": "¿Qué <em>aprovecharías</em>?", "list": [{"text": "\"Quiero estar al día de releases nuevos de Anthropic.\"", "options": ["Buscar a diario", "Suscribirse al newsletter de Anthropic + seguir Twitter oficial", "Confiar"], "correct": 1, "feedback": "Curaduría. Te llega lo importante sin esfuerzo de búsqueda diaria."}, {"text": "\"Tengo dudas sobre cómo estructurar un prompt complejo.\"", "options": ["Adivinar", "Buscar en docs.claude.com (sección prompt engineering) — está muy bien explicado", "Hacer otra cosa"], "correct": 1, "feedback": "Docs oficiales. La sección de prompt engineering es de las mejores referencias gratuitas."}, {"text": "\"Quiero ver casos de uso reales de gente como yo.\"", "options": ["Solo docs", "Comunidades — Reddit, Discord, Twitter de creadores", "No mirar"], "correct": 1, "feedback": "Comunidades. Casos reales, no marketing. Te encuentras prompts que merece la pena copiar."}]}, {"type": "recap", "list": [{"q": "Cuál es la mejor \"fuente\" para aprender:", "options": ["Otro curso", "Uso diario en cosas reales tuyas", "Solo lectura"], "correct": 1, "explain": "Práctica real. Sin sustituto. Los recursos son apoyo, no atajo."}, {"q": "¿Qué hacer cuando atascas con algo específico?", "options": ["Cambiar de modelo", "docs.claude.com primero, comunidades después", "Esperar"], "correct": 1, "explain": "Docs te dan respuestas autorizadas. Comunidades te dan respuestas reales."}]}, {"type": "final", "title": "Mapa <em>de viaje</em>", "subtitle": "Docs, comunidades, newsletters + uso diario. Y un proyecto propio para consolidar — eso es lo siguiente.", "ctaLabel": "Marcar lección 8.3 completada →"}]};
+  const params = new URLSearchParams(window.location.search);
+  const slide = params.get('slide') || 27;
+  document.querySelector('iframe').src = '/claude-101-videos/ALL-LESSONS-slides.html?slide=' + slide;
 </script>
-<script src="/claude-101-videos/_slides.js"></script>
 </body>
 </html>

@@ -5,17 +5,20 @@
 <script src="/ga.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Claude 101 · Lección 5.2 · Búsqueda web e investigación</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Geist:wght@300..700&family=Geist+Mono:wght@400..600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/claude-101-videos/_slides.css">
+<title>Claude 101 · Lección L5-2-slides.html</title>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/favicon.svg">
+<style>
+body { margin: 0; padding: 0; overflow: hidden; }
+iframe { width: 100%; height: 100vh; border: none; }
+</style>
 </head>
 <body>
+<iframe src="/claude-101-videos/ALL-LESSONS-slides.html?slide=16" allowfullscreen></iframe>
 <script>
-window.MODULE_DATA = {"module": 5, "lessonId": "l5-2", "lessonNumber": "5.2", "title": "Búsqueda web e investigación", "slides": [{"type": "intro", "title": "<em>Búsqueda web</em> y tú", "subtitle": "Toca lo que aplique.", "chips": ["Siempre activada", "Solo cuando hace falta", "No sé usarla", "No sabía que existía", "Prefiero Google"]}, {"type": "choice", "eyebrow": "Pregunta 1", "title": "¿Cuándo SÍ búsqueda web?", "prompt": "Cuál de estos casos REQUIERE búsqueda web activada.", "options": ["Resumir un PDF que adjunté", "Saber qué pasó en una noticia de esta semana", "Escribir un poema", "Reescribir un email"], "correct": 1, "feedback": "Eventos recientes. Búsqueda web es para info posterior al entrenamiento o datos que cambian (precios, noticias, releases). Para texto creativo o sobre algo que ya le pasaste, no."}, {"type": "reveal", "title": "Tres <em>usos</em> de búsqueda", "prompt": "Toca cada uno.", "items": [{"icon": "📰", "name": "Actualidad", "tag": "Reciente", "body": "Noticias, eventos, releases de productos. Cualquier cosa posterior a la fecha de corte del modelo."}, {"icon": "🔢", "name": "Datos cambiantes", "tag": "Dinámico", "body": "Cotizaciones, precios, estadísticas que se actualizan, normativa vigente. Lo que en el entrenamiento estaba pero ya cambió."}, {"icon": "🔎", "name": "Verificación", "tag": "Fuente", "body": "Cuando quieres respuesta con fuente citada y verificable. Búsqueda web suele venir con links a fuentes."}], "feedbackHead": "Listo.", "feedback": "Actualidad, cambiantes, fuente. Para esto vale; para todo lo demás suele sobrar y enlentece."}, {"type": "tf", "title": "<em>Calidad</em> de fuentes", "statement": "\"Claude siempre verifica que las fuentes web que cita sean fiables y precisas.\"", "correct": false, "feedback": "Falso. Claude cita fuentes que la búsqueda devuelve, pero no juzga su fiabilidad por ti. Revisa las fuentes antes de usar la info en decisiones importantes."}, {"type": "scenarios", "title": "Búsqueda <em>sí o no</em>", "list": [{"text": "\"¿Cuál es la fórmula del área de un círculo?\"", "options": ["Con búsqueda", "Sin — esto es conocimiento estable", "Da igual"], "correct": 1, "feedback": "Sin búsqueda. Pi r² no cambia. Activar búsqueda solo te ralentiza."}, {"text": "\"¿Cuántos usuarios tiene Twitter/X hoy?\"", "options": ["Sin búsqueda", "Con búsqueda — dato cambiante", "No preguntar"], "correct": 1, "feedback": "Con búsqueda. Esa cifra cambia cada trimestre, el conocimiento entrenado puede estar desactualizado."}, {"text": "\"¿Me puedes explicar cómo funciona la fotosíntesis?\"", "options": ["Con búsqueda", "Sin — concepto estable", "Solo si pagas"], "correct": 1, "feedback": "Sin búsqueda. La fotosíntesis no ha cambiado. Pedir búsqueda añade latencia sin beneficio."}]}, {"type": "recap", "list": [{"q": "Regla mental para activar búsqueda:", "options": ["Siempre", "\"¿Esta info ha podido cambiar desde el entrenamiento?\" — si sí, búsqueda", "Nunca"], "correct": 1, "explain": "Cambio temporal = búsqueda. Conocimiento estable = no necesita."}, {"q": "¿Las fuentes que cita son siempre fiables?", "options": ["Sí", "No — verifica las fuentes importantes antes de basar decisiones", "Solo en inglés"], "correct": 1, "explain": "Cita lo que encuentra; el juicio de fiabilidad sigue siendo tuyo."}]}, {"type": "final", "title": "Información <em>al día</em>", "subtitle": "Búsqueda web cuando importa el \"cuándo\". En la siguiente: cuándo crear archivos (Excel, Word, PDF).", "ctaLabel": "Marcar lección 5.2 completada →"}]};
+  const params = new URLSearchParams(window.location.search);
+  const slide = params.get('slide') || 16;
+  document.querySelector('iframe').src = '/claude-101-videos/ALL-LESSONS-slides.html?slide=' + slide;
 </script>
-<script src="/claude-101-videos/_slides.js"></script>
 </body>
 </html>

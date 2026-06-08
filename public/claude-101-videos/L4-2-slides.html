@@ -5,17 +5,20 @@
 <script src="/ga.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Claude 101 · Lección 4.2 · Few-shot: enseñar con ejemplos</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Geist:wght@300..700&family=Geist+Mono:wght@400..600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/claude-101-videos/_slides.css">
+<title>Claude 101 · Lección L4-2-slides.html</title>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/favicon.svg">
+<style>
+body { margin: 0; padding: 0; overflow: hidden; }
+iframe { width: 100%; height: 100vh; border: none; }
+</style>
 </head>
 <body>
+<iframe src="/claude-101-videos/ALL-LESSONS-slides.html?slide=12" allowfullscreen></iframe>
 <script>
-window.MODULE_DATA = {"module": 4, "lessonId": "l4-2", "lessonNumber": "4.2", "title": "Few-shot: enseñar con ejemplos", "slides": [{"type": "intro", "title": "¿Sueles dar <em>ejemplos</em>?", "subtitle": "En tus prompts.", "chips": ["Casi siempre", "A veces", "Nunca", "No sabía que importaba", "Solo para código"]}, {"type": "choice", "eyebrow": "Pregunta 1", "title": "Qué es <em>few-shot</em>", "prompt": "Few-shot prompting consiste en...", "options": ["Hacer prompts muy cortos", "Darle 2-3 ejemplos de input → output esperado para que aprenda el patrón", "Usar muchas iteraciones", "Hacer varias preguntas a la vez"], "correct": 1, "feedback": "Dar ejemplos. 2-3 pares de input → output del estilo que quieres. Claude detecta el patrón y lo aplica al nuevo input."}, {"type": "reveal", "title": "Cuándo es <em>imprescindible</em>", "prompt": "Tres casos en los que few-shot da un salto enorme.", "items": [{"icon": "🏷️", "name": "Clasificación", "tag": "Categorías", "body": "\"Email → urgente / normal / spam\". Le das 3 ejemplos con su clasificación y aplica la misma lógica al resto. Mucho más consistente que reglas verbales."}, {"icon": "🎨", "name": "Formato consistente", "tag": "Output rígido", "body": "Cuando necesitas el mismo formato exacto en muchas respuestas (JSON, tablas, plantillas), ejemplos > descripción."}, {"icon": "🗣️", "name": "Tono específico", "tag": "Voz", "body": "Para imitar un estilo de escritura concreto (tuyo, de un cliente, de una marca), 2-3 ejemplos clavan la voz mejor que adjetivos."}], "feedbackHead": "Listo.", "feedback": "Clasificación, formato, tono. En estos tres casos, few-shot eleva la calidad de \"ok\" a \"exactamente lo que querías\"."}, {"type": "tf", "title": "¿Cuántos <em>ejemplos</em>?", "statement": "\"Cuantos más ejemplos pongas en few-shot, mejor el resultado.\"", "correct": false, "feedback": "Falso. 2-3 ejemplos bien elegidos suelen bastar. Más allá, la mejora marginal es pequeña y consumes tokens. La regla: ejemplos que CUBRAN la variedad de casos."}, {"type": "scenarios", "title": "Construye <em>few-shot</em>", "list": [{"text": "\"Necesito reescribir 50 emails con MI tono. ¿Cómo construyes el few-shot?\"", "options": ["Le explico mi tono en palabras", "Le pego 3 emails míos como ejemplos del tono que quiero", "Le pido que adivine"], "correct": 1, "feedback": "Ejemplos del tono. \"Aquí van 3 emails míos: [ejemplo1] [ejemplo2] [ejemplo3]. Reescribe los siguientes con ese mismo tono.\" Resultado: consistencia real."}, {"text": "\"Quiero clasificar tickets de soporte: técnico / facturación / queja general.\"", "options": ["Solo descripción", "Few-shot con un ejemplo de cada categoría", "Aleatorio"], "correct": 1, "feedback": "Few-shot. Un ejemplo de cada categoría, idealmente del más típico, y Claude clasifica el resto siguiendo el patrón."}, {"text": "\"Quiero un poema sobre mi madre.\"", "options": ["Few-shot con otros poemas míos", "Few-shot con poemas famosos", "Sin few-shot, es algo creativo único"], "correct": 0, "feedback": "Si quieres TU tono, ejemplos tuyos. Few-shot funciona también para creatividad cuando quieres calibrar voz específica."}]}, {"type": "recap", "list": [{"q": "La gran ventaja de few-shot vs describir:", "options": ["Más corto", "Ejemplos > adjetivos: \"tono profesional\" significa cosas distintas, un ejemplo es inequívoco", "Más bonito"], "correct": 1, "explain": "Adjetivos son ambiguos. Ejemplos son concretos. Por eso ganan."}, {"q": "¿Cuándo SÍ vale la pena usar few-shot?", "options": ["Solo en código", "Cuando necesitas consistencia en formato, tono o clasificación a través de muchas peticiones", "Solo si pagas Opus"], "correct": 1, "explain": "Consistencia entre peticiones. Si solo es una respuesta única, puede sobrar. Si vas a hacer 50 iguales, ahorra horas."}]}, {"type": "final", "title": "Enseña con <em>ejemplos</em>", "subtitle": "Few-shot calibra tono, formato y criterio mejor que mil adjetivos. En la siguiente: estructurar con XML.", "ctaLabel": "Marcar lección 4.2 completada →"}]};
+  const params = new URLSearchParams(window.location.search);
+  const slide = params.get('slide') || 12;
+  document.querySelector('iframe').src = '/claude-101-videos/ALL-LESSONS-slides.html?slide=' + slide;
 </script>
-<script src="/claude-101-videos/_slides.js"></script>
 </body>
 </html>

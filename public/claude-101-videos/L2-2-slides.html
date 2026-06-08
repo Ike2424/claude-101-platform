@@ -5,17 +5,20 @@
 <script src="/ga.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Claude 101 · Lección 2.2 · Anatomía de la interfaz</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Geist:wght@300..700&family=Geist+Mono:wght@400..600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/claude-101-videos/_slides.css">
+<title>Claude 101 · Lección L2-2-slides.html</title>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/favicon.svg">
+<style>
+body { margin: 0; padding: 0; overflow: hidden; }
+iframe { width: 100%; height: 100vh; border: none; }
+</style>
 </head>
 <body>
+<iframe src="/claude-101-videos/ALL-LESSONS-slides.html?slide=6" allowfullscreen></iframe>
 <script>
-window.MODULE_DATA = {"module": 2, "lessonId": "l2-2", "lessonNumber": "2.2", "title": "Anatomía de la interfaz", "slides": [{"type": "intro", "title": "Tu <em>familiaridad</em> con la interfaz", "subtitle": "Toca lo que ya tienes claro.", "chips": ["Sé adjuntar archivos", "Cambio modelo a media conversación", "Uso Proyectos", "Creo Estilos", "Soy nuevo"]}, {"type": "choice", "eyebrow": "Pregunta 1", "title": "El <em>selector de modelo</em>", "prompt": "¿Dónde está y para qué sirve?", "options": ["No existe, Claude elige solo", "Arriba en la conversación — eliges entre Haiku, Sonnet, Opus", "En ajustes globales solo", "Solo aparece en la app de escritorio"], "correct": 1, "feedback": "Arriba en la conversación. Puedes cambiar de modelo en cualquier momento — incluso a mitad. Cambia para subir potencia o bajar coste según la tarea."}, {"type": "reveal", "title": "Los <em>elementos</em> clave", "prompt": "Toca cada uno para entenderlo.", "items": [{"icon": "💬", "name": "Caja de mensaje", "tag": "Input", "body": "Donde escribes. Puedes adjuntar imágenes, PDFs, hojas de cálculo, código, audio. Múltiples archivos a la vez si la tarea lo pide."}, {"icon": "🎚️", "name": "Selector de modelo", "tag": "Top right", "body": "Cambia de Haiku, Sonnet u Opus por conversación. Puedes mover a media charla. Te permite empezar barato y subir si la tarea se complica."}, {"icon": "📂", "name": "Sidebar", "tag": "Izquierda", "body": "Historial cronológico de conversaciones + Proyectos arriba. Búsqueda integrada. Editar título, archivar o borrar desde aquí."}], "feedbackHead": "Vista.", "feedback": "Caja + modelo + sidebar. Con esos tres elementos te mueves cómodo. El resto son comandos contextuales que aparecen cuando los necesitas."}, {"type": "tf", "title": "Sobre el <em>scroll</em>", "statement": "\"En conversaciones muy largas, puedes editar un mensaje anterior y Claude re-responde desde ahí, regenerando todo lo posterior.\"", "correct": true, "feedback": "Verdadero. Editar un mensaje crea una bifurcación: la nueva versión sustituye desde ese punto. Útil para corregir un prompt sin empezar de cero."}, {"type": "scenarios", "title": "Acciones <em>poco visibles</em>", "list": [{"text": "\"He pegado una imagen y quiero que Claude la describa.\"", "options": ["Arrástrala a la caja de mensaje", "No se puede", "Convertirla a texto antes"], "correct": 0, "feedback": "Arrastra (o pega) la imagen. Aparecerá como adjunto. Claude la lee y la usa como contexto."}, {"text": "\"Mi respuesta es muy larga y quiero un resumen breve sin perder lo anterior.\"", "options": ["Borrar todo y empezar de nuevo", "Pídele un resumen en el siguiente mensaje", "Esperar al siguiente día"], "correct": 1, "feedback": "Pide un resumen como mensaje nuevo. Claude condensará lo dicho usando el contexto de la conversación."}, {"text": "\"Quiero compartir esta conversación con un compañero.\"", "options": ["Captura de pantalla", "Usa el botón Compartir → genera URL pública o privada", "Reescribir el chat en email"], "correct": 1, "feedback": "Compartir. Genera enlace de solo lectura, opcionalmente público. Mucho más cómodo que screenshots."}]}, {"type": "recap", "list": [{"q": "¿Por qué cambiar de modelo a media conversación?", "options": ["Para resetear la memoria", "Para optimizar coste/velocidad según se complica la tarea", "Es solo decorativo"], "correct": 1, "explain": "Empiezas con Sonnet, subes a Opus si la cosa se complica, sin perder el hilo."}, {"q": "¿Qué pasa al editar un mensaje pasado?", "options": ["Nada visible", "Claude regenera todo lo posterior desde ese punto", "Se borra la conversación"], "correct": 1, "explain": "Editar crea una nueva rama. Útil para iterar sin acumular ruido."}]}, {"type": "final", "title": "Ya te <em>mueves</em>", "subtitle": "Caja, modelo, sidebar y comandos contextuales. En la siguiente: cómo organizar todo con Conversaciones, Proyectos y Estilos.", "ctaLabel": "Marcar lección 2.2 completada →"}]};
+  const params = new URLSearchParams(window.location.search);
+  const slide = params.get('slide') || 6;
+  document.querySelector('iframe').src = '/claude-101-videos/ALL-LESSONS-slides.html?slide=' + slide;
 </script>
-<script src="/claude-101-videos/_slides.js"></script>
 </body>
 </html>

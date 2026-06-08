@@ -5,17 +5,20 @@
 <script src="/ga.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Claude 101 · Lección 4.3 · Etiquetas XML para estructurar</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Geist:wght@300..700&family=Geist+Mono:wght@400..600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/claude-101-videos/_slides.css">
+<title>Claude 101 · Lección L4-3-slides.html</title>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/favicon.svg">
+<style>
+body { margin: 0; padding: 0; overflow: hidden; }
+iframe { width: 100%; height: 100vh; border: none; }
+</style>
 </head>
 <body>
+<iframe src="/claude-101-videos/ALL-LESSONS-slides.html?slide=13" allowfullscreen></iframe>
 <script>
-window.MODULE_DATA = {"module": 4, "lessonId": "l4-3", "lessonNumber": "4.3", "title": "Etiquetas XML para estructurar", "slides": [{"type": "intro", "title": "XML en <em>prompts</em>", "subtitle": "¿Has usado etiquetas como <contexto> o <ejemplo>?", "chips": ["Sí, con frecuencia", "Una vez probé", "No tenía idea", "Las uso solo en código", "Conocía pero no las usaba"]}, {"type": "choice", "eyebrow": "Pregunta 1", "title": "¿Para qué sirven las <em>etiquetas XML</em>?", "prompt": "Pones <contexto>...</contexto> en tu prompt. ¿Qué consigues?", "options": ["Que Claude responda en XML", "Que distinga claramente bloques (contexto, ejemplo, pregunta), mejorando la comprensión del prompt", "Activar un modo especial", "Nada, es decorativo"], "correct": 1, "feedback": "Delimitar bloques. Claude se entrenó reconociendo XML — usar etiquetas mejora drásticamente la precisión en prompts complejos con múltiples partes."}, {"type": "reveal", "title": "Etiquetas <em>útiles</em>", "prompt": "Toca cada una.", "items": [{"icon": "📋", "name": "<contexto>", "tag": "Background", "body": "Información de fondo que Claude debe tener en cuenta pero no es la pregunta. \"Soy CMO de una pyme, sector retail, 12 empleados…\""}, {"icon": "🎯", "name": "<tarea>", "tag": "Petición", "body": "La instrucción concreta separada del resto. Hace explícito qué quieres frente al contexto que solo informa."}, {"icon": "💡", "name": "<ejemplo>", "tag": "Reference", "body": "Para few-shot o casos de referencia. Claude trata el contenido como muestra, no como contexto a aplicar literalmente."}], "feedbackHead": "Bien.", "feedback": "Contexto, tarea, ejemplo. Tres etiquetas que cubren el 80% de casos. Combinadas estructuran cualquier prompt complejo."}, {"type": "tf", "title": "Sobre <em>aparición en respuesta</em>", "statement": "\"Las etiquetas XML que pones en el prompt aparecen también en la respuesta de Claude.\"", "correct": false, "feedback": "Falso. Claude usa las etiquetas para estructurar SU comprensión del prompt, pero responde en texto normal salvo que le pidas explícitamente formato XML."}, {"type": "scenarios", "title": "Reestructura con <em>XML</em>", "list": [{"text": "Tienes un prompt largo con: 3 documentos pegados + ejemplos + tu pregunta. ¿Por qué XML ayuda?", "options": ["Es bonito", "Claude distingue qué es contexto, qué es referencia y qué es pregunta sin confundirlos", "No ayuda"], "correct": 1, "feedback": "Sin XML, todo es una sopa de texto y Claude tiene que adivinar qué es qué. Con XML, la separación es nítida."}, {"text": "Quieres que Claude responda con un JSON estructurado.", "options": ["Decirle \"respuesta en JSON\"", "Pegarle un <ejemplo_output> con el JSON exacto + decirle \"responde con la misma estructura\"", "Esperar"], "correct": 1, "feedback": "Ejemplo concreto = consistencia. Más fiable que pedir \"JSON\" sin más, donde Claude puede inventar la estructura."}, {"text": "Tu prompt tiene 1 instrucción de 2 líneas. ¿Usas XML?", "options": ["Sí siempre", "No — XML brilla en prompts complejos, no en simples", "Solo a veces"], "correct": 1, "feedback": "No hace falta. Para algo de 2 líneas, XML añade ruido sin beneficio. Úsalo cuando hay múltiples partes diferenciadas."}]}, {"type": "recap", "list": [{"q": "¿En qué tipo de prompt es más útil XML?", "options": ["Pregunta corta", "Prompts con múltiples bloques: contexto + ejemplos + datos + tarea", "Todos"], "correct": 1, "explain": "XML separa bloques. En prompts simples no aporta, en complejos es transformador."}, {"q": "¿Las etiquetas XML aparecen en la respuesta?", "options": ["Sí siempre", "Solo si lo pides explícitamente", "Nunca"], "correct": 1, "explain": "Salvo que pidas output en XML, Claude responde en texto normal — las etiquetas son del prompt."}]}, {"type": "final", "title": "Estructura <em>visible</em>", "subtitle": "XML separa bloques en prompts complejos. En la siguiente: roles, personas y restricciones para calibrar la voz.", "ctaLabel": "Marcar lección 4.3 completada →"}]};
+  const params = new URLSearchParams(window.location.search);
+  const slide = params.get('slide') || 13;
+  document.querySelector('iframe').src = '/claude-101-videos/ALL-LESSONS-slides.html?slide=' + slide;
 </script>
-<script src="/claude-101-videos/_slides.js"></script>
 </body>
 </html>

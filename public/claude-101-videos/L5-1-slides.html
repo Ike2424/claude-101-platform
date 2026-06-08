@@ -5,17 +5,20 @@
 <script src="/ga.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Claude 101 · Lección 5.1 · Artifacts: documentos vivos</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Geist:wght@300..700&family=Geist+Mono:wght@400..600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/claude-101-videos/_slides.css">
+<title>Claude 101 · Lección L5-1-slides.html</title>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/favicon.svg">
+<style>
+body { margin: 0; padding: 0; overflow: hidden; }
+iframe { width: 100%; height: 100vh; border: none; }
+</style>
 </head>
 <body>
+<iframe src="/claude-101-videos/ALL-LESSONS-slides.html?slide=15" allowfullscreen></iframe>
 <script>
-window.MODULE_DATA = {"module": 5, "lessonId": "l5-1", "lessonNumber": "5.1", "title": "Artifacts: documentos vivos", "slides": [{"type": "intro", "title": "Tu <em>experiencia</em> con Artifacts", "subtitle": "Toca lo que aplique.", "chips": ["Los uso a menudo", "Los he visto pero no uso", "No sé qué son", "Solo en código", "Solo en escritura"]}, {"type": "choice", "eyebrow": "Pregunta 1", "title": "Qué es un <em>Artifact</em>", "prompt": "En claude.ai.", "options": ["Una respuesta más larga", "Un panel lateral con contenido editable e iterable (código, documento, app)", "Un archivo descargable", "Una versión premium"], "correct": 1, "feedback": "Panel lateral editable. Cuando el output es código, un documento o algo iterable, sale a su propio panel donde puedes refinarlo sin reescribirlo en cada mensaje."}, {"type": "reveal", "title": "Para qué <em>brillan</em>", "prompt": "Tres casos.", "items": [{"icon": "📝", "name": "Documentos largos", "tag": "Iterar", "body": "Guion, propuesta, post, plan. Los refinas sobre el mismo artifact: \"acorta el segundo párrafo\", \"cambia el tono del final\". Sin scroll ni copy-paste."}, {"icon": "💻", "name": "Código", "tag": "Programar", "body": "Funciones, scripts, componentes React. Claude los pone en su artifact con syntax highlighting. Puedes iterar bug a bug sin perder el código previo."}, {"icon": "🌐", "name": "Mini-apps", "tag": "HTML/React", "body": "Claude puede crear apps interactivas (calculadoras, juegos, dashboards). Aparecen renderizadas y funcionales en el panel."}], "feedbackHead": "Listo.", "feedback": "Documentos, código, mini-apps. Si vas a iterar, artifact. Si es respuesta única corta, no hace falta."}, {"type": "tf", "title": "Sobre <em>iteración</em>", "statement": "\"Una vez creado un artifact, no se puede modificar — hay que pedir uno nuevo cada vez.\"", "correct": false, "feedback": "Falso. Esa es justo la magia: pides cambios y Claude edita el mismo artifact. Mantiene la versión actual y el historial."}, {"type": "scenarios", "title": "¿Usas <em>artifact</em>?", "list": [{"text": "\"Quiero saber la capital de Francia.\"", "options": ["Con artifact", "Sin artifact — es respuesta corta", "Da igual"], "correct": 1, "feedback": "Sin artifact. Para respuestas cortas no aporta. El artifact es para algo a lo que vuelves."}, {"text": "\"Escribiendo un artículo de 1500 palabras, lo voy a refinar varias veces.\"", "options": ["Conversación normal", "Artifact", "Email"], "correct": 1, "feedback": "Artifact. Te ahorra reescribir todo en cada iteración. Editas el documento, no la conversación."}, {"text": "\"Necesito un script Python que voy a ir mejorando.\"", "options": ["Pega y vuelve a pegar", "Artifact con el script — itéralo bug por bug", "Solo descripción"], "correct": 1, "feedback": "Artifact. Mantienes el código completo siempre visible. Le pides cambios concretos sin perder versiones previas."}]}, {"type": "recap", "list": [{"q": "Cuándo merece la pena un artifact:", "options": ["Siempre", "Cuando vas a iterar sobre el mismo output", "Solo en código"], "correct": 1, "explain": "La clave es iteración. Si lo vas a refinar varias veces, artifact te ahorra horas."}, {"q": "¿Puedes editar un artifact directamente?", "options": ["No", "Sí, también puedes pedirle a Claude que lo modifique", "Solo si pagas"], "correct": 1, "explain": "Edición manual + edición vía Claude. Lo que sea más cómodo según el cambio."}]}, {"type": "final", "title": "Output que <em>vive</em>", "subtitle": "Artifacts son la mejor forma de iterar. En la siguiente: búsqueda web — cuándo activarla y por qué.", "ctaLabel": "Marcar lección 5.1 completada →"}]};
+  const params = new URLSearchParams(window.location.search);
+  const slide = params.get('slide') || 15;
+  document.querySelector('iframe').src = '/claude-101-videos/ALL-LESSONS-slides.html?slide=' + slide;
 </script>
-<script src="/claude-101-videos/_slides.js"></script>
 </body>
 </html>

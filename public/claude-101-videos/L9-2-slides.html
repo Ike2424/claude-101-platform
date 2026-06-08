@@ -5,17 +5,20 @@
 <script src="/ga.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Claude 101 · Lección 9.2 · Markdown como input estructurado</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Geist:wght@300..700&family=Geist+Mono:wght@400..600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/claude-101-videos/_slides.css">
+<title>Claude 101 · Lección L9-2-slides.html</title>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/favicon.svg">
+<style>
+body { margin: 0; padding: 0; overflow: hidden; }
+iframe { width: 100%; height: 100vh; border: none; }
+</style>
 </head>
 <body>
+<iframe src="/claude-101-videos/ALL-LESSONS-slides.html?slide=30" allowfullscreen></iframe>
 <script>
-window.MODULE_DATA = {"module": 9, "lessonId": "l9-2", "lessonNumber": "9.2", "title": "Markdown como input estructurado", "slides": [{"type": "intro", "title": "¿Usas <em>markdown</em>?", "subtitle": "En tus prompts.", "chips": ["Sí, headers y listas", "A veces", "No, texto plano", "No sé qué es", "Solo en Notion"]}, {"type": "choice", "eyebrow": "Pregunta 1", "title": "Por qué <em>markdown</em>", "prompt": "Estructurar tu prompt con headers, listas y bloques de código tiene un efecto medible.", "options": ["Decorativo", "Claude se entrenó con millones de docs en markdown — lo procesa como estructura jerárquica, no muro de texto", "Solo si pagas Opus", "Solo en código"], "correct": 1, "feedback": "Estructura jerárquica. Como ha visto millones de docs en markdown, distingue secciones, prioridades y agrupaciones. Mejora la precisión."}, {"type": "reveal", "title": "Cuándo es <em>imprescindible</em>", "prompt": "Toca cada uno.", "items": [{"icon": "📚", "name": "Prompts largos", "tag": "Estructura", "body": "Si tu prompt pasa de 200 líneas, usar headers (# Contexto, ## Tarea, ## Restricciones) cambia drásticamente la calidad. Claude navega secciones."}, {"icon": "🗂️", "name": "Múltiples partes", "tag": "Agrupación", "body": "Cuando combinas contexto + ejemplos + datos + tarea, márcalos con secciones. Claude no los mezcla."}, {"icon": "💻", "name": "Código + texto", "tag": "Bloques", "body": "Pega código siempre en bloques ```código```. Sin eso, Claude puede confundir indentación o caracteres especiales."}], "feedbackHead": "Listo.", "feedback": "Largos, partes múltiples, código. En esos tres casos markdown no es opcional — es lo que separa respuestas decentes de excelentes."}, {"type": "tf", "title": "Sobre <em>archivos .md</em>", "statement": "\"Si tu prompt supera ~200 líneas, conviene subirlo como archivo .md en lugar de pegarlo.\"", "correct": true, "feedback": "Verdadero. Claude trata el archivo como bloque conceptual. Puede referirse a secciones (\"según la sección 3.2 de tu documento\") con precisión."}, {"type": "scenarios", "title": "Estructura este <em>prompt</em>", "list": [{"text": "Prompt: contexto + 3 ejemplos + tarea, todo seguido como texto plano.", "options": ["Bien así", "Reestructurar con # Contexto / # Ejemplos / # Tarea — Claude separa nítido", "Cambiar modelo"], "correct": 1, "feedback": "Markdown con headers. Tres secciones nítidas. Claude entiende qué es qué."}, {"text": "Quieres reglas explícitas en formato lista.", "options": ["\"Reglas: regla 1 regla 2 regla 3\"", "Lista markdown con guiones — visualmente jerárquica", "Esconderlas"], "correct": 1, "feedback": "Lista markdown. Claude procesa cada item como una regla distinta. Texto separado por comas se mezcla."}, {"text": "Tu prompt incluye un fragmento de YAML config.", "options": ["Pegado normal", "En bloque de código markdown (```yaml ... ```)", "Como imagen"], "correct": 1, "feedback": "Bloque de código con language. Claude reconoce sintaxis y mantiene formato."}]}, {"type": "recap", "list": [{"q": "¿Por qué markdown funciona tan bien con Claude?", "options": ["Es decorativo", "Entrenado con millones de docs en markdown — distingue estructura", "Solo en Opus"], "correct": 1, "explain": "Familiaridad del entrenamiento. Es el \"idioma natural\" de Claude para estructura."}, {"q": "Si tu prompt es muy largo:", "options": ["Subirlo como archivo .md", "Pegarlo entero", "Cambiar modelo"], "correct": 0, "explain": "Archivo .md. Claude lo procesa como bloque referenciable y la conversación queda limpia."}]}, {"type": "final", "title": "Estructura <em>visible</em>", "subtitle": "Markdown da estructura, Claude la usa. En la siguiente: Skills — empaquetar habilidades reutilizables.", "ctaLabel": "Marcar lección 9.2 completada →"}]};
+  const params = new URLSearchParams(window.location.search);
+  const slide = params.get('slide') || 30;
+  document.querySelector('iframe').src = '/claude-101-videos/ALL-LESSONS-slides.html?slide=' + slide;
 </script>
-<script src="/claude-101-videos/_slides.js"></script>
 </body>
 </html>

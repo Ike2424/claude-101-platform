@@ -5,17 +5,20 @@
 <script src="/ga.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Claude 101 · Lección 5.3 · Creación de archivos</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Geist:wght@300..700&family=Geist+Mono:wght@400..600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/claude-101-videos/_slides.css">
+<title>Claude 101 · Lección L5-3-slides.html</title>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/favicon.svg">
+<style>
+body { margin: 0; padding: 0; overflow: hidden; }
+iframe { width: 100%; height: 100vh; border: none; }
+</style>
 </head>
 <body>
+<iframe src="/claude-101-videos/ALL-LESSONS-slides.html?slide=17" allowfullscreen></iframe>
 <script>
-window.MODULE_DATA = {"module": 5, "lessonId": "l5-3", "lessonNumber": "5.3", "title": "Creación de archivos", "slides": [{"type": "intro", "title": "Tu <em>experiencia</em>", "subtitle": "¿Le has pedido a Claude que cree archivos?", "chips": ["Excel/CSV", "Word/DOCX", "PDF", "PowerPoint", "No sabía que podía"]}, {"type": "choice", "eyebrow": "Pregunta 1", "title": "Para qué <em>crear archivos</em>", "prompt": "¿Cuándo merece la pena pedir un archivo en lugar de respuesta inline?", "options": ["Siempre que sea posible", "Cuando el output FINAL es un archivo entregable (Excel, Word, PDF, presentación)", "Solo si la respuesta es muy larga", "Nunca"], "correct": 1, "feedback": "Cuando el output final es un archivo. Si lo vas a entregar como Excel o PDF, pídelo así. Si es texto que vas a copiar a otro sitio, respuesta inline."}, {"type": "reveal", "title": "Cuatro <em>tipos</em> útiles", "prompt": "Toca cada uno.", "items": [{"icon": "📊", "name": "Excel/XLSX", "tag": "Datos", "body": "Tablas con fórmulas reales, validaciones, varias hojas. Útil para reportes, presupuestos, análisis. Te lo da listo para abrir."}, {"icon": "📄", "name": "Word/DOCX", "tag": "Documento", "body": "Documentos formales con estilos, índices, tablas. Para informes, propuestas, manuales. Editable en Word/Pages."}, {"icon": "🎯", "name": "PowerPoint", "tag": "Slides", "body": "Presentaciones con slides individuales editables. Útil para borradores rápidos que luego refinas en PowerPoint."}, {"icon": "📕", "name": "PDF", "tag": "Final", "body": "Cuando es un entregable que no debe editarse. Más control sobre layout final. Bueno para certificados, dossiers, fichas."}], "feedbackHead": "Bien.", "feedback": "Excel, Word, PPT, PDF. Cada uno tiene su momento — píde el formato que vas a usar al final."}, {"type": "tf", "title": "<em>Fórmulas</em> en Excel", "statement": "\"Cuando Claude crea un Excel, las fórmulas son reales y funcionales — no solo valores calculados pegados.\"", "correct": true, "feedback": "Verdadero. Claude genera fórmulas funcionales (SUMA, BUSCARV, IF, etc.). Si cambias un valor, el resto se recalcula como en Excel normal."}, {"type": "scenarios", "title": "¿Qué archivo <em>pedirías</em>?", "list": [{"text": "\"Quiero un análisis de mis ventas trimestrales para presentárselo a mi socio.\"", "options": ["Inline en chat", "Excel con la tabla + Word con el análisis textual", "PDF cerrado"], "correct": 1, "feedback": "Excel para datos editables + Word para análisis textual editable. Tu socio puede revisar y comentar fácil."}, {"text": "\"Necesito un borrador rápido de presentación de 10 slides para mañana.\"", "options": ["Inline", "PowerPoint editable", "PDF"], "correct": 1, "feedback": "PowerPoint. Editable, ajustas el diseño después. Si pidiera PDF, no podrías cambiar contenido fácilmente."}, {"text": "\"Quiero un email para enviar a un cliente.\"", "options": ["Word", "Inline — vas a copiar y pegar al cliente", "PDF"], "correct": 1, "feedback": "Inline. Vas a copiar al email final. No necesitas un Word intermedio."}]}, {"type": "recap", "list": [{"q": "Regla mental para pedir archivo:", "options": ["Siempre que puedas", "\"¿El output final será un archivo?\" Si sí, pídelo en ese formato", "Solo PDF"], "correct": 1, "explain": "Si lo vas a usar como archivo, pídelo así. Te ahorra conversiones manuales."}, {"q": "¿Por qué pedir XLSX en vez de tabla en chat?", "options": ["Es más bonito", "Fórmulas reales + editable + listo para abrir y trabajar", "Es más rápido"], "correct": 1, "explain": "Editable + funcional. Una tabla en chat la tienes que reformatear; un XLSX lo abres directamente."}]}, {"type": "final", "title": "Entregables <em>directos</em>", "subtitle": "Excel, Word, PPT, PDF. Cuando el final es un archivo, pídelo así. En la siguiente: memoria y conversaciones pasadas.", "ctaLabel": "Marcar lección 5.3 completada →"}]};
+  const params = new URLSearchParams(window.location.search);
+  const slide = params.get('slide') || 17;
+  document.querySelector('iframe').src = '/claude-101-videos/ALL-LESSONS-slides.html?slide=' + slide;
 </script>
-<script src="/claude-101-videos/_slides.js"></script>
 </body>
 </html>

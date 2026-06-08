@@ -5,17 +5,20 @@
 <script src="/ga.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Claude 101 · Lección 7.1 · Privacidad y datos sensibles</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Geist:wght@300..700&family=Geist+Mono:wght@400..600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/claude-101-videos/_slides.css">
+<title>Claude 101 · Lección L7-1-slides.html</title>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/favicon.svg">
+<style>
+body { margin: 0; padding: 0; overflow: hidden; }
+iframe { width: 100%; height: 100vh; border: none; }
+</style>
 </head>
 <body>
+<iframe src="/claude-101-videos/ALL-LESSONS-slides.html?slide=21" allowfullscreen></iframe>
 <script>
-window.MODULE_DATA = {"module": 7, "lessonId": "l7-1", "lessonNumber": "7.1", "title": "Privacidad y datos sensibles", "slides": [{"type": "intro", "title": "¿Qué <em>compartirías</em>?", "subtitle": "No hay respuesta correcta — toca lo que SÍN pensar le pasarías a Claude.", "chips": ["Mis emails", "Datos de clientes", "Mi nómina", "Código de mi empresa", "Conversaciones personales", "Ninguna"]}, {"type": "choice", "eyebrow": "Pregunta 1", "title": "Datos de <em>terceros</em>", "prompt": "Vas a compartir un CSV con datos de tus clientes.", "options": ["Lo subes tal cual", "Lo anonimizas primero (sustituyes nombres/emails por IDs) si solo necesitas patrones", "Imprimes, sacas foto y subes", "Lo describes con palabras"], "correct": 1, "feedback": "Anonimízalo. Si solo necesitas analizar patrones, no hace falta que Claude vea quién es quién. RGPD te pide minimizar — y es buena práctica aunque no aplicara."}, {"type": "reveal", "title": "Tres <em>reglas</em>", "prompt": "Toca cada una.", "items": [{"icon": "🚫", "name": "Lo que NO compartir", "tag": "Sensible", "body": "DNI/pasaporte, contraseñas, datos médicos, datos financieros de terceros, código propietario con secretos. Si no lo pondrías en una nube pública, tampoco aquí."}, {"icon": "🎭", "name": "Anonimizar primero", "tag": "Defensa", "body": "Si necesitas patrones, sustituye nombres por IDs. Si necesitas el tono, suficiente con el texto sin metadata. Minimiza siempre."}, {"icon": "⚙️", "name": "Configurar privacidad", "tag": "Ajustes", "body": "En contextos profesionales con datos de terceros, revisa la opción de \"no usar mis conversaciones para entrenamiento\". Activa donde proceda."}], "feedbackHead": "Visto.", "feedback": "No compartas, anonimiza, configura. Tres reglas que te dejan tranquilo trabajando con datos reales."}, {"type": "tf", "title": "Sobre <em>entrenamiento</em>", "statement": "\"Por defecto, Anthropic usa todas tus conversaciones para entrenar el modelo.\"", "correct": false, "feedback": "Falso. Anthropic no entrena con tus conversaciones por defecto. Hay opciones donde tú decides si participar en mejora del modelo. Para contextos confidenciales, déjalo desactivado."}, {"type": "scenarios", "title": "¿Lo <em>compartes</em>?", "list": [{"text": "\"Borrador de contrato con tu cliente que quiere revisión legal.\"", "options": ["Súbelo tal cual", "Anonimiza nombres + cifras concretas si solo necesitas revisar cláusulas", "No usar Claude"], "correct": 1, "feedback": "Anonimízalo si solo es revisión de cláusulas. Si necesitas trabajar con detalle, usa cuenta empresarial con cláusulas de confidencialidad y opt-out de entrenamiento."}, {"text": "\"Conversación tuya con un amigo para resumirla.\"", "options": ["Compártela", "Pídele permiso a tu amigo si planeas pasarla", "No usar Claude"], "correct": 1, "feedback": "Es ético pedir permiso. Lo que tú dices es tuyo, pero lo que dice el otro es suyo. Especialmente si es íntimo."}, {"text": "\"Texto público de un artículo de prensa para analizar.\"", "options": ["Sin más", "Sin más — es público", "Con anonimización"], "correct": 1, "feedback": "Sin problema. Información pública no tiene los condicionantes de los datos personales privados."}]}, {"type": "recap", "list": [{"q": "Si trabajas con datos de clientes:", "options": ["Confías", "Anonimizas + opt-out de entrenamiento + cuenta empresarial cuando proceda", "No uses Claude"], "correct": 1, "explain": "Capas de defensa. Cada una reduce riesgo. No todas hacen falta siempre — depende del nivel de sensibilidad."}, {"q": "¿Cuándo SÍ tu opt-out del entrenamiento?", "options": ["Solo en código", "En cualquier contexto donde manejes datos de terceros (clientes, empleados, pacientes)", "Nunca"], "correct": 1, "explain": "Datos de terceros = opt-out. Por respeto y cumplimiento normativo."}]}, {"type": "final", "title": "Trabajas <em>tranquilo</em>", "subtitle": "Privacidad, anonimización, configuración. En la siguiente: verificación y pensamiento crítico.", "ctaLabel": "Marcar lección 7.1 completada →"}]};
+  const params = new URLSearchParams(window.location.search);
+  const slide = params.get('slide') || 21;
+  document.querySelector('iframe').src = '/claude-101-videos/ALL-LESSONS-slides.html?slide=' + slide;
 </script>
-<script src="/claude-101-videos/_slides.js"></script>
 </body>
 </html>

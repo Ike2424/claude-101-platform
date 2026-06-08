@@ -138,44 +138,6 @@
     transition: width .4s cubic-bezier(.2,.8,.2,1);
   }
 
-  .mode-toggle {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 8px 14px;
-    border: 1px solid var(--line-2);
-    background: var(--card);
-    border-radius: 100px;
-    cursor: pointer;
-    font-family: var(--mono);
-    font-size: 11px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--ink-2);
-    transition: all .2s;
-  }
-
-  .mode-toggle:hover {
-    border-color: var(--ink-2);
-  }
-
-  .mode-toggle.active {
-    background: var(--ink);
-    color: var(--bg);
-    border-color: var(--ink);
-  }
-
-  .mode-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--muted-2);
-  }
-
-  .mode-toggle.active .mode-dot {
-    background: var(--accent);
-    box-shadow: 0 0 8px var(--accent);
-  }
 
   /* === Layout === */
   .app {
@@ -874,33 +836,6 @@
     border-top: 1px solid var(--line);
   }
 
-  /* Empty admin state hint */
-  .admin-hint {
-    position: fixed;
-    bottom: 24px;
-    right: 24px;
-    background: var(--ink);
-    color: var(--bg);
-    padding: 14px 18px;
-    border-radius: 4px;
-    font-size: 13px;
-    max-width: 280px;
-    box-shadow: 0 8px 32px rgba(0,0,0,.2);
-    z-index: 40;
-    display: none;
-    animation: slideUp .3s;
-  }
-
-  .admin-hint.show { display: block; }
-
-  .admin-hint strong {
-    color: var(--accent);
-    display: block;
-    margin-bottom: 4px;
-    font-family: var(--display);
-    font-style: italic;
-    font-size: 15px;
-  }
 
 
   /* === Búsqueda modal Ctrl+K === */
@@ -1206,7 +1141,6 @@
     }
     .brand-tag { display: none; }
     .brand-mark { font-size: 16px; }
-    .mode-toggle .mode-text { display: none; }
 
     .app {
       grid-template-columns: 1fr;
@@ -1332,12 +1266,6 @@
       <a href="/app/playground" id="playgroundLink" class="search-trigger" target="_top" style="text-decoration:none;margin-right:8px;" aria-label="Playground"><span class="search-icon">🧪</span><span class="search-trigger-label">Playground</span></a>
       
       <a href="/app/resumenes" id="resumenesLink" class="search-trigger" target="_top" style="text-decoration:none;margin-right:8px;" aria-label="Resumenes PDF"><span class="search-icon">📑</span><span class="search-trigger-label">PDF</span></a>
-      
-      
-      <button class="mode-toggle" id="modeToggle">
-        <span class="mode-dot"></span>
-        <span id="modeLabel">Modo alumno</span>
-      </button>
     </div>
   </div>
 </header>
@@ -1347,31 +1275,6 @@
   <main id="main"></main>
 </div>
 
-<!-- Modal for adding videos -->
-<div class="modal-overlay" id="videoModal">
-  <div class="modal">
-    <div class="modal-header">
-      <div class="modal-title">Añadir vídeo a la lección</div>
-      <div class="modal-sub" id="modalLessonName"></div>
-    </div>
-    <div class="modal-body">
-      <label class="field-label" for="videoUrl">URL del vídeo</label>
-      <input type="url" id="videoUrl" class="field-input" placeholder="https://www.youtube.com/watch?v=..." autocomplete="off">
-      <div class="field-help">
-        Acepta enlaces de <strong>YouTube</strong>, <strong>Vimeo</strong>, archivos <strong>.mp4</strong> alojados en cualquier servidor, o rutas <strong>.html</strong> locales (p. ej. <code>claude-101-videos/M1-video-animado.html</code>).
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn" onclick="closeModal()">Cancelar</button>
-      <button class="btn btn-primary" onclick="saveVideo()">Guardar vídeo</button>
-    </div>
-  </div>
-</div>
-
-<div class="admin-hint" id="adminHint">
-  <strong>Modo instructor activo</strong>
-  Ahora puedes añadir vídeos a cada lección. Pulsa el botón "Añadir vídeo" en cualquier lección.
-</div>
 
   <!-- Search modal Ctrl+K -->
 <div class="search-overlay" id="searchOverlay">
@@ -2858,7 +2761,6 @@ const STORAGE_KEY = 'claude101';
 let state = loadState();
 let currentLessonId = state.lastLesson || 'l1-1';
 let editingLessonId = null;
-let adminMode = false;
 
 function loadState() {
   try {
@@ -3042,12 +2944,6 @@ function renderMain() {
         <div class="video-frame">${player}</div>
         <div class="video-controls">
           <div class="video-source">Fuente: ${embed.source}</div>
-          <div>
-            ${adminMode ? `
-              <button class="btn btn-ghost" onclick="openModal('${lesson.id}')">Cambiar vídeo</button>
-              <button class="btn btn-ghost btn-danger" onclick="removeVideo('${lesson.id}')">Eliminar</button>
-            ` : ''}
-          </div>
         </div>
       </div>
     `;
@@ -3061,12 +2957,7 @@ function renderMain() {
             </svg>
           </div>
           <div class="video-empty-title">Sin vídeo todavía</div>
-          <div class="video-empty-sub">
-            ${adminMode
-              ? 'Como instructor, puedes añadir un vídeo a esta lección desde el botón de abajo.'
-              : 'El instructor aún no ha añadido un vídeo para esta lección. Mientras tanto, puedes leer el contenido completo abajo.'}
-          </div>
-          ${adminMode ? `<button class="btn btn-primary" onclick="openModal('${lesson.id}')">+ Añadir vídeo</button>` : ''}
+          <div class="video-empty-sub">El instructor aún no ha añadido un vídeo para esta lección. Mientras tanto, puedes leer el contenido completo abajo.</div>
         </div>
       </div>
     `;
@@ -3191,23 +3082,6 @@ function removeVideo(lessonId) {
   render();
 }
 
-function toggleMode() {
-  adminMode = !adminMode;
-  const btn = document.getElementById('modeToggle');
-  const label = document.getElementById('modeLabel');
-  const hint = document.getElementById('adminHint');
-  if (adminMode) {
-    btn.classList.add('active');
-    label.textContent = 'Modo instructor';
-    hint.classList.add('show');
-    setTimeout(() => hint.classList.remove('show'), 4000);
-  } else {
-    btn.classList.remove('active');
-    label.textContent = 'Modo alumno';
-    hint.classList.remove('show');
-  }
-  render();
-}
 
 // ============================================
 // RENDER ALL
@@ -3229,7 +3103,6 @@ function render() {
 // ============================================
 // INIT
 // ============================================
-document.getElementById('modeToggle').addEventListener('click', toggleMode);
 document.getElementById('videoModal').addEventListener('click', (e) => {
   if (e.target.id === 'videoModal') closeModal();
 });
@@ -3485,42 +3358,6 @@ document.addEventListener('keydown', (e) => {
 })();
 </script>
 
-<script>
-// === Instructor Mode gating — allowlist ==
-(function gateInstructorMode() {
-  const ADMIN_EMAILS = [
-    'ikemasatsangulo1@gmail.com',
-    'emabranding@gmail.com',
-    'enrique.tactoagencia@gmail.com',
-    'enrique@tactoagencia.com'
-  ];
-
-  const btn = document.getElementById('modeToggle');
-  if (!btn) return;
-
-  // Oculto por defecto hasta saber el email — evita parpadeo
-  btn.style.visibility = 'hidden';
-  btn.style.pointerEvents = 'none';
-
-  fetch('/api/auth/me', { credentials: 'same-origin' })
-    .then(r => r.ok ? r.json() : null)
-    .then(data => {
-      const email = (data && data.user && data.user.email || '').toLowerCase().trim();
-      if (email && ADMIN_EMAILS.includes(email)) {
-        btn.style.visibility = 'visible';
-        btn.style.pointerEvents = '';
-      } else {
-        // No es admin — quitar el botón del DOM y forzar adminMode false
-        btn.parentNode && btn.parentNode.removeChild(btn);
-        try { if (typeof window.adminMode !== 'undefined') window.adminMode = false; } catch(e){}
-      }
-    })
-    .catch(() => {
-      // Si falla la API, mejor ocultar (no es admin por defecto)
-      try { btn.parentNode && btn.parentNode.removeChild(btn); } catch(e){}
-    });
-})();
-</script>
 
 </body>
 </html>
