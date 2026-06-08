@@ -2929,39 +2929,34 @@ function renderMain() {
     titleHtml = lesson.title.replace(lesson.emphasis, `<em>${lesson.emphasis}</em>`);
   }
 
-  // Si el usuario no ha establecido un vídeo manualmente, usa el defaultVideo de la lección
-  const video = state.videos[lesson.id] || lesson.defaultVideo || null;
-  const embed = getEmbed(video);
+  // Calcular número de slide para esta lección
+  // Mapeo: Mod 1 (4 lecciones) = slides 1-4, Mod 2 (3) = 5-7, etc.
+  const slideNumberMap = {
+    1: { start: 1, count: 4 },
+    2: { start: 5, count: 3 },
+    3: { start: 8, count: 3 },
+    4: { start: 11, count: 4 },
+    5: { start: 15, count: 3 },
+    6: { start: 18, count: 3 },
+    7: { start: 21, count: 4 },
+    8: { start: 25, count: 4 },
+    9: { start: 29, count: 6 },
+  };
+  const modNum = modIdx + 1;
+  const mapping = slideNumberMap[modNum] || { start: 1, count: 4 };
+  const slideNumber = mapping.start + lesIdx;
 
-  // Video section
-  let videoSection = '';
-  if (embed) {
-    const player = embed.type === 'iframe'
-      ? `<iframe src="${embed.src}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`
-      : `<video src="${embed.src}" controls></video>`;
-    videoSection = `
-      <div class="video-section">
-        <div class="video-frame">${player}</div>
-        <div class="video-controls">
-          <div class="video-source">Fuente: ${embed.source}</div>
-        </div>
-      </div>
-    `;
-  } else {
-    videoSection = `
-      <div class="video-section">
-        <div class="video-empty">
-          <div class="video-empty-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <polygon points="5 3 19 12 5 21 5 3"></polygon>
-            </svg>
-          </div>
-          <div class="video-empty-title">Sin vídeo todavía</div>
-          <div class="video-empty-sub">El instructor aún no ha añadido un vídeo para esta lección. Mientras tanto, puedes leer el contenido completo abajo.</div>
-        </div>
-      </div>
-    `;
-  }
+  // Slides section - reemplaza video + contenido de lectura
+  const slidesSectionHtml = `
+    <div class="slides-section" style="flex:1;display:flex;flex-direction:column;border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--card);">
+      <iframe
+        src="/claude-101-videos/ALL-LESSONS-slides.html?slide=${slideNumber}"
+        style="border:none;flex:1;width:100%;min-height:500px;"
+        title="Interactive slides for ${lesson.title}"
+        allow="autoplay"
+      ></iframe>
+    </div>
+  `;
 
   const isDone = !!state.completed[lesson.id];
   const flat = flatLessons();
@@ -2981,8 +2976,7 @@ function renderMain() {
       <h1 class="lesson-title">${titleHtml}</h1>
       <p class="lesson-summary">${lesson.summary}</p>
     </div>
-    ${videoSection}
-    <div class="lesson-body">${lesson.body}</div>
+    ${slidesSectionHtml}
     <a href="/recursos/M${modIdx + 1}.html" target="_top" class="resources-banner">
       <div class="resources-banner-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
