@@ -18,32 +18,32 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html, body { width: 100%; height: 100%; }
         body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); overflow: hidden; transition: 0.2s; }
-        .lesson { width: 100%; height: 100%; display: flex; flex-direction: column; padding: 12px; }
-        .progress { height: 2px; background: #e5e7eb; margin-bottom: 12px; }
+        .lesson { width: 100%; height: 100%; display: flex; flex-direction: column; padding: 10px; }
+        .progress { height: 2px; background: #e5e7eb; margin-bottom: 10px; }
         [data-theme="dark"] .progress { background: #1e293b; }
         .progress-fill { height: 100%; background: var(--primary); width: 0%; transition: width 0.3s; }
-        .header { text-align: center; margin-bottom: 12px; }
-        .eyebrow { font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--primary); font-weight: 600; }
-        .title { font-size: 24px; font-weight: 700; margin-bottom: 4px; }
-        .subtitle { font-size: 12px; color: #6b7280; }
-        .slides { flex: 1; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-        .flip-card { width: 90%; max-width: 300px; height: 200px; cursor: pointer; perspective: 1000px; }
+        .header { text-align: center; margin-bottom: 10px; font-size: 13px; }
+        .eyebrow { font-size: 9px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--primary); font-weight: 600; }
+        .title { font-size: 20px; font-weight: 700; margin: 2px 0; }
+        .subtitle { font-size: 11px; color: #6b7280; }
+        .slides { flex: 1; display: flex; align-items: center; justify-content: center; overflow: auto; padding: 5px; }
+        .flip-card { width: 85%; max-width: 280px; height: 160px; cursor: pointer; perspective: 1000px; margin: 5px auto; flex-shrink: 0; }
         .flip-inner { width: 100%; height: 100%; position: relative; transition: transform 0.6s; transform-style: preserve-3d; }
         .flip-card.flipped .flip-inner { transform: rotateY(180deg); }
-        .flip-front, .flip-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; border-radius: 8px; text-align: center; }
+        .flip-front, .flip-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 15px; border-radius: 8px; text-align: center; }
         .flip-front { background: var(--primary); color: white; }
-        .flip-front .concept { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
-        .flip-front .hint { font-size: 11px; opacity: 0.9; }
+        .flip-front .concept { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+        .flip-front .hint { font-size: 10px; opacity: 0.8; }
         .flip-back { background: white; color: var(--text); border: 1px solid #e5e7eb; transform: rotateY(180deg); }
         [data-theme="dark"] .flip-back { background: #1e293b; border-color: #334155; }
-        .flip-back h3 { font-size: 14px; font-weight: 600; margin-bottom: 10px; color: var(--primary); }
-        .flip-back ul { text-align: left; font-size: 12px; line-height: 1.5; }
-        .flip-back li { margin: 4px 0; padding-left: 12px; position: relative; }
+        .flip-back h3 { font-size: 12px; font-weight: 700; margin-bottom: 6px; color: var(--primary); }
+        .flip-back ul { text-align: left; font-size: 10px; line-height: 1.3; }
+        .flip-back li { margin: 2px 0; padding-left: 10px; position: relative; }
         .flip-back li:before { content: "•"; position: absolute; left: 0; color: var(--primary); }
-        .quiz { width: 90%; max-width: 320px; }
-        .quiz-q { font-size: 13px; font-weight: 600; margin-bottom: 12px; line-height: 1.4; }
-        .quiz-opts { display: flex; flex-direction: column; gap: 8px; }
-        .quiz-opt { padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; cursor: pointer; font-size: 12px; background: white; color: var(--text); transition: 0.2s; }
+        .quiz { width: 85%; max-width: 300px; margin: 5px auto; }
+        .quiz-q { font-size: 12px; font-weight: 600; margin-bottom: 8px; line-height: 1.3; }
+        .quiz-opts { display: flex; flex-direction: column; gap: 6px; }
+        .quiz-opt { padding: 6px 10px; border: 1px solid #e5e7eb; border-radius: 4px; cursor: pointer; font-size: 11px; background: white; color: var(--text); transition: 0.2s; }
         [data-theme="dark"] .quiz-opt { background: #1e293b; border-color: #334155; }
         .quiz-opt:hover { border-color: var(--primary); background: #f0f9ff; }
         [data-theme="dark"] .quiz-opt:hover { background: #1e293b; }
@@ -51,20 +51,19 @@
         [data-theme="dark"] .quiz-opt.correct { background: #064e3b; color: #6ee7b7; }
         .quiz-opt.incorrect { border-color: #ef4444; background: #fef2f2; color: #dc2626; }
         [data-theme="dark"] .quiz-opt.incorrect { background: #7f1d1d; color: #fca5a5; }
-        .quiz-feedback { font-size: 11px; margin-top: 8px; display: none; font-weight: 500; }
+        .quiz-feedback { font-size: 10px; margin-top: 6px; display: none; font-weight: 500; }
         .quiz-feedback.show { display: block; }
-        .conclusion { text-align: center; }
-        .conclusion .check { font-size: 40px; margin-bottom: 8px; animation: bounce 0.6s; }
-        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
-        .conclusion h2 { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
-        .conclusion p { font-size: 12px; color: #6b7280; }
-        .nav { display: flex; justify-content: space-between; align-items: center; margin-top: 12px; padding-top: 8px; border-top: 1px solid #e5e7eb; }
+        .conclusion { text-align: center; padding: 20px; }
+        .conclusion .check { font-size: 36px; margin-bottom: 6px; }
+        .conclusion h2 { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+        .conclusion p { font-size: 11px; color: #6b7280; }
+        .nav { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; padding-top: 6px; border-top: 1px solid #e5e7eb; font-size: 10px; }
         [data-theme="dark"] .nav { border-color: #334155; }
-        .nav button { background: none; border: 1px solid #e5e7eb; padding: 6px 12px; border-radius: 4px; font-size: 11px; cursor: pointer; color: var(--text); transition: 0.2s; }
+        .nav button { background: none; border: 1px solid #e5e7eb; padding: 4px 8px; border-radius: 3px; font-size: 10px; cursor: pointer; color: var(--text); transition: 0.2s; }
         [data-theme="dark"] .nav button { border-color: #334155; }
         .nav button:hover { background: var(--primary); color: white; border-color: var(--primary); }
-        .counter { font-size: 11px; color: #6b7280; }
-        .theme-btn { background: none; border: none; cursor: pointer; font-size: 14px; }
+        .counter { font-size: 10px; color: #6b7280; }
+        .theme-btn { background: none; border: none; cursor: pointer; font-size: 12px; }
     </style>
 </head>
 <body>
@@ -78,13 +77,13 @@
         <div class="slides" id="slides"></div>
         <div class="nav">
             <button class="prev-btn">← Anterior</button>
-            <span class="counter"><span id="slide-num">1</span> / <span id="slide-total">10</span></span>
+            <span class="counter"><span id="slide-num">1</span> / <span id="slide-total">20</span></span>
             <button class="theme-btn">☀️</button>
             <button class="next-btn">Siguiente →</button>
         </div>
     </div>
     <script>
-        const slideData = [{"type": "intro"}, {"type": "flip", "front": "Tema 1", "title": "Sobre Artifacts", "back": ["Punto principal", "Detalle clave", "Aplicaci\u00f3n"]}, {"type": "quiz", "question": "\u00bfCu\u00e1l es el concepto de Artifacts?", "options": ["Opci\u00f3n A", "\u2713 Artifacts", "Opci\u00f3n C"], "correct": 1}, {"type": "flip", "front": "Tema 2", "title": "C\u00f3mo usar", "back": ["M\u00e9todo 1", "M\u00e9todo 2", "Mejores pr\u00e1cticas"]}, {"type": "quiz", "question": "\u00bfCu\u00e1ndo aplicar Artifacts?", "options": ["Solo teor\u00eda", "\u2713 En proyectos reales", "Nunca"], "correct": 1}, {"type": "flip", "front": "Tema 3", "title": "Casos de uso", "back": ["Caso 1", "Caso 2", "Ventajas"]}, {"type": "quiz", "question": "\u00bfCu\u00e1l es la ventaja principal?", "options": ["Rapidez", "\u2713 Mejor calidad", "Bajo costo"], "correct": 1}, {"type": "end"}];
+        const slideData = [{"type": "intro"}, {"type": "flip", "front": "Concepto Base", "title": "Concepto Base de Artifacts", "back": ["Definici\u00f3n exacta", "Componentes principales", "Marco conceptual"]}, {"type": "quiz", "question": "\u00bfCu\u00e1l es la definici\u00f3n de Artifacts?", "options": ["Opci\u00f3n A", "\u2713 Definici\u00f3n exacta", "Opci\u00f3n C"], "correct": 1}, {"type": "flip", "front": "Uso Pr\u00e1ctico", "title": "Uso Pr\u00e1ctico de Artifacts", "back": ["M\u00e9todo aplicable", "Pasos a seguir", "Validaci\u00f3n"]}, {"type": "quiz", "question": "\u00bfC\u00f3mo se aplica Artifacts en la pr\u00e1ctica?", "options": ["Opci\u00f3n A", "\u2713 M\u00e9todo aplicable", "Opci\u00f3n C"], "correct": 1}, {"type": "flip", "front": "Casos Reales", "title": "Casos Reales de Artifacts", "back": ["Ejemplo real 1", "Ejemplo real 2", "Contexto pr\u00e1ctico"]}, {"type": "quiz", "question": "\u00bfCu\u00e1l es una ventaja principal de Artifacts?", "options": ["Opci\u00f3n A", "\u2713 Ejemplo real 1", "Opci\u00f3n C"], "correct": 1}, {"type": "flip", "front": "Caracter\u00edsticas", "title": "Caracter\u00edsticas de Artifacts", "back": ["Atributo 1", "Atributo 2", "Atributo 3"]}, {"type": "quiz", "question": "\u00bfEn qu\u00e9 caso de uso brilla Artifacts?", "options": ["Opci\u00f3n A", "\u2713 Atributo 1", "Opci\u00f3n C"], "correct": 1}, {"type": "flip", "front": "Ventajas", "title": "Ventajas de Artifacts", "back": ["Beneficio 1", "Beneficio 2", "Diferenciador"]}, {"type": "quiz", "question": "\u00bfCu\u00e1l es una limitaci\u00f3n de Artifacts?", "options": ["Opci\u00f3n A", "\u2713 Beneficio 1", "Opci\u00f3n C"], "correct": 1}, {"type": "flip", "front": "Desventajas", "title": "Desventajas de Artifacts", "back": ["Limitaci\u00f3n 1", "Limitaci\u00f3n 2", "Consideraci\u00f3n"]}, {"type": "quiz", "question": "\u00bfCu\u00e1l es la mejor pr\u00e1ctica?", "options": ["Opci\u00f3n A", "\u2713 Limitaci\u00f3n 1", "Opci\u00f3n C"], "correct": 1}, {"type": "flip", "front": "Mejores Pr\u00e1cticas", "title": "Mejores Pr\u00e1cticas de Artifacts", "back": ["Pr\u00e1ctica 1", "Pr\u00e1ctica 2", "Evitar errores"]}, {"type": "flip", "front": "Integraci\u00f3n", "title": "Integraci\u00f3n de Artifacts", "back": ["Conexi\u00f3n 1", "Conexi\u00f3n 2", "Escalabilidad"]}, {"type": "end"}];
         const lessonInfo = {"title": "Artifacts", "description": "C\u00f3digo", "eyebrow": "M5 \u2022 L1"};
         let currentSlide = 0;
 
@@ -94,13 +93,13 @@
             let html = '';
 
             if (slide.type === 'intro') {
-                html = `<div class="header"><div style="font-size: 14px; color: #6b7280;">Código</div><div style="font-size: 20px; font-weight: 700; margin-top: 8px;">Artifacts</div></div>`;
+                html = `<div style="text-align: center; padding: 20px;"><div style="font-size: 16px; color: #6b7280; margin-bottom: 10px;">Código</div><div style="font-size: 24px; font-weight: 700;">Artifacts</div><div style="font-size: 13px; color: var(--primary); margin-top: 10px;">Toca para comenzar →</div></div>`;
             } else if (slide.type === 'flip') {
                 html = `<div class="flip-card"><div class="flip-inner"><div class="flip-front"><div class="concept">${slide.front}</div><div class="hint">Click para voltear</div></div><div class="flip-back"><h3>${slide.title}</h3><ul>${slide.back.map(b => `<li>${b}</li>`).join('')}</ul></div></div></div>`;
             } else if (slide.type === 'quiz') {
                 html = `<div class="quiz"><div class="quiz-q">${slide.question}</div><div class="quiz-opts">${slide.options.map((o, i) => `<button class="quiz-opt" data-i="${i}">${o}</button>`).join('')}</div><div class="quiz-feedback"></div></div>`;
             } else if (slide.type === 'end') {
-                html = `<div class="conclusion"><div class="check">✓</div><h2>Completado</h2><p>Lección terminada</p></div>`;
+                html = `<div class="conclusion"><div class="check">✓</div><h2>Completado</h2><p>¡Excelente trabajo!</p></div>`;
             }
 
             container.innerHTML = html;
@@ -138,7 +137,7 @@
                         feedback.style.color = '#047857';
                     } else {
                         opt.classList.add('incorrect');
-                        feedback.textContent = '✗ Incorrecto';
+                        feedback.textContent = '✗ Incorrecto, intenta otra';
                         feedback.style.color = '#dc2626';
                     }
                     feedback.classList.add('show');
