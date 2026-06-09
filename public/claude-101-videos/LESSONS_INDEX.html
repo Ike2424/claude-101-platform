@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claude 101 - Índice de Lecciones Genially</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz@0,9..144;1,9..144&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --color-primary: #2563EB;
+            --color-secondary: #F97316;
+            --color-bg: #ffffff;
+            --color-text: #1e293b;
+            --color-text-light: #64748b;
+            --color-border: #e2e8f0;
+        }
+
+        [data-theme="dark"] {
+            --color-bg: #0f172a;
+            --color-text: #f1f5f9;
+            --color-text-light: #cbd5e1;
+            --color-border: #334155;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--color-bg);
+            color: var(--color-text);
+            line-height: 1.6;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 60px;
+        }
+
+        /* HEADER */
+        .page-header {
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+            color: white;
+            padding: 100px 60px;
+            border-radius: 20px;
+            margin-bottom: 80px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 500px;
+            height: 500px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .page-header h1 {
+            font-family: 'Fraunces', serif;
+            font-size: 3rem;
+            margin-bottom: 16px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .page-header p {
+            font-size: 1.2rem;
+            opacity: 0.95;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* MODULES */
+        .modules {
+            display: grid;
+            gap: 80px;
+        }
+
+        .module {
+            margin-bottom: 20px;
+        }
+
+        .module-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 32px;
+            padding-bottom: 16px;
+            border-bottom: 3px solid;
+        }
+
+        .module-badge {
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .module-header h2 {
+            font-family: 'Fraunces', serif;
+            font-size: 2rem;
+            flex-grow: 1;
+            margin: 0;
+        }
+
+        /* LESSON GRID */
+        .lessons-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-bottom: 60px;
+        }
+
+        .lesson-card {
+            padding: 32px;
+            border-radius: 16px;
+            border: 2px solid var(--color-border);
+            text-decoration: none;
+            color: var(--color-text);
+            transition: all 0.4s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            background: var(--color-bg);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .lesson-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--color-primary);
+            transform: translateX(-100%);
+            transition: transform 0.4s ease;
+        }
+
+        .lesson-card:hover {
+            border-color: var(--color-primary);
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .lesson-card:hover::before {
+            transform: translateX(0);
+        }
+
+        .lesson-id {
+            font-family: 'Fraunces', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--color-primary);
+        }
+
+        .lesson-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--color-text);
+        }
+
+        .lesson-description {
+            font-size: 0.95rem;
+            color: var(--color-text-light);
+            flex-grow: 1;
+        }
+
+        .lesson-type {
+            display: inline-block;
+            font-size: 0.8rem;
+            padding: 6px 12px;
+            background: rgba(var(--color-primary), 0.1);
+            color: var(--color-primary);
+            border-radius: 6px;
+            font-weight: 500;
+            align-self: flex-start;
+        }
+
+        /* MODULE COLORS */
+        .module-m1 { --color-primary: #2563EB; }
+        .module-m1 .module-badge { background: #2563EB; }
+        .module-m1 .module-header { border-color: #2563EB; }
+
+        .module-m2 { --color-primary: #DC2626; }
+        .module-m2 .module-badge { background: #DC2626; }
+        .module-m2 .module-header { border-color: #DC2626; }
+
+        .module-m3 { --color-primary: #7C3AED; }
+        .module-m3 .module-badge { background: #7C3AED; }
+        .module-m3 .module-header { border-color: #7C3AED; }
+
+        .module-m4 { --color-primary: #059669; }
+        .module-m4 .module-badge { background: #059669; }
+        .module-m4 .module-header { border-color: #059669; }
+
+        .module-m5 { --color-primary: #EA580C; }
+        .module-m5 .module-badge { background: #EA580C; }
+        .module-m5 .module-header { border-color: #EA580C; }
+
+        .module-m6 { --color-primary: #06B6D4; }
+        .module-m6 .module-badge { background: #06B6D4; }
+        .module-m6 .module-header { border-color: #06B6D4; }
+
+        .module-m7 { --color-primary: #D97706; }
+        .module-m7 .module-badge { background: #D97706; }
+        .module-m7 .module-header { border-color: #D97706; }
+
+        .module-m8 { --color-primary: #7C3AED; }
+        .module-m8 .module-badge { background: #7C3AED; }
+        .module-m8 .module-header { border-color: #7C3AED; }
+
+        .module-m9 { --color-primary: #059669; }
+        .module-m9 .module-badge { background: #059669; }
+        .module-m9 .module-header { border-color: #059669; }
+
+        .lesson-card { --color-primary: inherit; }
+
+        /* STATS */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 24px;
+            margin-bottom: 60px;
+            padding: 40px;
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.05) 0%, rgba(249, 115, 22, 0.05) 100%);
+            border-radius: 16px;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-family: 'Fraunces', serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--color-primary);
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--color-text-light);
+            margin-top: 8px;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .container {
+                padding: 40px 20px;
+            }
+
+            .page-header {
+                padding: 60px 30px;
+            }
+
+            .page-header h1 {
+                font-size: 2rem;
+            }
+
+            .lessons-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .module-header h2 {
+                font-size: 1.5rem;
+            }
+        }
+
+        /* DARK MODE */
+        [data-theme="dark"] .lesson-card {
+            background: #1e293b;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="page-header">
+            <h1>Claude 101 - Todas las Lecciones</h1>
+            <p>38 lecciones en formato interactivo estilo Genially</p>
+        </header>
+
+        <div class="stats">
+            <div class="stat">
+                <div class="stat-number">38</div>
+                <div class="stat-label">Lecciones totales</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">9</div>
+                <div class="stat-label">Módulos temáticos</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">∞</div>
+                <div class="stat-label">Posibilidades</div>
+            </div>
+        </div>
+
+        <div class="modules">
+            <!-- M1 -->
+            <div class="module module-m1">
+                <div class="module-header">
+                    <div class="module-badge">M1</div>
+                    <h2>Fundamentos de Claude</h2>
+                </div>
+                <div class="lessons-grid">
+                    <a href="L1-1-slides.html" class="lesson-card">
+                        <div class="lesson-id">L1-1</div>
+                        <div class="lesson-title">¿Qué es Claude?</div>
+                        <div class="lesson-description">Introducción a Claude como asistente de IA</div>
+                        <div class="lesson-type">Tabs + Quiz</div>
+                    </a>
+                    <a href="L1-2-slides.html" class="lesson-card">
+                        <div class="lesson-id">L1-2</div>
+                        <div class="lesson-title">API Basics</div>
+                        <div class="lesson-description">Fundamentos de la API de Claude</div>
+                        <div class="lesson-type">Tabs</div>
+                    </a>
+                    <a href="L1-3-slides.html" class="lesson-card">
+                        <div class="lesson-id">L1-3</div>
+                        <div class="lesson-title">Modelos y Pricing</div>
+                        <div class="lesson-description">Comparativa de modelos y costos</div>
+                        <div class="lesson-type">Acordeón + Quiz</div>
+                    </a>
+                    <a href="L1-4-slides.html" class="lesson-card">
+                        <div class="lesson-id">L1-4</div>
+                        <div class="lesson-title">Setup y Primeras Llamadas</div>
+                        <div class="lesson-description">Configuración inicial y primeras pruebas</div>
+                        <div class="lesson-type">Pasos + Quiz</div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- M2 -->
+            <div class="module module-m2">
+                <div class="module-header">
+                    <div class="module-badge">M2</div>
+                    <h2>Prompting Avanzado</h2>
+                </div>
+                <div class="lessons-grid">
+                    <a href="L2-1-slides.html" class="lesson-card">
+                        <div class="lesson-id">L2-1</div>
+                        <div class="lesson-title">Prompting 101</div>
+                        <div class="lesson-description">Fundamentos de escribir buenos prompts</div>
+                        <div class="lesson-type">Tabs</div>
+                    </a>
+                    <a href="L2-2-slides.html" class="lesson-card">
+                        <div class="lesson-id">L2-2</div>
+                        <div class="lesson-title">Few-Shot Prompting</div>
+                        <div class="lesson-description">Enseña mediante ejemplos</div>
+                        <div class="lesson-type">Acordeón</div>
+                    </a>
+                    <a href="L2-3-slides.html" class="lesson-card">
+                        <div class="lesson-id">L2-3</div>
+                        <div class="lesson-title">Chain-of-Thought</div>
+                        <div class="lesson-description">Razonamiento paso a paso</div>
+                        <div class="lesson-type">Tabs</div>
+                    </a>
+                    <a href="L2-4-slides.html" class="lesson-card">
+                        <div class="lesson-id">L2-4</div>
+                        <div class="lesson-title">System Prompts</div>
+                        <div class="lesson-description">Define el rol y comportamiento de Claude</div>
+                        <div class="lesson-type">Acordeón</div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- M3 -->
+            <div class="module module-m3">
+                <div class="module-header">
+                    <div class="module-badge">M3</div>
+                    <h2>Visión por Computadora</h2>
+                </div>
+                <div class="lessons-grid">
+                    <a href="L3-1-slides.html" class="lesson-card">
+                        <div class="lesson-id">L3-1</div>
+                        <div class="lesson-title">Image Inputs</div>
+                        <div class="lesson-description">Cómo compartir imágenes con Claude</div>
+                        <div class="lesson-type">Tabs</div>
+                    </a>
+                    <a href="L3-2-slides.html" class="lesson-card">
+                        <div class="lesson-id">L3-2</div>
+                        <div class="lesson-title">Vision Capabilities</div>
+                        <div class="lesson-description">Qué puede ver Claude en imágenes</div>
+                        <div class="lesson-type">Acordeón</div>
+                    </a>
+                    <a href="L3-3-slides.html" class="lesson-card">
+                        <div class="lesson-id">L3-3</div>
+                        <div class="lesson-title">Multimodal Applications</div>
+                        <div class="lesson-description">Casos de uso combinando imagen y texto</div>
+                        <div class="lesson-type">Cards</div>
+                    </a>
+                    <a href="L3-4-slides.html" class="lesson-card">
+                        <div class="lesson-id">L3-4</div>
+                        <div class="lesson-title">Casos Reales con Visión</div>
+                        <div class="lesson-description">Ejemplos prácticos del mundo real</div>
+                        <div class="lesson-type">Carousel</div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- M4 -->
+            <div class="module module-m4">
+                <div class="module-header">
+                    <div class="module-badge">M4</div>
+                    <h2>Técnicas Avanzadas</h2>
+                </div>
+                <div class="lessons-grid">
+                    <a href="L4-1-slides.html" class="lesson-card">
+                        <div class="lesson-id">L4-1</div>
+                        <div class="lesson-title">Few-Shot Avanzado</div>
+                        <div class="lesson-description">Patrones complejos con ejemplos</div>
+                        <div class="lesson-type">Acordeón</div>
+                    </a>
+                    <a href="L4-2-slides.html" class="lesson-card">
+                        <div class="lesson-id">L4-2</div>
+                        <div class="lesson-title">XML Tagging</div>
+                        <div class="lesson-description">Estructura datos con tags XML</div>
+                        <div class="lesson-type">Pasos</div>
+                    </a>
+                    <a href="L4-3-slides.html" class="lesson-card">
+                        <div class="lesson-id">L4-3</div>
+                        <div class="lesson-title">Role-Playing Prompts</div>
+                        <div class="lesson-description">Dale a Claude un rol específico</div>
+                        <div class="lesson-type">Tabs</div>
+                    </a>
+                    <a href="L4-4-slides.html" class="lesson-card">
+                        <div class="lesson-id">L4-4</div>
+                        <div class="lesson-title">Iteración Estructurada</div>
+                        <div class="lesson-description">Refinamiento sistemático de respuestas</div>
+                        <div class="lesson-type">Acordeón</div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- M5 -->
+            <div class="module module-m5">
+                <div class="module-header">
+                    <div class="module-badge">M5</div>
+                    <h2>Features Avanzadas</h2>
+                </div>
+                <div class="lessons-grid">
+                    <a href="L5-1-slides.html" class="lesson-card">
+                        <div class="lesson-id">L5-1</div>
+                        <div class="lesson-title">Artifacts</div>
+                        <div class="lesson-description">Interfaz para código y contenido largo</div>
+                        <div class="lesson-type">Tabs</div>
+                    </a>
+                    <a href="L5-2-slides.html" class="lesson-card">
+                        <div class="lesson-id">L5-2</div>
+                        <div class="lesson-title">Búsqueda Web</div>
+                        <div class="lesson-description">Acceso a información en tiempo real</div>
+                        <div class="lesson-type">Pasos</div>
+                    </a>
+                    <a href="L5-3-slides.html" class="lesson-card">
+                        <div class="lesson-id">L5-3</div>
+                        <div class="lesson-title">File Uploads</div>
+                        <div class="lesson-description">Sube y procesa archivos</div>
+                        <div class="lesson-type">Acordeón</div>
+                    </a>
+                    <a href="L5-4-slides.html" class="lesson-card">
+                        <div class="lesson-id">L5-4</div>
+                        <div class="lesson-title">Memory y Contexto Largo</div>
+                        <div class="lesson-description">Manejo de conversaciones extensas</div>
+                        <div class="lesson-type">Tabs</div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- M6 -->
+            <div class="module module-m6">
+                <div class="module-header">
+                    <div class="module-badge">M6</div>
+                    <h2>Aplicaciones Prácticas</h2>
+                </div>
+                <div class="lessons-grid">
+                    <a href="L6-1-slides.html" class="lesson-card">
+                        <div class="lesson-id">L6-1</div>
+                        <div class="lesson-title">Escritura y Contenido</div>
+                        <div class="lesson-description">Aplicaciones en escritura</div>
+                        <div class="lesson-type">Tabs</div>
+                    </a>
+                    <a href="L6-2-slides.html" class="lesson-card">
+                        <div class="lesson-id">L6-2</div>
+                        <div class="lesson-title">Programación</div>
+                        <div class="lesson-description">Ayuda en desarrollo</div>
+                        <div class="lesson-type">Tabs</div>
+                    </a>
+                    <a href="L6-3-slides.html" class="lesson-card">
+                        <div class="lesson-id">L6-3</div>
+                        <div class="lesson-title">Análisis de Datos</div>
+                        <div class="lesson-description">Procesa y analiza información</div>
+                        <div class="lesson-type">Pasos</div>
+                    </a>
+                    <a href="L6-4-slides.html" class="lesson-card">
+                        <div class="lesson-id">L6-4</div>
+                        <div class="lesson-title">Creatividad y Brainstorm</div>
+                        <div class="lesson-description">Genera ideas y contenido creativo</div>
+                        <div class="lesson-type">Tabs</div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- M7 -->
+            <div class="module module-m7">
+                <div class="module-header">
+                    <div class="module-badge">M7</div>
+                    <h2>Responsabilidad y Seguridad</h2>
+                </div>
+                <div class="lessons-grid">
+                    <a href="L7-1-slides.html" class="lesson-card">
+                        <div class="lesson-id">L7-1</div>
+                        <div class="lesson-title">Privacidad y Datos Sensibles</div>
+                        <div class="lesson-description">Protege información confidencial</div>
+                        <div class="lesson-type">Acordeón</div>
+                    </a>
+                    <a href="L7-2-slides.html" class="lesson-card">
+                        <div class="lesson-id">L7-2</div>
+                        <div class="lesson-title">Verificación y Fact-Checking</div>
+                        <div class="lesson-description">Valida información y evita alucinaciones</div>
+                        <div class="lesson-type">Tabs</div>
+                    </a>
+                    <a href="L7-3-slides.html" class="lesson-card">
+                        <div class="lesson-id">L7-3</div>
+                        <div class="lesson-title">Limitaciones de Claude</div>
+                        <div class="lesson-description">Entiende qué no puede hacer</div>
+                        <div class="lesson-type">Acordeón</div>
+                    </a>
+                    <a href="L7-4-slides.html" class="lesson-card">
+                        <div class="lesson-id">L7-4</div>
+                        <div class="lesson-title">Responsabilidad y Ética</div>
+                        <div class="lesson-description">Usa Claude responsablemente</div>
+                        <div class="lesson-type">Tabs</div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- M8 -->
+            <div class="module module-m8">
+                <div class="module-header">
+                    <div class="module-badge">M8</div>
+                    <h2>Herramientas y Extensiones</h2>
+                </div>
+                <div class="lessons-grid">
+                    <a href="L8-1-slides.html" class="lesson-card">
+                        <div class="lesson-id">L8-1</div>
+                        <div class="lesson-title">Claude Code</div>
+                        <div class="lesson-description">Interfaz avanzada para desarrollo</div>
+                        <div class="lesson-type">Tabs</div>
+                    </a>
+                    <a href="L8-2-slides.html" class="lesson-card">
+                        <div class="lesson-id">L8-2</div>
+                        <div class="lesson-title">Model Context Protocol (MCP)</div>
+                        <div class="lesson-description">Protocolo para integrar herramientas</div>
+                        <div class="lesson-type">Acordeón</div>
+                    </a>
+                    <a href="L8-3-slides.html" class="lesson-card">
+                        <div class="lesson-id">L8-3</div>
+                        <div class="lesson-title">Recursos Importantes</div>
+                        <div class="lesson-description">Links y documentación clave</div>
+                        <div class="lesson-type">Acordeón</div>
+                    </a>
+                    <a href="L8-4-slides.html" class="lesson-card">
+                        <div class="lesson-id">L8-4</div>
+                        <div class="lesson-title">Proyecto Final</div>
+                        <div class="lesson-description">Planifica tu proyecto integrador</div>
+                        <div class="lesson-type">Pasos</div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- M9 -->
+            <div class="module module-m9">
+                <div class="module-header">
+                    <div class="module-badge">M9</div>
+                    <h2>Construye tu Proyecto</h2>
+                </div>
+                <div class="lessons-grid">
+                    <a href="L9-1-slides.html" class="lesson-card">
+                        <div class="lesson-id">L9-1</div>
+                        <div class="lesson-title">Proyecto: Setup Base</div>
+                        <div class="lesson-description">Configuración inicial</div>
+                        <div class="lesson-type">Pasos</div>
+                    </a>
+                    <a href="L9-2-slides.html" class="lesson-card">
+                        <div class="lesson-id">L9-2</div>
+                        <div class="lesson-title">Proyecto: Lógica Core</div>
+                        <div class="lesson-description">Implementa funcionalidad principal</div>
+                        <div class="lesson-type">Pasos</div>
+                    </a>
+                    <a href="L9-3-slides.html" class="lesson-card">
+                        <div class="lesson-id">L9-3</div>
+                        <div class="lesson-title">Proyecto: Optimización</div>
+                        <div class="lesson-description">Mejora rendimiento y UX</div>
+                        <div class="lesson-type">Pasos</div>
+                    </a>
+                    <a href="L9-4-slides.html" class="lesson-card">
+                        <div class="lesson-id">L9-4</div>
+                        <div class="lesson-title">Proyecto: Deploy y Monitoreo</div>
+                        <div class="lesson-description">Saca a producción</div>
+                        <div class="lesson-type">Pasos</div>
+                    </a>
+                    <a href="L9-5-slides.html" class="lesson-card">
+                        <div class="lesson-id">L9-5</div>
+                        <div class="lesson-title">Proyecto: Casos Avanzados</div>
+                        <div class="lesson-description">Features adicionales</div>
+                        <div class="lesson-type">Pasos</div>
+                    </a>
+                    <a href="L9-6-slides.html" class="lesson-card">
+                        <div class="lesson-id">L9-6</div>
+                        <div class="lesson-title">Proyecto: Showcase Final</div>
+                        <div class="lesson-description">Comparte y celebra tu proyecto</div>
+                        <div class="lesson-type">Pasos</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const theme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', theme);
+        });
+    </script>
+</body>
+</html>

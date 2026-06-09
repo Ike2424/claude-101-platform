@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>L1-2 - La familia de modelos</title>
+    <title>L1-2 - API Basics</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz@0,9..144;1,9..144&family=Geist:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz@0,9..144;1,9..144&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -17,21 +17,19 @@
         :root {
             --color-primary: #2563EB;
             --color-secondary: #F97316;
-            --color-bg-light: #f8fafc;
-            --color-bg-dark: #0f172a;
-            --color-text-light: #1e293b;
-            --color-text-dark: #f1f5f9;
+            --color-bg: #ffffff;
+            --color-text: #1e293b;
+            --color-text-light: #64748b;
             --color-border: #e2e8f0;
+            --color-success: #10b981;
+            --color-error: #ef4444;
         }
 
         [data-theme="dark"] {
-            --color-bg: var(--color-bg-dark);
-            --color-text: var(--color-text-dark);
-        }
-
-        [data-theme="light"] {
-            --color-bg: var(--color-bg-light);
-            --color-text: var(--color-text-light);
+            --color-bg: #0f172a;
+            --color-text: #f1f5f9;
+            --color-text-light: #cbd5e1;
+            --color-border: #334155;
         }
 
         html {
@@ -39,7 +37,7 @@
         }
 
         body {
-            font-family: 'Geist', sans-serif;
+            font-family: 'Inter', sans-serif;
             background-color: var(--color-bg);
             color: var(--color-text);
             line-height: 1.6;
@@ -47,620 +45,555 @@
         }
 
         .container {
-            width: 100%;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0;
         }
 
-        .slides-wrapper {
-            flex: 1;
+        /* ========== HEADER ========== */
+        .lesson-header {
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+            color: white;
+            padding: 80px 60px;
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
             position: relative;
             overflow: hidden;
         }
 
-        .slide {
+        .lesson-header::before {
+            content: '';
             position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            opacity: 0;
-            transition: opacity 0.5s ease-in-out;
-            padding: 60px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
+            top: -50%;
+            right: -10%;
+            width: 500px;
+            height: 500px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            pointer-events: none;
         }
 
-        .slide.active {
-            opacity: 1;
-            z-index: 10;
+        .lesson-header::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -5%;
+            width: 400px;
+            height: 400px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 50%;
+            pointer-events: none;
         }
 
-        .slide-intro {
-            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
-            color: white;
+        .header-content {
+            position: relative;
+            z-index: 2;
         }
 
-        .slide-intro h1 {
-            font-family: 'Fraunces', serif;
-            font-size: 3.5rem;
-            margin-bottom: 1rem;
-            font-style: italic;
-        }
-
-        .slide-intro .module-badge {
+        .lesson-badge {
             display: inline-block;
             background: rgba(255, 255, 255, 0.2);
-            padding: 0.5rem 1rem;
+            padding: 8px 16px;
             border-radius: 999px;
             font-size: 0.875rem;
-            margin-bottom: 2rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+            backdrop-filter: blur(10px);
         }
 
-        .slide-intro p {
+        .lesson-header h1 {
+            font-family: 'Fraunces', serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+        }
+
+        .lesson-header p {
             font-size: 1.25rem;
-            opacity: 0.9;
             max-width: 600px;
+            opacity: 0.95;
+            font-weight: 300;
         }
 
-        .slide-flip {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            perspective: 1000px;
+        /* ========== SECCIONES ========== */
+        .section {
+            padding: 100px 60px;
+            margin: 0;
+            border-bottom: 1px solid var(--color-border);
+            opacity: 0;
+            animation: fadeInUp 0.8s ease-out forwards;
         }
 
-        .flip-card {
-            width: 500px;
-            height: 400px;
+        .section:nth-child(2) { animation-delay: 0.1s; }
+        .section:nth-child(3) { animation-delay: 0.2s; }
+        .section:nth-child(4) { animation-delay: 0.3s; }
+        .section:nth-child(5) { animation-delay: 0.4s; }
+
+        .section h2 {
+            font-family: 'Fraunces', serif;
+            font-size: 2.5rem;
+            margin-bottom: 48px;
+            color: var(--color-primary);
             position: relative;
-            transform-style: preserve-3d;
-            cursor: pointer;
-            transition: transform 0.6s;
+            padding-bottom: 20px;
         }
 
-        .flip-card.flipped {
-            transform: rotateY(180deg);
-        }
-
-        .flip-card-front, .flip-card-back {
+        .section h2::after {
+            content: '';
             position: absolute;
-            width: 100%;
-            height: 100%;
-            backface-visibility: hidden;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 2rem;
-            border-radius: 16px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            bottom: 0;
+            left: 0;
+            width: 80px;
+            height: 4px;
+            background: var(--color-primary);
+            border-radius: 2px;
         }
 
-        .flip-card-front {
-            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
-            color: white;
+        /* ========== TABS ========== */
+        .tabs {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
         }
 
-        .flip-card-back {
+        .tab-button {
+            padding: 16px 24px;
+            border: 2px solid var(--color-border);
             background: var(--color-bg);
             color: var(--color-text);
-            transform: rotateY(180deg);
-            border: 2px solid var(--color-primary);
-        }
-
-        .flip-card-front h3 {
-            font-family: 'Fraunces', serif;
-            font-size: 2rem;
-            margin-bottom: 1rem;
-        }
-
-        .flip-card-front p {
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.4s ease;
             font-size: 1rem;
-            opacity: 0.9;
         }
 
-        .flip-card-back h3 {
-            font-family: 'Fraunces', serif;
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
+        .tab-button:hover {
+            border-color: var(--color-primary);
+            background: rgba(var(--color-primary), 0.05);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+        }
+
+        .tab-button.active {
+            background: var(--color-primary);
+            color: white;
+            border-color: var(--color-primary);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+        }
+
+        .tab-content {
+            display: none;
+            padding: 40px;
+            background: linear-gradient(135deg, rgba(var(--color-primary), 0.05) 0%, rgba(var(--color-secondary), 0.05) 100%);
+            border-radius: 16px;
+            margin-top: 20px;
+            animation: fadeInUp 0.4s ease-out;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .tab-content ul {
+            list-style: none;
+            display: grid;
+            gap: 16px;
+        }
+
+        .tab-content li {
+            padding: 16px 20px;
+            background: white;
+            border-left: 4px solid var(--color-primary);
+            border-radius: 8px;
+            position: relative;
+            padding-left: 40px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .tab-content li::before {
+            content: '▪';
+            position: absolute;
+            left: 16px;
+            color: var(--color-primary);
+            font-weight: 700;
+        }
+
+        /* ========== ACORDEÓN ========== */
+        .accordion {
+            display: grid;
+            gap: 16px;
+        }
+
+        .accordion-item {
+            border: 2px solid var(--color-border);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .accordion-item:hover {
+            border-color: var(--color-primary);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        }
+
+        .accordion-header {
+            padding: 24px 32px;
+            background: white;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            user-select: none;
+        }
+
+        .accordion-item.active .accordion-header {
+            background: rgba(var(--color-primary), 0.08);
             color: var(--color-primary);
         }
 
-        .flip-card-back p {
-            font-size: 0.95rem;
+        .accordion-toggle {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+
+        .accordion-item.active .accordion-toggle {
+            transform: rotate(180deg);
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+            background: var(--color-bg);
+            border-top: 1px solid var(--color-border);
+        }
+
+        .accordion-item.active .accordion-content {
+            max-height: 500px;
+            padding: 24px 32px;
+        }
+
+        .accordion-content p {
+            color: var(--color-text-light);
             line-height: 1.7;
         }
 
-        .flip-hint {
-            font-size: 0.75rem;
-            margin-top: 1rem;
-            opacity: 0.6;
+        /* ========== PASOS ========== */
+        .steps {
+            display: grid;
+            gap: 32px;
+        }
+
+        .step {
+            display: grid;
+            grid-template-columns: 60px 1fr;
+            gap: 32px;
+            align-items: start;
+        }
+
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: var(--color-primary);
+            color: white;
+            border-radius: 50%;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            flex-shrink: 0;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
         }
 
-        .slide-quiz {
-            background: var(--color-bg);
-            max-width: 700px;
+        .step-content h3 {
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+            color: var(--color-primary);
         }
 
-        .quiz-question {
-            font-family: 'Fraunces', serif;
-            font-size: 1.75rem;
-            margin-bottom: 2rem;
-            color: var(--color-text);
+        .step-content p {
+            color: var(--color-text-light);
+            font-size: 1.05rem;
         }
 
-        .quiz-options {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
+        /* ========== QUIZ ========== */
+        .quiz {
+            background: linear-gradient(135deg, rgba(var(--color-primary), 0.1) 0%, rgba(var(--color-secondary), 0.1) 100%);
+            padding: 40px;
+            border-radius: 16px;
+            margin-top: 60px;
+        }
+
+        .quiz h3 {
+            font-size: 1.25rem;
+            margin-bottom: 24px;
+            color: var(--color-primary);
         }
 
         .quiz-option {
-            padding: 1.5rem;
+            padding: 16px 24px;
+            background: white;
             border: 2px solid var(--color-border);
-            border-radius: 12px;
+            border-radius: 8px;
+            margin-bottom: 12px;
             cursor: pointer;
-            transition: all 0.3s;
-            background: transparent;
-            color: var(--color-text);
-            text-align: left;
-            font-size: 1.1rem;
+            transition: all 0.3s ease;
             font-weight: 500;
         }
 
         .quiz-option:hover {
             border-color: var(--color-primary);
+            background: rgba(var(--color-primary), 0.05);
+        }
+
+        .quiz-option.selected {
             background: var(--color-primary);
             color: white;
-            transform: translateX(10px);
+            border-color: var(--color-primary);
         }
 
         .quiz-option.correct {
-            border-color: #10b981;
-            background: #10b981;
+            background: var(--color-success);
             color: white;
+            border-color: var(--color-success);
         }
 
         .quiz-option.incorrect {
-            border-color: #ef4444;
-            background: #ef4444;
+            background: var(--color-error);
             color: white;
+            border-color: var(--color-error);
         }
 
-        .quiz-feedback {
-            margin-top: 1.5rem;
-            padding: 1rem;
-            border-radius: 8px;
-            font-weight: 600;
-            min-height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        /* ========== ANIMACIONES ========== */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        .quiz-feedback.correct {
-            background: #d1fae5;
-            color: #065f46;
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
         }
 
-        .quiz-feedback.incorrect {
-            background: #fee2e2;
-            color: #7f1d1d;
+        /* ========== FOOTER ========== */
+        .lesson-footer {
+            padding: 60px;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(var(--color-primary), 0.05) 0%, rgba(var(--color-secondary), 0.05) 100%);
         }
 
-        .slide-keypoints {
-            max-width: 800px;
-        }
-
-        .slide-keypoints h2 {
-            font-family: 'Fraunces', serif;
-            font-size: 2.5rem;
-            margin-bottom: 2rem;
-            color: var(--color-primary);
-        }
-
-        .keypoints-list {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
-            text-align: left;
-        }
-
-        .keypoint-item {
-            padding: 1.5rem;
-            background: linear-gradient(135deg, var(--color-primary)11 0%, var(--color-secondary)11 100%);
-            border-left: 4px solid var(--color-primary);
-            border-radius: 8px;
-        }
-
-        .keypoint-item strong {
-            color: var(--color-primary);
-            display: block;
-            margin-bottom: 0.5rem;
-        }
-
-        .slide-summary {
-            max-width: 700px;
-        }
-
-        .slide-summary h2 {
+        .lesson-footer h3 {
             font-family: 'Fraunces', serif;
             font-size: 2rem;
-            margin-bottom: 1rem;
+            margin-bottom: 24px;
             color: var(--color-primary);
-        }
-
-        .summary-text {
-            font-size: 1.1rem;
-            margin-bottom: 2rem;
-            opacity: 0.8;
-        }
-
-        .next-lesson-btn {
-            display: inline-block;
-            padding: 1rem 2rem;
-            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-
-        .next-lesson-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-        }
-
-        .slide-conclusion {
-            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
-            color: white;
-        }
-
-        .slide-conclusion h1 {
-            font-family: 'Fraunces', serif;
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
-
-        .slide-conclusion p {
-            font-size: 1.25rem;
-            opacity: 0.9;
-            margin-bottom: 2rem;
-        }
-
-        /* Controls */
-        .controls {
-            padding: 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-top: 1px solid var(--color-border);
         }
 
         .nav-buttons {
             display: flex;
-            gap: 1rem;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 32px;
         }
 
-        .nav-btn {
-            padding: 0.75rem 1.5rem;
+        .btn {
+            padding: 14px 32px;
+            border-radius: 8px;
             border: 2px solid var(--color-primary);
-            background: transparent;
+            background: var(--color-bg);
             color: var(--color-primary);
-            border-radius: 8px;
-            cursor: pointer;
             font-weight: 600;
-            transition: all 0.3s;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
         }
 
-        .nav-btn:hover {
+        .btn:hover {
+            background: var(--color-primary);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-primary {
             background: var(--color-primary);
             color: white;
         }
 
-        .nav-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
+        .btn-primary:hover {
+            background: var(--color-secondary);
+            border-color: var(--color-secondary);
         }
 
-        .progress-bar {
-            height: 4px;
-            background: var(--color-border);
-            border-radius: 2px;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
-            width: 0%;
-            transition: width 0.3s;
-        }
-
-        .slide-counter {
-            text-align: center;
-            font-weight: 600;
-            min-width: 100px;
-        }
-
-        .theme-toggle {
-            padding: 0.75rem 1.5rem;
-            border: 2px solid var(--color-border);
-            background: transparent;
-            color: var(--color-text);
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s;
-        }
-
-        .theme-toggle:hover {
-            border-color: var(--color-primary);
-            background: var(--color-primary);
-            color: white;
-        }
-
-        /* Responsive */
+        /* ========== RESPONSIVE ========== */
         @media (max-width: 768px) {
-            .slide {
-                padding: 40px 20px;
+            .lesson-header {
+                padding: 60px 30px;
             }
 
-            .flip-card {
-                width: 90vw;
-                height: 60vh;
-                max-width: 400px;
-                max-height: 300px;
+            .lesson-header h1 {
+                font-size: 2.5rem;
             }
 
-            .slide-intro h1 {
-                font-size: 2rem;
+            .section {
+                padding: 60px 30px;
             }
 
-            .keypoints-list {
+            .section h2 {
+                font-size: 1.75rem;
+            }
+
+            .tabs {
                 grid-template-columns: 1fr;
             }
 
-            .controls {
-                flex-direction: column;
-                gap: 1rem;
+            .tab-content {
+                padding: 24px;
             }
+
+            .step {
+                grid-template-columns: 1fr;
+            }
+
+            .step-number {
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .lesson-header {
+                padding: 40px 20px;
+                min-height: 300px;
+            }
+
+            .lesson-header h1 {
+                font-size: 2rem;
+            }
+
+            .section {
+                padding: 40px 20px;
+            }
+
+            .section h2 {
+                font-size: 1.5rem;
+            }
+        }
+
+        /* ========== DARK MODE FIXES ========== */
+        [data-theme="dark"] .tab-button,
+        [data-theme="dark"] .tab-content,
+        [data-theme="dark"] .accordion-header,
+        [data-theme="dark"] .quiz-option,
+        [data-theme="dark"] .tab-content li {
+            background: #1e293b;
+            color: var(--color-text);
+            border-color: var(--color-border);
+        }
+
+        [data-theme="dark"] .tab-content li {
+            border-left-color: var(--color-primary);
         }
     </style>
 </head>
-<body data-theme="light">
+<body>
     <div class="container">
-        <div class="slides-wrapper">
-            <div class="slide slide-intro active" data-slide-index="0">
-                <div class="slide-intro">
-                    <div class="module-badge">M1 • Módulo 1 • 🚀</div>
-                    <h1>La familia de modelos</h1>
-                    <p>Aprende la familia de modelos</p>
-                </div>
+        <!-- HEADER -->
+        <header class="lesson-header">
+            <div class="header-content">
+                <div class="lesson-badge">L1-2</div>
+                <h1>API Basics</h1>
+                <p>Fundamentos de la API de Claude</p>
             </div>
-            <div class="slide slide-flip_card" data-slide-index="1">
-                <div class="slide-flip">
-                    <div class="flip-card" onclick="this.classList.toggle('flipped')">
-                        <div class="flip-card-front">
-                            <h3>Haiku</h3>
-                            <p>Haz click para descubrir</p>
-                            <div class="flip-hint">📖 Click para voltear</div>
-                        </div>
-                        <div class="flip-card-back">
-                            <h3>Haiku</h3>
-                            <p>Rápido y eficiente. Ideal para tareas sencillas y respuestas instantáneas</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="slide slide-quiz" data-slide-index="2">
-                <div class="slide-quiz">
-                    <h2 class="quiz-question">¿Cuál es el modelo más rápido?</h2>
-                    <div class="quiz-options">
-                        <button class="quiz-option" onclick="checkAnswer(0, 0, event)">Haiku</button>
-                        <button class="quiz-option" onclick="checkAnswer(1, 0, event)">Sonnet</button>
-                        <button class="quiz-option" onclick="checkAnswer(2, 0, event)">Opus</button>
-                    </div>
-                    <div class="quiz-feedback" id="feedback" style="display: none;"></div>
-                </div>
-            </div>
-            <div class="slide slide-flip_card" data-slide-index="3">
-                <div class="slide-flip">
-                    <div class="flip-card" onclick="this.classList.toggle('flipped')">
-                        <div class="flip-card-front">
-                            <h3>Sonnet</h3>
-                            <p>Haz click para descubrir</p>
-                            <div class="flip-hint">📖 Click para voltear</div>
-                        </div>
-                        <div class="flip-card-back">
-                            <h3>Sonnet</h3>
-                            <p>Equilibrio perfecto. Razonamiento sólido con velocidad aceptable. El que usarás el 80% del tiempo</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="slide slide-quiz" data-slide-index="4">
-                <div class="slide-quiz">
-                    <h2 class="quiz-question">¿Cuál es el equilibrio recomendado?</h2>
-                    <div class="quiz-options">
-                        <button class="quiz-option" onclick="checkAnswer(0, 1, event)">Haiku</button>
-                        <button class="quiz-option" onclick="checkAnswer(1, 1, event)">Sonnet</button>
-                        <button class="quiz-option" onclick="checkAnswer(2, 1, event)">Opus</button>
-                    </div>
-                    <div class="quiz-feedback" id="feedback" style="display: none;"></div>
-                </div>
-            </div>
-            <div class="slide slide-flip_card" data-slide-index="5">
-                <div class="slide-flip">
-                    <div class="flip-card" onclick="this.classList.toggle('flipped')">
-                        <div class="flip-card-front">
-                            <h3>Opus</h3>
-                            <p>Haz click para descubrir</p>
-                            <div class="flip-hint">📖 Click para voltear</div>
-                        </div>
-                        <div class="flip-card-back">
-                            <h3>Opus</h3>
-                            <p>Más potente. Para problemas complejos, análisis profundo y escritura matizada</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="slide slide-quiz" data-slide-index="6">
-                <div class="slide-quiz">
-                    <h2 class="quiz-question">¿Para qué sirve Opus?</h2>
-                    <div class="quiz-options">
-                        <button class="quiz-option" onclick="checkAnswer(0, 1, event)">Tareas ligeras</button>
-                        <button class="quiz-option" onclick="checkAnswer(1, 1, event)">Problemas complejos</button>
-                        <button class="quiz-option" onclick="checkAnswer(2, 1, event)">Velocidad máxima</button>
-                    </div>
-                    <div class="quiz-feedback" id="feedback" style="display: none;"></div>
-                </div>
-            </div>
-            <div class="slide slide-keypoints" data-slide-index="7">
-                <div class="slide-keypoints">
-                    <h2>Puntos clave</h2>
-                    <div class="keypoints-list">
-                        <div class="keypoint-item"><strong>Haiku</strong></div>
-                        <div class="keypoint-item"><strong>Sonnet</strong></div>
-                        <div class="keypoint-item"><strong>Opus</strong></div>
-                    </div>
-                </div>
-            </div>
-            <div class="slide slide-summary" data-slide-index="8">
-                <div class="slide-summary">
-                    <h2>Resumen</h2>
-                    <p class="summary-text">Completaste el módulo de <strong>La familia de modelos</strong>. ¡Excelente trabajo!</p>
-                    <button class="next-lesson-btn" onclick="nextSlide()">Próxima lección →</button>
-                </div>
-            </div>
-            <div class="slide slide-conclusion" data-slide-index="9">
-                <div class="slide-conclusion">
-                    <h1>¡Lo hiciste!</h1>
-                    <p>La familia de modelos</p>
-                    <p style="font-size: 1rem; opacity: 0.8;">Bienvenida y fundamentos</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="controls">
+        </header>
+<section class="section"><div class="tabs"><button class="tab-button active" data-tab="tab-0">¿Qué es REST?</button><button class="tab-button " data-tab="tab-1">Estructura JSON</button><button class="tab-button " data-tab="tab-2">Headers y Auth</button></div><div class="tab-content active" id="tab-0"><ul><li>Arquitectura cliente-servidor</li><li>Métodos HTTP (GET, POST, PUT, DELETE)</li><li>Requests y responses en JSON</li><li>Stateless: sin sesión persistente</li><li>RESTful: patrón estándar de web</li></ul></div><div class="tab-content " id="tab-1"><ul><li>Request: { model, messages, max_tokens }</li><li>Messages: array de { role, content }</li><li>Response: { content, stop_reason, usage }</li><li>Role: 'user' o 'assistant'</li><li>Token usage: tracks consumption</li></ul></div><div class="tab-content " id="tab-2"><ul><li>Authorization: Bearer API_KEY</li><li>Content-Type: application/json</li><li>API Key: guardar en env variable</li><li>Rate limits: respeta límites</li><li>Versión: x-api-version header</li></ul></div></section><section class="section"><div class="quiz"><h3>Prueba tu conocimiento</h3><div class="quiz-item" data-correct="1"><h4 style="margin-bottom: 16px; font-size: 1.1rem;">¿Qué método HTTP se usa para enviar un prompt?</h4><div class="quiz-option">GET</div><div class="quiz-option">POST</div><div class="quiz-option">PUT</div><div class="quiz-option">DELETE</div></div></div></section>
+        <footer class="lesson-footer">
+            <h3>¡Excelente trabajo!</h3>
+            <p>Has completado esta lección. Continúa con la siguiente para profundizar tu conocimiento.</p>
             <div class="nav-buttons">
-                <button class="nav-btn" id="prevBtn" onclick="prevSlide()">← Anterior</button>
-                <button class="nav-btn" id="nextBtn" onclick="nextSlide()">Siguiente →</button>
+                <button class="btn" onclick="history.back()">← Anterior</button>
+                <button class="btn btn-primary" onclick="window.location.href='../course.html'">Ver curso</button>
             </div>
-            <div class="progress-bar">
-                <div class="progress-fill" id="progressFill"></div>
-            </div>
-            <div class="slide-counter"><span id="currentSlide">1</span> / 10</div>
-            <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()">🌙</button>
-        </div>
+        </footer>
     </div>
 
     <script>
-        let currentSlide = 0;
-        const totalSlides = 10;
+        // ========== DARK MODE TOGGLE ==========
+        document.addEventListener('DOMContentLoaded', () => {{
+            const theme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', theme);
 
-        function showSlide(n) {
-            const slides = document.querySelectorAll('.slide');
+            // Tab switching
+            document.querySelectorAll('.tab-button').forEach(button => {{
+                button.addEventListener('click', (e) => {{
+                    const tabs = button.parentElement.parentElement;
+                    tabs.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
+                    tabs.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
 
-            if (n >= totalSlides) currentSlide = totalSlides - 1;
-            if (n < 0) currentSlide = 0;
+                    button.classList.add('active');
+                    const contentId = button.getAttribute('data-tab');
+                    document.getElementById(contentId)?.classList.add('active');
+                }});
+            }});
 
-            slides.forEach(slide => slide.classList.remove('active'));
-            slides[currentSlide].classList.add('active');
+            // Accordion toggle
+            document.querySelectorAll('.accordion-header').forEach(header => {{
+                header.addEventListener('click', () => {{
+                    const item = header.parentElement;
+                    const otherItems = item.parentElement.querySelectorAll('.accordion-item');
 
-            // Reiniciar quiz feedback
-            const feedback = document.getElementById('feedback');
-            if (feedback) {
-                feedback.style.display = 'none';
-                feedback.textContent = '';
-            }
+                    otherItems.forEach(i => {{
+                        if (i !== item) i.classList.remove('active');
+                    }});
 
-            // Resetear opciones de quiz
-            const options = document.querySelectorAll('.quiz-option');
-            options.forEach(opt => {
-                opt.classList.remove('correct', 'incorrect');
-                opt.style.pointerEvents = 'auto';
-            });
+                    item.classList.toggle('active');
+                }});
+            }});
 
-            updateControls();
-            updateProgress();
-            document.getElementById('currentSlide').textContent = currentSlide + 1;
-        }
+            // Quiz handling
+            document.querySelectorAll('.quiz-option').forEach(option => {{
+                option.addEventListener('click', () => {{
+                    const quizItem = option.parentElement;
+                    const correctIndex = parseInt(quizItem.getAttribute('data-correct'));
+                    const selectedIndex = Array.from(quizItem.querySelectorAll('.quiz-option')).indexOf(option);
 
-        function nextSlide() {
-            currentSlide++;
-            showSlide(currentSlide);
-        }
+                    quizItem.querySelectorAll('.quiz-option').forEach((o, idx) => {{
+                        o.classList.remove('selected', 'correct', 'incorrect');
+                        if (idx === correctIndex) o.classList.add('correct');
+                        if (idx === selectedIndex && idx !== correctIndex) o.classList.add('incorrect');
+                    }});
 
-        function prevSlide() {
-            currentSlide--;
-            showSlide(currentSlide);
-        }
-
-        function updateControls() {
-            document.getElementById('prevBtn').disabled = currentSlide === 0;
-            document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
-        }
-
-        function updateProgress() {
-            const progress = ((currentSlide + 1) / totalSlides) * 100;
-            document.getElementById('progressFill').style.width = progress + '%';
-        }
-
-        function checkAnswer(selectedIndex, correctIndex, event) {
-            const options = document.querySelectorAll('.quiz-option');
-            options.forEach(opt => opt.style.pointerEvents = 'none');
-
-            const feedback = document.getElementById('feedback');
-            feedback.style.display = 'flex';
-
-            if (selectedIndex === correctIndex) {
-                options[selectedIndex].classList.add('correct');
-                feedback.classList.add('correct');
-                feedback.classList.remove('incorrect');
-                feedback.textContent = '✓ ¡Correcto!';
-            } else {
-                options[selectedIndex].classList.add('incorrect');
-                options[correctIndex].classList.add('correct');
-                feedback.classList.add('incorrect');
-                feedback.classList.remove('correct');
-                feedback.textContent = '✗ Incorrecto. La respuesta correcta está destacada.';
-            }
-        }
-
-        function toggleTheme() {
-            const html = document.documentElement;
-            const theme = html.getAttribute('data-theme');
-            const newTheme = theme === 'light' ? 'dark' : 'light';
-            html.setAttribute('data-theme', newTheme);
-            document.getElementById('themeToggle').textContent = newTheme === 'light' ? '🌙' : '☀️';
-            localStorage.setItem('theme', newTheme);
-        }
-
-        // Keyboard navigation
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowRight') nextSlide();
-            if (e.key === 'ArrowLeft') prevSlide();
-        });
-
-        // Load theme preference
-        const savedTheme = localStorage.getItem('theme') || 'light';
-        document.documentElement.setAttribute('data-theme', savedTheme);
-        document.getElementById('themeToggle').textContent = savedTheme === 'light' ? '🌙' : '☀️';
-
-        // Initialize
-        showSlide(0);
+                    option.classList.add('selected');
+                }});
+            }});
+        }});
     </script>
 </body>
 </html>
