@@ -8,46 +8,74 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html, body { width: 100%; height: 100%; }
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f3f4f6; color: #1f2937; height: 100vh; display: flex; flex-direction: column; }
-        .progress { height: 4px; background: #D97706; width: 0%; }
-        .header { padding: 16px; background: white; border-bottom: 1px solid #e5e7eb; text-align: center; }
-        .eyebrow { font-size: 12px; color: #D97706; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 4px; }
-        .title { font-size: 24px; font-weight: 700; margin: 0; }
-        .subtitle { font-size: 13px; color: #6b7280; margin-top: 2px; }
-        .content { flex: 1; overflow-y: auto; padding: 20px; background: #f3f4f6; }
-        .section { background: white; border-radius: 8px; padding: 20px; margin-bottom: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); line-height: 1.8; }
-        .section h3 { font-size: 18px; color: #D97706; margin-bottom: 12px; font-weight: 700; }
-        .section p { font-size: 14px; color: #374151; white-space: pre-wrap; }
-        .quiz { background: white; border-radius: 8px; padding: 20px; margin: 12px 0; border-left: 4px solid #D97706; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
-        .quiz-q { font-size: 15px; font-weight: 700; margin-bottom: 15px; }
-        .opts { display: flex; flex-direction: column; gap: 10px; }
-        .opt { padding: 10px 14px; border: 1px solid #e5e7eb; border-radius: 6px; cursor: pointer; background: white; font-size: 14px; transition: 0.2s; }
+        .header { padding: 12px 16px; background: white; border-bottom: 1px solid #e5e7eb; display: flex; justify-content: space-between; align-items: center; }
+        .header-left { }
+        .header-right { display: flex; gap: 16px; align-items: center; }
+        .eyebrow { font-size: 11px; color: #D97706; text-transform: uppercase; font-weight: 700; }
+        .title { font-size: 18px; font-weight: 700; margin: 2px 0; }
+        .points { font-size: 14px; font-weight: 700; color: #D97706; }
+        .streak { font-size: 12px; color: #6b7280; }
+        .progress-bar { height: 4px; background: #e5e7eb; width: 100%; }
+        .progress-fill { height: 100%; background: #D97706; transition: width 0.3s; }
+        .content { flex: 1; overflow-y: auto; padding: 16px; background: #f3f4f6; }
+        .card { background: white; border-radius: 8px; padding: 16px; margin-bottom: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+        .card-title { font-size: 16px; color: #D97706; margin-bottom: 10px; font-weight: 700; }
+        .card-text { font-size: 14px; color: #374151; line-height: 1.7; white-space: pre-wrap; }
+        .code { background: #f9fafb; padding: 12px; border-radius: 6px; font-family: 'Courier New'; font-size: 12px; overflow-x: auto; margin: 10px 0; border-left: 3px solid #D97706; }
+        .quiz { margin: 12px 0; }
+        .quiz-q { font-size: 14px; font-weight: 600; margin-bottom: 10px; }
+        .opts { display: flex; flex-direction: column; gap: 8px; }
+        .opt { padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; cursor: pointer; background: white; font-size: 13px; transition: 0.2s; }
         .opt:hover { border-color: #D97706; background: #f9fafb; }
         .opt.correct { background: #ecfdf5; border-color: #10b981; color: #047857; font-weight: 600; }
         .opt.incorrect { background: #fef2f2; border-color: #ef4444; color: #dc2626; }
-        .feedback { font-size: 13px; margin-top: 12px; display: none; font-weight: 500; }
+        .feedback { font-size: 12px; margin-top: 8px; display: none; font-weight: 500; }
         .feedback.show { display: block; }
+        .points-earned { color: #D97706; font-weight: 700; font-size: 13px; }
+        .challenge { border-left: 4px solid #D97706; background: #f0f7ff; }
+        .hint { font-size: 12px; color: #6b7280; margin-top: 8px; cursor: pointer; text-decoration: underline; }
+        .badge { text-align: center; padding: 20px; background: linear-gradient(135deg, #D97706, #D97706dd); color: white; border-radius: 8px; }
+        .badge-icon { font-size: 40px; margin-bottom: 10px; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option-btn { padding: 12px; border: 2px solid #e5e7eb; border-radius: 6px; text-align: left; cursor: pointer; transition: 0.2s; background: white; }
+        .option-btn:hover { border-color: #D97706; background: #f0f7ff; }
+        .option-btn.selected { border-color: #D97706; background: #ecfdf5; }
         .nav { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: white; border-top: 1px solid #e5e7eb; }
-        .nav button { background: none; border: 1px solid #e5e7eb; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 13px; color: #1f2937; transition: 0.2s; font-weight: 500; }
+        .nav button { background: none; border: 1px solid #e5e7eb; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; color: #1f2937; transition: 0.2s; font-weight: 500; }
         .nav button:hover { background: #D97706; color: white; border-color: #D97706; }
-        .counter { font-size: 13px; color: #6b7280; font-weight: 500; }
+        .counter { font-size: 12px; color: #6b7280; font-weight: 500; }
     </style>
 </head>
 <body>
-    <div class="progress" id="progress"></div>
+    <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
     <div class="header">
-        <div class="eyebrow">M9 • L1</div>
-        <div class="title">Módulo 9 - Lección 1</div>
-        <div class="subtitle">Tema de estudio</div>
+        <div class="header-left">
+            <div class="eyebrow">M9 • L1</div>
+            <div class="title">Módulo 9 - Lección 1</div>
+        </div>
+        <div class="header-right">
+            <div>
+                <div class="points" id="total-points">0 pts</div>
+                <div class="streak">Racha: 0</div>
+            </div>
+        </div>
     </div>
     <div class="content" id="content"></div>
     <div class="nav">
         <button id="prev">← Anterior</button>
-        <span class="counter"><span id="cnt">1</span>/15</span>
+        <span class="counter"><span id="cnt">1</span>/10</span>
         <button id="next">Siguiente →</button>
     </div>
     <script>
-        const slides = [{"type": "intro"}, {"title": "Introducci\u00f3n", "text": "Bienvenido a esta lecci\u00f3n. Aqu\u00ed aprender\u00e1s los conceptos clave sobre este tema y c\u00f3mo aplicarlos en la pr\u00e1ctica."}, {"title": "Concepto 1", "text": "Punto principal n\u00famero 1 sobre el tema. Entender este concepto es fundamental para el resto."}, {"title": "Concepto 2", "text": "Punto principal n\u00famero 2. Se relaciona con el concepto anterior y expande el conocimiento."}, {"title": "Concepto 3", "text": "Punto principal n\u00famero 3. Estos conceptos trabajan juntos para formar una visi\u00f3n completa."}, {"title": "Casos de uso", "text": "Aplicaciones pr\u00e1cticas: C\u00f3mo se usa este conocimiento en proyectos reales. Ejemplos concretos de implementaci\u00f3n."}, {"title": "Mejores pr\u00e1cticas", "text": "Recomendaciones y patterns probados. Lo que funciona bien en la industria. Tips para evitar errores comunes."}, {"title": "Ventajas", "text": "Beneficios de usar esta t\u00e9cnica o herramienta. Por qu\u00e9 es importante en el stack moderno."}, {"title": "Limitaciones", "text": "Restricciones y casos donde no funciona bien. Importante conocer los l\u00edmites para usarlo correctamente."}, {"title": "Comparativa", "text": "C\u00f3mo se compara con alternativas. Cu\u00e1ndo elegir esto vs otras opciones disponibles."}, {"title": "Integraci\u00f3n", "text": "C\u00f3mo integrar esto con otras herramientas. Flujo de trabajo t\u00edpico en producci\u00f3n."}, {"title": "Performance", "text": "Consideraciones de rendimiento. M\u00e9tricas importantes a monitorear. Optimizaciones clave."}, {"title": "Seguridad", "text": "Aspectos de seguridad. Mejores pr\u00e1cticas para proteger datos. Consideraciones importantes."}, {"title": "Recursos", "text": "Documentaci\u00f3n oficial, comunidades, tutoriales. D\u00f3nde aprender m\u00e1s sobre este tema. Herramientas recomendadas."}, {"type": "quiz", "question": "\u00bfCu\u00e1l es el concepto clave?", "options": ["Opci\u00f3n A", "El punto principal", "Opci\u00f3n C"], "correct": 1}];
+        const slides = [{"type": "intro", "points": 0}, {"type": "content", "title": "Concepto clave", "text": "Este es el concepto central que aprender\u00e1s en esta lecci\u00f3n. Es fundamental entender esto para avanzar.", "points": 10}, {"type": "example", "title": "Ejemplo pr\u00e1ctico", "code": "# C\u00f3digo de ejemplo\nresult = process_something()\nprint(f'Resultado: {result}')", "points": 15}, {"type": "challenge", "title": "Desaf\u00edo pr\u00e1ctico", "hint": "Piensa en c\u00f3mo aplicar\u00edas esto", "answer": "aplicaci\u00f3n", "points": 25}, {"type": "content", "title": "Aplicaci\u00f3n real", "text": "En la pr\u00e1ctica, esto se usa para:\n\u2022 Resolver problema X\n\u2022 Mejorar eficiencia\n\u2022 Escalar soluciones\nEntender las aplicaciones es clave.", "points": 10}, {"type": "interactive", "title": "Elige tu caso de uso", "options": [{"label": "Opci\u00f3n 1", "description": "Primera forma de aplicarlo", "points": 20}, {"label": "Opci\u00f3n 2", "description": "Segunda forma de aplicarlo", "points": 20}, {"label": "Opci\u00f3n 3", "description": "Tercera forma de aplicarlo", "points": 20}]}, {"type": "content", "title": "Mejores pr\u00e1cticas", "text": "\u2713 Validar inputs siempre\n\u2713 Manejo de errores robusto\n\u2713 Documentar el c\u00f3digo\n\u2713 Testear casos extremos\n\u2713 Monitorear en producci\u00f3n", "points": 10}, {"type": "quiz_multi", "questions": [{"q": "\u00bfCu\u00e1l es el concepto clave?", "opts": ["Opci\u00f3n A", "El concepto central", "Opci\u00f3n C"], "correct": 1, "points": 15}, {"q": "\u00bfCu\u00e1ndo usar\u00edas esto?", "opts": ["Raramente", "En aplicaciones reales", "Nunca"], "correct": 1, "points": 15}, {"q": "\u00bfQu\u00e9 es lo m\u00e1s importante?", "opts": ["Velocidad", "Entender los fundamentos", "Complejidad"], "correct": 1, "points": 15}]}, {"type": "content", "title": "Recursos y siguiente paso", "text": "Recursos para profundizar:\n\u2022 Documentaci\u00f3n oficial\n\u2022 Ejemplos en comunidad\n\u2022 Proyectos reales\nPr\u00f3ximo paso: Aplica esto en tu proyecto.", "points": 10}, {"type": "badge", "name": "Maestro M9L1", "description": "Completaste esta lecci\u00f3n exitosamente", "icon": "\ud83d\ude80"}];
         let idx = 0;
+        let totalPoints = localStorage.getItem('total_points_m9l1') || 0;
+
+        function updatePoints(points) {
+            totalPoints = parseInt(totalPoints) + points;
+            localStorage.setItem('total_points_m9l1', totalPoints);
+            document.getElementById('total-points').textContent = totalPoints + ' pts';
+        }
 
         function render() {
             const s = slides[idx];
@@ -55,31 +83,71 @@
             let html = '';
 
             if (s.type === 'intro') {
-                html = '<div class="section"><h3 style="font-size:24px; text-align:center; margin:30px 0;">Módulo 9 - Lección 1</h3><p style="text-align:center; font-size:16px; color:#6b7280;">Tema de estudio</p><p style="text-align:center; margin-top:20px; color:#D97706; font-weight:600;">Toca siguiente para comenzar →</p></div>';
-            } else if (s.type === 'quiz') {
-                html = '<div class="quiz"><div class="quiz-q">' + s.question + '</div><div class="opts">' + s.options.map((o,i) => '<button class="opt" data-i="' + i + '">' + o + '</button>').join('') + '</div><div class="feedback" id="fb"></div></div>';
+                html = '<div class="card" style="text-align:center;padding:40px;"><h2 style="font-size:24px;margin:20px 0;">Módulo 9 - Lección 1</h2><p style="color:#6b7280;font-size:14px;">Toca siguiente para comenzar →</p></div>';
+            } else if (s.type === 'content') {
+                html = '<div class="card"><div class="card-title">' + s.title + '</div><div class="card-text">' + s.text + '</div><div class="points-earned">+' + s.points + ' puntos</div></div>';
+            } else if (s.type === 'example') {
+                html = '<div class="card"><div class="card-title">📝 ' + s.title + '</div><div class="code">' + s.code + '</div><div class="points-earned">+' + s.points + ' puntos</div></div>';
+            } else if (s.type === 'challenge') {
+                html = '<div class="card challenge"><div class="card-title">⚡ ' + s.title + '</div><div style="margin:10px 0;"><input type="text" id="answer" placeholder="Tu respuesta" style="width:100%;padding:8px;border:1px solid #e5e7eb;border-radius:4px;"/></div><button onclick="checkChallenge('' + s.answer + '', ' + s.points + ')" style="background:#D97706;color:white;border:none;padding:8px 16px;border-radius:4px;cursor:pointer;font-weight:600;">Enviar respuesta</button><div class="hint" onclick="alert('' + s.hint + '')">💡 Ver pista</div></div>';
+            } else if (s.type === 'quiz_multi') {
+                html = '<div class="card"><div style="margin-bottom:15px;">';
+                s.questions.forEach((q, qi) => {
+                    html += '<div class="quiz" style="margin-bottom:15px;padding:12px;background:#f9fafb;border-radius:6px;"><div class="quiz-q">' + (qi+1) + '. ' + q.q + '</div><div class="opts">';
+                    q.opts.forEach((opt, i) => {
+                        html += '<button class="opt" data-qi="' + qi + '" data-i="' + i + '">' + opt + '</button>';
+                    });
+                    html += '<div class="feedback" id="fb' + qi + '"></div></div></div>';
+                });
+                html += '</div></div>';
                 setTimeout(() => {
                     document.querySelectorAll('.opt').forEach(b => {
                         b.addEventListener('click', () => {
+                            const qi = parseInt(b.dataset.qi);
+                            const i = parseInt(b.dataset.i);
                             if (b.classList.contains('correct') || b.classList.contains('incorrect')) return;
-                            const ok = parseInt(b.dataset.i) === s.correct;
+                            const ok = i === s.questions[qi].correct;
                             b.classList.add(ok ? 'correct' : 'incorrect');
-                            const fb = document.getElementById('fb');
-                            fb.textContent = ok ? '✓ ¡Correcto!' : '✗ Incorrecto';
+                            if (ok) updatePoints(s.questions[qi].points);
+                            const fb = document.getElementById('fb' + qi);
+                            fb.textContent = ok ? '✓ +' + s.questions[qi].points + ' pts' : '✗ Incorrecto';
                             fb.style.color = ok ? '#047857' : '#dc2626';
                             fb.classList.add('show');
-                            document.querySelectorAll('.opt').forEach(x => x.style.pointerEvents = 'none');
+                            document.querySelectorAll('.opt[data-qi="' + qi + '"]').forEach(x => x.style.pointerEvents = 'none');
                         });
                     });
                 }, 0);
-            } else {
-                html = '<div class="section"><h3>' + s.title + '</h3><p>' + s.text + '</p></div>';
+            } else if (s.type === 'interactive') {
+                html = '<div class="card"><div class="card-title">' + s.title + '</div><div class="options">';
+                s.options.forEach((opt, i) => {
+                    html += '<button class="option-btn" onclick="selectOption(this, ' + opt.points + ')" style="cursor:pointer;"><strong>' + opt.label + '</strong><br><small style="color:#6b7280;">' + opt.description + '</small></button>';
+                });
+                html += '</div></div>';
+            } else if (s.type === 'badge') {
+                html = '<div class="badge"><div class="badge-icon">' + s.icon + '</div><h3>' + s.name + '</h3><p style="font-size:13px;margin-top:10px;">' + s.description + '</p></div>';
             }
 
             c.innerHTML = html;
             const p = ((idx + 1) / slides.length) * 100;
             document.getElementById('progress').style.width = p + '%';
             document.getElementById('cnt').textContent = idx + 1;
+        }
+
+        window.checkChallenge = (answer, points) => {
+            const userAnswer = document.getElementById('answer').value.trim();
+            if (userAnswer.toLowerCase() === answer.toLowerCase()) {
+                updatePoints(points);
+                alert('✓ ¡Correcto! +' + points + ' puntos');
+                if (idx < slides.length - 1) { idx++; render(); }
+            } else {
+                alert('✗ Incorrecto. Intenta de nuevo.');
+            }
+        }
+
+        window.selectOption = (btn, points) => {
+            document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            updatePoints(points);
         }
 
         document.getElementById('prev').addEventListener('click', () => { if (idx > 0) { idx--; render(); } });
