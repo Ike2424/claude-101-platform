@@ -7,18 +7,17 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html, body { width: 100%; height: 100%; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif; background: #f3f4f6; color: #1f2937; height: 100vh; display: flex; flex-direction: column; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f3f4f6; color: #1f2937; height: 100vh; display: flex; flex-direction: column; }
         .progress { height: 4px; background: #3B82F6; width: 0%; }
         .header { padding: 16px; background: white; border-bottom: 1px solid #e5e7eb; text-align: center; }
         .eyebrow { font-size: 12px; color: #3B82F6; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 4px; }
-        .title { font-size: 28px; font-weight: 700; margin: 0; }
-        .subtitle { font-size: 14px; color: #6b7280; margin-top: 2px; }
+        .title { font-size: 24px; font-weight: 700; margin: 0; }
+        .subtitle { font-size: 13px; color: #6b7280; margin-top: 2px; }
         .content { flex: 1; overflow-y: auto; padding: 20px; background: #f3f4f6; }
-        .section { background: white; border-radius: 8px; padding: 20px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
-        .section h3 { font-size: 16px; color: #3B82F6; margin-bottom: 10px; font-weight: 700; }
-        .section p { font-size: 14px; line-height: 1.7; color: #374151; }
-        .section code { background: #f9fafb; padding: 2px 6px; border-radius: 4px; font-family: 'Courier New', monospace; font-size: 13px; }
-        .quiz { background: white; border-radius: 8px; padding: 20px; margin: 20px 0; border-left: 4px solid #3B82F6; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+        .section { background: white; border-radius: 8px; padding: 20px; margin-bottom: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); line-height: 1.8; }
+        .section h3 { font-size: 18px; color: #3B82F6; margin-bottom: 12px; font-weight: 700; }
+        .section p { font-size: 14px; color: #374151; white-space: pre-wrap; }
+        .quiz { background: white; border-radius: 8px; padding: 20px; margin: 12px 0; border-left: 4px solid #3B82F6; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
         .quiz-q { font-size: 15px; font-weight: 700; margin-bottom: 15px; }
         .opts { display: flex; flex-direction: column; gap: 10px; }
         .opt { padding: 10px 14px; border: 1px solid #e5e7eb; border-radius: 6px; cursor: pointer; background: white; font-size: 14px; transition: 0.2s; }
@@ -37,70 +36,57 @@
     <div class="progress" id="progress"></div>
     <div class="header">
         <div class="eyebrow">M1 • L1</div>
-        <div class="title">¿Qué es Claude?</div>
-        <div class="subtitle">Aprende qué es Claude</div>
+        <div class="title">Fundamentos de Claude</div>
+        <div class="subtitle">Introducción a Claude</div>
     </div>
     <div class="content" id="content"></div>
     <div class="nav">
         <button id="prev">← Anterior</button>
-        <span class="counter"><span id="cnt">1</span>/2</span>
+        <span class="counter"><span id="cnt">1</span>/17</span>
         <button id="next">Siguiente →</button>
     </div>
     <script>
-        const info = {"title": "\u00bfQu\u00e9 es Claude?", "desc": "Aprende qu\u00e9 es Claude", "sections": [{"title": "Definici\u00f3n", "text": "Claude es un asistente de IA desarrollado por Anthropic. Es un modelo de lenguaje grande entrenado para ser \u00fatil, honesto y seguro en conversaciones."}, {"title": "Capacidades principales", "text": "Responder preguntas complejas, escribir contenido, ayudar con programaci\u00f3n, analizar datos, generar ideas creativas y mucho m\u00e1s."}, {"title": "Modelos disponibles", "text": "Claude 3 Opus (m\u00e1s potente), Claude 3 Sonnet (balanceado), Claude 3 Haiku (r\u00e1pido y econ\u00f3mico)."}, {"title": "C\u00f3mo acceder", "text": "A trav\u00e9s de claude.ai (web), API REST (aplicaciones), Claude Code (CLI), o integraciones con herramientas terceras."}], "quiz": {"q": "\u00bfQui\u00e9n desarroll\u00f3 Claude?", "opts": ["Google", "Anthropic", "OpenAI"], "c": 1}};
-        const sections = info.sections;
-        const quiz = info.quiz;
+        const slides = [{"type": "intro"}, {"title": "\u00bfQu\u00e9 es Claude?", "text": "Claude es un asistente de IA desarrollado por Anthropic. Es un modelo de lenguaje grande entrenado para ser \u00fatil, honesto y seguro en conversaciones y tareas complejas."}, {"title": "Capacidades principales", "text": "\u2022 Responder preguntas complejas\n\u2022 Escribir y editar contenido\n\u2022 Ayudar con programaci\u00f3n\n\u2022 Analizar datos y documentos\n\u2022 Generar ideas creativas\n\u2022 Resumir informaci\u00f3n\n\u2022 Traducir idiomas"}, {"title": "Modelos disponibles", "text": "Claude 3 Opus: M\u00e1s potente, mejor para tareas complejas\nClaude 3 Sonnet: Balance calidad-velocidad, uso general\nClaude 3 Haiku: R\u00e1pido y econ\u00f3mico, tareas simples\nCada uno optimizado para diferentes casos de uso"}, {"title": "C\u00f3mo acceder", "text": "1. claude.ai - Interfaz web\n2. API - Para aplicaciones\n3. Claude Code - Herramienta CLI\n4. Integraciones - Herramientas terceras\nElige seg\u00fan tu caso de uso y necesidades"}, {"title": "\u00bfQu\u00e9 es REST?", "text": "REST es arquitectura HTTP para APIs. Para Claude:\n\u2022 POST request a api.anthropic.com\n\u2022 Headers con autenticaci\u00f3n\n\u2022 Body con tu mensaje\n\u2022 Response en JSON\nEst\u00e1ndar simple y eficiente"}, {"title": "Autenticaci\u00f3n API", "text": "Necesitas una API key de console.anthropic.com\nSe env\u00eda en header: Authorization: Bearer {key}\nNunca compartas tu API key\nGu\u00e1rdala en variables de entorno"}, {"title": "Estructura de request", "text": "POST /messages\nHeaders:\n  - Authorization: Bearer {key}\n  - Content-Type: application/json\nBody:\n  - model: claude-3-sonnet\n  - messages: [{role, content}]\n  - max_tokens: 1024"}, {"title": "Estructura de response", "text": "Response JSON:\n  - id: identificador \u00fanico\n  - content: respuesta del modelo\n  - model: modelo usado\n  - usage: tokens consumidos\n  - stop_reason: c\u00f3mo termin\u00f3"}, {"title": "Claude 3 Opus", "text": "Modelo m\u00e1s potente y vers\u00e1til\n$15 por mill\u00f3n de tokens input\n$75 por mill\u00f3n de tokens output\nIdeal para:\n\u2022 An\u00e1lisis profundo\n\u2022 Razonamiento complejo\n\u2022 Tareas especializadas"}, {"title": "Claude 3 Sonnet", "text": "Balance \u00f3ptimo velocidad-calidad\n$3 por mill\u00f3n de tokens input\n$15 por mill\u00f3n de tokens output\nIdeal para:\n\u2022 Uso general\n\u2022 Mayor\u00eda de aplicaciones\n\u2022 Balance costo-rendimiento"}, {"title": "Claude 3 Haiku", "text": "Modelo r\u00e1pido y econ\u00f3mico\n$0.25 por mill\u00f3n de tokens input\n$1.25 por mill\u00f3n de tokens output\nIdeal para:\n\u2022 Tareas simples\n\u2022 Latencia baja\n\u2022 Presupuesto limitado"}, {"title": "\u00bfQu\u00e9 son tokens?", "text": "1 token \u2248 4 caracteres\nSe cobran por separado:\n\u2022 Input: tu mensaje\n\u2022 Output: respuesta\nM\u00e1s tokens = m\u00e1s contexto pero m\u00e1s caro\nOptimiza seg\u00fan necesidad"}, {"title": "Rate limits", "text": "L\u00edmites por plan:\n\u2022 Requests por minuto\n\u2022 Tokens por d\u00eda\n\u2022 Exponential backoff para reintentos\nVerifica tu plan en console.anthropic.com"}, {"title": "Error codes comunes", "text": "401: API key inv\u00e1lida o expirada\n429: Rate limit excedido\n500: Error en servidor\n422: Validaci\u00f3n fallida\nImplementa reintentos con backoff"}, {"title": "Mejores pr\u00e1cticas", "text": "\u2022 Valida inputs antes de enviar\n\u2022 Maneja errores con reintentos\n\u2022 Monitorea uso de tokens\n\u2022 Usa variables de entorno\n\u2022 Implementa logging\n\u2022 Testa localmente primero"}, {"type": "quiz", "question": "\u00bfCu\u00e1l es el modelo m\u00e1s potente?", "options": ["Haiku", "Sonnet", "Opus"], "correct": 2}];
         let idx = 0;
 
-        function renderSections() {
+        function render() {
+            const s = slides[idx];
+            const c = document.getElementById('content');
             let html = '';
-            sections.forEach((s, i) => {
-                if (i <= idx * 2 + 1 && i >= idx * 2) {
-                    html += `<div class="section"><h3>${s.title}</h3><p>${s.text}</p></div>`;
-                }
-            });
-            document.getElementById('content').innerHTML = html;
-            document.getElementById('progress').style.width = ((idx + 1) / 2) * 100 + '%';
+
+            if (s.type === 'intro') {
+                html = '<div class="section"><h3 style="font-size:24px; text-align:center; margin:30px 0;">Fundamentos de Claude</h3><p style="text-align:center; font-size:16px; color:#6b7280;">Introducción a Claude</p><p style="text-align:center; margin-top:20px; color:#3B82F6; font-weight:600;">Toca siguiente para comenzar →</p></div>';
+            } else if (s.type === 'quiz') {
+                html = '<div class="quiz"><div class="quiz-q">' + s.question + '</div><div class="opts">' + s.options.map((o,i) => '<button class="opt" data-i="' + i + '">' + o + '</button>').join('') + '</div><div class="feedback" id="fb"></div></div>';
+                setTimeout(() => {
+                    document.querySelectorAll('.opt').forEach(b => {
+                        b.addEventListener('click', () => {
+                            if (b.classList.contains('correct') || b.classList.contains('incorrect')) return;
+                            const ok = parseInt(b.dataset.i) === s.correct;
+                            b.classList.add(ok ? 'correct' : 'incorrect');
+                            const fb = document.getElementById('fb');
+                            fb.textContent = ok ? '✓ ¡Correcto!' : '✗ Incorrecto';
+                            fb.style.color = ok ? '#047857' : '#dc2626';
+                            fb.classList.add('show');
+                            document.querySelectorAll('.opt').forEach(x => x.style.pointerEvents = 'none');
+                        });
+                    });
+                }, 0);
+            } else {
+                html = '<div class="section"><h3>' + s.title + '</h3><p>' + s.text + '</p></div>';
+            }
+
+            c.innerHTML = html;
+            const p = ((idx + 1) / slides.length) * 100;
+            document.getElementById('progress').style.width = p + '%';
             document.getElementById('cnt').textContent = idx + 1;
         }
 
-        function renderQuiz() {
-            let html = `<div class="quiz"><div class="quiz-q">${quiz.q}</div><div class="opts">`;
-            quiz.opts.forEach((opt, i) => {
-                html += `<button class="opt" data-i="${i}">${opt}</button>`;
-            });
-            html += `</div><div class="feedback" id="fb"></div></div>`;
-            html += '<div class="section"><h3>Resumen</h3><p>¡Felicidades! Completaste esta lección. Continúa con la siguiente para seguir aprendiendo sobre Claude.</p></div>';
-            document.getElementById('content').innerHTML = html;
-            document.getElementById('progress').style.width = '100%';
-            document.getElementById('cnt').textContent = '2';
-
-            setTimeout(() => {
-                document.querySelectorAll('.opt').forEach(b => {
-                    b.addEventListener('click', () => {
-                        if (b.classList.contains('correct') || b.classList.contains('incorrect')) return;
-                        const ok = parseInt(b.dataset.i) === quiz.c;
-                        b.classList.add(ok ? 'correct' : 'incorrect');
-                        const fb = document.getElementById('fb');
-                        fb.textContent = ok ? '✓ ¡Correcto!' : '✗ Incorrecto, intenta otra';
-                        fb.classList.add('show');
-                        fb.style.color = ok ? '#047857' : '#dc2626';
-                        document.querySelectorAll('.opt').forEach(x => x.style.pointerEvents = 'none');
-                    });
-                });
-            }, 0);
-        }
-
-        function render() {
-            if (idx === 0) renderSections();
-            else renderQuiz();
-        }
-
         document.getElementById('prev').addEventListener('click', () => { if (idx > 0) { idx--; render(); } });
-        document.getElementById('next').addEventListener('click', () => { if (idx < 1) { idx++; render(); } });
+        document.getElementById('next').addEventListener('click', () => { if (idx < slides.length - 1) { idx++; render(); } });
         document.addEventListener('keydown', e => {
             if (e.key === 'ArrowLeft' && idx > 0) { idx--; render(); }
-            if (e.key === 'ArrowRight' && idx < 1) { idx++; render(); }
+            if (e.key === 'ArrowRight' && idx < slides.length - 1) { idx++; render(); }
         });
 
         render();

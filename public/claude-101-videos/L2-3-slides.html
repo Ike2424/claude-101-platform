@@ -11,13 +11,13 @@
         .progress { height: 4px; background: #10B981; width: 0%; }
         .header { padding: 16px; background: white; border-bottom: 1px solid #e5e7eb; text-align: center; }
         .eyebrow { font-size: 12px; color: #10B981; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 4px; }
-        .title { font-size: 28px; font-weight: 700; margin: 0; }
-        .subtitle { font-size: 14px; color: #6b7280; margin-top: 2px; }
+        .title { font-size: 24px; font-weight: 700; margin: 0; }
+        .subtitle { font-size: 13px; color: #6b7280; margin-top: 2px; }
         .content { flex: 1; overflow-y: auto; padding: 20px; background: #f3f4f6; }
-        .section { background: white; border-radius: 8px; padding: 20px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
-        .section h3 { font-size: 16px; color: #10B981; margin-bottom: 10px; font-weight: 700; }
-        .section p { font-size: 14px; line-height: 1.7; color: #374151; }
-        .quiz { background: white; border-radius: 8px; padding: 20px; margin: 20px 0; border-left: 4px solid #10B981; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+        .section { background: white; border-radius: 8px; padding: 20px; margin-bottom: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); line-height: 1.8; }
+        .section h3 { font-size: 18px; color: #10B981; margin-bottom: 12px; font-weight: 700; }
+        .section p { font-size: 14px; color: #374151; white-space: pre-wrap; }
+        .quiz { background: white; border-radius: 8px; padding: 20px; margin: 12px 0; border-left: 4px solid #10B981; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
         .quiz-q { font-size: 15px; font-weight: 700; margin-bottom: 15px; }
         .opts { display: flex; flex-direction: column; gap: 10px; }
         .opt { padding: 10px 14px; border: 1px solid #e5e7eb; border-radius: 6px; cursor: pointer; background: white; font-size: 14px; transition: 0.2s; }
@@ -36,46 +36,59 @@
     <div class="progress" id="progress"></div>
     <div class="header">
         <div class="eyebrow">M2 • L3</div>
-        <div class="title">Chain-of-Thought</div>
-        <div class="subtitle">Razona</div>
+        <div class="title">Prompting Avanzado</div>
+        <div class="subtitle">Técnicas de prompting efectivas</div>
     </div>
     <div class="content" id="content"></div>
     <div class="nav">
         <button id="prev">← Anterior</button>
-        <span class="counter"><span id="cnt">1</span>/2</span>
+        <span class="counter"><span id="cnt">1</span>/16</span>
         <button id="next">Siguiente →</button>
     </div>
     <script>
+        const slides = [{"type": "intro"}, {"title": "Estructura clara", "text": "Un buen prompt tiene:\n1. Contexto: informaci\u00f3n de fondo\n2. Instrucci\u00f3n: qu\u00e9 exactamente quieres\n3. Formato: c\u00f3mo presentar la respuesta\n4. Restricciones: l\u00edmites o reglas\nClaridad = mejor respuesta"}, {"title": "Few-shot prompting", "text": "Proporciona 2-5 ejemplos de input \u2192 output\nClaude aprende el patr\u00f3n de los ejemplos\nAplica ese patr\u00f3n a nuevos inputs\nMejora significativamente resultados espec\u00edficos"}, {"title": "Chain-of-Thought", "text": "Pide que razone paso a paso\n'Explica tu razonamiento'\n'Primero... luego... finalmente'\nMejora precisi\u00f3n en problemas complejos\nEspecialmente \u00fatil en matem\u00e1ticas"}, {"title": "System Prompts", "text": "Mensaje que define comportamiento general\nEjemplo: 'Eres un experto en Python'\n\u00datil para:\n\u2022 Definir rol o personalidad\n\u2022 Establecer restricciones\n\u2022 Mantener consistencia"}, {"title": "Roles y personajes", "text": "Asigna un rol a Claude:\n'Act\u00faa como...' o 'Eres un...'\nEjemplos:\n\u2022 Expert developer\n\u2022 Teacher\n\u2022 Technical writer\n\u2022 Code reviewer\nMejora relevancia y tono"}, {"title": "Iteraci\u00f3n y refinamiento", "text": "Ciclo:\n1. Haz pregunta inicial\n2. Analiza la respuesta\n3. Refina el prompt\n4. Repite hasta satisfecho\nLa iteraci\u00f3n mejora resultados"}, {"title": "Testing y validaci\u00f3n", "text": "Prueba tu prompt con:\n\u2022 Casos normales\n\u2022 Casos l\u00edmite\n\u2022 Entrada malformada\nAsegura consistencia y robustez"}, {"title": "Optimizaci\u00f3n de tokens", "text": "Reduce tokens sin perder calidad:\n\u2022 Be concise\n\u2022 Remove unnecessary words\n\u2022 Compress examples\n\u2022 Use shorthand\nAhorra dinero y mejora velocidad"}, {"title": "Prompts para escritura", "text": "Para contenido:\n'Escribe un art\u00edculo de 500 palabras sobre X'\n'Tono: profesional/casual/t\u00e9cnico'\n'Incluye ejemplos reales'\n'Estructura: intro, desarrollo, conclusi\u00f3n'"}, {"title": "Prompts para an\u00e1lisis", "text": "Para an\u00e1lisis:\n'Analiza este documento y resume'\n'Identifica puntos clave'\n'Extrae datos en formato JSON'\n'Proporciona recomendaciones'"}, {"title": "Prompts para programaci\u00f3n", "text": "Para c\u00f3digo:\n'Escribe funci\u00f3n Python que...'\n'Incluye comentarios'\n'Manejo de errores'\n'Casos de prueba'\n'Explicaci\u00f3n del algoritmo'"}, {"title": "Prompts para creatividad", "text": "Para ideas:\n'Genera 5 nombres para startup de...'\n'Brainstorm sobre c\u00f3mo mejorar...'\n'Crea historias cortas sobre...'\n'Explora perspectivas alternativas'"}, {"title": "Anti-patrones a evitar", "text": "\u274c Prompts vagos o ambiguos\n\u274c Demasiadas tareas en uno\n\u274c Sin contexto suficiente\n\u274c Expectativas poco realistas\n\u274c No validar respuestas"}, {"title": "Herramientas \u00fatiles", "text": "\u2022 Playground: prueba prompts\n\u2022 Documentaci\u00f3n oficial\n\u2022 Comunidad: compartir prompts\n\u2022 Versionamiento: controla cambios\n\u2022 Logging: monitorea uso"}, {"type": "quiz", "question": "\u00bfCu\u00e1ntos ejemplos en few-shot?", "options": ["1", "2-5", "10+"], "correct": 1}];
         let idx = 0;
+
         function render() {
-            const content = document.getElementById('content');
-            if (idx === 0) {
-                content.innerHTML = `<div class="section"><h3>Contenido</h3><p>En esta lección aprenderás sobre Chain-of-Thought. Lee los materiales y responde el quiz al final.</p></div><div class="section"><h3>Temas cubiertos</h3><p>• Conceptos fundamentales<br>• Casos de uso prácticos<br>• Mejores prácticas<br>• Integración y escalabilidad</p></div>`;
-            } else {
-                content.innerHTML = `<div class="quiz"><div class="quiz-q">¿Cuál es el concepto clave de Chain-of-Thought?</div><div class="opts"><button class="opt" data-i="0">Opción A</button><button class="opt" data-i="1">✓ Concepto central</button><button class="opt" data-i="2">Opción C</button></div><div class="feedback" id="fb"></div></div><div class="section"><h3>Próximos pasos</h3><p>Continúa con la siguiente lección para profundizar en temas relacionados.</p></div>`;
+            const s = slides[idx];
+            const c = document.getElementById('content');
+            let html = '';
+
+            if (s.type === 'intro') {
+                html = '<div class="section"><h3 style="font-size:24px; text-align:center; margin:30px 0;">Prompting Avanzado</h3><p style="text-align:center; font-size:16px; color:#6b7280;">Técnicas de prompting efectivas</p><p style="text-align:center; margin-top:20px; color:#10B981; font-weight:600;">Toca siguiente para comenzar →</p></div>';
+            } else if (s.type === 'quiz') {
+                html = '<div class="quiz"><div class="quiz-q">' + s.question + '</div><div class="opts">' + s.options.map((o,i) => '<button class="opt" data-i="' + i + '">' + o + '</button>').join('') + '</div><div class="feedback" id="fb"></div></div>';
                 setTimeout(() => {
                     document.querySelectorAll('.opt').forEach(b => {
                         b.addEventListener('click', () => {
                             if (b.classList.contains('correct') || b.classList.contains('incorrect')) return;
-                            const ok = parseInt(b.dataset.i) === 1;
+                            const ok = parseInt(b.dataset.i) === s.correct;
                             b.classList.add(ok ? 'correct' : 'incorrect');
-                            document.getElementById('fb').textContent = ok ? '✓ ¡Correcto!' : '✗ Incorrecto';
-                            document.getElementById('fb').style.color = ok ? '#047857' : '#dc2626';
-                            document.getElementById('fb').classList.add('show');
+                            const fb = document.getElementById('fb');
+                            fb.textContent = ok ? '✓ ¡Correcto!' : '✗ Incorrecto';
+                            fb.style.color = ok ? '#047857' : '#dc2626';
+                            fb.classList.add('show');
                             document.querySelectorAll('.opt').forEach(x => x.style.pointerEvents = 'none');
                         });
                     });
                 }, 0);
+            } else {
+                html = '<div class="section"><h3>' + s.title + '</h3><p>' + s.text + '</p></div>';
             }
-            document.getElementById('progress').style.width = ((idx + 1) / 2) * 100 + '%';
+
+            c.innerHTML = html;
+            const p = ((idx + 1) / slides.length) * 100;
+            document.getElementById('progress').style.width = p + '%';
             document.getElementById('cnt').textContent = idx + 1;
         }
+
         document.getElementById('prev').addEventListener('click', () => { if (idx > 0) { idx--; render(); } });
-        document.getElementById('next').addEventListener('click', () => { if (idx < 1) { idx++; render(); } });
+        document.getElementById('next').addEventListener('click', () => { if (idx < slides.length - 1) { idx++; render(); } });
         document.addEventListener('keydown', e => {
             if (e.key === 'ArrowLeft' && idx > 0) { idx--; render(); }
-            if (e.key === 'ArrowRight' && idx < 1) { idx++; render(); }
+            if (e.key === 'ArrowRight' && idx < slides.length - 1) { idx++; render(); }
         });
+
         render();
     </script>
 </body>

@@ -11,13 +11,13 @@
         .progress { height: 4px; background: #EC4899; width: 0%; }
         .header { padding: 16px; background: white; border-bottom: 1px solid #e5e7eb; text-align: center; }
         .eyebrow { font-size: 12px; color: #EC4899; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 4px; }
-        .title { font-size: 28px; font-weight: 700; margin: 0; }
-        .subtitle { font-size: 14px; color: #6b7280; margin-top: 2px; }
+        .title { font-size: 24px; font-weight: 700; margin: 0; }
+        .subtitle { font-size: 13px; color: #6b7280; margin-top: 2px; }
         .content { flex: 1; overflow-y: auto; padding: 20px; background: #f3f4f6; }
-        .section { background: white; border-radius: 8px; padding: 20px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
-        .section h3 { font-size: 16px; color: #EC4899; margin-bottom: 10px; font-weight: 700; }
-        .section p { font-size: 14px; line-height: 1.7; color: #374151; }
-        .quiz { background: white; border-radius: 8px; padding: 20px; margin: 20px 0; border-left: 4px solid #EC4899; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+        .section { background: white; border-radius: 8px; padding: 20px; margin-bottom: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); line-height: 1.8; }
+        .section h3 { font-size: 18px; color: #EC4899; margin-bottom: 12px; font-weight: 700; }
+        .section p { font-size: 14px; color: #374151; white-space: pre-wrap; }
+        .quiz { background: white; border-radius: 8px; padding: 20px; margin: 12px 0; border-left: 4px solid #EC4899; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
         .quiz-q { font-size: 15px; font-weight: 700; margin-bottom: 15px; }
         .opts { display: flex; flex-direction: column; gap: 10px; }
         .opt { padding: 10px 14px; border: 1px solid #e5e7eb; border-radius: 6px; cursor: pointer; background: white; font-size: 14px; transition: 0.2s; }
@@ -36,46 +36,59 @@
     <div class="progress" id="progress"></div>
     <div class="header">
         <div class="eyebrow">M6 • L4</div>
-        <div class="title">Creatividad</div>
-        <div class="subtitle">Ideas</div>
+        <div class="title">Módulo 6 - Lección 4</div>
+        <div class="subtitle">Tema de estudio</div>
     </div>
     <div class="content" id="content"></div>
     <div class="nav">
         <button id="prev">← Anterior</button>
-        <span class="counter"><span id="cnt">1</span>/2</span>
+        <span class="counter"><span id="cnt">1</span>/15</span>
         <button id="next">Siguiente →</button>
     </div>
     <script>
+        const slides = [{"type": "intro"}, {"title": "Introducci\u00f3n", "text": "Bienvenido a esta lecci\u00f3n. Aqu\u00ed aprender\u00e1s los conceptos clave sobre este tema y c\u00f3mo aplicarlos en la pr\u00e1ctica."}, {"title": "Concepto 1", "text": "Punto principal n\u00famero 1 sobre el tema. Entender este concepto es fundamental para el resto."}, {"title": "Concepto 2", "text": "Punto principal n\u00famero 2. Se relaciona con el concepto anterior y expande el conocimiento."}, {"title": "Concepto 3", "text": "Punto principal n\u00famero 3. Estos conceptos trabajan juntos para formar una visi\u00f3n completa."}, {"title": "Casos de uso", "text": "Aplicaciones pr\u00e1cticas: C\u00f3mo se usa este conocimiento en proyectos reales. Ejemplos concretos de implementaci\u00f3n."}, {"title": "Mejores pr\u00e1cticas", "text": "Recomendaciones y patterns probados. Lo que funciona bien en la industria. Tips para evitar errores comunes."}, {"title": "Ventajas", "text": "Beneficios de usar esta t\u00e9cnica o herramienta. Por qu\u00e9 es importante en el stack moderno."}, {"title": "Limitaciones", "text": "Restricciones y casos donde no funciona bien. Importante conocer los l\u00edmites para usarlo correctamente."}, {"title": "Comparativa", "text": "C\u00f3mo se compara con alternativas. Cu\u00e1ndo elegir esto vs otras opciones disponibles."}, {"title": "Integraci\u00f3n", "text": "C\u00f3mo integrar esto con otras herramientas. Flujo de trabajo t\u00edpico en producci\u00f3n."}, {"title": "Performance", "text": "Consideraciones de rendimiento. M\u00e9tricas importantes a monitorear. Optimizaciones clave."}, {"title": "Seguridad", "text": "Aspectos de seguridad. Mejores pr\u00e1cticas para proteger datos. Consideraciones importantes."}, {"title": "Recursos", "text": "Documentaci\u00f3n oficial, comunidades, tutoriales. D\u00f3nde aprender m\u00e1s sobre este tema. Herramientas recomendadas."}, {"type": "quiz", "question": "\u00bfCu\u00e1l es el concepto clave?", "options": ["Opci\u00f3n A", "El punto principal", "Opci\u00f3n C"], "correct": 1}];
         let idx = 0;
+
         function render() {
-            const content = document.getElementById('content');
-            if (idx === 0) {
-                content.innerHTML = `<div class="section"><h3>Contenido</h3><p>En esta lección aprenderás sobre Creatividad. Lee los materiales y responde el quiz al final.</p></div><div class="section"><h3>Temas cubiertos</h3><p>• Conceptos fundamentales<br>• Casos de uso prácticos<br>• Mejores prácticas<br>• Integración y escalabilidad</p></div>`;
-            } else {
-                content.innerHTML = `<div class="quiz"><div class="quiz-q">¿Cuál es el concepto clave de Creatividad?</div><div class="opts"><button class="opt" data-i="0">Opción A</button><button class="opt" data-i="1">✓ Concepto central</button><button class="opt" data-i="2">Opción C</button></div><div class="feedback" id="fb"></div></div><div class="section"><h3>Próximos pasos</h3><p>Continúa con la siguiente lección para profundizar en temas relacionados.</p></div>`;
+            const s = slides[idx];
+            const c = document.getElementById('content');
+            let html = '';
+
+            if (s.type === 'intro') {
+                html = '<div class="section"><h3 style="font-size:24px; text-align:center; margin:30px 0;">Módulo 6 - Lección 4</h3><p style="text-align:center; font-size:16px; color:#6b7280;">Tema de estudio</p><p style="text-align:center; margin-top:20px; color:#EC4899; font-weight:600;">Toca siguiente para comenzar →</p></div>';
+            } else if (s.type === 'quiz') {
+                html = '<div class="quiz"><div class="quiz-q">' + s.question + '</div><div class="opts">' + s.options.map((o,i) => '<button class="opt" data-i="' + i + '">' + o + '</button>').join('') + '</div><div class="feedback" id="fb"></div></div>';
                 setTimeout(() => {
                     document.querySelectorAll('.opt').forEach(b => {
                         b.addEventListener('click', () => {
                             if (b.classList.contains('correct') || b.classList.contains('incorrect')) return;
-                            const ok = parseInt(b.dataset.i) === 1;
+                            const ok = parseInt(b.dataset.i) === s.correct;
                             b.classList.add(ok ? 'correct' : 'incorrect');
-                            document.getElementById('fb').textContent = ok ? '✓ ¡Correcto!' : '✗ Incorrecto';
-                            document.getElementById('fb').style.color = ok ? '#047857' : '#dc2626';
-                            document.getElementById('fb').classList.add('show');
+                            const fb = document.getElementById('fb');
+                            fb.textContent = ok ? '✓ ¡Correcto!' : '✗ Incorrecto';
+                            fb.style.color = ok ? '#047857' : '#dc2626';
+                            fb.classList.add('show');
                             document.querySelectorAll('.opt').forEach(x => x.style.pointerEvents = 'none');
                         });
                     });
                 }, 0);
+            } else {
+                html = '<div class="section"><h3>' + s.title + '</h3><p>' + s.text + '</p></div>';
             }
-            document.getElementById('progress').style.width = ((idx + 1) / 2) * 100 + '%';
+
+            c.innerHTML = html;
+            const p = ((idx + 1) / slides.length) * 100;
+            document.getElementById('progress').style.width = p + '%';
             document.getElementById('cnt').textContent = idx + 1;
         }
+
         document.getElementById('prev').addEventListener('click', () => { if (idx > 0) { idx--; render(); } });
-        document.getElementById('next').addEventListener('click', () => { if (idx < 1) { idx++; render(); } });
+        document.getElementById('next').addEventListener('click', () => { if (idx < slides.length - 1) { idx++; render(); } });
         document.addEventListener('keydown', e => {
             if (e.key === 'ArrowLeft' && idx > 0) { idx--; render(); }
-            if (e.key === 'ArrowRight' && idx < 1) { idx++; render(); }
+            if (e.key === 'ArrowRight' && idx < slides.length - 1) { idx++; render(); }
         });
+
         render();
     </script>
 </body>
