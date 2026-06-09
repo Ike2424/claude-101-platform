@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trabajo con Archivos</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root { --primary: #10B981; --bg: #ffffff; --text: #1f2937; }
+    [data-theme="dark"] { --bg: #111827; --text: #f3f4f6; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); transition: 0.2s; padding: 20px; }
+    .lesson { max-width: 700px; margin: 0 auto; }
+    .progress-bar { height: 3px; background: #e5e7eb; border-radius: 2px; overflow: hidden; margin-bottom: 30px; }
+    .progress-fill { height: 100%; background: var(--primary); width: 0%; transition: width 0.3s ease; }
+    .slide-intro { text-align: center; padding: 60px 20px; }
+    .slide-intro .eyebrow { font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: var(--primary); margin-bottom: 20px; font-weight: 600; }
+    .slide-intro h1 { font-family: 'Fraunces', serif; font-size: 48px; margin-bottom: 20px; font-weight: 700; }
+    .slide-intro p { font-size: 18px; color: #6b7280; line-height: 1.8; max-width: 600px; margin: 0 auto; }
+    .flip-card { perspective: 1000px; height: 300px; cursor: pointer; margin: 40px 0; }
+    .flip-card-inner { position: relative; width: 100%; height: 100%; transition: transform 0.6s; transform-style: preserve-3d; }
+    .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
+    .flip-card-front, .flip-card-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; display: flex; flex-direction: column; justify-content: center; padding: 30px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    .flip-card-front { background: var(--primary); color: white; text-align: center; }
+    .flip-card-front .concept { font-family: 'Fraunces', serif; font-size: 28px; font-weight: 700; margin-bottom: 15px; }
+    .flip-card-front .hint { font-size: 14px; opacity: 0.9; }
+    .flip-card-back { background: white; color: var(--text); transform: rotateY(180deg); border: 1px solid #e5e7eb; }
+    [data-theme="dark"] .flip-card-back { background: #1f2937; border-color: #374151; }
+    .flip-card-back h3 { font-family: 'Fraunces', serif; font-size: 20px; margin-bottom: 15px; color: var(--primary); }
+    .flip-card-back ul { list-style: none; }
+    .flip-card-back li { margin: 10px 0; padding-left: 20px; position: relative; }
+    .flip-card-back li:before { content: "•"; position: absolute; left: 0; color: var(--primary); font-weight: bold; }
+    .quiz { margin: 40px 0; padding: 30px; background: #f9fafb; border-radius: 12px; }
+    [data-theme="dark"] .quiz { background: #1f2937; }
+    .quiz-question { font-family: 'Fraunces', serif; font-size: 20px; margin-bottom: 25px; font-weight: 600; }
+    .quiz-options { display: flex; flex-direction: column; gap: 12px; }
+    .quiz-option { padding: 12px 16px; border: 2px solid #e5e7eb; border-radius: 8px; cursor: pointer; transition: all 0.2s; background: white; color: var(--text); }
+    [data-theme="dark"] .quiz-option { background: #111827; border-color: #374151; }
+    .quiz-option:hover { border-color: var(--primary); background: #f0f9ff; }
+    [data-theme="dark"] .quiz-option:hover { background: #1f2937; }
+    .quiz-option.correct { border-color: #10b981; background: #ecfdf5; color: #047857; }
+    [data-theme="dark"] .quiz-option.correct { background: #064e3b; color: #6ee7b7; }
+    .quiz-option.incorrect { border-color: #ef4444; background: #fef2f2; color: #dc2626; }
+    [data-theme="dark"] .quiz-option.incorrect { background: #7f1d1d; color: #fca5a5; }
+    .quiz-feedback { margin-top: 15px; padding: 10px; border-radius: 6px; display: none; font-weight: 500; }
+    .quiz-feedback.show { display: block; }
+    .slide-conclusion { text-align: center; padding: 60px 20px; }
+    .slide-conclusion .checkmark { font-size: 60px; margin-bottom: 20px; animation: bounce 0.6s ease; }
+    @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+    .slide-conclusion h2 { font-family: 'Fraunces', serif; font-size: 36px; margin-bottom: 20px; }
+    .slide-conclusion p { color: #6b7280; margin-bottom: 30px; }
+    .slide-conclusion button { background: var(--primary); color: white; border: none; padding: 12px 30px; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: 600; transition: 0.2s; }
+    .slide-conclusion button:hover { opacity: 0.9; }
+    .nav { display: flex; justify-content: space-between; align-items: center; margin-top: 40px; padding: 20px 0; border-top: 1px solid #e5e7eb; }
+    [data-theme="dark"] .nav { border-color: #374151; }
+    .nav button { background: none; border: 1px solid #e5e7eb; padding: 8px 16px; border-radius: 6px; cursor: pointer; transition: 0.2s; color: var(--text); font-size: 14px; }
+    [data-theme="dark"] .nav button { border-color: #374151; }
+    .nav button:hover { background: var(--primary); color: white; border-color: var(--primary); }
+    .slide-counter { font-size: 14px; color: #6b7280; }
+    .theme-toggle { background: none; border: none; font-size: 20px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <div class="lesson">
+    <div class="progress-bar"><div class="progress-fill"></div></div>
+    <div class="slides-container"></div>
+    <div class="nav">
+      <button class="prev-btn">← Anterior</button>
+      <span class="slide-counter">1 / 16</span>
+      <button class="theme-toggle">☀️</button>
+      <button class="next-btn">Siguiente →</button>
+    </div>
+  </div>
+  <script>
+    const slideData = [{"type": "intro", "eyebrow": "M\u00f3dulo 2 \u2022 Lecci\u00f3n 5", "title": "Trabajo con Archivos", "description": "Sube y analiza documentos, im\u00e1genes y archivos con Claude"}, {"type": "flip", "front": "Formatos Soportados", "back": "<h3>\u00bfQu\u00e9 puedo subir?</h3><ul><li>PDF: documentos y reportes</li><li>Im\u00e1genes: PNG, JPEG, GIF, WEBP</li><li>Texto: TXT, CSV, JSON</li><li>Varios MB por archivo</li></ul>"}, {"type": "spacer"}, {"type": "flip", "front": "Subir en Web", "back": "<h3>\u00bfC\u00f3mo sube archivos?</h3><ul><li>Click en \u00edcono de clip</li><li>Arrastra y suelta en chat</li><li>Selecciona archivo del sistema</li><li>Claude lo procesa autom\u00e1ticamente</li></ul>"}, {"type": "spacer"}, {"type": "quiz", "question": "\u00bfCu\u00e1l es el l\u00edmite t\u00edpico de archivo?", "options": ["100 KB", "1 MB", "Varios MB"], "correct": 2}, {"type": "flip", "front": "An\u00e1lisis de PDF", "back": "<h3>Procesa documentos largos</h3><ul><li>Sube PDF de 100+ p\u00e1ginas</li><li>Claude lo lee completamente</li><li>Extrae informaci\u00f3n espec\u00edfica</li><li>Genera res\u00famenes ejecutivos</li></ul>"}, {"type": "spacer"}, {"type": "flip", "front": "An\u00e1lisis de Im\u00e1genes", "back": "<h3>\u00bfQu\u00e9 ve Claude?</h3><ul><li>Identifica objetos y texto</li><li>Lee diagramas y gr\u00e1ficos</li><li>Interpreta tablas de im\u00e1genes</li><li>Nota: copyright respetado</li></ul>"}, {"type": "spacer"}, {"type": "quiz", "question": "\u00bfQu\u00e9 puede extraer de una imagen?", "options": ["Solo colores", "Objetos, texto y diagramas", "Nada"], "correct": 1}, {"type": "flip", "front": "Procesamiento de Datos", "back": "<h3>CSV y datos estructurados</h3><ul><li>Sube archivos CSV</li><li>Claude analiza columnas</li><li>Genera insights y visualizaciones</li><li>Agrupa y filtra datos</li></ul>"}, {"type": "spacer"}, {"type": "flip", "front": "OCR y Texto", "back": "<h3>Extracci\u00f3n de texto</h3><ul><li>Convierte im\u00e1genes en texto</li><li>Lee documentos escaneados</li><li>Preserva formato si es posible</li><li>Buena precisi\u00f3n</li></ul>"}, {"type": "spacer"}, {"type": "quiz", "question": "\u00bfQu\u00e9 es OCR?", "options": ["Optical Character Recognition", "Un tipo de archivo", "Funci\u00f3n de seguridad"], "correct": 0}, {"type": "flip", "front": "L\u00edmites y Consideraciones", "back": "<h3>\u00bfQu\u00e9 debes saber?</h3><ul><li>Archivos muy grandes pueden ser lentos</li><li>Calidad de imagen afecta OCR</li><li>PDFs escaneados requieren OCR</li><li>Siempre verifica privacidad</li></ul>"}, {"type": "spacer"}, {"type": "flip", "front": "Privacy en Archivos", "back": "<h3>Protege datos sensibles</h3><ul><li>No subas datos personales confidenciales</li><li>Redacta informaci\u00f3n sensible si es necesario</li><li>Claude no guarda archivos despu\u00e9s</li><li>Pero s\u00ed procesa durante la conversaci\u00f3n</li></ul>"}, {"type": "spacer"}, {"type": "quiz", "question": "\u00bfQu\u00e9 deber\u00edas hacer con datos sensibles?", "options": ["Subir todo sin cuidado", "Redactar informaci\u00f3n sensible", "Confiar ciegamente"], "correct": 1}, {"type": "conclusion", "checkmark": "\u2713", "title": "Completado", "description": "Has completado Trabajo con Archivos", "nextLesson": "Siguiente lecci\u00f3n"}];
+    let currentSlide = 0;
+    function render() {
+      const container = document.querySelector('.slides-container');
+      const slide = slideData[currentSlide];
+      let html = '';
+      if (slide.type === 'intro') {
+        html = `<div class="slide-intro"><div class="eyebrow">${slide.eyebrow}</div><h1>${slide.title}</h1><p>${slide.description}</p></div>`;
+      } else if (slide.type === 'flip') {
+        html = `<div class="flip-card"><div class="flip-card-inner"><div class="flip-card-front"><div class="concept">${slide.front}</div><div class="hint">Click para ver más</div></div><div class="flip-card-back">${slide.back}</div></div></div>`;
+      } else if (slide.type === 'quiz') {
+        html = `<div class="quiz"><div class="quiz-question">${slide.question}</div><div class="quiz-options">${slide.options.map((opt, i) => `<button class="quiz-option" data-index="${i}">${opt}</button>`).join('')}</div><div class="quiz-feedback"></div></div>`;
+      } else if (slide.type === 'spacer') {
+        html = '<div style="height: 20px;"></div>';
+      } else if (slide.type === 'conclusion') {
+        html = `<div class="slide-conclusion"><div class="checkmark">${slide.checkmark}</div><h2>${slide.title}</h2><p>${slide.description}</p><button class="next-btn">✓ Siguiente lección →</button></div>`;
+      }
+      container.innerHTML = html;
+      updateProgress();
+      attachEventListeners();
+    }
+    function updateProgress() {
+      const progress = ((currentSlide + 1) / slideData.length) * 100;
+      document.querySelector('.progress-fill').style.width = progress + '%';
+      document.querySelector('.slide-counter').textContent = `${currentSlide + 1} / ${slideData.length}`;
+    }
+    function attachEventListeners() {
+      const flipCards = document.querySelectorAll('.flip-card');
+      flipCards.forEach(card => {
+        card.addEventListener('click', () => {
+          card.classList.toggle('flipped');
+        });
+      });
+      const quizOptions = document.querySelectorAll('.quiz-option');
+      quizOptions.forEach(option => {
+        option.addEventListener('click', () => {
+          if (option.classList.contains('correct') || option.classList.contains('incorrect')) return;
+          const isCorrect = parseInt(option.dataset.index) === slideData[currentSlide].correct;
+          if (isCorrect) {
+            option.classList.add('correct');
+            document.querySelector('.quiz-feedback').textContent = '✓ ¡Correcto!';
+            document.querySelector('.quiz-feedback').classList.add('show');
+            document.querySelector('.quiz-feedback').style.background = '#ecfdf5';
+            document.querySelector('.quiz-feedback').style.color = '#047857';
+          } else {
+            option.classList.add('incorrect');
+            document.querySelector('.quiz-feedback').textContent = '✗ Incorrecto, intenta de nuevo';
+            document.querySelector('.quiz-feedback').classList.add('show');
+            document.querySelector('.quiz-feedback').style.background = '#fef2f2';
+            document.querySelector('.quiz-feedback').style.color = '#dc2626';
+          }
+          quizOptions.forEach(opt => opt.style.pointerEvents = 'none');
+        });
+      });
+    }
+    document.querySelector('.prev-btn').addEventListener('click', () => {
+      if (currentSlide > 0) currentSlide--;
+      render();
+    });
+    document.querySelector('.next-btn').addEventListener('click', () => {
+      if (currentSlide < slideData.length - 1) currentSlide++;
+      render();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft' && currentSlide > 0) {
+        currentSlide--;
+        render();
+      } else if (e.key === 'ArrowRight' && currentSlide < slideData.length - 1) {
+        currentSlide++;
+        render();
+      }
+    });
+    document.querySelector('.theme-toggle').addEventListener('click', () => {
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
+      localStorage.setItem('theme', isDark ? 'light' : 'dark');
+    });
+    const saved = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', saved);
+    render();
+  </script>
+</body>
+</html>

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Solución de Problemas Comunes</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root { --primary: #10B981; --bg: #ffffff; --text: #1f2937; }
+    [data-theme="dark"] { --bg: #111827; --text: #f3f4f6; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); transition: 0.2s; padding: 20px; }
+    .lesson { max-width: 700px; margin: 0 auto; }
+    .progress-bar { height: 3px; background: #e5e7eb; border-radius: 2px; overflow: hidden; margin-bottom: 30px; }
+    .progress-fill { height: 100%; background: var(--primary); width: 0%; transition: width 0.3s ease; }
+    .slide-intro { text-align: center; padding: 60px 20px; }
+    .slide-intro .eyebrow { font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: var(--primary); margin-bottom: 20px; font-weight: 600; }
+    .slide-intro h1 { font-family: 'Fraunces', serif; font-size: 48px; margin-bottom: 20px; font-weight: 700; }
+    .slide-intro p { font-size: 18px; color: #6b7280; line-height: 1.8; max-width: 600px; margin: 0 auto; }
+    .flip-card { perspective: 1000px; height: 300px; cursor: pointer; margin: 40px 0; }
+    .flip-card-inner { position: relative; width: 100%; height: 100%; transition: transform 0.6s; transform-style: preserve-3d; }
+    .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
+    .flip-card-front, .flip-card-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; display: flex; flex-direction: column; justify-content: center; padding: 30px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    .flip-card-front { background: var(--primary); color: white; text-align: center; }
+    .flip-card-front .concept { font-family: 'Fraunces', serif; font-size: 28px; font-weight: 700; margin-bottom: 15px; }
+    .flip-card-front .hint { font-size: 14px; opacity: 0.9; }
+    .flip-card-back { background: white; color: var(--text); transform: rotateY(180deg); border: 1px solid #e5e7eb; }
+    [data-theme="dark"] .flip-card-back { background: #1f2937; border-color: #374151; }
+    .flip-card-back h3 { font-family: 'Fraunces', serif; font-size: 20px; margin-bottom: 15px; color: var(--primary); }
+    .flip-card-back ul { list-style: none; }
+    .flip-card-back li { margin: 10px 0; padding-left: 20px; position: relative; }
+    .flip-card-back li:before { content: "•"; position: absolute; left: 0; color: var(--primary); font-weight: bold; }
+    .quiz { margin: 40px 0; padding: 30px; background: #f9fafb; border-radius: 12px; }
+    [data-theme="dark"] .quiz { background: #1f2937; }
+    .quiz-question { font-family: 'Fraunces', serif; font-size: 20px; margin-bottom: 25px; font-weight: 600; }
+    .quiz-options { display: flex; flex-direction: column; gap: 12px; }
+    .quiz-option { padding: 12px 16px; border: 2px solid #e5e7eb; border-radius: 8px; cursor: pointer; transition: all 0.2s; background: white; color: var(--text); }
+    [data-theme="dark"] .quiz-option { background: #111827; border-color: #374151; }
+    .quiz-option:hover { border-color: var(--primary); background: #f0f9ff; }
+    [data-theme="dark"] .quiz-option:hover { background: #1f2937; }
+    .quiz-option.correct { border-color: #10b981; background: #ecfdf5; color: #047857; }
+    [data-theme="dark"] .quiz-option.correct { background: #064e3b; color: #6ee7b7; }
+    .quiz-option.incorrect { border-color: #ef4444; background: #fef2f2; color: #dc2626; }
+    [data-theme="dark"] .quiz-option.incorrect { background: #7f1d1d; color: #fca5a5; }
+    .quiz-feedback { margin-top: 15px; padding: 10px; border-radius: 6px; display: none; font-weight: 500; }
+    .quiz-feedback.show { display: block; }
+    .slide-conclusion { text-align: center; padding: 60px 20px; }
+    .slide-conclusion .checkmark { font-size: 60px; margin-bottom: 20px; animation: bounce 0.6s ease; }
+    @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+    .slide-conclusion h2 { font-family: 'Fraunces', serif; font-size: 36px; margin-bottom: 20px; }
+    .slide-conclusion p { color: #6b7280; margin-bottom: 30px; }
+    .slide-conclusion button { background: var(--primary); color: white; border: none; padding: 12px 30px; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: 600; transition: 0.2s; }
+    .slide-conclusion button:hover { opacity: 0.9; }
+    .nav { display: flex; justify-content: space-between; align-items: center; margin-top: 40px; padding: 20px 0; border-top: 1px solid #e5e7eb; }
+    [data-theme="dark"] .nav { border-color: #374151; }
+    .nav button { background: none; border: 1px solid #e5e7eb; padding: 8px 16px; border-radius: 6px; cursor: pointer; transition: 0.2s; color: var(--text); font-size: 14px; }
+    [data-theme="dark"] .nav button { border-color: #374151; }
+    .nav button:hover { background: var(--primary); color: white; border-color: var(--primary); }
+    .slide-counter { font-size: 14px; color: #6b7280; }
+    .theme-toggle { background: none; border: none; font-size: 20px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <div class="lesson">
+    <div class="progress-bar"><div class="progress-fill"></div></div>
+    <div class="slides-container"></div>
+    <div class="nav">
+      <button class="prev-btn">← Anterior</button>
+      <span class="slide-counter">1 / 16</span>
+      <button class="theme-toggle">☀️</button>
+      <button class="next-btn">Siguiente →</button>
+    </div>
+  </div>
+  <script>
+    const slideData = [{"type": "intro", "eyebrow": "M\u00f3dulo 2 \u2022 Lecci\u00f3n 6", "title": "Soluci\u00f3n de Problemas Comunes", "description": "Resuelve problemas t\u00edpicos y obt\u00e9n mejor rendimiento"}, {"type": "flip", "front": "Respuestas Vagas", "back": "<h3>\u00bfPor qu\u00e9 no obtengo detalles?</h3><ul><li>Tus prompts pueden ser vagos</li><li>Soluci\u00f3n: s\u00e9 espec\u00edfico y extenso</li><li>Pide ejemplos concretos</li><li>Especifica formato exacto</li></ul>"}, {"type": "spacer"}, {"type": "flip", "front": "Formato Incorrecto", "back": "<h3>\u00bfC\u00f3mo controlar salida?</h3><ul><li>Especifica: 'En formato JSON'</li><li>Proporciona ejemplo de estructura</li><li>S\u00e9 expl\u00edcito en cada detalle</li><li>Verifica el resultado</li></ul>"}, {"type": "spacer"}, {"type": "quiz", "question": "\u00bfC\u00f3mo asegurar el formato correcto?", "options": ["Esperar que adivine", "Proporcionar ejemplo de estructura", "Confiar en suerte"], "correct": 1}, {"type": "flip", "front": "Alucinaciones", "back": "<h3>\u00bfQu\u00e9 son?</h3><ul><li>Claude inventa informaci\u00f3n</li><li>Suena plausible pero falso</li><li>Riesgo con datos hist\u00f3ricos</li><li>Siempre verifica info importante</li></ul>"}, {"type": "spacer"}, {"type": "flip", "front": "Contexto Perdido", "back": "<h3>\u00bfOlvid\u00f3 informaci\u00f3n?</h3><ul><li>No reutiliz\u00f3 contexto anterior</li><li>Repite informaci\u00f3n si es necesario</li><li>Usa referencias claras</li><li>Limita longitud de conversaci\u00f3n si es necesario</li></ul>"}, {"type": "spacer"}, {"type": "quiz", "question": "\u00bfQu\u00e9 haces si Claude olvida contexto?", "options": ["Crear conversaci\u00f3n nueva", "Repetir informaci\u00f3n importante", "Ambas son v\u00e1lidas"], "correct": 1}, {"type": "flip", "front": "Respuestas Lentas", "back": "<h3>\u00bfC\u00f3mo acelerar?</h3><ul><li>Usa Haiku si es posible</li><li>Reduce longitud de prompts</li><li>Evita pedir an\u00e1lisis muy profundos</li><li>Batching paralelo en API</li></ul>"}, {"type": "spacer"}, {"type": "flip", "front": "Super\u00e1vit de Tokens", "back": "<h3>\u00bfGasto demasiado?</h3><ul><li>Revisa tus prompts</li><li>Reduce contexto innecesario</li><li>Cambia a modelo m\u00e1s barato</li><li>Implementa cacheo</li></ul>"}, {"type": "spacer"}, {"type": "quiz", "question": "\u00bfCu\u00e1l es la mejor soluci\u00f3n para costos altos?", "options": ["Pagar m\u00e1s", "Optimizar prompts y modelo", "Dejar de usar"], "correct": 1}, {"type": "flip", "front": "Desconexi\u00f3n de Conversaci\u00f3n", "back": "<h3>\u00bfPerdiste el hilo?</h3><ul><li>A veces requieres nuevo chat</li><li>Conversaci\u00f3n muy larga agota recursos</li><li>Guarda puntos clave antes</li><li>Inicia nueva con contexto resumido</li></ul>"}, {"type": "spacer"}, {"type": "flip", "front": "Verificaci\u00f3n de Respuestas", "back": "<h3>Valida siempre</h3><ul><li>Verifica c\u00f3digo con tests</li><li>Chequea hechos en fuentes confiables</li><li>No conf\u00edes ciegamente</li><li>Usa como asistente, no reemplazo</li></ul>"}, {"type": "spacer"}, {"type": "quiz", "question": "\u00bfCu\u00e1l es la mejor pr\u00e1ctica?", "options": ["Confiar ciegamente", "Verificar respuestas cr\u00edticas", "Ignorar completamente"], "correct": 1}, {"type": "conclusion", "checkmark": "\u2713", "title": "Completado", "description": "Has completado Soluci\u00f3n de Problemas Comunes", "nextLesson": "Siguiente lecci\u00f3n"}];
+    let currentSlide = 0;
+    function render() {
+      const container = document.querySelector('.slides-container');
+      const slide = slideData[currentSlide];
+      let html = '';
+      if (slide.type === 'intro') {
+        html = `<div class="slide-intro"><div class="eyebrow">${slide.eyebrow}</div><h1>${slide.title}</h1><p>${slide.description}</p></div>`;
+      } else if (slide.type === 'flip') {
+        html = `<div class="flip-card"><div class="flip-card-inner"><div class="flip-card-front"><div class="concept">${slide.front}</div><div class="hint">Click para ver más</div></div><div class="flip-card-back">${slide.back}</div></div></div>`;
+      } else if (slide.type === 'quiz') {
+        html = `<div class="quiz"><div class="quiz-question">${slide.question}</div><div class="quiz-options">${slide.options.map((opt, i) => `<button class="quiz-option" data-index="${i}">${opt}</button>`).join('')}</div><div class="quiz-feedback"></div></div>`;
+      } else if (slide.type === 'spacer') {
+        html = '<div style="height: 20px;"></div>';
+      } else if (slide.type === 'conclusion') {
+        html = `<div class="slide-conclusion"><div class="checkmark">${slide.checkmark}</div><h2>${slide.title}</h2><p>${slide.description}</p><button class="next-btn">✓ Siguiente lección →</button></div>`;
+      }
+      container.innerHTML = html;
+      updateProgress();
+      attachEventListeners();
+    }
+    function updateProgress() {
+      const progress = ((currentSlide + 1) / slideData.length) * 100;
+      document.querySelector('.progress-fill').style.width = progress + '%';
+      document.querySelector('.slide-counter').textContent = `${currentSlide + 1} / ${slideData.length}`;
+    }
+    function attachEventListeners() {
+      const flipCards = document.querySelectorAll('.flip-card');
+      flipCards.forEach(card => {
+        card.addEventListener('click', () => {
+          card.classList.toggle('flipped');
+        });
+      });
+      const quizOptions = document.querySelectorAll('.quiz-option');
+      quizOptions.forEach(option => {
+        option.addEventListener('click', () => {
+          if (option.classList.contains('correct') || option.classList.contains('incorrect')) return;
+          const isCorrect = parseInt(option.dataset.index) === slideData[currentSlide].correct;
+          if (isCorrect) {
+            option.classList.add('correct');
+            document.querySelector('.quiz-feedback').textContent = '✓ ¡Correcto!';
+            document.querySelector('.quiz-feedback').classList.add('show');
+            document.querySelector('.quiz-feedback').style.background = '#ecfdf5';
+            document.querySelector('.quiz-feedback').style.color = '#047857';
+          } else {
+            option.classList.add('incorrect');
+            document.querySelector('.quiz-feedback').textContent = '✗ Incorrecto, intenta de nuevo';
+            document.querySelector('.quiz-feedback').classList.add('show');
+            document.querySelector('.quiz-feedback').style.background = '#fef2f2';
+            document.querySelector('.quiz-feedback').style.color = '#dc2626';
+          }
+          quizOptions.forEach(opt => opt.style.pointerEvents = 'none');
+        });
+      });
+    }
+    document.querySelector('.prev-btn').addEventListener('click', () => {
+      if (currentSlide > 0) currentSlide--;
+      render();
+    });
+    document.querySelector('.next-btn').addEventListener('click', () => {
+      if (currentSlide < slideData.length - 1) currentSlide++;
+      render();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft' && currentSlide > 0) {
+        currentSlide--;
+        render();
+      } else if (e.key === 'ArrowRight' && currentSlide < slideData.length - 1) {
+        currentSlide++;
+        render();
+      }
+    });
+    document.querySelector('.theme-toggle').addEventListener('click', () => {
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
+      localStorage.setItem('theme', isDark ? 'light' : 'dark');
+    });
+    const saved = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', saved);
+    render();
+  </script>
+</body>
+</html>
