@@ -8,104 +8,74 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html, body { width: 100%; height: 100%; }
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f3f4f6; color: #1f2937; height: 100vh; display: flex; flex-direction: column; }
-        .progress { height: 3px; background: #6366F1; width: 0%; }
-        .header { text-align: center; padding: 16px 12px; background: #f3f4f6; border-bottom: 1px solid #e5e7eb; }
-        .eyebrow { font-size: 11px; color: #6366F1; text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px; }
-        .title { font-size: 26px; font-weight: 700; margin: 6px 0 4px; }
-        .subtitle { font-size: 13px; color: #6b7280; }
-        .content { flex: 1; overflow-y: auto; padding: 20px 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #f3f4f6; }
-        .card { background: white; border: 1px solid #e5e7eb; border-radius: 12px; padding: 24px; max-width: 340px; width: 90%; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
-        .card h2 { font-size: 18px; color: #6366F1; margin-bottom: 12px; }
-        .card p { font-size: 13px; line-height: 1.6; margin: 8px 0; color: #4b5563; }
-        .card ul { text-align: left; font-size: 12px; list-style: none; margin: 8px 0; }
-        .card li { margin: 4px 0; padding-left: 16px; position: relative; }
-        .card li:before { content: "→"; position: absolute; left: 0; color: #6366F1; }
-        .flip { cursor: pointer; margin: 8px 0; padding: 12px; background: #6366F1; color: white; border-radius: 6px; font-size: 13px; font-weight: 600; transition: 0.3s; }
-        .flip:hover { opacity: 0.9; }
-        .flipped { background: white; color: #1f2937; border: 1px solid #6366F1; }
-        .quiz-q { font-size: 13px; font-weight: 600; margin: 12px 0; }
-        .opts { display: flex; flex-direction: column; gap: 8px; }
-        .opt { padding: 8px 12px; border: 1px solid #e5e7eb; background: white; border-radius: 4px; cursor: pointer; font-size: 12px; transition: 0.2s; }
-        .opt:hover { border-color: #6366F1; }
+        .progress { height: 4px; background: #6366F1; width: 0%; }
+        .header { padding: 16px; background: white; border-bottom: 1px solid #e5e7eb; text-align: center; }
+        .eyebrow { font-size: 12px; color: #6366F1; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .title { font-size: 28px; font-weight: 700; margin: 0; }
+        .subtitle { font-size: 14px; color: #6b7280; margin-top: 2px; }
+        .content { flex: 1; overflow-y: auto; padding: 20px; background: #f3f4f6; }
+        .section { background: white; border-radius: 8px; padding: 20px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+        .section h3 { font-size: 16px; color: #6366F1; margin-bottom: 10px; font-weight: 700; }
+        .section p { font-size: 14px; line-height: 1.7; color: #374151; }
+        .quiz { background: white; border-radius: 8px; padding: 20px; margin: 20px 0; border-left: 4px solid #6366F1; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+        .quiz-q { font-size: 15px; font-weight: 700; margin-bottom: 15px; }
+        .opts { display: flex; flex-direction: column; gap: 10px; }
+        .opt { padding: 10px 14px; border: 1px solid #e5e7eb; border-radius: 6px; cursor: pointer; background: white; font-size: 14px; transition: 0.2s; }
+        .opt:hover { border-color: #6366F1; background: #f9fafb; }
         .opt.correct { background: #ecfdf5; border-color: #10b981; color: #047857; font-weight: 600; }
         .opt.incorrect { background: #fef2f2; border-color: #ef4444; color: #dc2626; }
-        .feedback { font-size: 12px; margin-top: 8px; display: none; font-weight: 500; }
+        .feedback { font-size: 13px; margin-top: 12px; display: none; font-weight: 500; }
         .feedback.show { display: block; }
-        .end { font-size: 40px; margin: 20px 0; }
-        .nav { display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; border-top: 1px solid #e5e7eb; font-size: 11px; background: white; }
-        .nav button { background: none; border: 1px solid #e5e7eb; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 11px; color: #1f2937; transition: 0.2s; }
+        .nav { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: white; border-top: 1px solid #e5e7eb; }
+        .nav button { background: none; border: 1px solid #e5e7eb; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 13px; color: #1f2937; transition: 0.2s; font-weight: 500; }
         .nav button:hover { background: #6366F1; color: white; border-color: #6366F1; }
+        .counter { font-size: 13px; color: #6b7280; font-weight: 500; }
     </style>
 </head>
 <body>
     <div class="progress" id="progress"></div>
     <div class="header">
-        <div class="eyebrow" id="eyebrow"></div>
-        <div class="title" id="title"></div>
-        <div class="subtitle" id="subtitle"></div>
+        <div class="eyebrow">M8 • L4</div>
+        <div class="title">Proyecto</div>
+        <div class="subtitle">Final</div>
     </div>
     <div class="content" id="content"></div>
     <div class="nav">
         <button id="prev">← Anterior</button>
-        <span id="counter">1/10</span>
+        <span class="counter"><span id="cnt">1</span>/2</span>
         <button id="next">Siguiente →</button>
     </div>
     <script>
-        const slides = [{"type": "intro"}, {"type": "flip", "front": "Concepto 1", "title": "Proyecto", "back": ["Punto 1", "Punto 2", "Punto 3"]}, {"type": "quiz", "question": "Pregunta 1?", "options": ["Opci\u00f3n A", "\u2713 Opci\u00f3n B", "Opci\u00f3n C"], "correct": 1}, {"type": "flip", "front": "Concepto 2", "title": "Proyecto", "back": ["Punto 1", "Punto 2", "Punto 3"]}, {"type": "quiz", "question": "Pregunta 2?", "options": ["Opci\u00f3n A", "\u2713 Opci\u00f3n B", "Opci\u00f3n C"], "correct": 1}, {"type": "flip", "front": "Concepto 3", "title": "Proyecto", "back": ["Punto 1", "Punto 2", "Punto 3"]}, {"type": "quiz", "question": "Pregunta 3?", "options": ["Opci\u00f3n A", "\u2713 Opci\u00f3n B", "Opci\u00f3n C"], "correct": 1}, {"type": "flip", "front": "Concepto 4", "title": "Proyecto", "back": ["Punto 1", "Punto 2", "Punto 3"]}, {"type": "quiz", "question": "Pregunta 4?", "options": ["Opci\u00f3n A", "\u2713 Opci\u00f3n B", "Opci\u00f3n C"], "correct": 1}, {"type": "flip", "front": "Concepto 5", "title": "Proyecto", "back": ["Punto 1", "Punto 2", "Punto 3"]}, {"type": "quiz", "question": "Pregunta 5?", "options": ["Opci\u00f3n A", "\u2713 Opci\u00f3n B", "Opci\u00f3n C"], "correct": 1}, {"type": "flip", "front": "Concepto 6", "title": "Proyecto", "back": ["Punto 1", "Punto 2", "Punto 3"]}, {"type": "quiz", "question": "Pregunta 6?", "options": ["Opci\u00f3n A", "\u2713 Opci\u00f3n B", "Opci\u00f3n C"], "correct": 1}, {"type": "flip", "front": "Concepto 7", "title": "Proyecto", "back": ["Punto 1", "Punto 2", "Punto 3"]}, {"type": "flip", "front": "Concepto 8", "title": "Proyecto", "back": ["Punto 1", "Punto 2", "Punto 3"]}, {"type": "end"}];
-        const info = {"title": "Proyecto", "description": "Final", "eyebrow": "M8 \u2022 L4"};
         let idx = 0;
-
         function render() {
-            const s = slides[idx];
-            const c = document.getElementById('content');
-            let html = '';
-
-            if (s.type === 'intro') {
-                html = '<div class="card"><p style="font-size: 14px; margin: 20px 0;">' + info.description + '</p><h2 style="font-size: 28px; margin: 20px 0;">' + info.title + '</h2><p style="color: #6366F1; font-size: 12px;">Toca siguiente para comenzar</p></div>';
-            } else if (s.type === 'flip') {
-                html = '<div class="card"><h2>' + s.front + '</h2><p>' + s.title + '</p><div id="flip" class="flip" style="background: #6366F1; cursor: pointer; margin: 12px 0; padding: 16px; color: white; border-radius: 6px;">Ver detalles</div><div id="flipped" style="display:none;"><ul>' + s.back.map(x => '<li>' + x + '</li>').join('') + '</ul></div></div>';
-                setTimeout(() => {
-                    document.getElementById('flip').addEventListener('click', () => {
-                        const f = document.getElementById('flipped');
-                        f.style.display = f.style.display === 'none' ? 'block' : 'none';
-                        document.getElementById('flip').textContent = f.style.display === 'none' ? 'Ver detalles' : 'Ocultar';
-                    });
-                }, 0);
-            } else if (s.type === 'quiz') {
-                html = '<div class="card"><div class="quiz-q">' + s.question + '</div><div class="opts">' + s.options.map((o, i) => '<button class="opt" data-i="' + i + '">' + o + '</button>').join('') + '</div><div class="feedback" id="fb"></div></div>';
+            const content = document.getElementById('content');
+            if (idx === 0) {
+                content.innerHTML = `<div class="section"><h3>Contenido</h3><p>En esta lección aprenderás sobre Proyecto. Lee los materiales y responde el quiz al final.</p></div><div class="section"><h3>Temas cubiertos</h3><p>• Conceptos fundamentales<br>• Casos de uso prácticos<br>• Mejores prácticas<br>• Integración y escalabilidad</p></div>`;
+            } else {
+                content.innerHTML = `<div class="quiz"><div class="quiz-q">¿Cuál es el concepto clave de Proyecto?</div><div class="opts"><button class="opt" data-i="0">Opción A</button><button class="opt" data-i="1">✓ Concepto central</button><button class="opt" data-i="2">Opción C</button></div><div class="feedback" id="fb"></div></div><div class="section"><h3>Próximos pasos</h3><p>Continúa con la siguiente lección para profundizar en temas relacionados.</p></div>`;
                 setTimeout(() => {
                     document.querySelectorAll('.opt').forEach(b => {
                         b.addEventListener('click', () => {
                             if (b.classList.contains('correct') || b.classList.contains('incorrect')) return;
-                            const ok = parseInt(b.dataset.i) === s.correct;
+                            const ok = parseInt(b.dataset.i) === 1;
                             b.classList.add(ok ? 'correct' : 'incorrect');
-                            const fb = document.getElementById('fb');
-                            fb.textContent = ok ? '✓ ¡Correcto!' : '✗ Incorrecto';
-                            fb.classList.add('show');
+                            document.getElementById('fb').textContent = ok ? '✓ ¡Correcto!' : '✗ Incorrecto';
+                            document.getElementById('fb').style.color = ok ? '#047857' : '#dc2626';
+                            document.getElementById('fb').classList.add('show');
                             document.querySelectorAll('.opt').forEach(x => x.style.pointerEvents = 'none');
                         });
                     });
                 }, 0);
-            } else if (s.type === 'end') {
-                html = '<div class="card"><div class="end">✓</div><h2>¡Completado!</h2><p>Excelente trabajo</p></div>';
             }
-
-            c.innerHTML = html;
-            const p = ((idx + 1) / slides.length) * 100;
-            document.getElementById('progress').style.width = p + '%';
-            document.getElementById('counter').textContent = (idx + 1) + '/' + slides.length;
-            document.getElementById('eyebrow').textContent = info.eyebrow;
-            document.getElementById('title').textContent = info.title;
-            document.getElementById('subtitle').textContent = info.description;
+            document.getElementById('progress').style.width = ((idx + 1) / 2) * 100 + '%';
+            document.getElementById('cnt').textContent = idx + 1;
         }
-
         document.getElementById('prev').addEventListener('click', () => { if (idx > 0) { idx--; render(); } });
-        document.getElementById('next').addEventListener('click', () => { if (idx < slides.length - 1) { idx++; render(); } });
+        document.getElementById('next').addEventListener('click', () => { if (idx < 1) { idx++; render(); } });
         document.addEventListener('keydown', e => {
             if (e.key === 'ArrowLeft' && idx > 0) { idx--; render(); }
-            if (e.key === 'ArrowRight' && idx < slides.length - 1) { idx++; render(); }
+            if (e.key === 'ArrowRight' && idx < 1) { idx++; render(); }
         });
-
         render();
     </script>
 </body>
