@@ -38,7 +38,7 @@
         }
         
         .content { 
-            flex: 1; overflow-y: auto; padding: 20px; 
+            flex: 1; overflow-y: auto; overflow-x: hidden; padding: 20px; 
             background: linear-gradient(135deg, #f5f7fa 0%, #f0f4f8 100%);
         }
         
@@ -51,7 +51,7 @@
         @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
         .card-title { font-size: 18px; color: #D97706; margin-bottom: 12px; font-weight: 700; }
-        .card-text { font-size: 14px; color: #374151; line-height: 1.8; white-space: pre-wrap; }
+        .card-text { font-size: 14px; color: #374151; line-height: 1.8; white-space: pre-wrap; word-wrap: break-word; }
         
         .code { 
             background: #1f2937; color: #d1d5db; padding: 14px; border-radius: 8px;
@@ -140,12 +140,12 @@
     <div class="content" id="content"></div>
     <div class="nav">
         <button id="prev">← Anterior</button>
-        <span class="counter"><span id="cnt">1</span>/5</span>
+        <span class="counter"><span id="cnt">1</span>/10</span>
         <button id="next">Siguiente →</button>
     </div>
     
     <script>
-        const slides = [{"type": "intro", "points": 0}, {"type": "content", "title": "Concepto principal", "text": "Aprender\u00e1s el concepto m\u00e1s importante de esta lecci\u00f3n.\n\nEste contenido est\u00e1 siendo mejorado.\nVuelve pronto para m\u00e1s.", "points": 10}, {"type": "interactive_quiz", "title": "Quiz", "question": "\u00bfEs importante este concepto?", "options": [{"text": "S\u00ed, muy importante", "correct": true, "reason": "\u00a1Correcto!", "points": 20}, {"text": "No tan importante", "correct": false, "reason": "En realidad s\u00ed es importante", "points": 0}], "points": 20}, {"type": "content", "title": "Aplicaci\u00f3n", "text": "Puedes usar esto en:\n\u2022 Desarrollo\n\u2022 An\u00e1lisis\n\u2022 Automatizaci\u00f3n", "points": 10}, {"type": "badge", "name": "\u2728 Completado", "description": "Lecci\u00f3n M9L5 finalizada"}];
+        const slides = [{"type": "intro", "points": 0}, {"type": "content", "title": "Introducci\u00f3n al tema", "text": "Bienvenido a M\u00f3dulo 9, Lecci\u00f3n 5\n\nEste m\u00f3dulo cubre:\n\u2022 Conceptos fundamentales\n\u2022 Aplicaciones pr\u00e1cticas\n\u2022 Best practices\n\u2022 Casos de uso reales\n\nAprender\u00e1s a usar estas herramientas effectivamente en producci\u00f3n.", "points": 10}, {"type": "content", "title": "Concepto 1", "text": "Concepto importante que necesitas entender.\n\nPuntos clave:\n\u2022 Punto A\n\u2022 Punto B\n\u2022 Punto C\n\nEstos conceptos son fundamentales para avanzar.", "points": 10}, {"type": "content", "title": "Concepto 2", "text": "Otro concepto importante.\n\nAplicaciones:\n\u2022 Caso de uso 1\n\u2022 Caso de uso 2\n\u2022 Caso de uso 3\n\nEntiende las implicaciones pr\u00e1cticas.", "points": 10}, {"type": "example", "title": "Ejemplo pr\u00e1ctico", "code": "# Ejemplo M\u00f3dulo 9\nresult = process_example()\nprint(f'Resultado: {result}')", "points": 15}, {"type": "content", "title": "Mejores pr\u00e1cticas", "text": "\u2713 Pr\u00e1ctica 1\n\u2713 Pr\u00e1ctica 2\n\u2713 Pr\u00e1ctica 3\n\u2713 Pr\u00e1ctica 4\n\u2713 Pr\u00e1ctica 5\n\nSigue estos patrones para \u00e9xito.", "points": 10}, {"type": "interactive_quiz", "title": "Quiz", "question": "\u00bfCu\u00e1l es el concepto principal?", "options": [{"text": "Concepto correcto", "correct": true, "reason": "\u00a1Correcto! Este es el concepto central", "points": 20}, {"text": "Concepto incorrecto", "correct": false, "reason": "No es el concepto principal", "points": 0}], "points": 20}, {"type": "challenge", "title": "Desaf\u00edo", "instruction": "Completa: El concepto principal es ___", "answer": "concepto correcto", "hint": "Piensa en lo que aprendiste...", "points": 25}, {"type": "content", "title": "Recursos adicionales", "text": "Para profundizar:\n\u2022 Documentaci\u00f3n oficial\n\u2022 Ejemplos en comunidad  \n\u2022 Proyectos open source\n\u2022 Comunidad Discord\n\nSigue aprendiendo despu\u00e9s de esta lecci\u00f3n.", "points": 10}, {"type": "badge", "name": "\u2728 M9L5 Completado", "description": "Finalizaste Lecci\u00f3n 5 del M\u00f3dulo 9"}];
         let idx = 0;
         let totalPoints = parseInt(localStorage.getItem('total_points_m9l5') || '0');
         document.getElementById('total-points').textContent = totalPoints + ' pts';
