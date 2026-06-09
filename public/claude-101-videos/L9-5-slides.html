@@ -26,7 +26,7 @@
         .eyebrow { font-size: 9px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--primary); font-weight: 600; }
         .title { font-size: 20px; font-weight: 700; margin: 2px 0; }
         .subtitle { font-size: 11px; color: #6b7280; }
-        .slides { flex: 1; display: flex; align-items: center; justify-content: center; overflow: auto; padding: 5px; }
+        .slides { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; overflow-y: auto; overflow-x: hidden; padding: 10px 5px; gap: 5px; }
         .flip-card { width: 85%; max-width: 280px; height: 160px; cursor: pointer; perspective: 1000px; margin: 5px auto; flex-shrink: 0; }
         .flip-inner { width: 100%; height: 100%; position: relative; transition: transform 0.6s; transform-style: preserve-3d; }
         .flip-card.flipped .flip-inner { transform: rotateY(180deg); }
@@ -63,7 +63,6 @@
         [data-theme="dark"] .nav button { border-color: #334155; }
         .nav button:hover { background: var(--primary); color: white; border-color: var(--primary); }
         .counter { font-size: 10px; color: #6b7280; }
-        .theme-btn { background: none; border: none; cursor: pointer; font-size: 12px; }
     </style>
 </head>
 <body>
@@ -78,7 +77,6 @@
         <div class="nav">
             <button class="prev-btn">← Anterior</button>
             <span class="counter"><span id="slide-num">1</span> / <span id="slide-total">20</span></span>
-            <button class="theme-btn">☀️</button>
             <button class="next-btn">Siguiente →</button>
         </div>
     </div>
@@ -159,12 +157,6 @@
         document.addEventListener('keydown', (e) => {
             if (e.key === 'ArrowLeft' && currentSlide > 0) { currentSlide--; render(); }
             if (e.key === 'ArrowRight' && currentSlide < slideData.length - 1) { currentSlide++; render(); }
-        });
-
-        document.querySelector('.theme-btn').addEventListener('click', () => {
-            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-            document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
-            localStorage.setItem('theme', isDark ? 'light' : 'dark');
         });
 
         document.documentElement.setAttribute('data-theme', localStorage.getItem('theme') || 'light');
