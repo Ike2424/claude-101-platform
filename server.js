@@ -316,7 +316,7 @@ app.get('/api/config', (_req, res) => {
   res.json({
     course_name: process.env.COURSE_PUBLIC_NAME || 'Claude 101',
     tagline: process.env.COURSE_TAGLINE || 'Aprende a trabajar con Claude desde cero',
-    price_cents: parseInt(process.env.COURSE_PRICE_CENTS || '4900', 10),
+    price_cents: parseInt(process.env.COURSE_PRICE_CENTS || '6000', 10),
     currency: (process.env.COURSE_CURRENCY || 'eur').toLowerCase(),
     support_email: process.env.SUPPORT_EMAIL || 'hola@claude101.com',
     community_url: process.env.COMMUNITY_URL || '#',

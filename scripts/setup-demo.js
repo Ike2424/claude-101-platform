@@ -107,7 +107,7 @@ if (purchasesExists < 3) {
       exec(
         `INSERT INTO purchases (user_id, email, stripe_session_id, amount_cents, currency, status, created_at)
          VALUES (?, ?, ?, ?, 'eur', 'completed', datetime('now', '-' || ? || ' days'))`,
-        [user.id, DEMO_EMAIL, `cs_demo_seed_${Date.now()}_${i}`, 4900, i]
+        [user.id, DEMO_EMAIL, `cs_demo_seed_${Date.now()}_${i}`, 6000, i]
       );
     } catch {}
   }
