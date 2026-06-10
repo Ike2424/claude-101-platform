@@ -74,23 +74,55 @@ LESSONS = {}
 LESSONS["L1-2"] = (1, 2, "La familia de modelos", [
     intro(),
     content("Una familia, no un solo modelo",
-        "Claude no es un unico modelo: es una familia con distintos tamanos pensados para distintas necesidades.\n\n"
-        "Los tres perfiles clasicos son Haiku, Sonnet y Opus. La idea: elegir el equilibrio justo entre velocidad, capacidad y costo para cada tarea."),
+        "Claude no es un unico modelo: es una familia con varios tamanos pensados para distintas necesidades.\n\n"
+        "Los tres perfiles clasicos son Haiku, Sonnet y Opus, ordenados de mas ligero a mas potente.\n\n"
+        "La idea central de toda la leccion: no existe 'el mejor modelo', existe 'el mejor modelo para ESTA tarea'. Aprender a elegir te ahorra tiempo y dinero."),
+    content("La analogia de los vehiculos",
+        "Para fijar la idea, piensa en transporte:\n\n"
+        "🛵 Haiku = una moto\n• Agil, barata, perfecta para trayectos cortos y frecuentes\n\n"
+        "🚗 Sonnet = un coche\n• Equilibrio entre velocidad, capacidad y consumo. Sirve para casi todo\n\n"
+        "🚚 Opus = un camion\n• Mueve cargas pesadas, pero es mas lento y caro de operar\n\n"
+        "Nadie usa un camion para ir a por el pan, ni una moto para una mudanza."),
     content("Haiku: rapido y ligero",
         "El mas veloz y economico de la familia.\n\n"
-        "Ideal para:\n• Tareas simples y de alto volumen\n• Clasificacion, extraccion, respuestas cortas\n• Cuando la latencia importa mas que el matiz\n\n"
-        "Piensa en el para automatizaciones que corren muchas veces."),
+        "Ideal para:\n• Tareas simples y de alto volumen\n• Clasificacion (spam/no spam, positivo/negativo)\n• Extraccion de datos sencillos\n• Respuestas cortas donde la latencia importa\n\n"
+        "Piensa en el para automatizaciones que corren miles de veces: cada milisegundo y cada centimo se multiplican."),
     content("Sonnet: el equilibrio (el que mas usaras)",
         "El punto medio entre velocidad y capacidad. Para la mayoria de la gente es el modelo del dia a dia.\n\n"
-        "Ideal para:\n• Redaccion y analisis general\n• Programacion cotidiana\n• Tareas que requieren buen razonamiento sin esperar demasiado\n\n"
-        "Regla practica: empieza por Sonnet y sube o baja solo si lo necesitas."),
+        "Ideal para:\n• Redaccion y edicion de textos\n• Analisis de documentos\n• Programacion cotidiana\n• Tareas con buen razonamiento sin esperar demasiado\n\n"
+        "Regla practica: empieza SIEMPRE por Sonnet. Solo cambia si una tarea concreta te pide menos (Haiku) o mas (Opus)."),
     content("Opus: la maxima capacidad",
-        "El mas potente para problemas complejos.\n\n"
-        "Ideal para:\n• Razonamiento profundo y multi-paso\n• Analisis matizado y escritura sofisticada\n• Tareas donde la calidad pesa mas que el costo o la velocidad\n\n"
-        "Usalo cuando Sonnet se queda corto en complejidad."),
-    content("Como elegir el modelo correcto",
-        "Preguntate:\n• Es una tarea simple y repetitiva? -> Haiku\n• Es trabajo general del dia a dia? -> Sonnet\n• Es muy compleja y la calidad es critica? -> Opus\n\n"
-        "No siempre el mas grande es el mejor: el adecuado es el que resuelve tu tarea al menor costo y tiempo."),
+        "El mas potente para problemas verdaderamente complejos.\n\n"
+        "Ideal para:\n• Razonamiento profundo y multi-paso\n• Analisis matizado de temas delicados\n• Escritura sofisticada y de marca\n• Problemas donde un error sale caro\n\n"
+        "Es mas lento y costoso, asi que reservalo para cuando la calidad pesa mas que el tiempo o el dinero."),
+    content("El triangulo: velocidad, capacidad, costo",
+        "Toda eleccion de modelo equilibra tres fuerzas:\n\n"
+        "⚡ Velocidad: cuanto tarda en responder\n🧠 Capacidad: que tan complejo puede razonar\n💰 Costo: cuanto cuesta cada uso\n\n"
+        "No puedes maximizar las tres a la vez. Haiku prioriza velocidad/costo; Opus prioriza capacidad; Sonnet busca el centro.\n\n"
+        "Elegir bien = saber cual de las tres fuerzas domina TU tarea."),
+    content("Como elegir en 3 preguntas",
+        "Hazte estas preguntas en orden:\n\n"
+        "1. Es una tarea simple y repetitiva (clasificar, extraer)?\n   -> Haiku\n\n"
+        "2. Es trabajo general del dia a dia (escribir, analizar, programar)?\n   -> Sonnet\n\n"
+        "3. Es muy compleja y un error sale caro?\n   -> Opus\n\n"
+        "Ante la duda, Sonnet casi nunca falla como punto de partida."),
+    content("Errores comunes al elegir",
+        "❌ Usar siempre el mas potente 'por si acaso'\n• Pagas de mas y esperas de mas sin necesidad\n\n"
+        "❌ Usar el mas barato para todo\n• Te frustras cuando se queda corto en tareas complejas\n\n"
+        "❌ No probar alternativas\n• A veces Haiku resuelve algo que creias que necesitaba Opus\n\n"
+        "✅ Lo sano: prototipa con Sonnet, mide, y ajusta hacia arriba o abajo."),
+    content("El mismo prompt, distinto modelo",
+        "Una buena practica: prueba tu tarea en dos modelos y compara.\n\n"
+        "• Si Haiku da un resultado igual de bueno que Sonnet -> usa Haiku y ahorra\n• Si Sonnet falla en matiz -> sube a Opus solo en esa tarea\n\n"
+        "La eleccion no es para siempre: puedes usar modelos distintos para partes distintas de un mismo flujo."),
+    example("Pensar la eleccion como codigo",
+        "# Pseudocodigo de decision\n"
+        "def elegir_modelo(tarea):\n"
+        "    if tarea.es_simple and tarea.alto_volumen:\n"
+        "        return 'haiku'    # rapido y barato\n"
+        "    if tarea.es_muy_compleja or tarea.error_caro:\n"
+        "        return 'opus'     # maxima capacidad\n"
+        "    return 'sonnet'       # el equilibrio por defecto"),
     quiz("Cual modelo para alto volumen simple?",
         "Necesitas clasificar miles de mensajes cortos lo mas rapido y barato posible. Cual eliges?",
         [("Haiku", True, "Correcto: el mas rapido y economico, ideal para volumen simple."),
@@ -98,79 +130,159 @@ LESSONS["L1-2"] = (1, 2, "La familia de modelos", [
          ("Ninguno sirve", False, "Haiku encaja perfecto en este caso.")]),
     quiz("Cual es el modelo 'por defecto'?",
         "Para el trabajo general del dia a dia, por cual conviene empezar?",
-        [("Opus siempre", False, "Suele ser excesivo para tareas cotidianas."),
+        [("Opus siempre", False, "Suele ser excesivo y caro para tareas cotidianas."),
          ("Sonnet", True, "Correcto: el mejor equilibrio para la mayoria de tareas."),
          ("Haiku para todo", False, "Haiku se queda corto en razonamiento complejo.")]),
+    quiz("Cuando subir a Opus?",
+        "En cual situacion tiene mas sentido pagar por Opus?",
+        [("Para traducir una frase corta", False, "Eso lo hace Haiku de sobra."),
+         ("Para un analisis legal complejo donde un error sale caro", True, "Correcto: maxima capacidad cuando la calidad es critica."),
+         ("Para clasificar tickets por volumen", False, "Volumen simple = Haiku.")]),
     challenge("Reto: el equilibrado",
-        "Cual de los tres modelos es el equilibrio recomendado para el dia a dia? (una palabra)",
+        "Cual de los tres modelos es el equilibrio recomendado para empezar el dia a dia? (una palabra)",
         "Sonnet", "Sonnet es el punto medio entre velocidad y capacidad."),
     matching("Modelo y perfil",
         [("Haiku", "Rapido y economico"),
          ("Sonnet", "Equilibrio del dia a dia"),
          ("Opus", "Maxima capacidad"),
-         ("Criterio", "La tarea decide")]),
-    content("Resumen",
-        "Haiku para lo simple y veloz, Sonnet para lo general, Opus para lo complejo.\n\n"
-        "Elige por la tarea, no por defecto el mas grande. En la siguiente leccion vemos como razona Claude por dentro."),
-    badge("🧬 Conocedor de Modelos", "Sabes elegir entre Haiku, Sonnet y Opus segun la tarea."),
+         ("Velocidad", "Cuanto tarda"),
+         ("Costo", "Cuanto cuesta cada uso")]),
+    content("Resumen de la leccion",
+        "• Claude es una familia: Haiku, Sonnet, Opus\n"
+        "• Cada uno equilibra velocidad, capacidad y costo de forma distinta\n"
+        "• Empieza por Sonnet; baja a Haiku para lo simple, sube a Opus para lo complejo\n"
+        "• La eleccion la decide la tarea, no el ego de usar 'el mas grande'\n\n"
+        "En la siguiente leccion abrimos el capo: como razona Claude por dentro."),
+    badge("🧬 Conocedor de Modelos", "Sabes elegir entre Haiku, Sonnet y Opus equilibrando velocidad, capacidad y costo."),
 ])
 
 LESSONS["L1-3"] = (1, 3, "Como razona Claude", [
     intro(),
     content("Predice, no consulta",
-        "Claude genera texto prediciendo, palabra a palabra, lo mas probable segun los patrones que aprendio en su entrenamiento.\n\n"
-        "No consulta una base de datos ni 'busca' la respuesta: la construye. Por eso es tan flexible... y por eso a veces se equivoca."),
+        "Claude genera texto prediciendo, palabra a palabra, lo mas probable segun los patrones que aprendio durante su entrenamiento.\n\n"
+        "No consulta una base de datos ni 'busca' la respuesta en ningun sitio: la CONSTRUYE sobre la marcha.\n\n"
+        "Esta sola idea explica casi todo su comportamiento: por que es tan flexible, por que a veces se equivoca, y por que el contexto que le das cambia tanto el resultado."),
+    content("La maquina de autocompletar (muy potente)",
+        "En el fondo, Claude es un autocompletado extraordinariamente sofisticado.\n\n"
+        "• Mira todo el texto hasta ahora (tu prompt + lo que lleva escrito)\n• Calcula que palabra es la mas probable que venga despues\n• La escribe, y repite\n\n"
+        "Lo asombroso es que, a partir de ese mecanismo simple, emergen razonamiento, traduccion y creatividad. Pero en su nucleo sigue siendo prediccion."),
+    content("Que son los tokens",
+        "Claude no ve 'palabras' exactamente, ve tokens: trozos de texto.\n\n"
+        "• Un token es ~4 caracteres en promedio\n• Una palabra suele ser 1-2 tokens\n• 1000 palabras ≈ 1300 tokens\n\n"
+        "Importa porque: el costo y el limite de contexto se miden en tokens, no en palabras. Textos mas largos = mas tokens = mas costo y mas tiempo."),
+    content("El context window: su memoria de trabajo",
+        "El context window es todo el texto que Claude puede 'tener presente' a la vez en una conversacion.\n\n"
+        "• Incluye tus instrucciones + el material + toda la charla previa\n• Es enorme: caben decenas o cientos de paginas\n• Pero tiene un limite: lo mas antiguo puede salir si la conversacion crece mucho\n\n"
+        "Es su memoria a corto plazo: dentro de ella recuerda todo; fuera, no."),
     content("Que es 'alucinar'",
-        "Una alucinacion es cuando Claude da una respuesta que suena segura pero es falsa.\n\n"
-        "Ocurre mas en:\n• Cifras y datos muy especificos\n• Citas, fechas y nombres propios\n• Temas fuera de su conocimiento\n\n"
-        "La seguridad del tono no garantiza que tenga razon: verifica lo critico."),
+        "Una alucinacion es cuando Claude da una respuesta que suena segura y plausible pero es falsa.\n\n"
+        "No miente a proposito: como genera por probabilidad, a veces el texto 'mas probable' no es el verdadero.\n\n"
+        "Ocurre mas en:\n• Cifras y datos muy especificos\n• Citas, fechas y nombres propios\n• Temas muy recientes o de nicho\n\n"
+        "La seguridad del tono NO garantiza que tenga razon."),
+    content("Por que el tono seguro engana",
+        "Claude siempre escribe con fluidez, tenga razon o no. Esa fluidez puede dar una falsa sensacion de certeza.\n\n"
+        "Regla de oro:\n• Para ideas, redaccion y brainstorming -> confia y itera\n• Para datos verificables (numeros, leyes, citas) -> verifica siempre\n\n"
+        "Trata a Claude como un colega brillante pero que a veces se equivoca con seguridad."),
     content("Puede pensar paso a paso",
-        "En problemas complejos, Claude rinde mejor si razona antes de responder.\n\n"
-        "Pedir 'piensa paso a paso' le hace descomponer el problema, mostrar calculos intermedios y llegar a conclusiones mas fiables.\n\n"
-        "Lo veras en profundidad en el modulo de tecnicas avanzadas."),
+        "En problemas complejos, Claude rinde mucho mejor si razona ANTES de dar la respuesta final.\n\n"
+        "Pedir 'piensa paso a paso' le hace:\n• Descomponer el problema en partes\n• Mostrar calculos intermedios\n• Detectar sus propios errores\n• Llegar a conclusiones mas fiables\n\n"
+        "Es una de las tecnicas mas potentes; la veras a fondo en el modulo 4."),
     content("Probabilidad = variabilidad",
         "Como genera por probabilidades, la misma pregunta puede dar respuestas algo distintas cada vez.\n\n"
-        "Eso es normal y a veces util (variedad creativa). Para tareas que exigen consistencia, da instrucciones muy precisas y formato fijo."),
+        "• Es normal, no es un fallo\n• A veces es util (variedad de ideas)\n• A veces molesta (quieres consistencia)\n\n"
+        "Para resultados mas consistentes: da instrucciones precisas, formato fijo y ejemplos. Cuanto mas acotas, menos varia."),
+    content("Conocimiento con fecha de corte",
+        "Claude se entrena hasta cierta fecha y no conoce nada posterior por si solo.\n\n"
+        "• No sabe la noticia de hoy\n• No conoce tus documentos privados\n• No sabe la hora actual si no se la dices\n\n"
+        "Para datos recientes, usa busqueda web; para datos tuyos, pegalos en el prompt. Lo veremos en M5 y M7."),
     example("Hacer que razone en voz alta",
         "Resuelve este problema paso a paso, mostrando cada calculo,\n"
         "y solo al final escribe la respuesta:\n\n"
-        "Si un articulo cuesta 80€ y le aplico +25% y luego -10%,\n"
-        "cual es el precio final?"),
+        "Un articulo cuesta 80€. Le aplico una subida del 25%\n"
+        "y luego un descuento del 10%. Cual es el precio final?\n\n"
+        "# Claude razona:\n# 1) 80 x 1.25 = 100\n# 2) 100 x 0.90 = 90\n# Respuesta: 90€"),
     quiz("Como genera Claude sus respuestas?",
         "Cual descripcion es la correcta?",
         [("Busca la respuesta en internet", False, "No navega por defecto; predice el texto."),
          ("Predice el texto mas probable segun patrones aprendidos", True, "Correcto: genera por probabilidad, no por consulta."),
          ("Copia de una base de datos fija", False, "No copia de una base de datos; construye la respuesta.")]),
+    quiz("Que es una alucinacion?",
+        "Como se describe mejor?",
+        [("Un fallo de conexion a internet", False, "No es un problema tecnico de red."),
+         ("Una respuesta que suena segura pero es falsa", True, "Correcto: plausible en la forma, incorrecta en el fondo."),
+         ("Cuando el modelo se apaga", False, "No tiene que ver con apagarse.")]),
+    quiz("Como obtener respuestas mas consistentes?",
+        "Si quieres que varie menos entre intentos, que ayuda mas?",
+        [("Dar instrucciones precisas y formato fijo", True, "Correcto: acotar reduce la variabilidad."),
+         ("Repetir la pregunta a secas", False, "Sin mas precision, seguira variando."),
+         ("Pedir que sea creativo", False, "Eso aumenta la variabilidad, no la reduce.")]),
     challenge("Reto: el termino clave",
         "Como se llama cuando Claude responde con seguridad algo que es falso? (una palabra)",
         "alucinacion", "Se llama alucinacion (hallucination)."),
-    matching("Como razona",
+    challenge("Reto: unidad de texto",
+        "Como se llama el trozo de texto (~4 caracteres) que Claude procesa? (una palabra)",
+        "token", "Claude procesa el texto en tokens."),
+    matching("Como razona Claude",
         [("Genera por", "Probabilidad"),
+         ("Token", "Trozo de texto"),
+         ("Context window", "Memoria de trabajo"),
          ("Alucinacion", "Seguro pero falso"),
-         ("Mejor en complejo", "Paso a paso"),
-         ("Misma pregunta", "Puede variar")]),
-    badge("🧠 Mente de Claude", "Entiendes como razona Claude, por que alucina y como guiarlo."),
+         ("Mejor en complejo", "Paso a paso")]),
+    content("Resumen de la leccion",
+        "• Claude predice texto, no lo consulta: es autocompletado muy potente\n"
+        "• Procesa tokens y recuerda dentro del context window\n"
+        "• Puede alucinar: verifica datos criticos pese al tono seguro\n"
+        "• Razona mejor paso a paso y varia entre intentos\n"
+        "• Tiene fecha de corte: aporta tu el contexto reciente o privado\n\n"
+        "Entender esto te convierte en alguien que GUIA al modelo en vez de pelearse con el."),
+    badge("🧠 Mente de Claude", "Entiendes como razona Claude: prediccion, tokens, contexto, alucinaciones y razonamiento."),
 ])
 
 LESSONS["L1-4"] = (1, 4, "Diferencias clave con otros asistentes", [
     intro(),
     content("No todos los asistentes son iguales",
-        "Aunque muchos asistentes de IA se parecen por fuera, su comportamiento difiere segun como fueron entrenados.\n\n"
-        "Claude tiene varios rasgos que lo distinguen en el dia a dia."),
-    content("Estilo mas natural",
+        "Por fuera, muchos asistentes de IA se parecen: una caja de texto y respuestas. Pero por dentro se comportan distinto segun como fueron disenados y entrenados.\n\n"
+        "Conocer los rasgos de Claude te ayuda a sacarle partido y a saber cuando es la mejor herramienta para el trabajo."),
+    content("Rasgo 1: estilo mas natural",
         "Claude tiende a escribir de forma mas natural y menos formulaica.\n\n"
-        "Menos plantillas rigidas, menos 'como modelo de lenguaje...'; mas un texto que suena a redaccion humana cuidada."),
-    content("Honestidad calibrada",
-        "En lugar de proyectar falsa certeza, Claude tiende a reconocer lo que no sabe y a senalar sus suposiciones.\n\n"
-        "Tambien razona los matices en temas sensibles en vez de bloquear cualquier tema de golpe. Lo veras a fondo en el modulo 9 BONUS."),
-    content("Excelente en contextos largos",
+        "• Menos plantillas rigidas y muletillas tipo 'como modelo de lenguaje...'\n• Menos listas roboticas cuando un parrafo va mejor\n• Un tono que suena a redaccion humana cuidada\n\n"
+        "Esto se nota mucho en escritura, donde el resultado necesita menos 'limpieza' despues."),
+    content("Rasgo 2: honestidad calibrada",
+        "En lugar de proyectar falsa certeza, Claude tiende a:\n• Reconocer cuando no sabe algo\n• Senalar sus suposiciones\n• Distinguir hecho de opinion\n\n"
+        "No es perfecto (sigue pudiendo alucinar), pero su sesgo de diseno es hacia la honestidad, no hacia 'inventar para complacer'."),
+    content("Rasgo 3: matiz en temas sensibles",
+        "Donde otros asistentes bloquean cualquier tema delicado de golpe, Claude tiende a evaluar si hay dano real y a razonar los grises.\n\n"
+        "• Menos rechazos automaticos sin sentido\n• Mas disposicion a tratar temas complejos con cuidado\n\n"
+        "Esto viene de su entrenamiento con principios (Constitutional AI), que veras en el modulo 9 BONUS."),
+    content("Rasgo 4: excelente en contextos largos",
         "Claude mantiene la coherencia en documentos extensos: puedes pegar muchas paginas y seguir obteniendo respuestas consistentes.\n\n"
-        "Esto lo hace fuerte para analizar informes, contratos y bases de codigo completas."),
-    quiz("Cual es una ventaja de Claude?",
-        "Cual de estas describe mejor un rasgo distintivo de Claude?",
+        "Ideal para:\n• Analizar informes y contratos completos\n• Resumir libros o transcripciones largas\n• Entender bases de codigo enteras\n\n"
+        "Mantiene el hilo donde otros se pierden."),
+    content("Rasgo 5: fuerte en razonamiento y codigo",
+        "Claude destaca especialmente en:\n• Razonamiento paso a paso\n• Escritura y reescritura de calidad\n• Generacion y revision de codigo\n\n"
+        "No significa que sea el unico bueno en esto, pero son areas donde rinde de forma muy solida en el dia a dia."),
+    content("Que NO lo hace especial (sé realista)",
+        "Para mantener expectativas sanas, Claude (como todos) tambien:\n• Puede equivocarse con seguridad\n• No conoce eventos posteriores a su entrenamiento\n• No accede a tus datos sin que se los des\n• Varia entre respuestas\n\n"
+        "La ventaja no es 'ser infalible', sino el estilo, la honestidad y el manejo de contexto."),
+    content("Cuando Claude es la mejor opcion",
+        "Brilla especialmente cuando necesitas:\n• Texto de calidad con poco retoque\n• Trabajar con documentos largos\n• Honestidad sobre incertidumbre\n• Tratar temas matizados con cuidado\n\n"
+        "Para esas tareas, su forma de comportarse marca una diferencia practica real."),
+    example("Comprobar la honestidad calibrada",
+        "Prueba este prompt para ver el rasgo en accion:\n\n"
+        "\"Responde solo si estas seguro. Si no lo sabes o no puedes\n"
+        "verificarlo, dilo claramente en vez de inventar. Para cada dato,\n"
+        "indica tu nivel de confianza (alto/medio/bajo).\"\n\n"
+        "Veras como distingue lo que sabe de lo que supone."),
+    quiz("Cual es un rasgo distintivo de Claude?",
+        "Cual de estas describe mejor a Claude?",
         [("Tiene siempre razon", False, "Ningun modelo garantiza exactitud total."),
          ("Estilo natural y honestidad sobre lo que no sabe", True, "Correcto: redaccion natural y honestidad calibrada lo distinguen."),
          ("Nunca necesita contexto", False, "Como todos, rinde mejor con buen contexto.")]),
+    quiz("En que tarea brilla especialmente?",
+        "Cual aprovecha mejor sus fortalezas?",
+        [("Recordar la noticia de hoy sin buscar", False, "No conoce eventos posteriores a su entrenamiento."),
+         ("Analizar un contrato largo manteniendo coherencia", True, "Correcto: los contextos largos son una de sus fortalezas."),
+         ("Garantizar cero errores en cifras", False, "Puede alucinar; los datos hay que verificarlos.")]),
     challenge("Reto: rasgo distintivo",
         "Claude mantiene coherencia en documentos ___ (una palabra: cortos o largos).",
         "largos", "Destaca en contextos largos manteniendo la coherencia."),
@@ -178,62 +290,130 @@ LESSONS["L1-4"] = (1, 4, "Diferencias clave con otros asistentes", [
         [("Estilo", "Natural, no formulaico"),
          ("Honestidad", "Reconoce lo que no sabe"),
          ("Temas sensibles", "Razona matices"),
-         ("Fortaleza", "Contextos largos")]),
-    badge("🆚 Experto Comparativo", "Conoces que distingue a Claude de otros asistentes."),
+         ("Fortaleza", "Contextos largos"),
+         ("Tambien", "Puede equivocarse")]),
+    content("Resumen del modulo 1",
+        "Completaste los fundamentos:\n• Que es Claude y como accedes a el\n• La familia de modelos y como elegir\n• Como razona por dentro\n• Que lo distingue de otros asistentes\n\n"
+        "Ya tienes la base. En el modulo 2 entramos en lo practico: la interfaz, conversaciones, proyectos y configuracion."),
+    badge("🆚 Experto Comparativo", "Conoces que distingue a Claude y cuando es la mejor herramienta."),
 ])
 
 # ============================ MODULO 2 =====================================
 LESSONS["L2-2"] = (2, 2, "Anatomia de la interfaz", [
     intro(),
     content("Conoce tu espacio de trabajo",
-        "Saber donde esta cada cosa te hace mas rapido. La interfaz de Claude.ai se organiza en pocas zonas claras.\n\n"
-        "Las principales: el area de conversacion, el cuadro de mensaje, el historial de chats y los ajustes."),
+        "Saber donde esta cada cosa te hace mucho mas rapido y te quita el miedo a 'romper algo'.\n\n"
+        "La interfaz de Claude.ai se organiza en pocas zonas claras: el area de conversacion, el cuadro de mensaje, el historial lateral y los ajustes.\n\n"
+        "En esta leccion recorremos cada una y los detalles que la mayoria pasa por alto."),
     content("El area de conversacion",
-        "Es el centro: aqui aparecen tus mensajes y las respuestas de Claude.\n\n"
-        "• Se lee de arriba (mas antiguo) a abajo (mas reciente)\n• Los Artifacts (documentos, codigo) pueden abrirse en un panel aparte\n• Puedes copiar respuestas o regenerar si no te convencen"),
+        "Es el centro de la pantalla: aqui aparece el ida y vuelta entre tus mensajes y las respuestas de Claude.\n\n"
+        "• Se lee de arriba (mas antiguo) a abajo (mas reciente)\n• Cada respuesta puedes copiarla, regenerarla o editar tu mensaje\n• El hilo completo es el 'contexto' que Claude tiene presente\n\n"
+        "Piensa en ella como una conversacion real que queda escrita."),
     content("El cuadro de mensaje",
-        "Donde escribes. Aqui tambien puedes:\n• Adjuntar imagenes o archivos\n• Pegar texto largo para que Claude lo analice\n• Enviar con Enter (y salto de linea con Shift+Enter)\n\n"
-        "Es tu punto de entrada para todo."),
-    content("Historial y organizacion",
-        "• Cada conversacion se guarda en el historial lateral\n• Puedes renombrarlas para encontrarlas despues\n• Inicia un chat nuevo para temas distintos: mantiene el contexto limpio\n\n"
-        "Un historial ordenado te ahorra tiempo a futuro."),
+        "Donde escribes, abajo del todo. Es tu punto de entrada para TODO:\n\n"
+        "• Escribes tu prompt y envias con Enter\n• Shift+Enter hace salto de linea sin enviar (util para prompts largos)\n• Puedes adjuntar imagenes y archivos\n• Puedes pegar texto largo para que Claude lo analice\n\n"
+        "Dominar este cuadro es dominar el 90% del uso diario."),
+    content("Adjuntar archivos e imagenes",
+        "Claude no solo lee texto que escribes: puede trabajar con lo que subes.\n\n"
+        "• Imagenes: capturas, fotos, graficos, diagramas\n• Documentos: PDF, texto, hojas de datos\n• Varios a la vez para compararlos\n\n"
+        "Ej: sube una foto de una factura y pide 'extrae el total y la fecha'. Lo veras a fondo en los modulos de capacidades y casos de uso."),
+    content("Los Artifacts",
+        "Cuando Claude crea algo sustancial (un documento, codigo, una pagina), suele abrirlo en un panel aparte llamado Artifact.\n\n"
+        "• No se mezcla con el hilo de chat\n• Puedes leerlo, editarlo y descargarlo\n• Puedes pedir cambios sin reescribir todo\n\n"
+        "Es la diferencia entre 'una respuesta' y 'un entregable'. Dedicamos una leccion entera a esto en M5."),
+    content("El historial lateral",
+        "Cada conversacion se guarda automaticamente en una lista a un lado.\n\n"
+        "• Puedes volver a cualquier chat anterior\n• Renombralos para encontrarlos rapido ('Campana junio', 'Bug login')\n• Borra los que ya no necesites\n\n"
+        "Un historial ordenado es como un escritorio limpio: encuentras todo y trabajas mejor."),
+    content("Empezar un chat nuevo (cuando y por que)",
+        "El boton de 'nuevo chat' hace mas de lo que parece: empieza con contexto LIMPIO.\n\n"
+        "Abre uno nuevo cuando:\n• Cambias de tema por completo\n• El hilo se volvio muy largo y confuso\n• Quieres evitar que ideas viejas 'contaminen' la respuesta\n\n"
+        "Quédate en el mismo hilo cuando sigues con el mismo tema y quieres que recuerde lo anterior."),
+    content("Seleccionar modelo y opciones",
+        "Segun tu plan, la interfaz te deja elegir el modelo (Haiku/Sonnet/Opus) y activar funciones como busqueda web.\n\n"
+        "• El selector suele estar cerca del cuadro de mensaje\n• Cambiar de modelo afecta velocidad, capacidad y costo (recuerda M1-L2)\n\n"
+        "No tengas miedo de experimentar: cambiar opciones no rompe nada."),
+    example("Tu primera sesion ordenada",
+        "1. Abre un chat nuevo\n"
+        "2. Renombralo segun el tema: 'Plan de contenidos'\n"
+        "3. Adjunta el documento de referencia\n"
+        "4. Escribe tu peticion (Shift+Enter para varias lineas)\n"
+        "5. Si crea un documento, editalo en el Artifact\n"
+        "6. Tema distinto -> chat nuevo"),
     quiz("Donde se analiza un archivo que subes?",
         "Subes un PDF para que lo resuma. Donde interactuas principalmente?",
         [("En el cuadro de mensaje lo adjuntas y conversas sobre el", True, "Correcto: adjuntas en el cuadro de mensaje y trabajas en la conversacion."),
          ("En los ajustes de la cuenta", False, "Los ajustes no procesan archivos."),
          ("No se puede subir archivos", False, "Si se pueden adjuntar archivos e imagenes.")]),
+    quiz("Cuando conviene un chat nuevo?",
+        "Cual es el mejor momento para empezar conversacion nueva?",
+        [("Cuando cambias por completo de tema", True, "Correcto: contexto limpio evita que ideas viejas interfieran."),
+         ("Cuando quieres que recuerde lo anterior", False, "Para eso te quedas en el mismo hilo."),
+         ("Nunca, todo en un solo chat", False, "Un mega-hilo se vuelve confuso y pierde foco.")]),
     challenge("Reto: atajo util",
         "Que tecla combinas con Enter para hacer un salto de linea sin enviar? (una palabra)",
         "Shift", "Shift+Enter inserta salto de linea sin enviar el mensaje."),
     matching("Zonas de la interfaz",
         [("Conversacion", "Mensajes y respuestas"),
          ("Cuadro de mensaje", "Escribir y adjuntar"),
+         ("Artifact", "Documento en panel aparte"),
          ("Historial", "Chats guardados"),
          ("Chat nuevo", "Contexto limpio")]),
-    badge("🧭 Guia de la Interfaz", "Te mueves con soltura por la interfaz de Claude."),
+    content("Resumen de la leccion",
+        "• El area de conversacion es el hilo (y el contexto) de Claude\n"
+        "• El cuadro de mensaje: escribir, adjuntar, Shift+Enter\n"
+        "• Los Artifacts abren entregables editables en panel aparte\n"
+        "• El historial guarda y organiza tus chats\n"
+        "• Nuevo chat = contexto limpio para temas distintos\n\n"
+        "Con el mapa claro, en la siguiente leccion organizamos el trabajo con conversaciones, proyectos y estilos."),
+    badge("🧭 Guia de la Interfaz", "Te mueves con soltura por toda la interfaz de Claude."),
 ])
 
 LESSONS["L2-3"] = (2, 3, "Conversaciones, proyectos y estilos", [
     intro(),
-    content("Tres formas de organizar tu trabajo",
-        "Claude ofrece herramientas para que tu trabajo no sea un caos de chats sueltos: conversaciones, proyectos y estilos.\n\n"
-        "Usarlas bien marca la diferencia entre improvisar y tener un sistema."),
-    content("Conversaciones",
-        "Cada chat es una conversacion independiente con su propio contexto.\n\n"
-        "• Agrupa un tema en un mismo hilo\n• Abre uno nuevo para asuntos distintos\n• Renombralos para reencontrarlos\n\n"
-        "Mantener hilos enfocados mejora las respuestas."),
-    content("Proyectos",
-        "Un proyecto es un espacio que agrupa conversaciones y guarda contexto reutilizable (instrucciones, documentos de referencia).\n\n"
-        "Ideal cuando trabajas de forma recurrente en lo mismo: Claude 'recuerda' el contexto del proyecto en cada chat dentro de el."),
-    content("Estilos",
-        "Los estilos definen como responde Claude: tono, formato y nivel de detalle.\n\n"
-        "• Puedes elegir estilos predefinidos o crear el tuyo\n• Util para mantener una voz consistente (tu marca, tu forma de escribir)\n\n"
-        "Define una vez el estilo y se aplica a tus respuestas."),
+    content("De chats sueltos a un sistema",
+        "Mucha gente usa la IA como un monton de chats desordenados y pierde tiempo repitiendo contexto.\n\n"
+        "Claude ofrece tres herramientas para trabajar con metodo: conversaciones, proyectos y estilos.\n\n"
+        "Entender cuando usar cada una es lo que separa al usuario casual del que va en serio."),
+    content("Conversaciones: la unidad basica",
+        "Cada chat es una conversacion independiente con su propio contexto (su propia memoria de trabajo).\n\n"
+        "• Agrupa un tema en un mismo hilo para que Claude recuerde lo dicho\n• Abre uno nuevo para asuntos distintos\n• Renombralos para reencontrarlos\n\n"
+        "Hilos enfocados = respuestas mas precisas. Hilos gigantes mezclando temas = confusion."),
+    content("Buenas practicas con conversaciones",
+        "• Un tema, un hilo: 'Campana de verano' separado de 'Soporte tecnico'\n• Si el hilo se desvia mucho, abre uno nuevo\n• Resume tu mismo los puntos clave si la charla se alarga\n• Borra o archiva lo que ya no usas\n\n"
+        "Tratar los hilos con orden es como nombrar bien tus carpetas: tu yo futuro lo agradece."),
+    content("Proyectos: contexto reutilizable",
+        "Un proyecto es un espacio que agrupa conversaciones y guarda contexto que se aplica a TODAS ellas.\n\n"
+        "Puedes anadir:\n• Instrucciones permanentes (como debe comportarse)\n• Documentos de referencia (que siempre tenga a mano)\n\n"
+        "Asi, cada chat dentro del proyecto ya 'conoce' tu contexto sin que lo repitas."),
+    content("Cuando usar un proyecto",
+        "Los proyectos brillan en trabajo recurrente:\n\n"
+        "• Un cliente fijo con sus documentos y tono\n• Una asignatura o investigacion en curso\n• Tu negocio: productos, voz de marca, politicas\n• Un producto de software con su documentacion\n\n"
+        "Si te ves pegando el mismo contexto una y otra vez, eso deberia ser un proyecto."),
+    content("Estilos: tu voz consistente",
+        "Los estilos definen COMO responde Claude: tono, formato y nivel de detalle.\n\n"
+        "• Puedes elegir estilos predefinidos (formal, conciso, explicativo...)\n• Puedes crear el tuyo para que suene a TI o a tu marca\n\n"
+        "Lo defines una vez y se aplica a tus respuestas, sin tener que pedir el tono en cada mensaje."),
+    content("Como combinar las tres",
+        "Las tres herramientas se potencian juntas:\n\n"
+        "• Proyecto -> guarda el QUE (contexto y documentos)\n• Estilo -> fija el COMO (tono y formato)\n• Conversaciones -> cada tarea concreta dentro de ese marco\n\n"
+        "Ejemplo: proyecto 'Mi tienda' + estilo 'cercano y breve' + un hilo por cada campana."),
+    example("Montar tu sistema en 4 pasos",
+        "1. Crea un proyecto: 'Marketing de mi negocio'\n"
+        "2. Anade instrucciones: 'Publico: pymes. Tono: cercano, claro.'\n"
+        "3. Sube referencia: tu catalogo y tu guia de marca\n"
+        "4. Crea un estilo propio y, dentro, un hilo por cada tarea\n\n"
+        "A partir de ahi, cada chat ya sabe quien eres y como hablar."),
     quiz("Que usar para contexto reutilizable?",
         "Trabajas cada semana sobre el mismo cliente con documentos fijos. Que conviene usar?",
         [("Un chat nuevo cada vez sin mas", False, "Perderias el contexto una y otra vez."),
          ("Un proyecto que guarde el contexto", True, "Correcto: los proyectos conservan instrucciones y documentos reutilizables."),
          ("Cambiar de cuenta", False, "No tiene sentido para este caso.")]),
+    quiz("Para que sirve un estilo?",
+        "Que controla principalmente un estilo?",
+        [("La velocidad del modelo", False, "El estilo no cambia la velocidad."),
+         ("El tono, formato y nivel de detalle de las respuestas", True, "Correcto: define el COMO responde Claude."),
+         ("Los documentos que recuerda", False, "Eso lo hacen los proyectos, no los estilos.")]),
     challenge("Reto: la voz consistente",
         "Que funcion define el tono y formato de las respuestas de Claude? (una palabra)",
         "estilos", "Los estilos (o estilo) controlan tono, formato y detalle."),
@@ -241,31 +421,73 @@ LESSONS["L2-3"] = (2, 3, "Conversaciones, proyectos y estilos", [
         [("Conversacion", "Un tema, un hilo"),
          ("Proyecto", "Contexto reutilizable"),
          ("Estilo", "Tono y formato"),
-         ("Chat nuevo", "Tema distinto")]),
+         ("Chat nuevo", "Tema distinto"),
+         ("Combinar", "Proyecto + estilo + hilos")]),
+    content("Resumen de la leccion",
+        "• Conversaciones: la unidad basica; un tema por hilo\n"
+        "• Proyectos: guardan contexto y documentos reutilizables\n"
+        "• Estilos: fijan tu voz (tono y formato)\n"
+        "• Juntos: un sistema que deja de hacerte repetir contexto\n\n"
+        "Te falta un ultimo paso para dominar tu entorno: la configuracion esencial."),
     badge("🗂️ Organizador Pro", "Usas conversaciones, proyectos y estilos para trabajar con sistema."),
 ])
 
 LESSONS["L2-4"] = (2, 4, "Configuracion esencial", [
     intro(),
     content("Ajusta Claude a tu medida",
-        "Unos minutos en los ajustes mejoran toda tu experiencia. Vale la pena revisar las opciones clave una vez."),
+        "Unos minutos en los ajustes, una sola vez, mejoran TODAS tus conversaciones futuras.\n\n"
+        "En esta leccion repasamos las opciones que de verdad importan: perfil, privacidad, apariencia y plan.\n\n"
+        "No necesitas tocar todo: con revisar estos cuatro bloques vas sobrado."),
     content("Perfil e instrucciones personales",
-        "Puedes darle a Claude contexto sobre ti que aplique a todas las conversaciones:\n• Como te llamas y a que te dedicas\n• Tu idioma y tono preferido\n• Como te gusta recibir las respuestas\n\n"
-        "Asi no repites lo mismo en cada chat."),
+        "Puedes darle a Claude contexto sobre ti que se aplique a todas las conversaciones:\n\n"
+        "• Como te llamas y a que te dedicas\n• Tu idioma y tono preferido\n• Como te gusta recibir las respuestas (breves, con ejemplos, etc.)\n\n"
+        "Es el ajuste de mayor impacto: lo configuras una vez y dejas de repetir tu contexto en cada chat."),
+    content("Como escribir buenas instrucciones de perfil",
+        "Piensa en lo que repetirias en casi cada conversacion:\n\n"
+        "Ejemplos utiles:\n• 'Soy duena de una pyme de reposteria; explicame sin tecnicismos'\n• 'Responde en espanol, directo y conciso'\n• 'Cuando des codigo, anade comentarios'\n\n"
+        "Cuanto mas claras, mas se ajustan las respuestas a ti desde el primer mensaje."),
     content("Privacidad y datos",
-        "Revisa la configuracion de datos de tu cuenta:\n• Que se guarda y como\n• Opciones sobre el uso de tus conversaciones\n• Politica de tu organizacion si usas una cuenta de trabajo\n\n"
-        "Conocer estos ajustes te da control sobre tu informacion."),
+        "Tomate un momento para entender como se tratan tus datos:\n\n"
+        "• Que se guarda de tus conversaciones y por cuanto tiempo\n• Las opciones sobre el uso de tus datos que ofrece tu cuenta\n• La politica de tu empresa si usas una cuenta de trabajo\n\n"
+        "Conocer estos ajustes te da control. Profundizamos en privacidad en el modulo 7."),
+    content("Que NO compartir nunca",
+        "Independiente de la configuracion, evita pegar:\n\n"
+        "• Contrasenas, claves API o tokens\n• Datos sensibles de terceros sin necesidad\n• Informacion bajo acuerdos de confidencialidad\n\n"
+        "Regla simple: comparte solo lo imprescindible para la tarea. Lo veras como 'minimizacion' en M7."),
     content("Apariencia y accesibilidad",
-        "• Tema claro/oscuro segun tu comodidad visual\n• Tamano de texto si tu plataforma lo permite\n\n"
-        "Pequenos ajustes que reducen la fatiga en sesiones largas."),
-    content("Plan y limites",
-        "Conoce tu plan:\n• Que modelos y funciones incluye\n• Limites de uso si los hay\n\n"
-        "Saber tus limites te ayuda a planificar tareas grandes sin sorpresas."),
+        "Pequenos ajustes que reducen la fatiga en sesiones largas:\n\n"
+        "• Tema claro u oscuro segun tu comodidad visual\n• Tamano de texto si tu plataforma lo permite\n\n"
+        "El tema oscuro ayuda mucho de noche. No es estetica tonta: cuidar la vista te deja trabajar mas tiempo sin cansancio."),
+    content("Plan, modelos y limites",
+        "Conoce que incluye tu plan para planificar sin sorpresas:\n\n"
+        "• Que modelos y funciones tienes disponibles\n• Si hay limites de uso y de que tipo\n• Que funciones extra desbloquea un plan superior\n\n"
+        "Saber tus limites te ayuda a repartir tareas grandes y a decidir si te compensa subir de plan."),
+    content("Checklist de configuracion inicial",
+        "Hazlo una vez y olvidate:\n\n"
+        "✅ Rellenar instrucciones de perfil (quien eres, idioma, tono)\n"
+        "✅ Revisar ajustes de privacidad/datos\n"
+        "✅ Elegir tema claro/oscuro\n"
+        "✅ Mirar que incluye tu plan\n"
+        "✅ (Opcional) Crear un estilo propio\n\n"
+        "Cinco minutos que mejoran cada conversacion futura."),
+    example("Plantilla de instrucciones de perfil",
+        "Sobre mi:\n"
+        "- Me llamo [NOMBRE] y trabajo en [SECTOR].\n"
+        "- Idioma: espanol. Tono: cercano pero profesional.\n\n"
+        "Como quiero las respuestas:\n"
+        "- Directas y al grano, sin relleno.\n"
+        "- Con un ejemplo cuando ayude.\n"
+        "- Si no estas seguro de un dato, dimelo."),
     quiz("Para que sirven las instrucciones personales?",
         "Que ventaja dan las instrucciones de perfil?",
         [("Aplican contexto sobre ti a todas las conversaciones", True, "Correcto: evitan repetir tu contexto en cada chat."),
          ("Hacen el modelo mas rapido", False, "No afectan la velocidad."),
          ("Borran el historial", False, "No tienen que ver con borrar chats.")]),
+    quiz("Que NO deberias compartir nunca?",
+        "Cual es el dato mas peligroso de pegar en un chat?",
+        [("Tu idioma preferido", False, "Eso es justo lo que conviene indicar."),
+         ("Tu clave API o una contrasena", True, "Correcto: las credenciales nunca deben ir en un prompt."),
+         ("El sector en el que trabajas", False, "Es contexto util y de bajo riesgo.")]),
     challenge("Reto: comodidad visual",
         "Que ajuste cambias para reducir la fatiga visual de noche: el ___ oscuro. (una palabra)",
         "tema", "El tema oscuro (modo oscuro) ayuda en sesiones nocturnas."),
@@ -273,47 +495,86 @@ LESSONS["L2-4"] = (2, 4, "Configuracion esencial", [
         [("Instrucciones", "Contexto sobre ti"),
          ("Privacidad", "Control de datos"),
          ("Apariencia", "Tema y texto"),
-         ("Plan", "Modelos y limites")]),
-    badge("⚙️ Configurador Experto", "Tienes Claude ajustado a tu medida: perfil, privacidad y plan."),
+         ("Plan", "Modelos y limites"),
+         ("Nunca compartir", "Claves y contrasenas")]),
+    content("Resumen del modulo 2",
+        "Ya dominas tu entorno de trabajo:\n• La interfaz y sus zonas\n• Conversaciones, proyectos y estilos\n• La configuracion esencial a tu medida\n\n"
+        "Con las herramientas claras, en el modulo 3 empieza la magia de verdad: el arte de escribir buenos prompts."),
+    badge("⚙️ Configurador Experto", "Tienes Claude ajustado a tu medida: perfil, privacidad, apariencia y plan."),
 ])
 
 # ============================ MODULO 3 =====================================
 LESSONS["L3-1"] = (3, 1, "Anatomia de un buen prompt", [
     intro(),
+    content("El prompt es el volante",
+        "Un prompt es la instruccion que le das a Claude. Es, literalmente, el volante: la calidad de tu resultado depende casi por completo de como lo escribas.\n\n"
+        "La buena noticia: escribir buenos prompts no es magia ni programacion. Es una habilidad con reglas claras que cualquiera puede aprender.\n\n"
+        "Este modulo entero va de eso. Y empieza por la anatomia: las partes de las que se compone un buen prompt."),
     content("Las 4 partes de un buen prompt",
         "Un prompt solido casi siempre tiene estos cuatro ingredientes:\n\n"
-        "Rol o contexto\n• Quien debe \"ser\" Claude y para quien escribe\n• Ej: \"Eres un editor experto en textos legales\"\n\n"
-        "Tarea explicita\n• Que quieres exactamente, en un verbo claro\n• \"Resume\", \"Reescribe\", \"Clasifica\", \"Compara\"\n\n"
-        "Contexto y datos\n• El material sobre el que trabaja\n• Documentos, ejemplos, restricciones\n\n"
-        "Formato de salida\n• Como quieres la respuesta: lista, tabla, JSON, 3 parrafos"),
+        "1. Rol o contexto\n• Quien debe 'ser' Claude y para quien escribe\n\n"
+        "2. Tarea explicita\n• Que quieres exactamente, en un verbo claro\n\n"
+        "3. Contexto y datos\n• El material sobre el que trabaja\n\n"
+        "4. Formato de salida\n• Como quieres la respuesta\n\n"
+        "No siempre necesitas los cuatro, pero cuantos mas incluyas, mejor el resultado."),
+    content("Ingrediente 1: el rol",
+        "Decirle a Claude QUIEN debe ser orienta todo: vocabulario, profundidad y enfoque.\n\n"
+        "• 'Eres un editor experto en textos legales'\n• 'Eres un profesor de primaria paciente'\n• 'Eres un revisor de codigo senior'\n\n"
+        "El mismo encargo cambia por completo segun el rol. Es la forma mas rapida de subir la calidad sin escribir mucho mas."),
+    content("Ingrediente 2: la tarea",
+        "La tarea es el verbo: que quieres que HAGA, sin ambiguedad.\n\n"
+        "Verbos claros: resume, reescribe, clasifica, compara, traduce, genera, corrige.\n\n"
+        "❌ 'Mira esto' (no es una tarea)\n✅ 'Resume esto en 3 puntos'\n\n"
+        "Una tarea principal por prompt. Si necesitas varias, encadenalas en mensajes separados."),
+    content("Ingrediente 3: el contexto",
+        "El contexto es todo lo que Claude necesita saber pero no puede adivinar:\n\n"
+        "• El material a procesar (texto, datos)\n• La audiencia ('para directivos sin perfil tecnico')\n• El objetivo real detras de la tarea\n• Las restricciones ('sin tecnicismos', 'tono formal')\n\n"
+        "Regla mental: si un humano nuevo no podria hacer la tarea solo con tu texto, a Claude tambien le falta informacion."),
+    content("Ingrediente 4: el formato",
+        "Si no dices COMO quieres la respuesta, recibes texto libre dificil de reutilizar.\n\n"
+        "Especifica el entregable:\n• 'Lista de 5 vinetas, una frase cada una'\n• 'Tabla con columnas X, Y, Z'\n• 'JSON con estas claves'\n• 'Maximo 100 palabras'\n\n"
+        "El formato convierte una respuesta en algo listo para usar."),
     content("Por que funciona la estructura",
         "Claude no adivina tu intencion: responde a lo que escribes.\n\n"
-        "Un prompt vago produce una respuesta vaga. Un prompt estructurado reduce la ambiguedad y te da resultados repetibles.\n\n"
-        "Regla mental:\n• Si un humano nuevo no podria hacer la tarea solo con tu texto, a Claude tambien le faltara informacion.\n• Anade el contexto que tu das por sentado pero el modelo no conoce."),
-    example("Plantilla reutilizable",
+        "• Prompt vago -> respuesta vaga\n• Prompt estructurado -> resultado util y repetible\n\n"
+        "Cada parte que anades es una decision que Claude YA no tiene que adivinar. Y menos adivinanza significa resultados mas cercanos a lo que tenias en la cabeza."),
+    content("De lo generico a lo especifico",
+        "Comparacion directa:\n\n"
+        "Generico\n• 'Escribeme algo sobre productividad'\n• Resultado: texto plano, impredecible\n\n"
+        "Especifico\n• 'Escribe 5 consejos de productividad para trabajadores remotos con hijos, tono empatico, una frase cada uno'\n• Resultado: util y listo para usar\n\n"
+        "Mismo tema, mundos de diferencia."),
+    content("Trucos que elevan cualquier prompt",
+        "• Pon las instrucciones al principio y el material despues\n"
+        "• Usa delimitadores (comillas triples, ###, etiquetas) para separar el texto a procesar\n"
+        "• Pide un solo entregable por prompt\n"
+        "• Si la tarea es compleja, pide que piense paso a paso (M4)\n"
+        "• Da un ejemplo del resultado ideal cuando puedas\n\n"
+        "Pequenos habitos que, juntos, marcan una gran diferencia."),
+    example("Plantilla reutilizable (los 4 ingredientes)",
         "Rol: Eres un asistente de marketing B2B.\n\n"
         "Tarea: Escribe 3 asuntos de email para una campana de reactivacion.\n\n"
         "Contexto:\n- Producto: software de facturacion para pymes\n- Audiencia: clientes inactivos hace 90 dias\n- Tono: cercano, sin sonar desesperado\n\n"
         "Formato: lista numerada, max 8 palabras cada asunto."),
-    content("De lo generico a lo especifico",
-        "Comparacion directa:\n\n"
-        "Generico\n• \"Escribeme algo sobre productividad\"\n• Resultado: texto plano, impredecible\n\n"
-        "Especifico\n• \"Escribe 5 consejos de productividad para trabajadores remotos con hijos, en tono empatico, una frase cada uno\"\n• Resultado: util y listo para usar\n\n"
-        "Cada detalle que anades es una decision que Claude ya no tiene que adivinar."),
+    example("El mismo prompt, version pobre vs pro",
+        "# Pobre\nHazme un email de ventas.\n\n"
+        "# Pro\nRol: vendedor consultivo, no agresivo.\n"
+        "Tarea: escribe un email de primer contacto.\n"
+        "Contexto: vendo software de agendas a clinicas dentales;\n"
+        "el destinatario es el gerente; no me conoce.\n"
+        "Formato: max 90 palabras, con asunto, una sola llamada a la accion."),
     quiz("Detecta el ingrediente que falta",
-        "\"Reescribe este parrafo para que sea mas claro.\" Que le falta a este prompt para ser excelente?",
+        "'Reescribe este parrafo para que sea mas claro.' Que le falta para ser excelente?",
         [("Esta perfecto asi", False, "Le falta contexto: para quien, que tono, que longitud."),
-         ("Falta el formato/tono y la audiencia", True, "Correcto: definir audiencia y formato hace la salida util y predecible."),
-         ("Falta decir que use IA", False, "Eso es irrelevante; el modelo ya es la IA.")]),
-    content("Trucos que elevan cualquier prompt",
-        "• Pon las instrucciones al principio y el material despues\n"
-        "• Usa delimitadores: comillas triples, ### o etiquetas para separar el texto a procesar\n"
-        "• Pide un solo entregable por prompt\n"
-        "• Si la tarea es compleja, pide que piense paso a paso (lo veremos en M4)\n"
-        "• Da un ejemplo del resultado ideal cuando puedas"),
+         ("El formato/tono y la audiencia", True, "Correcto: definir audiencia y formato hace la salida util y predecible."),
+         ("Decir que use IA", False, "Eso es irrelevante; el modelo ya es la IA.")]),
+    quiz("Cual es el rol en este prompt?",
+        "'Eres un chef. Crea un menu de 3 platos.' Que parte es 'Eres un chef'?",
+        [("La tarea", False, "La tarea es 'crea un menu'."),
+         ("El rol", True, "Correcto: define quien debe ser Claude."),
+         ("El formato", False, "El formato seria como presentar el menu.")]),
     challenge("Reto: cuenta los ingredientes",
-        "Cuantos de los 4 ingredientes basicos (rol, tarea, contexto, formato) tiene este prompt: \"Eres un nutricionista. Crea un menu semanal vegetariano de 1800 kcal en formato tabla\"?",
-        "4", "Busca: rol (nutricionista), tarea (crear menu), contexto (vegetariano, 1800 kcal) y formato (tabla)."),
+        "Cuantos de los 4 ingredientes tiene: 'Eres un nutricionista. Crea un menu semanal vegetariano de 1800 kcal en formato tabla'?",
+        "4", "Rol (nutricionista), tarea (crear menu), contexto (vegetariano, 1800 kcal) y formato (tabla)."),
     matching("Conecta concepto y definicion",
         [("Rol", "Quien debe ser Claude"),
          ("Tarea", "El verbo de lo que pides"),
@@ -321,9 +582,11 @@ LESSONS["L3-1"] = (3, 1, "Anatomia de un buen prompt", [
          ("Formato", "Como quieres la respuesta"),
          ("Delimitadores", "Separan instruccion de material")]),
     content("Resumen de la leccion",
-        "Un buen prompt = rol + tarea + contexto + formato.\n\n"
-        "Antes de enviar, preguntate: que estoy dando por sentado que Claude no sabe?\n\n"
-        "En las siguientes lecciones profundizamos en contexto, ejemplos reales y los errores mas comunes."),
+        "• Un buen prompt = rol + tarea + contexto + formato\n"
+        "• El rol orienta, la tarea concreta, el contexto informa, el formato hace util\n"
+        "• Especifico siempre gana a generico\n"
+        "• Antes de enviar: que doy por sentado que Claude no sabe?\n\n"
+        "En la siguiente leccion profundizamos en el ingrediente que mas mueve la aguja: el contexto."),
     badge("🎯 Arquitecto de Prompts", "Dominas la anatomia de un buen prompt: rol, tarea, contexto y formato."),
 ])
 
@@ -362,6 +625,39 @@ LESSONS["L3-2"] = (3, 2, "Contexto, claridad y especificidad", [
          ("\"Max 100 palabras\"", "Especifico"),
          ("\"Tono pro\"", "Ambiguo"),
          ("\"Formal, sin jerga\"", "Especifico")]),
+    content("Contexto explicito vs implicito",
+        "Hay contexto que tu tienes en la cabeza (implicito) y que Claude no puede ver. Tu trabajo es hacerlo explicito.\n\n"
+        "Implicito (en tu cabeza): 'es para mi jefe, que odia los rodeos'.\nExplicito (en el prompt): 'el lector es un directivo que valora la brevedad'.\n\n"
+        "Cada vez que algo es 'obvio para ti', preguntate si esta escrito. Si no lo esta, Claude no lo sabe."),
+    content("La escalera de la especificidad",
+        "Sube peldanos hasta que la respuesta no tenga escapatoria:\n\n"
+        "1. 'Escribe un resumen' (vago)\n"
+        "2. 'Resume en 5 puntos' (mejor)\n"
+        "3. 'Resume en 5 puntos para un directivo' (audiencia)\n"
+        "4. '...destacando riesgos y decisiones' (foco)\n\n"
+        "Cada peldano elimina interpretaciones posibles y te acerca a lo que querias."),
+    content("Demasiado contexto tambien estorba",
+        "Ojo: especificidad no es escribir un testamento.\n\n"
+        "• Incluye lo que cambia la respuesta\n• Quita el relleno que no aporta\n• Un dato irrelevante puede despistar tanto como la falta de datos\n\n"
+        "El objetivo es contexto UTIL, no contexto largo. Calidad sobre cantidad."),
+    example("Mismo encargo, 3 niveles de contexto",
+        "Nivel 1: Traduce esto.\n\n"
+        "Nivel 2: Traduce esto al ingles.\n\n"
+        "Nivel 3: Traduce esto al ingles britanico, tono formal,\n"
+        "es para un email a un cliente corporativo. Manten los\n"
+        "nombres propios sin traducir.\n\n"
+        "El nivel 3 casi no deja margen de error."),
+    quiz("Que tipo de contexto falta mas a menudo?",
+        "Cual es el contexto que la gente olvida con mas frecuencia?",
+        [("La audiencia y el objetivo real", True, "Correcto: para quien y para que es lo que mas cambia la respuesta."),
+         ("El color de fondo", False, "Irrelevante para un texto."),
+         ("La marca del ordenador", False, "No influye en la tarea.")]),
+    content("Resumen de la leccion",
+        "• El contexto es lo que mas mueve la calidad de la respuesta\n"
+        "• Haz explicito lo que para ti es obvio\n"
+        "• Sube la escalera de especificidad hasta cerrar interpretaciones\n"
+        "• Pero incluye solo contexto util, no relleno\n\n"
+        "Lo veras todo junto en la siguiente leccion con ejemplos antes/despues."),
     badge("🔍 Maestro del Contexto", "Sabes dar contexto, claridad y especificidad para respuestas predecibles."),
 ])
 
@@ -401,6 +697,34 @@ LESSONS["L3-3"] = (3, 3, "Ejemplos practicos: antes y despues", [
          ("Tono equivocado", "Especificar tono"),
          ("Se inventa datos", "Dar el material fuente"),
          ("Formato inutil", "Pedir tabla/lista")]),
+    content("Caso 4: Generar ideas",
+        "ANTES\n• 'Dame ideas de marketing'\n\n"
+        "DESPUES\n• 'Dame 10 ideas de marketing de bajo presupuesto para una cafeteria local que quiere atraer publico joven entre semana. Una linea cada una.'\n\n"
+        "Definir presupuesto, negocio, publico y momento convierte ideas genericas en ideas accionables."),
+    content("Caso 5: Aprender un tema",
+        "ANTES\n• 'Explicame las hipotecas'\n\n"
+        "DESPUES\n• 'Explicame como funciona una hipoteca a alguien que compra su primera casa, sin jerga financiera, con un ejemplo numerico simple.'\n\n"
+        "La audiencia ('primera casa', 'sin jerga') y el ejemplo cambian totalmente la utilidad."),
+    content("El patron comun de todos los casos",
+        "Fijate que en cada 'despues' anadimos lo mismo:\n\n"
+        "• Para QUIEN es (audiencia)\n• Con que FOCO (que destacar)\n• En que FORMATO (longitud, estructura)\n• Con que TONO\n\n"
+        "Memoriza ese patron: audiencia + foco + formato + tono. Es tu receta para mejorar casi cualquier prompt."),
+    example("Plantilla universal antes/despues",
+        "Objetivo: <que quieres lograr>\n"
+        "Audiencia: <para quien>\n"
+        "Material: <<<\n  pega aqui el texto/datos\n>>>\n"
+        "Foco: <que destacar>\n"
+        "Formato: <longitud y estructura del resultado>"),
+    quiz("Cual es el patron para mejorar un prompt?",
+        "Que conjunto de elementos eleva casi cualquier prompt?",
+        [("Audiencia + foco + formato + tono", True, "Correcto: ese es el patron que repetimos en todos los casos."),
+         ("Mas palabras y cortesia", False, "El relleno no mejora el resultado."),
+         ("Pedir que sea creativo", False, "Demasiado vago; no orienta.")]),
+    content("Resumen de la leccion",
+        "• Comparar antes/despues es la forma mas rapida de aprender\n"
+        "• El salto de calidad viene de anadir audiencia, foco, formato y tono\n"
+        "• Reutiliza la plantilla universal en tu dia a dia\n\n"
+        "Ya sabes que hacer bien. En la ultima leccion del modulo vemos que NO hacer: los errores comunes."),
     badge("🛠️ Refinador de Prompts", "Conviertes prompts genericos en instrucciones que dan resultados listos para usar."),
 ])
 
@@ -441,6 +765,30 @@ LESSONS["L3-4"] = (3, 4, "Errores comunes a evitar", [
          ("Ambiguedad", "Feedback concreto"),
          ("Datos inventados", "Verificar y citar"),
          ("Salida desordenada", "Definir formato")]),
+    content("Error 6: no iterar",
+        "El mayor error invisible: pedir una vez, conformarte y cerrar.\n\n"
+        "Los mejores resultados casi nunca salen al primer intento. Claude esta disenado para iterar:\n• 'Mas corto'\n• 'Cambia el tono'\n• 'Desarrolla el punto 2'\n\n"
+        "Trata el primer resultado como un borrador, no como la respuesta final."),
+    content("Error 7: pelearse en vez de reformular",
+        "Si tras 2-3 intentos no mejora, no insistas con lo mismo: reformula desde cero.\n\n"
+        "• Cambia el enfoque del prompt\n• Anade un ejemplo del resultado ideal\n• Divide la tarea en partes\n\n"
+        "A veces, empezar un chat nuevo y limpio resuelve lo que mil correcciones no lograban."),
+    content("La checklist anti-errores",
+        "Antes de dar por bueno un prompt, repasa:\n\n"
+        "✅ Una sola tarea principal\n"
+        "✅ Contexto y material incluidos\n"
+        "✅ Audiencia y formato definidos\n"
+        "✅ Datos criticos a verificar identificados\n"
+        "✅ Plan B si el resultado no convence (iterar/reformular)\n\n"
+        "Cinco comprobaciones que evitan el 90% de los problemas."),
+    quiz("Que hacer si el resultado no convence tras varios intentos?",
+        "Llevas 3 correcciones y no mejora. Que es lo mas sensato?",
+        [("Repetir la misma correccion mas fuerte", False, "Insistir igual no suele cambiar nada."),
+         ("Reformular desde cero o empezar un chat limpio", True, "Correcto: cambiar el enfoque suele desbloquear."),
+         ("Rendirse y hacerlo a mano", False, "Antes de eso, reformular casi siempre funciona.")]),
+    content("Resumen del modulo 3",
+        "Ya dominas el arte del prompt:\n• La anatomia (rol, tarea, contexto, formato)\n• El poder del contexto y la especificidad\n• Casos reales antes/despues\n• Los errores a evitar y como iterar\n\n"
+        "En el modulo 4 subimos de nivel con tecnicas avanzadas: razonamiento, few-shot, etiquetas y roles."),
     badge("🚦 Detector de Errores", "Reconoces y evitas los errores de prompting mas comunes."),
 ])
 
@@ -477,6 +825,35 @@ LESSONS["L4-1"] = (4, 1, "Cadenas de razonamiento", [
          ("Mejor en", "Logica y calculos"),
          ("Beneficio", "Menos errores"),
          ("Evitar en", "Tareas triviales")]),
+    content("Por que funciona el razonamiento explicito",
+        "Cuando Claude escribe su razonamiento, cada paso se apoya en el anterior.\n\n"
+        "• Reduce saltos logicos erroneos\n• Hace visibles los supuestos\n• Permite que se corrija a si mismo a mitad de camino\n\n"
+        "Es la diferencia entre soltar un numero y mostrar el desarrollo de un problema de mates: con desarrollo, hay menos errores."),
+    content("Formas de activar CoT",
+        "Frases que disparan el razonamiento paso a paso:\n\n"
+        "• 'Piensa paso a paso antes de responder'\n• 'Muestra tu razonamiento y luego la conclusion'\n• 'Desglosa el problema en partes'\n• 'Antes de decidir, lista pros y contras'\n\n"
+        "Todas comparten lo mismo: piden el proceso, no solo el resultado."),
+    content("CoT en decisiones del mundo real",
+        "No es solo para mates. Aplicalo a:\n\n"
+        "• Elegir entre proveedores: 'puntua cada uno por precio, calidad y plazo, luego recomienda'\n• Diagnosticar un problema: 'lista causas posibles y descartalas una a una'\n• Planificar: 'desglosa el objetivo en pasos ordenados'\n\n"
+        "Ver el razonamiento te deja auditar la decision, no solo aceptarla."),
+    example("CoT estructurado para una decision",
+        "Tengo que elegir CRM para mi pyme. Antes de recomendar:\n"
+        "1. Lista mis 4 criterios (precio, facilidad, soporte, integraciones)\n"
+        "2. Puntua cada opcion del 1 al 5 en cada criterio\n"
+        "3. Suma y explica el ganador\n"
+        "Opciones: A, B y C. Razona paso a paso."),
+    quiz("Que pide realmente el chain-of-thought?",
+        "Cual es la esencia de la tecnica?",
+        [("Pedir el proceso de razonamiento, no solo el resultado", True, "Correcto: el valor esta en hacer explicito el razonamiento."),
+         ("Pedir respuestas mas largas porque si", False, "No se trata de longitud, sino de razonar."),
+         ("Repetir la pregunta varias veces", False, "Eso no es CoT.")]),
+    content("Resumen de la leccion",
+        "• CoT = pedir que razone paso a paso antes de concluir\n"
+        "• Reduce errores en logica, calculos y decisiones\n"
+        "• Sirve tanto para mates como para elegir y planificar\n"
+        "• Evitalo en tareas triviales: solo anade longitud\n\n"
+        "Siguiente tecnica: ensenar con ejemplos (few-shot)."),
     badge("🧠 Pensador en Cadena", "Sabes activar el razonamiento paso a paso para tareas complejas."),
 ])
 
@@ -512,6 +889,35 @@ LESSONS["L4-2"] = (4, 2, "Few-shot: ensenar con ejemplos", [
          ("Few-shot", "Con ejemplos"),
          ("Ideal", "2-3 ejemplos"),
          ("Clave", "Formato identico")]),
+    content("Few-shot para fijar un estilo",
+        "No solo sirve para clasificar: tambien para clonar un tono o formato.\n\n"
+        "Dale 2-3 ejemplos de tu estilo de escritura y pide que continue igual.\n\n"
+        "• Titulares de tu marca\n• El formato de tus fichas de producto\n• El tono de tus respuestas de soporte\n\n"
+        "Es la forma mas rapida de que suene a TI sin describir tu estilo con palabras."),
+    content("La consistencia del formato es clave",
+        "El error mas comun en few-shot: ejemplos con formatos distintos.\n\n"
+        "Si un ejemplo usa '-> POSITIVO' y otro 'Resultado: positivo', Claude no sabe cual imitar.\n\n"
+        "Regla: todos los ejemplos identicos en estructura. La separacion input/output siempre igual. La consistencia es lo que ensena el patron."),
+    content("Cuando few-shot no es necesario",
+        "No metas ejemplos por inercia:\n\n"
+        "• Si una instruccion clara basta -> no hacen falta\n• Si la tarea es simple -> ahorras tokens sin ellos\n• Si el formato es obvio -> con describirlo vale\n\n"
+        "Usa few-shot cuando mostrar es mas facil que explicar, o cuando el formato es complejo."),
+    example("Few-shot para clonar tono de marca",
+        "Escribe descripciones de producto en NUESTRO estilo:\n\n"
+        "Producto: taza termica -> 'Tu cafe, caliente hasta la ultima gota. Sin dramas.'\n"
+        "Producto: mochila -> 'Todo lo tuyo, a la espalda y sin peso de mas.'\n\n"
+        "Producto: botella de agua ->"),
+    quiz("Cual es el error mas comun en few-shot?",
+        "Que estropea mas un prompt con ejemplos?",
+        [("Que los ejemplos tengan formatos distintos entre si", True, "Correcto: sin consistencia, Claude no sabe que patron imitar."),
+         ("Usar exactamente 3 ejemplos", False, "2-3 es justo lo recomendado."),
+         ("Separar input y output", False, "Eso es buena practica, no un error.")]),
+    content("Resumen de la leccion",
+        "• Few-shot = ensenar con ejemplos de entrada/salida\n"
+        "• 2-3 ejemplos consistentes suelen bastar\n"
+        "• Sirve para clasificar, extraer y clonar estilo/tono\n"
+        "• La consistencia del formato es lo que ensena el patron\n\n"
+        "Siguiente: estructurar prompts complejos con etiquetas."),
     badge("📚 Profesor por Ejemplos", "Dominas el few-shot para fijar formato y estilo con ejemplos."),
 ])
 
@@ -549,6 +955,35 @@ LESSONS["L4-3"] = (4, 3, "Etiquetas XML para estructurar", [
          ("<tarea>", "Que hacer"),
          ("<documento>", "Material fuente"),
          ("<formato>", "Forma de la salida")]),
+    content("Etiquetas mas utiles en la practica",
+        "No necesitas memorizar muchas. Con estas vas sobrado:\n\n"
+        "• <instrucciones> ... </instrucciones>\n• <contexto> ... </contexto>\n• <documento> ... </documento>\n• <ejemplos> ... </ejemplos>\n• <formato> ... </formato>\n\n"
+        "Elige nombres claros en tu idioma; lo importante es que separen partes distintas."),
+    content("El problema que resuelven de verdad",
+        "Cuando pegas texto largo sin etiquetas, Claude puede confundir tus DATOS con tus INSTRUCCIONES.\n\n"
+        "Ej: pegas un email que dice 'ignora lo anterior' y sin etiquetas Claude podria obedecerlo.\n\n"
+        "Con <documento>...</documento>, queda claro: 'esto es material a procesar, no ordenes para ti'. Es tambien una proteccion basica."),
+    content("Salida etiquetada para automatizar",
+        "Pedir la respuesta dentro de etiquetas facilita procesarla con codigo:\n\n"
+        "'Devuelve el resultado dentro de <json>...</json> y nada fuera.'\n\n"
+        "Luego tu programa extrae lo que hay entre <json> y </json>. Imprescindible cuando conectas Claude a una app (lo veras en M8)."),
+    example("Prompt completo bien etiquetado",
+        "<rol>Eres analista de soporte.</rol>\n"
+        "<instrucciones>Clasifica el ticket por urgencia.</instrucciones>\n"
+        "<reglas>alta=produccion caida; media=un usuario; baja=cosmetico</reglas>\n"
+        "<documento>\n  ...texto del ticket...\n</documento>\n"
+        "<formato>Devuelve solo: <urgencia>VALOR</urgencia></formato>"),
+    quiz("Por que protegen las etiquetas?",
+        "Que riesgo reducen al envolver el material en <documento>?",
+        [("Que Claude confunda tus datos con instrucciones", True, "Correcto: separan claramente material de ordenes."),
+         ("Que la respuesta sea mas larga", False, "No afectan la longitud."),
+         ("Que el modelo vaya mas rapido", False, "No cambian la velocidad.")]),
+    content("Resumen de la leccion",
+        "• Las etiquetas XML separan instruccion, datos, ejemplos y formato\n"
+        "• Evitan que Claude confunda material con ordenes\n"
+        "• La salida etiquetada facilita automatizar con codigo\n"
+        "• Pocas etiquetas claras bastan para prompts profesionales\n\n"
+        "Ultima tecnica del modulo: roles, personas y restricciones."),
     badge("🏷️ Estructurador XML", "Usas etiquetas para organizar prompts complejos y salidas procesables."),
 ])
 
@@ -589,6 +1024,33 @@ LESSONS["L4-4"] = (4, 4, "Roles, personas y restricciones", [
          ("Persona", "Rol con personalidad"),
          ("Restriccion", "Lo que no debe hacer"),
          ("System prompt", "Reglas globales fijas")]),
+    content("Un rol no es solo una profesion",
+        "Puedes dar roles muy especificos para afinar el resultado:\n\n"
+        "• 'Eres un editor esceptico que busca agujeros en el argumento'\n• 'Eres un nino de 8 anos curioso' (para simplificar)\n• 'Eres un traductor que prioriza el sentido sobre la literalidad'\n\n"
+        "Cuanto mas concreto el rol, mas se ajusta la respuesta a lo que buscas."),
+    content("Restricciones positivas y negativas",
+        "Define tanto lo que SI como lo que NO:\n\n"
+        "Positivas (haz):\n• 'Responde en max 3 frases'\n• 'Usa ejemplos cotidianos'\n\n"
+        "Negativas (no hagas):\n• 'No uses jerga tecnica'\n• 'No inventes datos; si no sabes, dilo'\n\n"
+        "Las restricciones negativas suelen ser las que mas mejoran el control."),
+    content("Roles para obtener varias perspectivas",
+        "Truco potente: pide a Claude que adopte varios roles para un mismo tema.\n\n"
+        "'Analiza esta idea de negocio desde 3 roles: un inversor cauto, un cliente ideal y un competidor.'\n\n"
+        "Obtienes una vision 360 que un solo punto de vista no da. Ideal para decisiones y revisiones."),
+    example("System prompt completo (rol + persona + restricciones)",
+        "Eres 'Aria', asistente de una clinica dental.\n"
+        "- Persona: calmada, cercana, tranquilizadora.\n"
+        "- Haz: responde dudas de citas y cuidados basicos.\n"
+        "- No hagas: nunca des diagnosticos; deriva al dentista.\n"
+        "- Formato: max 4 frases, en espanol, sin tecnicismos."),
+    quiz("Cual restriccion da mas control?",
+        "Cual de estas acota mejor el comportamiento?",
+        [("'Hazlo bien'", False, "Es vago; no acota nada."),
+         ("'No des diagnosticos; deriva al profesional'", True, "Correcto: una restriccion negativa clara y segura."),
+         ("'Se util'", False, "Demasiado generico para controlar.")]),
+    content("Resumen del modulo 4",
+        "Ya manejas las tecnicas avanzadas:\n• Chain-of-thought para razonar paso a paso\n• Few-shot para ensenar con ejemplos\n• Etiquetas XML para estructurar\n• Roles, personas y restricciones para controlar\n\n"
+        "Con esto escribes prompts de nivel profesional. En el modulo 5 pasamos a las capacidades y herramientas de Claude."),
     badge("🎭 Director de Roles", "Usas roles, personas y restricciones para controlar el comportamiento de Claude."),
 ])
 
@@ -624,6 +1086,35 @@ LESSONS["L5-1"] = (5, 1, "Artifacts: documentos vivos", [
          ("Ideal para", "Documentos y codigo"),
          ("Ventaja", "Iterar sin reescribir"),
          ("Evitar en", "Respuestas cortas")]),
+    content("Tipos de Artifact que puedes pedir",
+        "Claude crea Artifacts de muchas clases:\n\n"
+        "• Documentos y textos largos\n• Codigo (Python, JS, etc.)\n• Paginas y componentes web (HTML)\n• Tablas y planes estructurados\n• Diagramas y visualizaciones\n\n"
+        "Si es algo que querras copiar, descargar o seguir editando, probablemente sera un Artifact."),
+    content("Iterar: la verdadera ventaja",
+        "Lo potente no es crear, es REFINAR sobre lo mismo.\n\n"
+        "• 'Acorta la introduccion'\n• 'Cambia el titulo por algo mas directo'\n• 'Anade una seccion de riesgos'\n\n"
+        "Claude edita el mismo Artifact en vez de empezar de cero. Es como trabajar con un companero que reescribe el documento contigo, no que te manda uno nuevo cada vez."),
+    content("Artifacts + tu flujo de trabajo",
+        "Un Artifact terminado lo puedes:\n\n"
+        "• Copiar a tu editor o documento\n• Descargar como archivo\n• Pegar en tu web o herramienta\n\n"
+        "Piensa en el chat como el taller y el Artifact como la pieza que sale lista para llevar."),
+    example("Crear e iterar un Artifact",
+        "1) 'Crea una propuesta de proyecto de 1 pagina con objetivo,\n"
+        "   alcance, plazos y presupuesto. Deja importes como [PENDIENTE].'\n\n"
+        "2) 'Anade una seccion de riesgos con 3 vinetas.'\n\n"
+        "3) 'Hazlo mas formal y acorta el alcance a 2 frases.'\n\n"
+        "Cada paso edita el MISMO documento."),
+    quiz("Cual es la mayor ventaja de los Artifacts?",
+        "Que los hace especialmente utiles?",
+        [("Iterar sobre la misma pieza sin reescribir todo", True, "Correcto: refinas el mismo entregable paso a paso."),
+         ("Que cambian de color solos", False, "No es una ventaja real ni el punto."),
+         ("Que borran el chat", False, "No tienen que ver con borrar nada.")]),
+    content("Resumen de la leccion",
+        "• Los Artifacts son entregables editables en panel aparte\n"
+        "• Sirven para documentos, codigo, webs, tablas y mas\n"
+        "• Su poder real es iterar sin reescribir\n"
+        "• Listos para copiar o descargar a tu flujo\n\n"
+        "Siguiente capacidad: dar a Claude acceso a informacion actual con la busqueda web."),
     badge("📄 Creador de Artifacts", "Sabes cuando y como usar Artifacts para crear contenido reutilizable."),
 ])
 
@@ -654,6 +1145,35 @@ LESSONS["L5-2"] = (5, 2, "Busqueda web e investigacion", [
          ("No hace falta en", "Conocimiento estable"),
          ("Buena practica", "Pedir fuentes"),
          ("Riesgo a evitar", "Confiar sin verificar")]),
+    content("Senales de que necesitas busqueda",
+        "Activa busqueda cuando tu pregunta incluya pistas de actualidad:\n\n"
+        "• 'Ahora', 'hoy', 'ultimo', 'reciente', 'actual'\n• Precios, disponibilidad, horarios\n• Quien ocupa un cargo, resultados, noticias\n\n"
+        "Si la respuesta correcta pudo cambiar desde el ano pasado, casi seguro necesitas datos frescos."),
+    content("Investigacion multi-fuente",
+        "Para temas amplios, pide a Claude que vaya mas alla de un solo resultado:\n\n"
+        "• 'Consulta varias fuentes y dime en que coinciden y en que no'\n• 'Resume el estado actual del tema citando cada dato'\n• 'Senala si hay opiniones encontradas'\n\n"
+        "Contrastar fuentes da una vision mas fiable que fiarte de la primera pagina."),
+    content("La verificacion sigue siendo tuya",
+        "La busqueda reduce errores, pero no los elimina:\n\n"
+        "• Pide siempre los enlaces/fuentes\n• Contrasta cifras importantes en la fuente original\n• Desconfia si todo viene de un solo sitio\n\n"
+        "Tu criterio es el filtro final. Claude busca y resume; tu decides que es fiable."),
+    example("Pedir investigacion con fuentes",
+        "Investiga las opciones actuales de [TEMA].\n"
+        "- Consulta al menos 3 fuentes distintas.\n"
+        "- Resume en una tabla: opcion, ventaja, inconveniente.\n"
+        "- Cita el enlace de cada dato.\n"
+        "- Marca con (?) cualquier dato que no puedas confirmar."),
+    quiz("Cuando NO necesitas busqueda web?",
+        "En cual caso aporta poco?",
+        [("Precio de un vuelo manana", False, "Cambia constantemente: necesita datos actuales."),
+         ("Explicar que es la fotosintesis", True, "Correcto: conocimiento estable, no requiere busqueda."),
+         ("Quien gano el partido de ayer", False, "Evento reciente: necesita busqueda.")]),
+    content("Resumen de la leccion",
+        "• La busqueda web da acceso a informacion actual\n"
+        "• Usala para datos que cambian; no para conocimiento estable\n"
+        "• Para temas amplios, contrasta varias fuentes\n"
+        "• Pide enlaces y verifica lo critico tu mismo\n\n"
+        "Siguiente: convertir respuestas en archivos listos para usar."),
     badge("🌐 Investigador Web", "Sabes cuando usar busqueda web y como verificar la informacion."),
 ])
 
@@ -689,6 +1209,35 @@ LESSONS["L5-3"] = (5, 3, "Creacion de archivos", [
          ("Datos y formulas", ".xlsx"),
          ("Diapositivas", ".pptx"),
          ("Script", ".py / .js")]),
+    content("Del dato suelto al entregable",
+        "El verdadero valor: pegas informacion en bruto y recibes algo presentable.\n\n"
+        "• Notas desordenadas -> documento estructurado\n• Numeros pegados -> Excel con tabla y totales\n• Puntos sueltos -> presentacion de diapositivas\n\n"
+        "Tu aportas la materia prima; Claude la convierte en el formato final."),
+    content("Detalles que mejoran el archivo",
+        "Cuando pidas un archivo, especifica:\n\n"
+        "• La estructura (columnas, secciones, pestanas)\n• Datos de ejemplo si quieres verlo relleno\n• Reglas: 'que los totales cuadren con formula'\n• Que dejar como [PENDIENTE] para completar tu\n\n"
+        "Cuanto mas claro el molde, menos retoques despues."),
+    content("Revisa antes de usar",
+        "Un archivo generado es un borrador muy avanzado, no un producto final infalible:\n\n"
+        "• Verifica numeros y formulas criticas\n• Comprueba que el formato abre bien en tu programa\n• Ajusta lo que no encaje con tu caso\n\n"
+        "Te ahorra el 90% del trabajo; el 10% de revision sigue siendo tuyo."),
+    example("Pedir un Excel util",
+        "Crea una hoja de calculo (.xlsx) de presupuesto mensual.\n"
+        "Columnas: categoria, presupuesto, gasto real, diferencia.\n"
+        "- Filas de ejemplo para 5 categorias.\n"
+        "- Fila de totales con formula de suma.\n"
+        "- Una pestana 'resumen' con el total por categoria."),
+    quiz("Que formato pedir para datos tabulares?",
+        "Necesitas analizar numeros en columnas y filas. Que encaja mejor?",
+        [(".pptx", False, "Es para presentaciones, no para analizar datos."),
+         (".xlsx o .csv", True, "Correcto: formatos de hoja de calculo para datos tabulares."),
+         (".txt", False, "Texto plano no estructura tablas con formulas.")]),
+    content("Resumen de la leccion",
+        "• Claude genera documentos, hojas, presentaciones, PDF y codigo\n"
+        "• Indica formato y estructura exactos\n"
+        "• Convierte datos en bruto en entregables presentables\n"
+        "• Revisa numeros y formato antes de usarlo\n\n"
+        "Siguiente: como funciona la memoria de Claude entre conversaciones."),
     badge("🗂️ Generador de Archivos", "Sabes pedir archivos listos para usar en el formato correcto."),
 ])
 
@@ -718,6 +1267,33 @@ LESSONS["L5-4"] = (5, 4, "Memoria y conversaciones pasadas", [
          ("Hilo nuevo", "Empieza limpio"),
          ("Context window", "Memoria del hilo"),
          ("Proyectos", "Contexto reutilizable")]),
+    content("Dos tipos de memoria",
+        "Conviene distinguir:\n\n"
+        "Memoria del hilo (siempre)\n• Todo lo dicho en la conversacion actual, hasta el limite del contexto\n\n"
+        "Memoria entre hilos (segun funcion)\n• Recordar chats anteriores requiere funciones de memoria o proyectos\n\n"
+        "Por defecto, cada conversacion nueva arranca limpia: no asumas que recuerda lo de ayer."),
+    content("Cuando el hilo se hace muy largo",
+        "Si una conversacion crece mucho, lo mas antiguo puede salir del context window.\n\n"
+        "Senales: Claude 'olvida' algo que dijiste al principio.\n\n"
+        "Soluciones:\n• Resume tu mismo los puntos clave y pegalos\n• Empieza un hilo nuevo con un resumen de contexto\n• Manten los hilos enfocados en un tema"),
+    content("Proyectos: memoria reutilizable",
+        "Para continuidad real, usa proyectos:\n\n"
+        "• Guardan instrucciones y documentos que se aplican a todos sus chats\n• No tienes que repetir el contexto cada vez\n• Ideal para trabajo recurrente (un cliente, un tema)\n\n"
+        "Es la forma practica de que Claude 'recuerde' tu contexto de forma estable."),
+    example("Dar continuidad con un resumen",
+        "Si retomas un tema en un chat nuevo, empieza asi:\n\n"
+        "'Contexto de lo que llevamos: estoy escribiendo un curso de\n"
+        "Claude. Ya definimos 9 modulos. Ahora quiero pulir el modulo 5.\n"
+        "Con eso en mente, ayudame a...'\n\n"
+        "Un parrafo de contexto reconstruye la continuidad."),
+    quiz("Que pasa al abrir una conversacion nueva por defecto?",
+        "Sin funciones de memoria, como arranca?",
+        [("Recuerda todos tus chats anteriores", False, "No por defecto; arranca limpia."),
+         ("Empieza sin memoria del hilo anterior salvo que des contexto", True, "Correcto: hay que aportar contexto o usar proyectos/memoria."),
+         ("Borra tus archivos", False, "Abrir un chat no borra nada.")]),
+    content("Resumen del modulo 5",
+        "Ya conoces las capacidades y herramientas:\n• Artifacts para entregables editables\n• Busqueda web para datos actuales\n• Creacion de archivos\n• Como funciona la memoria y el contexto\n\n"
+        "En el modulo 6 lo aplicamos a casos de uso practicos del dia a dia."),
     badge("🧩 Gestor de Contexto", "Entiendes como funciona la memoria de Claude y como mantener continuidad."),
 ])
 
@@ -755,6 +1331,38 @@ LESSONS["L6-1"] = (6, 1, "Escritura y comunicacion", [
          ("Mejorar", "Pega y pide cambios"),
          ("Adaptar", "Cambia de canal"),
          ("Elegir mejor", "Pide variantes")]),
+    content("El flujo de escritura asistida",
+        "Una forma fiable de escribir con Claude:\n\n"
+        "1. Borrador: 'escribe una primera version de...'\n"
+        "2. Critica: 'que mejorarias de este texto?'\n"
+        "3. Ajuste: 'aplica esos cambios y acorta un 20%'\n"
+        "4. Pulido: 'revisa tono y gramatica'\n\n"
+        "Trabajar por capas da mejores resultados que esperar el texto perfecto al primer intento."),
+    content("Romper el bloqueo de la pagina en blanco",
+        "El mayor regalo de Claude al escribir: nunca empiezas de cero.\n\n"
+        "• 'Dame 3 formas distintas de abrir este articulo'\n• 'Hazme un esquema y lo relleno yo'\n• 'Escribe un borrador feo, ya lo pulo'\n\n"
+        "Es mas facil mejorar algo que existe que crear de la nada. Usa Claude para tener siempre con que empezar."),
+    content("Tu voz, no la de la maquina",
+        "Para que suene a ti y no generico:\n\n"
+        "• Dale ejemplos de tu estilo (few-shot, recuerda M4)\n• Especifica tu tono: 'cercano, con humor seco'\n• Edita el resultado: la ultima palabra es tuya\n\n"
+        "Claude es el borrador y el espejo; la voz la pones tu."),
+    example("Adaptar un mensaje a 3 canales",
+        "Toma este anuncio y adaptalo a 3 versiones:\n\n"
+        "1. Email formal a clientes (max 100 palabras)\n"
+        "2. Post de Instagram (con gancho y emojis)\n"
+        "3. Mensaje breve de WhatsApp (2 frases)\n\n"
+        "Mensaje base: 'Lanzamos envio gratis en pedidos +30€'."),
+    quiz("Como evitar que el texto suene generico?",
+        "Que ayuda mas a que suene a ti?",
+        [("Dar ejemplos de tu estilo y editar el resultado", True, "Correcto: ejemplos + tu edicion fijan tu voz."),
+         ("Pedir que sea 'profesional' sin mas", False, "Demasiado vago para capturar tu voz."),
+         ("Usar siempre el modelo mas caro", False, "El modelo no define tu estilo.")]),
+    content("Resumen de la leccion",
+        "• Escribe por capas: borrador, critica, ajuste, pulido\n"
+        "• Usa Claude para vencer la pagina en blanco\n"
+        "• Mantén tu voz con ejemplos y edicion final\n"
+        "• Adapta el mismo mensaje a cada canal\n\n"
+        "Siguiente caso de uso: programacion y analisis tecnico."),
     badge("✍️ Comunicador Pro", "Usas Claude para redactar, pulir y adaptar textos a cada audiencia."),
 ])
 
@@ -788,6 +1396,34 @@ LESSONS["L6-2"] = (6, 2, "Programacion y analisis tecnico", [
          ("Depurar", "Error esperado vs real"),
          ("Entender", "Explicar linea a linea"),
          ("Seguridad", "No pegar secretos")]),
+    content("No hace falta ser programador",
+        "Aunque no programes, Claude te ayuda con lo tecnico:\n\n"
+        "• Escribir formulas de Excel/Sheets\n• Automatizar tareas repetitivas con pequenos scripts\n• Entender un error que te aparecio\n• Explicarte que hace un trozo de codigo\n\n"
+        "Es como tener un programador paciente al lado que ademas te explica."),
+    content("Escribir tests para validar",
+        "Una practica de oro: pedir tests junto al codigo.\n\n"
+        "'Dame la funcion y ademas 3 pruebas que confirmen que funciona, incluido un caso limite.'\n\n"
+        "Los tests son tu red de seguridad: demuestran que el codigo hace lo que dice, en vez de fiarte a ciegas."),
+    content("Refactor y mejora",
+        "Claude no solo arregla, tambien mejora codigo existente:\n\n"
+        "• 'Hazlo mas legible'\n• 'Separa esta funcion en partes mas pequenas'\n• 'Hay riesgos de seguridad aqui?'\n• 'Optimiza esta parte lenta'\n\n"
+        "Pega tu codigo y pide la mejora concreta que necesitas."),
+    example("Pedir codigo con red de seguridad",
+        "Lenguaje: Python 3.11\n"
+        "Tarea: funcion que valide si un email tiene formato correcto.\n"
+        "Requisitos:\n- Comentarios explicando la logica\n"
+        "- Manejo de entrada vacia\n- 3 tests: uno valido, uno invalido, uno vacio"),
+    quiz("Por que pedir tests junto al codigo?",
+        "Cual es la razon principal?",
+        [("Para confirmar que el codigo hace lo que dice", True, "Correcto: los tests validan el comportamiento."),
+         ("Para que el codigo sea mas largo", False, "No se trata de longitud."),
+         ("Para gastar mas tokens", False, "El objetivo es seguridad, no gasto.")]),
+    content("Resumen de la leccion",
+        "• Claude ayuda en todo el ciclo: escribir, depurar, explicar, mejorar\n"
+        "• Da contexto: lenguaje, entrada/salida, error real\n"
+        "• Pide tests como red de seguridad\n"
+        "• Revisa siempre antes de ejecutar y no pegues secretos\n\n"
+        "Siguiente: analisis de datos y documentos."),
     badge("💻 Copiloto Tecnico", "Sabes usar Claude para escribir, depurar y entender codigo de forma segura."),
 ])
 
@@ -822,6 +1458,34 @@ LESSONS["L6-3"] = (6, 3, "Analisis de datos y documentos", [
          ("Datos a app", "Pedir JSON"),
          ("Tablas", "Tendencias y top"),
          ("Cifras clave", "Verificar")]),
+    content("Preguntas que puedes hacerle a un documento",
+        "Pega un informe, contrato o PDF y pregunta como a un experto:\n\n"
+        "• 'Cual es la idea principal en una frase?'\n• 'Que riesgos o clausulas raras tiene?'\n• 'Que decisiones quedan pendientes?'\n• 'Resumelo para alguien con 2 minutos'\n\n"
+        "Conviertes 50 paginas en las respuestas que de verdad necesitas."),
+    content("Comparar varios documentos",
+        "Claude puede cruzar informacion de varias fuentes:\n\n"
+        "• 'Compara estas 3 propuestas en una tabla'\n• 'Que dice cada contrato sobre el plazo de pago?'\n• 'En que se contradicen estos dos informes?'\n\n"
+        "Ideal para decisiones donde tienes que sopesar opciones."),
+    content("Cuidado con documentos enormes y cifras",
+        "Dos limites a recordar:\n\n"
+        "• Si el documento supera el context window, divide o resume por partes\n• Verifica los calculos y cifras criticas: el analisis ayuda, pero la responsabilidad del numero final es tuya\n\n"
+        "Y para datos sensibles, anonimiza antes de pegar (lo veras en M7)."),
+    example("Extraccion estructurada a JSON",
+        "Del siguiente texto, extrae en JSON con las claves\n"
+        "{cliente, fecha, importe, estado}. Si un dato falta, pon null.\n\n"
+        "Texto: <<<\n  ...factura o email...\n>>>\n\n"
+        "Devuelve SOLO el JSON, sin explicaciones."),
+    quiz("Mejor formato para procesar la salida con una app?",
+        "Quieres que un programa use el resultado. Que pides?",
+        [("Un parrafo en prosa", False, "Dificil de parsear automaticamente."),
+         ("JSON con claves definidas", True, "Correcto: estructurado y facil de procesar."),
+         ("Un resumen libre", False, "Poco fiable para automatizar.")]),
+    content("Resumen de la leccion",
+        "• Claude resume, extrae, compara y analiza documentos y datos\n"
+        "• Preguntale como a un experto: idea principal, riesgos, decisiones\n"
+        "• Para apps, pide salida en JSON estructurado\n"
+        "• Divide documentos enormes y verifica cifras criticas\n\n"
+        "Ultimo caso del modulo: creatividad e ideas."),
     badge("📊 Analista de Datos", "Extraes, resumes y analizas documentos y datos con criterio."),
 ])
 
@@ -857,6 +1521,32 @@ LESSONS["L6-4"] = (6, 4, "Creatividad: ideas y storytelling", [
          ("Enfoque", "Dar restricciones"),
          ("Historia", "Estructura primero"),
          ("Mejorar", "Feedback concreto")]),
+    content("Cantidad primero, calidad despues",
+        "El error creativo numero uno: pedir 'la idea perfecta'.\n\n"
+        "Mejor flujo:\n• Genera muchas (20-30) sin filtrar\n• Marca las 3-5 que te resuenan\n• Pide desarrollar o combinar solo esas\n\n"
+        "La creatividad es un juego de volumen: necesitas materia prima antes de pulir."),
+    content("Combinar y cruzar ideas",
+        "Las mejores ideas suelen salir de mezclar:\n\n"
+        "• 'Combina la idea 2 y la 7'\n• 'Y si lo llevamos al extremo opuesto?'\n• 'Dame una version segura y una atrevida'\n\n"
+        "Usa Claude como un companero de pizarra que nunca se cansa de proponer variantes."),
+    content("Construir historias por capas",
+        "Para narrativa, no pidas todo de golpe:\n\n"
+        "1. Premisa y personaje\n2. Estructura (esqueleto de escenas)\n3. Desarrollo escena a escena\n4. Pulido de tono y dialogos\n\n"
+        "Construir por capas da historias mas solidas que un volcado unico."),
+    example("Brief creativo enfocado",
+        "Necesito nombres para una cafeteria de especialidad.\n"
+        "Tono: calido, moderno, facil de recordar.\n"
+        "Evita: palabras en ingles y juegos de palabras obvios.\n"
+        "Dame 15 opciones con una linea de justificacion cada una.\n"
+        "Luego desarrollamos las 3 mejores."),
+    quiz("Como conseguir mejores ideas?",
+        "Que estrategia funciona mejor en lluvia de ideas?",
+        [("Pedir 'una buena idea'", False, "Limita el rango; mejor generar muchas."),
+         ("Generar muchas con restricciones y luego filtrar", True, "Correcto: volumen + foco, despues seleccionas."),
+         ("No dar ningun contexto", False, "Sin foco, salen ideas genericas.")]),
+    content("Resumen del modulo 6",
+        "Ya aplicas Claude a casos reales:\n• Escritura y comunicacion\n• Programacion y analisis tecnico\n• Analisis de datos y documentos\n• Creatividad e ideas\n\n"
+        "En el modulo 7 vemos lo que sostiene todo esto: buenas practicas y limites."),
     badge("🎨 Socio Creativo", "Usas Claude para generar y refinar ideas e historias con metodo."),
 ])
 
@@ -892,6 +1582,33 @@ LESSONS["L7-1"] = (7, 1, "Privacidad y datos sensibles", [
          ("Anonimizar", "Sustituir datos reales"),
          ("Credenciales", "Nunca pegarlas"),
          ("Politica", "Reglas de tu organizacion")]),
+    content("La regla de oro: 'lo veria en una postal?'",
+        "Un test mental rapido antes de pegar algo:\n\n"
+        "Si no escribirias ese dato en una postal que cualquiera puede leer, piensalo dos veces antes de pegarlo.\n\n"
+        "No es paranoia: es higiene digital. Aplica sobre todo a datos de otras personas, no solo tuyos."),
+    content("Anonimizar sin perder utilidad",
+        "Casi siempre puedes hacer la tarea SIN los datos sensibles:\n\n"
+        "• Nombres -> [CLIENTE], [EMPLEADO_1]\n• Numeros de cuenta/DNI -> [REDACTADO]\n• Importes exactos -> [IMPORTE] si no son necesarios\n\n"
+        "Claude analiza la estructura igual de bien con marcadores. Recuperas los datos reales tu, al final."),
+    content("En cuentas de empresa",
+        "Si usas Claude en el trabajo:\n\n"
+        "• Conoce la politica de IA de tu organizacion\n• Respeta acuerdos de confidencialidad (NDA)\n• Ante la duda, pregunta antes de pegar informacion de clientes\n\n"
+        "La privacidad no es solo tuya: tambien proteges a las personas y empresas con las que trabajas."),
+    example("Anonimizar antes de pegar",
+        "ANTES:\nRevisa el contrato de Juan Perez (DNI 12345678) por 50.000€.\n\n"
+        "DESPUES:\nRevisa el contrato de [CLIENTE] (DNI [REDACTADO]) por [IMPORTE].\n"
+        "Identifica clausulas de riesgo y plazos de pago."),
+    quiz("Cual es la mejor practica de privacidad?",
+        "Necesitas que Claude revise un contrato con datos personales. Que haces?",
+        [("Pegarlo tal cual con todos los datos", False, "Expones datos sensibles sin necesidad."),
+         ("Anonimizar los datos personales antes de pegarlo", True, "Correcto: la tarea sale igual de bien y proteges la informacion."),
+         ("No usar Claude nunca para contratos", False, "Puedes usarlo perfectamente si anonimizas.")]),
+    content("Resumen de la leccion",
+        "• Comparte solo lo imprescindible (minimizacion)\n"
+        "• Anonimiza datos personales; la tarea sale igual\n"
+        "• Nunca pegues credenciales\n"
+        "• Respeta la politica de tu organizacion\n\n"
+        "Siguiente: verificacion y pensamiento critico."),
     badge("🔐 Guardian de Datos", "Proteges la privacidad: minimizas, anonimizas y cuidas datos sensibles."),
 ])
 
@@ -926,6 +1643,34 @@ LESSONS["L7-2"] = (7, 2, "Verificacion y pensamiento critico", [
          ("Datos actuales", "Busqueda web"),
          ("Verificar", "Pedir fuentes"),
          ("Decision clave", "Humano revisa")]),
+    content("El mapa de cuando verificar",
+        "No todo necesita la misma desconfianza:\n\n"
+        "Confia e itera (bajo riesgo):\n• Ideas, borradores, brainstorming, estilo\n\n"
+        "Verifica siempre (alto riesgo):\n• Cifras, fechas, citas, leyes, nombres, datos medicos o legales\n\n"
+        "Ajusta tu nivel de verificacion al coste de equivocarte."),
+    content("Tecnicas para reducir errores",
+        "• Pide nivel de confianza: 'marca alto/medio/bajo en cada dato'\n• Pide fuentes y compruebalas\n• Activa busqueda web para datos actuales\n• Pide razonamiento paso a paso (recuerda M4)\n• Cruza el dato con una fuente fiable\n\n"
+        "Combinadas, bajan muchisimo el riesgo de tragar un error."),
+    content("El humano en el bucle",
+        "Para decisiones importantes (salud, dinero, legal), trata la respuesta como un borrador a revisar, NO como un veredicto.\n\n"
+        "El mejor flujo: Claude acelera (rapidez) + tu verificas (criterio).\n\n"
+        "La IA no te quita la responsabilidad de la decision final; te da una primera version mucho mas rapida."),
+    example("Prompt que invita a la honestidad",
+        "Responde solo si estas seguro. Si no lo sabes o no puedes\n"
+        "verificarlo, dilo en vez de inventar.\n\n"
+        "Para cada dato relevante, indica tu nivel de confianza\n"
+        "(alto/medio/bajo) y, si es posible, la fuente."),
+    quiz("Que es una alucinacion en IA?",
+        "Como se describe mejor?",
+        [("Un error de conexion", False, "No es un fallo tecnico de red."),
+         ("Una respuesta que suena segura pero es falsa", True, "Correcto: el modelo afirma con confianza algo incorrecto."),
+         ("Cuando el modelo se apaga", False, "No tiene que ver con apagarse.")]),
+    content("Resumen de la leccion",
+        "• Claude puede equivocarse con tono seguro: verifica lo critico\n"
+        "• Confia para ideas; verifica para datos comprobables\n"
+        "• Pide fuentes, confianza y razonamiento\n"
+        "• Manten un humano en el bucle para decisiones importantes\n\n"
+        "Siguiente: las limitaciones que conviene conocer."),
     badge("🔎 Verificador Critico", "Verificas, pides fuentes y aplicas pensamiento critico a las respuestas."),
 ])
 
@@ -956,6 +1701,34 @@ LESSONS["L7-3"] = (7, 3, "Limitaciones que debes conocer", [
          ("Sin herramientas", "No navega ni abre archivos"),
          ("Variabilidad", "Respuestas distintas"),
          ("Solucion", "Contexto y verificacion")]),
+    content("Limite: no tiene intencion ni memoria propia",
+        "Claude no 'quiere' nada ni recuerda quien eres entre sesiones (salvo funciones de memoria).\n\n"
+        "• No guarda rencor ni preferencias por su cuenta\n• No aprende de tu chat para el siguiente usuario\n• Cada conversacion parte de su entrenamiento, no de 'experiencias'\n\n"
+        "Esto es bueno para la privacidad, pero significa que el contexto lo aportas tu cada vez."),
+    content("Limite: matematica y conteo exactos",
+        "Como genera por probabilidad, puede fallar en aritmetica precisa o al contar elementos.\n\n"
+        "• Para calculos criticos, pidele que razone paso a paso\n• O mejor: que use codigo/herramientas para calcular\n\n"
+        "No asumas que un numero esta bien solo porque lo escribio con seguridad."),
+    content("Convertir limites en metodo",
+        "Cada limite tiene su contramedida:\n\n"
+        "• No sabe lo reciente -> busqueda web\n• No conoce tus datos -> pegaselos\n• Puede alucinar -> verifica\n• Falla en calculo -> paso a paso o codigo\n• No recuerda -> proyectos o resumen\n\n"
+        "Un usuario avanzado no es el que ignora los limites, sino el que los rodea con metodo."),
+    example("Rodear el limite de calculo",
+        "En vez de: 'cuanto es el total de esta lista de 50 numeros?'\n\n"
+        "Mejor: 'escribe y ejecuta codigo Python que sume esta lista\n"
+        "y muestre el total. Lista: [ ... ]'\n\n"
+        "Asi el numero lo calcula codigo, no la prediccion."),
+    quiz("Como manejar un calculo critico?",
+        "Necesitas un total exacto de muchos numeros. Que es mas fiable?",
+        [("Pedir el resultado directo y confiar", False, "Puede fallar en aritmetica precisa."),
+         ("Pedir que lo calcule con codigo o paso a paso", True, "Correcto: reduces el error de calculo."),
+         ("Asumir que siempre acierta", False, "El tono seguro no garantiza exactitud.")]),
+    content("Resumen de la leccion",
+        "• Claude tiene fecha de corte y no accede a tu mundo sin herramientas\n"
+        "• Puede fallar en calculo y varia entre respuestas\n"
+        "• No tiene intencion ni memoria propia entre sesiones\n"
+        "• Cada limite se rodea con una contramedida concreta\n\n"
+        "Ultima leccion del modulo: uso responsable y etico."),
     badge("⚠️ Consciente de Limites", "Conoces las limitaciones de Claude y como trabajar alrededor de ellas."),
 ])
 
@@ -985,6 +1758,31 @@ LESSONS["L7-4"] = (7, 4, "Uso responsable y etico", [
          ("Transparencia", "Indicar uso de IA"),
          ("Evitar", "Desinformacion"),
          ("Sesgos", "Supervisar y revisar")]),
+    content("Propiedad intelectual y citas",
+        "Respeta el trabajo ajeno:\n\n"
+        "• No publiques como tuyo texto que no revisaste ni adaptaste\n• No atribuyas a personas reales frases inventadas\n• Cita fuentes cuando uses datos o ideas de otros\n\n"
+        "La IA facilita generar; tu responsabilidad es publicar de forma honesta."),
+    content("Sesgos: revisa lo sensible",
+        "Los modelos pueden reflejar sesgos de sus datos de entrenamiento.\n\n"
+        "Ten especial cuidado en decisiones sobre personas:\n• Contratacion, evaluaciones, prestamos\n• Cualquier juicio que afecte a alguien\n\n"
+        "Pide varias perspectivas y no delegues estas decisiones sin supervision humana."),
+    content("Transparencia con tu audiencia",
+        "Segun el contexto, conviene indicar cuando un contenido fue asistido por IA.\n\n"
+        "• En trabajo academico o periodistico, suele ser obligado\n• Con clientes, genera confianza ser honesto\n\n"
+        "La transparencia no resta valor a tu trabajo: lo hace mas creible."),
+    example("Pedir una revision de sesgos",
+        "Revisa este anuncio de empleo y senala cualquier lenguaje\n"
+        "que pueda excluir o sesgar a algun grupo (genero, edad,\n"
+        "origen). Sugiere alternativas neutras.\n\n"
+        "Texto: <<< ...oferta de empleo... >>>"),
+    quiz("Quien es responsable del contenido generado?",
+        "Publicas algo hecho con Claude y tiene un error grave. Quien responde?",
+        [("Claude", False, "La herramienta no asume tu responsabilidad."),
+         ("Tu, que lo revisas y publicas", True, "Correcto: la responsabilidad final del uso es tuya."),
+         ("Nadie", False, "Siempre responde quien publica.")]),
+    content("Resumen del modulo 7",
+        "Ya usas Claude con criterio:\n• Privacidad y datos sensibles\n• Verificacion y pensamiento critico\n• Limitaciones y como rodearlas\n• Uso responsable y etico\n\n"
+        "En el modulo 8 damos el salto al siguiente nivel: Claude Code, MCP y un proyecto final."),
     badge("⚖️ Usuario Responsable", "Aplicas etica, transparencia y supervision humana al usar IA."),
 ])
 
@@ -1020,6 +1818,38 @@ LESSONS["L8-1"] = (8, 1, "Claude Code para desarrolladores", [
          ("Capacidad", "Editar y ejecutar"),
          ("Control", "Revisar diffs"),
          ("Buena practica", "Usar git")]),
+    content("Chat vs Claude Code",
+        "La diferencia clave:\n\n"
+        "Chat (Claude.ai)\n• Conversas, copias y pegas codigo manualmente\n\n"
+        "Claude Code (terminal)\n• Lee y edita tus archivos directamente\n• Ejecuta comandos y tests\n• Trabaja en varios pasos hacia un objetivo\n\n"
+        "Es pasar de 'pedir consejo' a 'delegar la tarea'."),
+    content("El flujo tipico",
+        "1. Le das una tarea en lenguaje natural\n"
+        "2. Explora tu proyecto y propone un plan\n"
+        "3. Hace cambios (que ves como diffs)\n"
+        "4. Ejecuta tests para comprobar\n"
+        "5. Tu revisas y apruebas\n\n"
+        "En todo momento mantienes el control: nada se da por bueno sin tu visto bueno."),
+    content("Por que git es tu mejor aliado",
+        "Trabajar con control de versiones (git) hace que Claude Code sea seguro:\n\n"
+        "• Ves exactamente que cambio (diffs)\n• Puedes revertir si algo no te gusta\n• Cada paso queda registrado\n\n"
+        "Con git, experimentar no da miedo: siempre puedes volver atras."),
+    example("Tareas tipicas en Claude Code",
+        "'Anade validacion de email al registro y un test.'\n"
+        "'Encuentra por que falla el test de pagos y arreglalo.'\n"
+        "'Refactoriza utils.js para separar la logica de red.'\n"
+        "'Explica como fluye la autenticacion en este repo.'"),
+    quiz("Que distingue a Claude Code del chat?",
+        "Cual es la diferencia esencial?",
+        [("Es mas barato", False, "No es la diferencia esencial."),
+         ("Lee/edita archivos y ejecuta comandos en tu proyecto", True, "Correcto: actua agenticamente sobre tu codigo real."),
+         ("Solo responde teoria", False, "Hace mucho mas: actua sobre el codigo.")]),
+    content("Resumen de la leccion",
+        "• Claude Code lleva a Claude a tu terminal y tu codigo\n"
+        "• Lee, edita, ejecuta y testea de forma agentica\n"
+        "• Tu revisas los diffs y apruebas\n"
+        "• Trabaja con git para experimentar sin riesgo\n\n"
+        "Siguiente: conectar Claude con tus herramientas via MCP."),
     badge("🖥️ Dev con Claude Code", "Conoces Claude Code y como trabajar agenticamente sobre tu codigo."),
 ])
 
@@ -1054,6 +1884,34 @@ LESSONS["L8-2"] = (8, 2, "Integraciones y conectores MCP", [
          ("Herramientas", "Acciones que ejecuta"),
          ("Recursos", "Datos que consulta"),
          ("Clave", "Permisos y control")]),
+    content("De conversar a actuar",
+        "Sin conectores, Claude solo puede hablar. Con MCP, puede HACER:\n\n"
+        "• Leer tus datos reales (no solo lo que pegas)\n• Crear registros, eventos, tareas\n• Buscar en tus sistemas\n• Encadenar acciones entre apps\n\n"
+        "Es el salto de 'asistente que aconseja' a 'asistente que ejecuta'."),
+    content("Conectores listos y a medida",
+        "Hay dos caminos:\n\n"
+        "• Conectores ya hechos para apps populares (calendario, CRM, almacenamiento, chat...)\n• Conectores propios que tu o tu equipo construyen para sistemas internos\n\n"
+        "Al ser un estandar abierto, MCP evita reinventar cada integracion desde cero."),
+    content("Permisos: el punto critico",
+        "Cuando Claude puede ACTUAR, el control de accesos es esencial:\n\n"
+        "• Concede solo los permisos necesarios\n• Revisa que acciones puede ejecutar\n• Exige confirmacion antes de algo sensible (enviar, borrar, pagar)\n\n"
+        "Dar 'manos' a un asistente es potente, pero pide responsabilidad."),
+    example("Lo que habilita un conector",
+        "Calendario: 'Que tengo manana? Bloquea 1h para preparar la reunion.'\n"
+        "CRM: 'Crea un contacto para el lead que escribio hoy.'\n"
+        "Base de datos: 'Cuantos pedidos hubo la semana pasada?'\n"
+        "Documentos: 'Busca el contrato de [CLIENTE] y resumelo.'"),
+    quiz("Que es MCP?",
+        "Cual definicion encaja mejor?",
+        [("Un modelo de Claude mas grande", False, "No es un modelo, es un protocolo."),
+         ("Un estandar para conectar Claude con herramientas y datos", True, "Correcto: Model Context Protocol conecta Claude con el exterior."),
+         ("Un lenguaje de programacion", False, "No es un lenguaje; es un protocolo.")]),
+    content("Resumen de la leccion",
+        "• MCP conecta Claude con herramientas y datos externos\n"
+        "• Convierte a Claude de 'conversar' a 'actuar'\n"
+        "• Hay conectores listos y puedes crear los tuyos\n"
+        "• Los permisos y la confirmacion en acciones sensibles son clave\n\n"
+        "Siguiente: recursos para seguir aprendiendo."),
     badge("🔌 Integrador MCP", "Entiendes MCP y como los conectores permiten a Claude actuar en tus herramientas."),
 ])
 
@@ -1083,6 +1941,35 @@ LESSONS["L8-3"] = (8, 3, "Recursos para seguir aprendiendo", [
          ("Mejores prompts", "Guardar plantillas"),
          ("Consolidar", "Practicar"),
          ("Estar al dia", "Revisar novedades")]),
+    content("Construye tu biblioteca de prompts",
+        "Tu recurso mas valioso eres tu mismo, organizado:\n\n"
+        "• Guarda los prompts que te funcionaron\n• Conviertelos en plantillas reutilizables\n• Anota que modelo y ajustes usaste\n\n"
+        "Con el tiempo tendras un arsenal propio que vale mas que cualquier curso: esta hecho a la medida de tu trabajo."),
+    content("Aprende en comunidad",
+        "No aprendas en solitario:\n\n"
+        "• Comparte prompts con tu equipo o comunidad\n• Mira como otros resuelven problemas parecidos\n• Comenta que funciona y que no\n\n"
+        "Ver el enfoque de otros acelera tu propio aprendizaje y te da ideas que no se te habrian ocurrido."),
+    content("Mantente al dia sin agobio",
+        "La IA cambia rapido, pero no necesitas seguirlo todo:\n\n"
+        "• Revisa novedades cada cierto tiempo, no a diario\n• Prueba lo nuevo en una tarea pequena antes de adoptarlo\n• Re-evalua tus flujos cuando salgan mejoras relevantes\n\n"
+        "Mejor un habito sostenible que el agobio de querer saberlo todo."),
+    example("Ficha para guardar un buen prompt",
+        "Nombre: Resumen ejecutivo de informes\n"
+        "Prompt: 'Resume en 5 puntos para direccion, destacando\n"
+        "riesgos y decisiones. Texto: <<< >>>'\n"
+        "Modelo: Sonnet\n"
+        "Notas: funciona mejor si pego el indice del informe primero."),
+    quiz("Cual es tu recurso mas valioso a largo plazo?",
+        "Que te hara mejorar de forma sostenida?",
+        [("Una biblioteca propia de prompts y plantillas", True, "Correcto: a medida de tu trabajo y reutilizable."),
+         ("Memorizar datos que cambian", False, "Envejecen rapido; mejor un metodo."),
+         ("Usar siempre el modelo mas caro", False, "El modelo no sustituye al metodo.")]),
+    content("Resumen de la leccion",
+        "• Empieza por la documentacion oficial ante dudas\n"
+        "• Construye tu biblioteca de prompts y plantillas\n"
+        "• Aprende en comunidad y practica con problemas reales\n"
+        "• Mantente al dia con un habito sostenible\n\n"
+        "Ya casi cierras el modulo: solo falta el proyecto final."),
     badge("📈 Aprendiz Continuo", "Tienes un metodo para seguir mejorando con Claude a largo plazo."),
 ])
 
@@ -1115,6 +2002,32 @@ LESSONS["L8-4"] = (8, 4, "Proyecto final", [
          ("Diseno", "Rol/tarea/contexto/formato"),
          ("Antes de cerrar", "Verificar"),
          ("Reutilizar", "Guardar plantilla")]),
+    content("Elige un problema que te duela",
+        "El mejor proyecto resuelve una molestia real tuya:\n\n"
+        "• Algo que haces a mano cada semana\n• Una tarea que odias por repetitiva\n• Un cuello de botella en tu trabajo\n\n"
+        "Si resuelve un dolor real, lo usaras de verdad y veras el valor de inmediato."),
+    content("Aplica todo lo aprendido",
+        "Tu proyecto deberia usar varias piezas del curso:\n\n"
+        "• Buen prompt (rol, tarea, contexto, formato) — M3\n• Tecnica avanzada si aplica (CoT, few-shot) — M4\n• Una herramienta (Artifacts, busqueda, archivos) — M5\n• Verificacion de lo critico — M7\n\n"
+        "Integrar varias piezas es lo que convierte el aprendizaje en habilidad."),
+    content("Mide si funciona",
+        "Define un criterio de exito ANTES de empezar:\n\n"
+        "• 'Me ahorra 2 horas a la semana'\n• 'El borrador sale listo en un 80%'\n• 'Reduce errores en X'\n\n"
+        "Sin criterio no sabras si funciono. Con criterio, puedes mejorarlo iteracion a iteracion."),
+    example("Plantilla de brief del proyecto",
+        "Objetivo: <que problema resuelvo>\n"
+        "Entregable: <que produzco exactamente>\n"
+        "Contexto/datos: <que necesita Claude>\n"
+        "Tecnicas: <few-shot, CoT, etiquetas, herramientas>\n"
+        "Criterio de exito: <como se que quedo bien>"),
+    quiz("Que NO debe faltar antes de dar por bueno el proyecto?",
+        "Cual paso es imprescindible?",
+        [("Verificar el resultado", True, "Correcto: la verificacion es clave antes de usar/publicar."),
+         ("Hacerlo en ingles", False, "El idioma depende de tu caso."),
+         ("Usar el modelo mas caro", False, "Elige el adecuado, no el mas caro.")]),
+    content("Resumen del modulo 8",
+        "Diste el salto al siguiente nivel:\n• Claude Code para desarrolladores\n• Integraciones y conectores MCP\n• Recursos para seguir aprendiendo\n• Tu proyecto final\n\n"
+        "Si quieres ir aun mas lejos, el modulo 9 BONUS abre la caja de herramientas avanzada."),
     badge("🏆 Proyecto Completado", "Integraste todo lo aprendido en un proyecto real de principio a fin."),
 ])
 
@@ -1146,6 +2059,39 @@ LESSONS["L9-1"] = (9, 1, "Claude design y Constitutional AI", [
          ("Util", "Resuelve tareas"),
          ("Honesto", "Reconoce limites"),
          ("Inofensivo", "Evita el dano")]),
+    content("Como funciona, en simple",
+        "Constitutional AI, paso a paso:\n\n"
+        "1. Se define un conjunto de principios (la 'constitucion')\n"
+        "2. El modelo genera una respuesta\n"
+        "3. Se critica a si mismo segun esos principios\n"
+        "4. Reescribe la respuesta mejorada\n\n"
+        "En vez de depender solo de etiquetas humanas, el modelo aprende a autoevaluarse con esos principios."),
+    content("Util, honesto, inofensivo",
+        "Los tres valores guia, con ejemplos de lo que provocan:\n\n"
+        "🤝 Util: se esfuerza en resolver tu tarea de verdad\n"
+        "📝 Honesto: reconoce lo que no sabe, no inventa para complacer\n"
+        "🛡️ Inofensivo: evita causar dano real\n\n"
+        "El reto del diseno es equilibrarlos: ser util sin dejar de ser seguro, y honesto sin ser inutilmente rigido."),
+    content("Por que importa para ti",
+        "Esta filosofia explica comportamientos que notaras:\n\n"
+        "• Razona los matices en temas delicados en vez de bloquear\n• Te dice cuando no esta seguro\n• Intenta ayudar de verdad, no solo cumplir\n\n"
+        "Saberlo te ayuda a pedir mejor: si quieres mas honestidad sobre incertidumbre, pidela explicitamente."),
+    example("Ver la honestidad calibrada en accion",
+        "Compara estos dos prompts y observa la diferencia:\n\n"
+        "1. 'Dame el dato exacto de X' (puede arriesgar)\n\n"
+        "2. 'Dame el dato de X. Si no estas seguro, dimelo y\n"
+        "   explica que harias para verificarlo.' (invita a la honestidad)"),
+    quiz("Que es Constitutional AI?",
+        "Cual descripcion encaja mejor?",
+        [("Un modelo que se autoevalua con un conjunto de principios", True, "Correcto: aprende a aplicar una 'constitucion' de principios."),
+         ("Una ley de internet", False, "No es legislacion; es un metodo de entrenamiento."),
+         ("Un tipo de hardware", False, "No tiene que ver con hardware.")]),
+    content("Resumen de la leccion",
+        "• Claude se disena para ser util, honesto e inofensivo\n"
+        "• Constitutional AI le ensena a autoevaluarse con principios\n"
+        "• Esto explica el matiz y la honestidad que notaras\n"
+        "• Puedes potenciar esa honestidad pidiendola explicitamente\n\n"
+        "Siguiente: Markdown como input estructurado."),
     badge("🏛️ Conocedor del Diseno", "Entiendes la filosofia de Claude y Constitutional AI."),
 ])
 
@@ -1178,6 +2124,38 @@ LESSONS["L9-2"] = (9, 2, "Markdown como input estructurado", [
          ("-", "Lista"),
          ("```", "Bloque de codigo"),
          ("| |", "Tabla")]),
+    content("Markdown en 60 segundos",
+        "Los simbolos esenciales:\n\n"
+        "# Titulo (un # = nivel 1, ## = nivel 2)\n"
+        "- elemento de lista\n"
+        "1. lista numerada\n"
+        "**negrita** y *cursiva*\n"
+        "`codigo en linea`\n"
+        "> cita\n\n"
+        "Con esto cubres el 95% de lo que necesitas para estructurar un prompt."),
+    content("Por que Claude lo entiende tan bien",
+        "Claude se entreno con muchisimo texto en Markdown (documentacion, README, foros tecnicos).\n\n"
+        "Por eso 'piensa' de forma natural en titulos, listas y bloques. Darle Markdown es como hablarle en un idioma que domina a la perfeccion: capta la jerarquia sin esfuerzo."),
+    content("Pedir salida en Markdown",
+        "Tambien puedes pedir que la RESPUESTA venga en Markdown:\n\n"
+        "• Tablas listas para pegar\n• Titulos y listas claras\n• Bloques de codigo bien formateados\n\n"
+        "Ideal para documentacion, notas, README y cualquier cosa que vayas a pegar en otra herramienta que entienda Markdown."),
+    example("Prompt estructurado en Markdown",
+        "# Tarea\nClasifica los tickets por prioridad.\n\n"
+        "## Reglas\n- Critico: afecta a produccion\n- Alto: afecta a un usuario\n- Bajo: cosmetico\n\n"
+        "## Datos\n```\n...tickets...\n```\n\n"
+        "## Formato\nTabla con columnas: ticket, prioridad, motivo."),
+    quiz("Para que sirve Markdown en un prompt?",
+        "Cual es su ventaja principal?",
+        [("Hacer el texto bonito y nada mas", False, "No es solo estetica: aporta estructura."),
+         ("Estructurar la informacion para que Claude la entienda mejor", True, "Correcto: titulos, listas y bloques dan jerarquia clara."),
+         ("Cifrar el contenido", False, "No tiene que ver con cifrado.")]),
+    content("Resumen de la leccion",
+        "• Markdown estructura tus prompts con titulos, listas y bloques\n"
+        "• Claude lo entiende de forma natural por su entrenamiento\n"
+        "• Puedes pedir la salida tambien en Markdown\n"
+        "• Pocos simbolos bastan para un gran salto de claridad\n\n"
+        "Siguiente: las Skills de Claude."),
     badge("📝 Maestro del Markdown", "Usas Markdown para estructurar prompts y obtener salidas ordenadas."),
 ])
 
@@ -1208,6 +2186,33 @@ LESSONS["L9-3"] = (9, 3, "Skills de Claude", [
          ("Activacion", "Cuando la tarea encaja"),
          ("Ejemplo", "Crear .docx/.xlsx"),
          ("Combina con", "Conectores MCP")]),
+    content("La analogia del manual experto",
+        "Imagina que contratas a alguien muy capaz y, para una tarea concreta, le das el manual perfecto de tu empresa.\n\n"
+        "Eso es una Skill: un paquete de conocimiento y plantillas que Claude 'abre' justo cuando la tarea lo pide, para hacerla de forma experta y consistente."),
+    content("Que contiene una Skill",
+        "Una Skill puede empaquetar:\n\n"
+        "• Instrucciones de como hacer bien la tarea\n• Plantillas y formatos\n• A veces, codigo de apoyo\n\n"
+        "Todo junto y reutilizable, para que no tengas que explicar el 'como' cada vez."),
+    content("Skills en accion",
+        "Ejemplos de lo que habilitan:\n\n"
+        "• Crear documentos Word con buen formato (.docx)\n• Generar hojas de calculo (.xlsx)\n• Construir presentaciones (.pptx)\n• Producir PDFs o flujos especializados\n\n"
+        "Pides 'hazme un .docx con este informe' y la Skill correspondiente se encarga del formato."),
+    example("Disparar una Skill sin esfuerzo",
+        "No necesitas 'invocarla' tecnicamente; basta pedir la tarea:\n\n"
+        "'Convierte este texto en una presentacion de 6 diapositivas\n"
+        "con titulo, 4 puntos clave y un cierre.'\n\n"
+        "Claude reconoce que encaja una Skill de presentaciones y la usa."),
+    quiz("Que es una Skill?",
+        "Cual definicion encaja mejor?",
+        [("Una capacidad empaquetada que Claude carga para una tarea", True, "Correcto: instrucciones/plantillas/codigo para hacer bien algo concreto."),
+         ("Un modelo distinto de Claude", False, "No es un modelo; es una capacidad que se activa."),
+         ("Un tipo de suscripcion", False, "No es un plan de pago.")]),
+    content("Resumen de la leccion",
+        "• Las Skills son capacidades empaquetadas que Claude carga al vuelo\n"
+        "• Aportan conocimiento experto y plantillas para una tarea\n"
+        "• Se activan cuando tu peticion encaja, sin pasos tecnicos\n"
+        "• Se combinan con herramientas (MCP) y generacion de archivos\n\n"
+        "Siguiente: como construir un agente."),
     badge("🧰 Usuario de Skills", "Sabes que son las Skills y como amplian lo que Claude puede hacer."),
 ])
 
@@ -1236,6 +2241,36 @@ LESSONS["L9-4"] = (9, 4, "Como construir un agente", [
          ("Bucle", "Planear-actuar-observar"),
          ("Herramientas", "Como actua"),
          ("Seguridad", "Limites y supervision")]),
+    content("Agente vs respuesta normal",
+        "La diferencia esencial:\n\n"
+        "Respuesta normal\n• Le preguntas, te contesta, fin\n\n"
+        "Agente\n• Le das un objetivo y trabaja solo: planifica, actua, observa y ajusta hasta cumplirlo\n\n"
+        "Un agente no responde una vez: persigue una meta a lo largo de varios pasos."),
+    content("Las 'manos' del agente: herramientas",
+        "Un agente necesita herramientas para actuar sobre el mundo:\n\n"
+        "• Buscar en la web\n• Leer y escribir archivos\n• Consultar una base de datos\n• Llamar a una API\n\n"
+        "Sin herramientas, solo piensa; con ellas, hace. Por eso MCP (la leccion siguiente) es tan importante para los agentes."),
+    content("El factor seguridad",
+        "Cuanto mas autonomo es un agente, mas importan los limites:\n\n"
+        "• Permisos minimos: solo lo que necesita\n• Confirmacion humana en acciones sensibles\n• Criterio de parada para que no corra sin fin\n• Registro de lo que hace\n\n"
+        "Autonomia sin control es un riesgo; autonomia con limites es una herramienta potente."),
+    example("Anatomia de un agente simple",
+        "Objetivo: vigilar menciones de mi marca y resumirlas.\n"
+        "Herramientas: busqueda web (leer), documento (escribir).\n"
+        "Bucle: buscar -> filtrar -> resumir -> guardar.\n"
+        "Parada: cuando entrega el resumen del dia.\n"
+        "Limite: solo crea borrador; no publica nada."),
+    quiz("Que define a un agente?",
+        "Cual es la caracteristica clave?",
+        [("Da una sola respuesta y termina", False, "Eso es una respuesta normal."),
+         ("Planifica y ejecuta varios pasos con herramientas hacia un objetivo", True, "Correcto: actua en bucle de forma autonoma."),
+         ("Es un modelo mas pequeno", False, "No es cuestion de tamano.")]),
+    content("Resumen de la leccion",
+        "• Un agente persigue un objetivo en varios pasos, de forma autonoma\n"
+        "• El bucle: planear, actuar, observar, decidir, repetir\n"
+        "• Las herramientas son sus 'manos' para actuar\n"
+        "• Limites, permisos y parada lo hacen seguro\n\n"
+        "Siguiente: MCP en profundidad, el protocolo que da herramientas a los agentes."),
     badge("🤖 Constructor de Agentes", "Entiendes el bucle agentico y como disenar un agente."),
 ])
 
@@ -1272,6 +2307,37 @@ LESSONS["L9-5"] = (9, 5, "MCP — Model Context Protocol", [
          ("Herramienta", "Accion ejecutable"),
          ("Recurso", "Dato legible"),
          ("Cliente", "App que las usa")]),
+    content("La analogia del puerto USB",
+        "Antes del USB, cada dispositivo tenia su propio conector: un caos.\n\n"
+        "MCP es el 'USB' de la IA: un estandar unico para que cualquier herramienta se conecte a Claude.\n\n"
+        "Resultado: una herramienta que habla MCP funciona con cualquier cliente que lo soporte. Se construye una vez y sirve para todos."),
+    content("Herramientas vs recursos",
+        "Dos cosas que expone un servidor MCP:\n\n"
+        "🔧 Herramientas (acciones)\n• 'crear_tarea', 'enviar_email', 'buscar'\n• Hacen algo, cambian el mundo\n\n"
+        "📚 Recursos (datos)\n• Un documento, una tabla, un registro\n• Se leen, no actuan\n\n"
+        "Las herramientas son verbos; los recursos, sustantivos."),
+    content("Seguridad cuando hay 'manos'",
+        "Dar acciones a un agente exige control serio:\n\n"
+        "• Expon solo las herramientas necesarias\n• Permisos minimos por herramienta\n• Confirmacion en lo sensible (enviar, borrar, pagar)\n• Registro (log) de cada ejecucion\n\n"
+        "El estandar facilita la conexion; la seguridad la pones con buen diseno de permisos."),
+    example("Idea de un servidor MCP minimo",
+        "// Pseudocodigo conceptual\n"
+        "servidor.herramienta('crear_tarea', (titulo, fecha) => {\n"
+        "  // crea la tarea en tu sistema\n"
+        "  return { ok: true };\n"
+        "});\n"
+        "// Claude descubre 'crear_tarea' y la usa cuando hace falta"),
+    quiz("Que expone un servidor MCP?",
+        "Que dos cosas principales ofrece?",
+        [("Herramientas (acciones) y recursos (datos)", True, "Correcto: acciones que ejecutar y datos que leer."),
+         ("Solo imagenes", False, "No se limita a imagenes."),
+         ("Modelos de IA nuevos", False, "Sirve herramientas y datos, no modelos.")]),
+    content("Resumen de la leccion",
+        "• MCP es el estandar 'USB' que conecta Claude con el exterior\n"
+        "• Expone herramientas (acciones) y recursos (datos)\n"
+        "• Es lo que da 'manos' a los agentes\n"
+        "• La seguridad se basa en permisos minimos y confirmacion\n\n"
+        "Ultima leccion del curso: construye tu primer agente."),
     badge("🌉 Arquitecto MCP", "Dominas los componentes de MCP y su papel en los agentes."),
 ])
 
@@ -1307,6 +2373,32 @@ LESSONS["L9-6"] = (9, 6, "Construye tu primer agente", [
          ("Herramientas", "Leer y escribir"),
          ("Limites", "Permisos minimos"),
          ("Parada", "Cuando cumple meta")]),
+    content("Empieza pequeno de verdad",
+        "El error tipico del primer agente: querer que haga demasiado.\n\n"
+        "Mejor un agente que haga UNA cosa bien:\n• Resumir tus emails sin leer\n• Vigilar un tema y avisarte\n• Convertir notas en tareas\n\n"
+        "Cuando funcione, lo amplias. Un agente pequeno que funciona vale mas que uno ambicioso que falla."),
+    content("Disena el bucle y la parada",
+        "Define con claridad:\n\n"
+        "• Bucle: que pasos repite (planear -> actuar -> observar)\n• Parada: cuando termina (objetivo cumplido o limite de pasos)\n• Controles: donde te pide confirmacion\n\n"
+        "Un agente sin criterio de parada es como un grifo sin cierre: hay que ponerselo desde el diseno."),
+    content("Mantente en el bucle (tu)",
+        "En tu primer agente, supervisa de cerca:\n\n"
+        "• Que solo cree borradores, no publique ni envie\n• Revisa lo que hace antes de darle mas permisos\n• Sube la autonomia poco a poco, segun confies\n\n"
+        "La confianza en un agente se gana paso a paso, igual que con una persona nueva en el equipo."),
+    example("Brief de tu primer agente",
+        "Objetivo: resumir novedades del sector y entregar un informe.\n"
+        "Herramientas: busqueda web (leer), generador de documentos (escribir).\n"
+        "Limites: no publicar nada; solo crear un borrador.\n"
+        "Parada: cuando entrega el .docx con 5 fuentes citadas.\n"
+        "Control humano: yo reviso antes de compartir."),
+    quiz("Como empezar tu primer agente?",
+        "Que tipo de objetivo conviene para el primero?",
+        [("Algo enorme y abierto", False, "Dificil de controlar y evaluar."),
+         ("Algo acotado y repetitivo", True, "Correcto: facil de definir, medir y supervisar."),
+         ("Algo sin objetivo claro", False, "Sin objetivo no hay criterio de exito.")]),
+    content("Lo lograste: fin del curso",
+        "Recorriste los 9 modulos:\n• Fundamentos y modelos\n• Interfaz y organizacion\n• El arte del prompt y tecnicas avanzadas\n• Capacidades, casos de uso y buenas practicas\n• Claude Code, MCP, Skills y agentes\n\n"
+        "Ya no eres un usuario casual: entiendes como piensa Claude y como sacarle el maximo con criterio. Ahora, a practicar con tus propios proyectos."),
     badge("🚀 Primer Agente Construido", "Sabes disenar tu primer agente: objetivo, herramientas, bucle y control."),
 ])
 
