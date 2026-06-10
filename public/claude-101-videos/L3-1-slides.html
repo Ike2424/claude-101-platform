@@ -254,9 +254,11 @@
             });
         }
 
+        function _normAns(s){return (s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/\s+/g,' ').trim();}
         window.checkChallenge = (answer, points) => {
-            const userAnswer = document.getElementById('answer').value.trim();
-            if (userAnswer.toLowerCase() === answer.toLowerCase()) {
+            const userAnswer = document.getElementById('answer').value;
+            const accepted = String(answer).split(/\s+o\s+/i).map(_normAns).filter(Boolean);
+            if (accepted.includes(_normAns(userAnswer))) {
                 updatePoints(points);
                 alert('✓ ¡Correcto! +' + points + ' puntos');
                 if (idx < slides.length - 1) { idx++; render(); }

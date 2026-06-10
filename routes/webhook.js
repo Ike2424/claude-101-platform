@@ -3,7 +3,7 @@ import { logger } from '../lib/logger.js';
 import express from 'express';
 import { stripe, WEBHOOK_SECRET } from '../lib/stripe.js';
 import { one, exec, isUniqueViolation } from '../lib/db.js';
-import { sendMagicLink, sendWelcomeEmail } from '../lib/mail.js';
+import { sendMagicLink, sendWelcomeEmail, sendCartRecoveryEmail } from '../lib/mail.js';
 import { makeMagicToken } from '../lib/token.js';
 
 const router = Router();
@@ -129,6 +129,25 @@ router.post('/', express.raw({ type: 'application/json' }), async (req, res) => 
           [email]
         );
         logger.info(`[webhook] Acceso revocado para ${email} (motivo: ${event.type})`);
+      }
+    }
+
+    if (event.type === 'checkout.session.expired') {
+      // Recuperación de carrito: la sesión caducó sin completarse.
+      const session = event.data.object;
+      const email = (session.customer_details?.email || session.customer_email || '').toLowerCase();
+      const recoveryUrl = session.after_expiration?.recovery?.url || null;
+      if (email && recoveryUrl) {
+        // No molestar a quien ya pagó (p.ej. compró por otra vía)
+        const u = await one('SELECT has_paid FROM users WHERE email = ?', [email]);
+        if (!u || !u.has_paid) {
+          try {
+            await sendCartRecoveryEmail({ to: email, recoveryUrl });
+            logger.info(`[webhook] Email de recuperación de carrito enviado a ${email}`);
+          } catch (err) {
+            logger.error({ err }, 'Error enviando email de recuperación de carrito:');
+          }
+        }
       }
     }
 
