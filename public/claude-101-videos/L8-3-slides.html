@@ -10,15 +10,15 @@
         body { background: linear-gradient(135deg, #f5f7fa 0%, #f0f4f8 100%); color: #1f2937; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
         
         .header { 
-            padding: 16px 20px; background: white; border-bottom: 3px solid #6366F1; 
+            padding: 16px 20px; background: white; border-bottom: 3px solid #06B6D4; 
             display: flex; justify-content: space-between; align-items: center; flex-shrink: 0;
             box-shadow: 0 2px 8px rgba(0,0,0,0.06);
         }
         .header-left { display: flex; gap: 12px; align-items: center; }
-        .eyebrow { font-size: 12px; color: #6366F1; text-transform: uppercase; font-weight: 800; letter-spacing: 0.5px; }
+        .eyebrow { font-size: 12px; color: #06B6D4; text-transform: uppercase; font-weight: 800; letter-spacing: 0.5px; }
         .title { font-size: 20px; font-weight: 700; color: #1f2937; }
         .points-badge {
-            background: linear-gradient(135deg, #6366F1, #6366F1dd);
+            background: linear-gradient(135deg, #06B6D4, #06B6D4dd);
             color: white;
             padding: 8px 14px;
             border-radius: 20px;
@@ -32,9 +32,9 @@
             position: relative; overflow: hidden;
         }
         .progress-fill { 
-            height: 100%; background: linear-gradient(90deg, #6366F1, #6366F1dd);
+            height: 100%; background: linear-gradient(90deg, #06B6D4, #06B6D4dd);
             transition: width 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-            box-shadow: 0 0 12px #6366F166;
+            box-shadow: 0 0 12px #06B6D466;
         }
         
         .content { 
@@ -45,12 +45,12 @@
         .card { 
             background: white; border-radius: 12px; padding: 20px;
             margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            border-left: 4px solid #6366F1;
+            border-left: 4px solid #06B6D4;
             animation: slideIn 0.3s ease-out;
         }
         @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
-        .card-title { font-size: 18px; color: #6366F1; margin-bottom: 12px; font-weight: 700; }
+        .card-title { font-size: 18px; color: #06B6D4; margin-bottom: 12px; font-weight: 700; }
         .card-text { font-size: 14px; color: #374151; line-height: 1.8; white-space: pre-wrap; word-wrap: break-word; }
         
         .code { 
@@ -65,7 +65,7 @@
             cursor: pointer; background: white; font-size: 14px;
             transition: all 0.2s; font-weight: 500;
         }
-        .quiz-option:hover { border-color: #6366F1; background: ##6366F111; }
+        .quiz-option:hover { border-color: #06B6D4; background: ##06B6D411; }
         .quiz-option.correct { background: #ecfdf5; border-color: #10b981; color: #047857; }
         .quiz-option.incorrect { background: #fef2f2; border-color: #ef4444; color: #dc2626; }
         
@@ -79,9 +79,9 @@
         
         .badge { 
             text-align: center; padding: 30px;
-            background: linear-gradient(135deg, #6366F1, #6366F1dd);
+            background: linear-gradient(135deg, #06B6D4, #06B6D4dd);
             color: white; border-radius: 12px;
-            box-shadow: 0 8px 16px #6366F133;
+            box-shadow: 0 8px 16px #06B6D433;
         }
         .badge-icon { font-size: 48px; margin-bottom: 12px; }
         .badge h3 { font-size: 20px; margin-bottom: 8px; }
@@ -91,15 +91,15 @@
             border: 2px solid #e5e7eb; border-radius: 6px; 
             margin: 10px 0; font-family: inherit; font-size: 14px;
         }
-        input:focus { outline: none; border-color: #6366F1; box-shadow: 0 0 0 3px #6366F111; }
+        input:focus { outline: none; border-color: #06B6D4; box-shadow: 0 0 0 3px #06B6D411; }
         
         button { 
-            background: linear-gradient(135deg, #6366F1, #6366F1dd);
+            background: linear-gradient(135deg, #06B6D4, #06B6D4dd);
             color: white; border: none; padding: 10px 18px;
             border-radius: 6px; cursor: pointer; font-weight: 600;
             transition: all 0.2s; font-family: inherit; font-size: 14px;
         }
-        button:hover { transform: translateY(-2px); box-shadow: 0 4px 12px #6366F144; }
+        button:hover { transform: translateY(-2px); box-shadow: 0 4px 12px #06B6D444; }
         button:active { transform: translateY(0); }
         
         .nav { 
@@ -110,8 +110,8 @@
         .counter { font-size: 13px; color: #6b7280; font-weight: 600; }
         
         .instruction { 
-            background: ##6366F111; padding: 12px 14px; border-radius: 6px;
-            margin-bottom: 12px; font-size: 14px; color: #6366F1; font-weight: 500;
+            background: ##06B6D411; padding: 12px 14px; border-radius: 6px;
+            margin-bottom: 12px; font-size: 14px; color: #06B6D4; font-weight: 500;
         }
         
         .matching-grid {
@@ -122,7 +122,7 @@
             border-radius: 8px; cursor: pointer; transition: all 0.2s;
             text-align: center; font-weight: 500; font-size: 13px;
         }
-        .match-item:hover { border-color: #6366F1; background: ##6366F111; }
+        .match-item:hover { border-color: #06B6D4; background: ##06B6D411; }
         .match-item.matched { background: #ecfdf5; border-color: #10b981; color: #047857; }
     </style>
 </head>
@@ -131,7 +131,7 @@
     <div class="header">
         <div class="header-left">
             <div>
-                <div class="eyebrow">M8 • L3 • Tools</div>
+                <div class="eyebrow">M8 • L3 • Siguiente nivel</div>
                 <div class="title">Módulo 8 - Lección 3</div>
             </div>
         </div>
@@ -140,12 +140,12 @@
     <div class="content" id="content"></div>
     <div class="nav">
         <button id="prev">← Anterior</button>
-        <span class="counter"><span id="cnt">1</span>/10</span>
+        <span class="counter"><span id="cnt">1</span>/9</span>
         <button id="next">Siguiente →</button>
     </div>
     
     <script>
-        const slides = [{"type": "intro", "points": 0}, {"type": "content", "title": "Introducci\u00f3n al tema", "text": "Bienvenido a M\u00f3dulo 8, Lecci\u00f3n 3\n\nEste m\u00f3dulo cubre:\n\u2022 Conceptos fundamentales\n\u2022 Aplicaciones pr\u00e1cticas\n\u2022 Best practices\n\u2022 Casos de uso reales\n\nAprender\u00e1s a usar estas herramientas effectivamente en producci\u00f3n.", "points": 10}, {"type": "content", "title": "Concepto 1", "text": "Concepto importante que necesitas entender.\n\nPuntos clave:\n\u2022 Punto A\n\u2022 Punto B\n\u2022 Punto C\n\nEstos conceptos son fundamentales para avanzar.", "points": 10}, {"type": "content", "title": "Concepto 2", "text": "Otro concepto importante.\n\nAplicaciones:\n\u2022 Caso de uso 1\n\u2022 Caso de uso 2\n\u2022 Caso de uso 3\n\nEntiende las implicaciones pr\u00e1cticas.", "points": 10}, {"type": "example", "title": "Ejemplo pr\u00e1ctico", "code": "# Ejemplo M\u00f3dulo 8\nresult = process_example()\nprint(f'Resultado: {result}')", "points": 15}, {"type": "content", "title": "Mejores pr\u00e1cticas", "text": "\u2713 Pr\u00e1ctica 1\n\u2713 Pr\u00e1ctica 2\n\u2713 Pr\u00e1ctica 3\n\u2713 Pr\u00e1ctica 4\n\u2713 Pr\u00e1ctica 5\n\nSigue estos patrones para \u00e9xito.", "points": 10}, {"type": "interactive_quiz", "title": "Quiz", "question": "\u00bfCu\u00e1l es el concepto principal?", "options": [{"text": "Concepto correcto", "correct": true, "reason": "\u00a1Correcto! Este es el concepto central", "points": 20}, {"text": "Concepto incorrecto", "correct": false, "reason": "No es el concepto principal", "points": 0}], "points": 20}, {"type": "challenge", "title": "Desaf\u00edo", "instruction": "Completa: El concepto principal es ___", "answer": "concepto correcto", "hint": "Piensa en lo que aprendiste...", "points": 25}, {"type": "content", "title": "Recursos adicionales", "text": "Para profundizar:\n\u2022 Documentaci\u00f3n oficial\n\u2022 Ejemplos en comunidad  \n\u2022 Proyectos open source\n\u2022 Comunidad Discord\n\nSigue aprendiendo despu\u00e9s de esta lecci\u00f3n.", "points": 10}, {"type": "badge", "name": "\u2728 M8L3 Completado", "description": "Finalizaste Lecci\u00f3n 3 del M\u00f3dulo 8"}];
+        const slides = [{"type": "intro", "points": 0}, {"type": "content", "title": "Aprender no termina aqui", "text": "La IA evoluciona rapido. Tener un sistema para mantenerte al dia vale mas que memorizar datos que cambian.", "points": 10}, {"type": "content", "title": "Fuentes oficiales", "text": "• Documentacion de Claude (guias y referencia de API)\n• Centro de ayuda y notas de versiones\n• Guias de prompt engineering oficiales\n\nEmpieza siempre por la fuente oficial cuando dudes de una capacidad.", "points": 10}, {"type": "content", "title": "Practica deliberada", "text": "• Elige un problema real tuyo y resuelvelo con Claude\n• Guarda tus mejores prompts como plantillas\n• Comparte y compara con otras personas\n\nAprender haciendo supera a solo leer.", "points": 10}, {"type": "content", "title": "Habito de actualizacion", "text": "• Revisa novedades cada cierto tiempo\n• Prueba funciones nuevas en tareas pequenas\n• Re-evalua tus flujos cuando salen mejoras\n\nUn buen usuario itera sus propios metodos.", "points": 10}, {"type": "interactive_quiz", "title": "Donde mirar primero ante una duda de capacidad?", "question": "Que fuente conviene consultar primero?", "options": [{"text": "Un foro al azar", "correct": false, "reason": "Puede estar desactualizado o ser incorrecto.", "points": 0}, {"text": "La documentacion oficial", "correct": true, "reason": "Correcto: es la fuente mas fiable y actual.", "points": 20}, {"text": "Una captura antigua", "correct": false, "reason": "Las capturas envejecen rapido.", "points": 0}], "points": 20}, {"type": "challenge", "title": "Reto: mejor habito", "instruction": "Para aprender de verdad, que es mas eficaz: solo leer o ___ con problemas reales? (una palabra)", "answer": "practicar", "hint": "La practica deliberada con problemas reales consolida el aprendizaje.", "points": 25}, {"type": "matching_game", "title": "Seguir aprendiendo", "pairs": [{"left": "Duda de capacidad", "right": "Doc oficial", "points": 15}, {"left": "Mejores prompts", "right": "Guardar plantillas", "points": 15}, {"left": "Consolidar", "right": "Practicar", "points": 15}, {"left": "Estar al dia", "right": "Revisar novedades", "points": 15}]}, {"type": "badge", "name": "📈 Aprendiz Continuo", "description": "Tienes un metodo para seguir mejorando con Claude a largo plazo."}];
         let idx = 0;
         let totalPoints = parseInt(localStorage.getItem('total_points_m8l3') || '0');
         document.getElementById('total-points').textContent = totalPoints + ' pts';
@@ -231,7 +231,7 @@
                     if (!selected) {
                         selected = item;
                         item.style.background = 'white';
-                        item.style.boxShadow = '0 0 0 3px #6366F144';
+                        item.style.boxShadow = '0 0 0 3px #06B6D444';
                     } else {
                         const pair1 = parseInt(selected.dataset.pair);
                         const pair2 = parseInt(item.dataset.pair);

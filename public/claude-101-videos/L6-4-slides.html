@@ -10,15 +10,15 @@
         body { background: linear-gradient(135deg, #f5f7fa 0%, #f0f4f8 100%); color: #1f2937; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
         
         .header { 
-            padding: 16px 20px; background: white; border-bottom: 3px solid #EC4899; 
+            padding: 16px 20px; background: white; border-bottom: 3px solid #EA580C; 
             display: flex; justify-content: space-between; align-items: center; flex-shrink: 0;
             box-shadow: 0 2px 8px rgba(0,0,0,0.06);
         }
         .header-left { display: flex; gap: 12px; align-items: center; }
-        .eyebrow { font-size: 12px; color: #EC4899; text-transform: uppercase; font-weight: 800; letter-spacing: 0.5px; }
+        .eyebrow { font-size: 12px; color: #EA580C; text-transform: uppercase; font-weight: 800; letter-spacing: 0.5px; }
         .title { font-size: 20px; font-weight: 700; color: #1f2937; }
         .points-badge {
-            background: linear-gradient(135deg, #EC4899, #EC4899dd);
+            background: linear-gradient(135deg, #EA580C, #EA580Cdd);
             color: white;
             padding: 8px 14px;
             border-radius: 20px;
@@ -32,9 +32,9 @@
             position: relative; overflow: hidden;
         }
         .progress-fill { 
-            height: 100%; background: linear-gradient(90deg, #EC4899, #EC4899dd);
+            height: 100%; background: linear-gradient(90deg, #EA580C, #EA580Cdd);
             transition: width 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-            box-shadow: 0 0 12px #EC489966;
+            box-shadow: 0 0 12px #EA580C66;
         }
         
         .content { 
@@ -45,12 +45,12 @@
         .card { 
             background: white; border-radius: 12px; padding: 20px;
             margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            border-left: 4px solid #EC4899;
+            border-left: 4px solid #EA580C;
             animation: slideIn 0.3s ease-out;
         }
         @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
-        .card-title { font-size: 18px; color: #EC4899; margin-bottom: 12px; font-weight: 700; }
+        .card-title { font-size: 18px; color: #EA580C; margin-bottom: 12px; font-weight: 700; }
         .card-text { font-size: 14px; color: #374151; line-height: 1.8; white-space: pre-wrap; word-wrap: break-word; }
         
         .code { 
@@ -65,7 +65,7 @@
             cursor: pointer; background: white; font-size: 14px;
             transition: all 0.2s; font-weight: 500;
         }
-        .quiz-option:hover { border-color: #EC4899; background: ##EC489911; }
+        .quiz-option:hover { border-color: #EA580C; background: ##EA580C11; }
         .quiz-option.correct { background: #ecfdf5; border-color: #10b981; color: #047857; }
         .quiz-option.incorrect { background: #fef2f2; border-color: #ef4444; color: #dc2626; }
         
@@ -79,9 +79,9 @@
         
         .badge { 
             text-align: center; padding: 30px;
-            background: linear-gradient(135deg, #EC4899, #EC4899dd);
+            background: linear-gradient(135deg, #EA580C, #EA580Cdd);
             color: white; border-radius: 12px;
-            box-shadow: 0 8px 16px #EC489933;
+            box-shadow: 0 8px 16px #EA580C33;
         }
         .badge-icon { font-size: 48px; margin-bottom: 12px; }
         .badge h3 { font-size: 20px; margin-bottom: 8px; }
@@ -91,15 +91,15 @@
             border: 2px solid #e5e7eb; border-radius: 6px; 
             margin: 10px 0; font-family: inherit; font-size: 14px;
         }
-        input:focus { outline: none; border-color: #EC4899; box-shadow: 0 0 0 3px #EC489911; }
+        input:focus { outline: none; border-color: #EA580C; box-shadow: 0 0 0 3px #EA580C11; }
         
         button { 
-            background: linear-gradient(135deg, #EC4899, #EC4899dd);
+            background: linear-gradient(135deg, #EA580C, #EA580Cdd);
             color: white; border: none; padding: 10px 18px;
             border-radius: 6px; cursor: pointer; font-weight: 600;
             transition: all 0.2s; font-family: inherit; font-size: 14px;
         }
-        button:hover { transform: translateY(-2px); box-shadow: 0 4px 12px #EC489944; }
+        button:hover { transform: translateY(-2px); box-shadow: 0 4px 12px #EA580C44; }
         button:active { transform: translateY(0); }
         
         .nav { 
@@ -110,8 +110,8 @@
         .counter { font-size: 13px; color: #6b7280; font-weight: 600; }
         
         .instruction { 
-            background: ##EC489911; padding: 12px 14px; border-radius: 6px;
-            margin-bottom: 12px; font-size: 14px; color: #EC4899; font-weight: 500;
+            background: ##EA580C11; padding: 12px 14px; border-radius: 6px;
+            margin-bottom: 12px; font-size: 14px; color: #EA580C; font-weight: 500;
         }
         
         .matching-grid {
@@ -122,7 +122,7 @@
             border-radius: 8px; cursor: pointer; transition: all 0.2s;
             text-align: center; font-weight: 500; font-size: 13px;
         }
-        .match-item:hover { border-color: #EC4899; background: ##EC489911; }
+        .match-item:hover { border-color: #EA580C; background: ##EA580C11; }
         .match-item.matched { background: #ecfdf5; border-color: #10b981; color: #047857; }
     </style>
 </head>
@@ -131,7 +131,7 @@
     <div class="header">
         <div class="header-left">
             <div>
-                <div class="eyebrow">M6 • L4 • Avanzado</div>
+                <div class="eyebrow">M6 • L4 • Casos de uso</div>
                 <div class="title">Módulo 6 - Lección 4</div>
             </div>
         </div>
@@ -145,7 +145,7 @@
     </div>
     
     <script>
-        const slides = [{"type": "intro", "points": 0}, {"type": "content", "title": "Introducci\u00f3n al tema", "text": "Bienvenido a M\u00f3dulo 6, Lecci\u00f3n 4\n\nEste m\u00f3dulo cubre:\n\u2022 Conceptos fundamentales\n\u2022 Aplicaciones pr\u00e1cticas\n\u2022 Best practices\n\u2022 Casos de uso reales\n\nAprender\u00e1s a usar estas herramientas effectivamente en producci\u00f3n.", "points": 10}, {"type": "content", "title": "Concepto 1", "text": "Concepto importante que necesitas entender.\n\nPuntos clave:\n\u2022 Punto A\n\u2022 Punto B\n\u2022 Punto C\n\nEstos conceptos son fundamentales para avanzar.", "points": 10}, {"type": "content", "title": "Concepto 2", "text": "Otro concepto importante.\n\nAplicaciones:\n\u2022 Caso de uso 1\n\u2022 Caso de uso 2\n\u2022 Caso de uso 3\n\nEntiende las implicaciones pr\u00e1cticas.", "points": 10}, {"type": "example", "title": "Ejemplo pr\u00e1ctico", "code": "# Ejemplo M\u00f3dulo 6\nresult = process_example()\nprint(f'Resultado: {result}')", "points": 15}, {"type": "content", "title": "Mejores pr\u00e1cticas", "text": "\u2713 Pr\u00e1ctica 1\n\u2713 Pr\u00e1ctica 2\n\u2713 Pr\u00e1ctica 3\n\u2713 Pr\u00e1ctica 4\n\u2713 Pr\u00e1ctica 5\n\nSigue estos patrones para \u00e9xito.", "points": 10}, {"type": "interactive_quiz", "title": "Quiz", "question": "\u00bfCu\u00e1l es el concepto principal?", "options": [{"text": "Concepto correcto", "correct": true, "reason": "\u00a1Correcto! Este es el concepto central", "points": 20}, {"text": "Concepto incorrecto", "correct": false, "reason": "No es el concepto principal", "points": 0}], "points": 20}, {"type": "challenge", "title": "Desaf\u00edo", "instruction": "Completa: El concepto principal es ___", "answer": "concepto correcto", "hint": "Piensa en lo que aprendiste...", "points": 25}, {"type": "content", "title": "Recursos adicionales", "text": "Para profundizar:\n\u2022 Documentaci\u00f3n oficial\n\u2022 Ejemplos en comunidad  \n\u2022 Proyectos open source\n\u2022 Comunidad Discord\n\nSigue aprendiendo despu\u00e9s de esta lecci\u00f3n.", "points": 10}, {"type": "badge", "name": "\u2728 M6L4 Completado", "description": "Finalizaste Lecci\u00f3n 4 del M\u00f3dulo 6"}];
+        const slides = [{"type": "intro", "points": 0}, {"type": "content", "title": "Claude como socio creativo", "text": "Mas alla de lo tecnico, Claude ayuda a generar ideas, nombres, guiones, historias y conceptos.\n\nFunciona como un companero de lluvia de ideas que nunca se queda sin propuestas.", "points": 10}, {"type": "content", "title": "Lluvia de ideas efectiva", "text": "• Pide cantidad primero: \"dame 20 ideas\", luego filtras\n• Da restricciones para enfocar: publico, tono, presupuesto\n• Pide angulos distintos: \"5 ideas seguras y 5 arriesgadas\"\n\nLa diversidad mejora cuando defines el espacio de busqueda.", "points": 10}, {"type": "content", "title": "Storytelling y estructura", "text": "Para historias o contenido narrativo:\n• Define personaje, conflicto y tono\n• Pide primero la estructura (esqueleto), luego desarrolla\n• Itera escena a escena\n\nConstruir por capas da mejores resultados que pedir todo de golpe.", "points": 10}, {"type": "example", "title": "Brief creativo", "code": "Necesito nombres para una cafeteria de especialidad.\nTono: calido, moderno, facil de recordar.\nEvita: palabras en ingles y juegos de palabras obvios.\nDame 15 opciones con una linea de justificacion cada una.", "points": 15}, {"type": "content", "title": "Refinar lo creativo", "text": "Las primeras ideas son materia prima. Mejora con feedback:\n• \"Mezcla la idea 3 y la 7\"\n• \"Mas atrevido\", \"mas elegante\"\n• \"Desarrolla solo la 5 en un parrafo\"\n\nTu criterio dirige; Claude aporta volumen y variantes.", "points": 10}, {"type": "interactive_quiz", "title": "Como obtener mejores ideas?", "question": "Que estrategia da una lluvia de ideas mas rica?", "options": [{"text": "Pedir 'una buena idea'", "correct": false, "reason": "Limita el rango; mejor generar muchas y filtrar.", "points": 0}, {"text": "Pedir muchas con restricciones claras", "correct": true, "reason": "Correcto: cantidad + foco produce mejores opciones para elegir.", "points": 20}, {"text": "No dar ningun contexto", "correct": false, "reason": "Sin foco, las ideas salen genericas.", "points": 0}], "points": 20}, {"type": "challenge", "title": "Reto: orden creativo", "instruction": "Para una historia, conviene pedir primero la estructura/esqueleto o el texto final? (responde: estructura o final)", "answer": "estructura", "hint": "Mejor construir por capas: primero estructura, luego desarrollo.", "points": 25}, {"type": "matching_game", "title": "Creatividad", "pairs": [{"left": "Ideas", "right": "Pedir cantidad", "points": 15}, {"left": "Enfoque", "right": "Dar restricciones", "points": 15}, {"left": "Historia", "right": "Estructura primero", "points": 15}, {"left": "Mejorar", "right": "Feedback concreto", "points": 15}]}, {"type": "badge", "name": "🎨 Socio Creativo", "description": "Usas Claude para generar y refinar ideas e historias con metodo."}];
         let idx = 0;
         let totalPoints = parseInt(localStorage.getItem('total_points_m6l4') || '0');
         document.getElementById('total-points').textContent = totalPoints + ' pts';
@@ -231,7 +231,7 @@
                     if (!selected) {
                         selected = item;
                         item.style.background = 'white';
-                        item.style.boxShadow = '0 0 0 3px #EC489944';
+                        item.style.boxShadow = '0 0 0 3px #EA580C44';
                     } else {
                         const pair1 = parseInt(selected.dataset.pair);
                         const pair2 = parseInt(item.dataset.pair);

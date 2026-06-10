@@ -10,15 +10,15 @@
         body { background: linear-gradient(135deg, #f5f7fa 0%, #f0f4f8 100%); color: #1f2937; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
         
         .header { 
-            padding: 16px 20px; background: white; border-bottom: 3px solid #F59E0B; 
+            padding: 16px 20px; background: white; border-bottom: 3px solid #6366F1; 
             display: flex; justify-content: space-between; align-items: center; flex-shrink: 0;
             box-shadow: 0 2px 8px rgba(0,0,0,0.06);
         }
         .header-left { display: flex; gap: 12px; align-items: center; }
-        .eyebrow { font-size: 12px; color: #F59E0B; text-transform: uppercase; font-weight: 800; letter-spacing: 0.5px; }
+        .eyebrow { font-size: 12px; color: #6366F1; text-transform: uppercase; font-weight: 800; letter-spacing: 0.5px; }
         .title { font-size: 20px; font-weight: 700; color: #1f2937; }
         .points-badge {
-            background: linear-gradient(135deg, #F59E0B, #F59E0Bdd);
+            background: linear-gradient(135deg, #6366F1, #6366F1dd);
             color: white;
             padding: 8px 14px;
             border-radius: 20px;
@@ -32,9 +32,9 @@
             position: relative; overflow: hidden;
         }
         .progress-fill { 
-            height: 100%; background: linear-gradient(90deg, #F59E0B, #F59E0Bdd);
+            height: 100%; background: linear-gradient(90deg, #6366F1, #6366F1dd);
             transition: width 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-            box-shadow: 0 0 12px #F59E0B66;
+            box-shadow: 0 0 12px #6366F166;
         }
         
         .content { 
@@ -45,12 +45,12 @@
         .card { 
             background: white; border-radius: 12px; padding: 20px;
             margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            border-left: 4px solid #F59E0B;
+            border-left: 4px solid #6366F1;
             animation: slideIn 0.3s ease-out;
         }
         @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
-        .card-title { font-size: 18px; color: #F59E0B; margin-bottom: 12px; font-weight: 700; }
+        .card-title { font-size: 18px; color: #6366F1; margin-bottom: 12px; font-weight: 700; }
         .card-text { font-size: 14px; color: #374151; line-height: 1.8; white-space: pre-wrap; word-wrap: break-word; }
         
         .code { 
@@ -65,7 +65,7 @@
             cursor: pointer; background: white; font-size: 14px;
             transition: all 0.2s; font-weight: 500;
         }
-        .quiz-option:hover { border-color: #F59E0B; background: ##F59E0B11; }
+        .quiz-option:hover { border-color: #6366F1; background: ##6366F111; }
         .quiz-option.correct { background: #ecfdf5; border-color: #10b981; color: #047857; }
         .quiz-option.incorrect { background: #fef2f2; border-color: #ef4444; color: #dc2626; }
         
@@ -79,9 +79,9 @@
         
         .badge { 
             text-align: center; padding: 30px;
-            background: linear-gradient(135deg, #F59E0B, #F59E0Bdd);
+            background: linear-gradient(135deg, #6366F1, #6366F1dd);
             color: white; border-radius: 12px;
-            box-shadow: 0 8px 16px #F59E0B33;
+            box-shadow: 0 8px 16px #6366F133;
         }
         .badge-icon { font-size: 48px; margin-bottom: 12px; }
         .badge h3 { font-size: 20px; margin-bottom: 8px; }
@@ -91,15 +91,15 @@
             border: 2px solid #e5e7eb; border-radius: 6px; 
             margin: 10px 0; font-family: inherit; font-size: 14px;
         }
-        input:focus { outline: none; border-color: #F59E0B; box-shadow: 0 0 0 3px #F59E0B11; }
+        input:focus { outline: none; border-color: #6366F1; box-shadow: 0 0 0 3px #6366F111; }
         
         button { 
-            background: linear-gradient(135deg, #F59E0B, #F59E0Bdd);
+            background: linear-gradient(135deg, #6366F1, #6366F1dd);
             color: white; border: none; padding: 10px 18px;
             border-radius: 6px; cursor: pointer; font-weight: 600;
             transition: all 0.2s; font-family: inherit; font-size: 14px;
         }
-        button:hover { transform: translateY(-2px); box-shadow: 0 4px 12px #F59E0B44; }
+        button:hover { transform: translateY(-2px); box-shadow: 0 4px 12px #6366F144; }
         button:active { transform: translateY(0); }
         
         .nav { 
@@ -110,8 +110,8 @@
         .counter { font-size: 13px; color: #6b7280; font-weight: 600; }
         
         .instruction { 
-            background: ##F59E0B11; padding: 12px 14px; border-radius: 6px;
-            margin-bottom: 12px; font-size: 14px; color: #F59E0B; font-weight: 500;
+            background: ##6366F111; padding: 12px 14px; border-radius: 6px;
+            margin-bottom: 12px; font-size: 14px; color: #6366F1; font-weight: 500;
         }
         
         .matching-grid {
@@ -122,7 +122,7 @@
             border-radius: 8px; cursor: pointer; transition: all 0.2s;
             text-align: center; font-weight: 500; font-size: 13px;
         }
-        .match-item:hover { border-color: #F59E0B; background: ##F59E0B11; }
+        .match-item:hover { border-color: #6366F1; background: ##6366F111; }
         .match-item.matched { background: #ecfdf5; border-color: #10b981; color: #047857; }
     </style>
 </head>
@@ -131,7 +131,7 @@
     <div class="header">
         <div class="header-left">
             <div>
-                <div class="eyebrow">M4 • L1 • Prompting</div>
+                <div class="eyebrow">M4 • L1 • Prompting Pro</div>
                 <div class="title">Módulo 4 - Lección 1</div>
             </div>
         </div>
@@ -145,7 +145,7 @@
     </div>
     
     <script>
-        const slides = [{"type": "intro", "points": 0}, {"type": "content", "title": "Introducci\u00f3n al tema", "text": "Bienvenido a M\u00f3dulo 4, Lecci\u00f3n 1\n\nEste m\u00f3dulo cubre:\n\u2022 Conceptos fundamentales\n\u2022 Aplicaciones pr\u00e1cticas\n\u2022 Best practices\n\u2022 Casos de uso reales\n\nAprender\u00e1s a usar estas herramientas effectivamente en producci\u00f3n.", "points": 10}, {"type": "content", "title": "Concepto 1", "text": "Concepto importante que necesitas entender.\n\nPuntos clave:\n\u2022 Punto A\n\u2022 Punto B\n\u2022 Punto C\n\nEstos conceptos son fundamentales para avanzar.", "points": 10}, {"type": "content", "title": "Concepto 2", "text": "Otro concepto importante.\n\nAplicaciones:\n\u2022 Caso de uso 1\n\u2022 Caso de uso 2\n\u2022 Caso de uso 3\n\nEntiende las implicaciones pr\u00e1cticas.", "points": 10}, {"type": "example", "title": "Ejemplo pr\u00e1ctico", "code": "# Ejemplo M\u00f3dulo 4\nresult = process_example()\nprint(f'Resultado: {result}')", "points": 15}, {"type": "content", "title": "Mejores pr\u00e1cticas", "text": "\u2713 Pr\u00e1ctica 1\n\u2713 Pr\u00e1ctica 2\n\u2713 Pr\u00e1ctica 3\n\u2713 Pr\u00e1ctica 4\n\u2713 Pr\u00e1ctica 5\n\nSigue estos patrones para \u00e9xito.", "points": 10}, {"type": "interactive_quiz", "title": "Quiz", "question": "\u00bfCu\u00e1l es el concepto principal?", "options": [{"text": "Concepto correcto", "correct": true, "reason": "\u00a1Correcto! Este es el concepto central", "points": 20}, {"text": "Concepto incorrecto", "correct": false, "reason": "No es el concepto principal", "points": 0}], "points": 20}, {"type": "challenge", "title": "Desaf\u00edo", "instruction": "Completa: El concepto principal es ___", "answer": "concepto correcto", "hint": "Piensa en lo que aprendiste...", "points": 25}, {"type": "content", "title": "Recursos adicionales", "text": "Para profundizar:\n\u2022 Documentaci\u00f3n oficial\n\u2022 Ejemplos en comunidad  \n\u2022 Proyectos open source\n\u2022 Comunidad Discord\n\nSigue aprendiendo despu\u00e9s de esta lecci\u00f3n.", "points": 10}, {"type": "badge", "name": "\u2728 M4L1 Completado", "description": "Finalizaste Lecci\u00f3n 1 del M\u00f3dulo 4"}];
+        const slides = [{"type": "intro", "points": 0}, {"type": "content", "title": "Que es chain-of-thought", "text": "Chain-of-thought (CoT) es pedirle a Claude que piense paso a paso ANTES de dar la respuesta final.\n\nEn lugar de saltar a la conclusion, el modelo escribe su razonamiento, lo que reduce errores en tareas de logica, matematicas y analisis.", "points": 10}, {"type": "content", "title": "Por que mejora la precision", "text": "Al razonar en voz alta, Claude:\n• Descompone el problema en partes manejables\n• Detecta sus propios errores intermedios\n• Llega a conclusiones mas fiables\n\nEs especialmente util cuando la respuesta requiere varios pasos o calculos encadenados.", "points": 10}, {"type": "example", "title": "Como activarlo", "code": "Pregunta: Un producto cuesta 80€. Subo el precio 25% y luego hago un\ndescuento del 10%. Cual es el precio final?\n\nInstruccion clave:\n\"Piensa paso a paso y muestra cada calculo antes de la respuesta final.\"\n\n# Claude responde:\n# 1) +25% de 80 = 100\n# 2) -10% de 100 = 90\n# Respuesta final: 90€", "points": 15}, {"type": "content", "title": "CoT para decisiones, no solo numeros", "text": "Funciona igual de bien en analisis cualitativo:\n• \"Evalua pros y contras antes de recomendar\"\n• \"Lista los criterios, puntua cada opcion y luego decide\"\n\nVer el razonamiento te deja AUDITAR la decision, no solo aceptarla.", "points": 10}, {"type": "content", "title": "Cuando NO necesitas CoT", "text": "Para tareas simples (traducir una frase, dar una definicion) el razonamiento extra solo anade longitud y costo.\n\nUsa CoT cuando: hay varios pasos, calculos, comparaciones o logica.\nEvitalo cuando: la respuesta es directa.", "points": 10}, {"type": "interactive_quiz", "title": "Cuando usar chain-of-thought?", "question": "En cual de estas tareas ayuda mas el razonamiento paso a paso?", "options": [{"text": "Traducir 'hola' al ingles", "correct": false, "reason": "Es directo; CoT no aporta.", "points": 0}, {"text": "Resolver un problema de logica con varias condiciones", "correct": true, "reason": "Correcto: multiples pasos se benefician del razonamiento explicito.", "points": 20}, {"text": "Pedir la capital de Francia", "correct": false, "reason": "Respuesta inmediata, no necesita pasos.", "points": 0}], "points": 20}, {"type": "challenge", "title": "Reto: aplica CoT", "instruction": "Con +25% y luego -10% sobre 80€, cual es el precio final en euros? (solo el numero)", "answer": "90", "hint": "Primero 80 x 1.25 = 100; luego 100 x 0.90 = 90.", "points": 25}, {"type": "matching_game", "title": "Concepto CoT", "pairs": [{"left": "Chain-of-thought", "right": "Pensar paso a paso", "points": 15}, {"left": "Mejor en", "right": "Logica y calculos", "points": 15}, {"left": "Beneficio", "right": "Menos errores", "points": 15}, {"left": "Evitar en", "right": "Tareas triviales", "points": 15}]}, {"type": "badge", "name": "🧠 Pensador en Cadena", "description": "Sabes activar el razonamiento paso a paso para tareas complejas."}];
         let idx = 0;
         let totalPoints = parseInt(localStorage.getItem('total_points_m4l1') || '0');
         document.getElementById('total-points').textContent = totalPoints + ' pts';
@@ -231,7 +231,7 @@
                     if (!selected) {
                         selected = item;
                         item.style.background = 'white';
-                        item.style.boxShadow = '0 0 0 3px #F59E0B44';
+                        item.style.boxShadow = '0 0 0 3px #6366F144';
                     } else {
                         const pair1 = parseInt(selected.dataset.pair);
                         const pair2 = parseInt(item.dataset.pair);

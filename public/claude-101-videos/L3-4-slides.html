@@ -10,15 +10,15 @@
         body { background: linear-gradient(135deg, #f5f7fa 0%, #f0f4f8 100%); color: #1f2937; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
         
         .header { 
-            padding: 16px 20px; background: white; border-bottom: 3px solid #8B5CF6; 
+            padding: 16px 20px; background: white; border-bottom: 3px solid #A855F7; 
             display: flex; justify-content: space-between; align-items: center; flex-shrink: 0;
             box-shadow: 0 2px 8px rgba(0,0,0,0.06);
         }
         .header-left { display: flex; gap: 12px; align-items: center; }
-        .eyebrow { font-size: 12px; color: #8B5CF6; text-transform: uppercase; font-weight: 800; letter-spacing: 0.5px; }
+        .eyebrow { font-size: 12px; color: #A855F7; text-transform: uppercase; font-weight: 800; letter-spacing: 0.5px; }
         .title { font-size: 20px; font-weight: 700; color: #1f2937; }
         .points-badge {
-            background: linear-gradient(135deg, #8B5CF6, #8B5CF6dd);
+            background: linear-gradient(135deg, #A855F7, #A855F7dd);
             color: white;
             padding: 8px 14px;
             border-radius: 20px;
@@ -32,9 +32,9 @@
             position: relative; overflow: hidden;
         }
         .progress-fill { 
-            height: 100%; background: linear-gradient(90deg, #8B5CF6, #8B5CF6dd);
+            height: 100%; background: linear-gradient(90deg, #A855F7, #A855F7dd);
             transition: width 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-            box-shadow: 0 0 12px #8B5CF666;
+            box-shadow: 0 0 12px #A855F766;
         }
         
         .content { 
@@ -45,12 +45,12 @@
         .card { 
             background: white; border-radius: 12px; padding: 20px;
             margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            border-left: 4px solid #8B5CF6;
+            border-left: 4px solid #A855F7;
             animation: slideIn 0.3s ease-out;
         }
         @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
-        .card-title { font-size: 18px; color: #8B5CF6; margin-bottom: 12px; font-weight: 700; }
+        .card-title { font-size: 18px; color: #A855F7; margin-bottom: 12px; font-weight: 700; }
         .card-text { font-size: 14px; color: #374151; line-height: 1.8; white-space: pre-wrap; word-wrap: break-word; }
         
         .code { 
@@ -65,7 +65,7 @@
             cursor: pointer; background: white; font-size: 14px;
             transition: all 0.2s; font-weight: 500;
         }
-        .quiz-option:hover { border-color: #8B5CF6; background: ##8B5CF611; }
+        .quiz-option:hover { border-color: #A855F7; background: ##A855F711; }
         .quiz-option.correct { background: #ecfdf5; border-color: #10b981; color: #047857; }
         .quiz-option.incorrect { background: #fef2f2; border-color: #ef4444; color: #dc2626; }
         
@@ -79,9 +79,9 @@
         
         .badge { 
             text-align: center; padding: 30px;
-            background: linear-gradient(135deg, #8B5CF6, #8B5CF6dd);
+            background: linear-gradient(135deg, #A855F7, #A855F7dd);
             color: white; border-radius: 12px;
-            box-shadow: 0 8px 16px #8B5CF633;
+            box-shadow: 0 8px 16px #A855F733;
         }
         .badge-icon { font-size: 48px; margin-bottom: 12px; }
         .badge h3 { font-size: 20px; margin-bottom: 8px; }
@@ -91,15 +91,15 @@
             border: 2px solid #e5e7eb; border-radius: 6px; 
             margin: 10px 0; font-family: inherit; font-size: 14px;
         }
-        input:focus { outline: none; border-color: #8B5CF6; box-shadow: 0 0 0 3px #8B5CF611; }
+        input:focus { outline: none; border-color: #A855F7; box-shadow: 0 0 0 3px #A855F711; }
         
         button { 
-            background: linear-gradient(135deg, #8B5CF6, #8B5CF6dd);
+            background: linear-gradient(135deg, #A855F7, #A855F7dd);
             color: white; border: none; padding: 10px 18px;
             border-radius: 6px; cursor: pointer; font-weight: 600;
             transition: all 0.2s; font-family: inherit; font-size: 14px;
         }
-        button:hover { transform: translateY(-2px); box-shadow: 0 4px 12px #8B5CF644; }
+        button:hover { transform: translateY(-2px); box-shadow: 0 4px 12px #A855F744; }
         button:active { transform: translateY(0); }
         
         .nav { 
@@ -110,8 +110,8 @@
         .counter { font-size: 13px; color: #6b7280; font-weight: 600; }
         
         .instruction { 
-            background: ##8B5CF611; padding: 12px 14px; border-radius: 6px;
-            margin-bottom: 12px; font-size: 14px; color: #8B5CF6; font-weight: 500;
+            background: ##A855F711; padding: 12px 14px; border-radius: 6px;
+            margin-bottom: 12px; font-size: 14px; color: #A855F7; font-weight: 500;
         }
         
         .matching-grid {
@@ -122,7 +122,7 @@
             border-radius: 8px; cursor: pointer; transition: all 0.2s;
             text-align: center; font-weight: 500; font-size: 13px;
         }
-        .match-item:hover { border-color: #8B5CF6; background: ##8B5CF611; }
+        .match-item:hover { border-color: #A855F7; background: ##A855F711; }
         .match-item.matched { background: #ecfdf5; border-color: #10b981; color: #047857; }
     </style>
 </head>
@@ -131,7 +131,7 @@
     <div class="header">
         <div class="header-left">
             <div>
-                <div class="eyebrow">M3 • L4 • API</div>
+                <div class="eyebrow">M3 • L4 • Prompting</div>
                 <div class="title">Módulo 3 - Lección 4</div>
             </div>
         </div>
@@ -140,12 +140,12 @@
     <div class="content" id="content"></div>
     <div class="nav">
         <button id="prev">← Anterior</button>
-        <span class="counter"><span id="cnt">1</span>/10</span>
+        <span class="counter"><span id="cnt">1</span>/11</span>
         <button id="next">Siguiente →</button>
     </div>
     
     <script>
-        const slides = [{"type": "intro", "points": 0}, {"type": "content", "title": "Introducci\u00f3n al tema", "text": "Bienvenido a M\u00f3dulo 3, Lecci\u00f3n 4\n\nEste m\u00f3dulo cubre:\n\u2022 Conceptos fundamentales\n\u2022 Aplicaciones pr\u00e1cticas\n\u2022 Best practices\n\u2022 Casos de uso reales\n\nAprender\u00e1s a usar estas herramientas effectivamente en producci\u00f3n.", "points": 10}, {"type": "content", "title": "Concepto 1", "text": "Concepto importante que necesitas entender.\n\nPuntos clave:\n\u2022 Punto A\n\u2022 Punto B\n\u2022 Punto C\n\nEstos conceptos son fundamentales para avanzar.", "points": 10}, {"type": "content", "title": "Concepto 2", "text": "Otro concepto importante.\n\nAplicaciones:\n\u2022 Caso de uso 1\n\u2022 Caso de uso 2\n\u2022 Caso de uso 3\n\nEntiende las implicaciones pr\u00e1cticas.", "points": 10}, {"type": "example", "title": "Ejemplo pr\u00e1ctico", "code": "# Ejemplo M\u00f3dulo 3\nresult = process_example()\nprint(f'Resultado: {result}')", "points": 15}, {"type": "content", "title": "Mejores pr\u00e1cticas", "text": "\u2713 Pr\u00e1ctica 1\n\u2713 Pr\u00e1ctica 2\n\u2713 Pr\u00e1ctica 3\n\u2713 Pr\u00e1ctica 4\n\u2713 Pr\u00e1ctica 5\n\nSigue estos patrones para \u00e9xito.", "points": 10}, {"type": "interactive_quiz", "title": "Quiz", "question": "\u00bfCu\u00e1l es el concepto principal?", "options": [{"text": "Concepto correcto", "correct": true, "reason": "\u00a1Correcto! Este es el concepto central", "points": 20}, {"text": "Concepto incorrecto", "correct": false, "reason": "No es el concepto principal", "points": 0}], "points": 20}, {"type": "challenge", "title": "Desaf\u00edo", "instruction": "Completa: El concepto principal es ___", "answer": "concepto correcto", "hint": "Piensa en lo que aprendiste...", "points": 25}, {"type": "content", "title": "Recursos adicionales", "text": "Para profundizar:\n\u2022 Documentaci\u00f3n oficial\n\u2022 Ejemplos en comunidad  \n\u2022 Proyectos open source\n\u2022 Comunidad Discord\n\nSigue aprendiendo despu\u00e9s de esta lecci\u00f3n.", "points": 10}, {"type": "badge", "name": "\u2728 M3L4 Completado", "description": "Finalizaste Lecci\u00f3n 4 del M\u00f3dulo 3"}];
+        const slides = [{"type": "intro", "points": 0}, {"type": "content", "title": "Error 1: pedir demasiado de golpe", "text": "Meter 5 tareas en un prompt produce respuestas superficiales en todas.\n\nSintoma: \"Analiza, resume, traduce, corrige y dame ideas\" en una linea.\n\nArreglo: divide en pasos. Una tarea principal por mensaje; encadena despues.", "points": 10}, {"type": "content", "title": "Error 2: ser ambiguo y luego frustrarse", "text": "Si el resultado no te gusta, casi siempre el prompt era ambiguo.\n\nAntes de reescribir el prompt entero, di que cambiar: \"mas corto\", \"mas formal\", \"sin la introduccion\". Claude itera muy bien con feedback concreto.", "points": 10}, {"type": "content", "title": "Error 3: asumir que conoce datos privados o recientes", "text": "Claude no conoce:\n• Tus documentos internos (a menos que los pegues)\n• Eventos posteriores a su entrenamiento\n• Tu contexto personal no escrito\n\nArreglo: pega el material y, para datos actuales, usa busqueda web o herramientas.", "points": 10}, {"type": "content", "title": "Error 4: confiar sin verificar", "text": "Claude puede sonar muy seguro y aun asi equivocarse (alucinacion).\n\nRiesgo alto en: cifras, citas, leyes, fechas, nombres propios.\n\nArreglo: pide que indique su nivel de confianza o que cite la fuente, y verifica los datos criticos por tu cuenta.", "points": 10}, {"type": "content", "title": "Error 5: prompts sin formato de salida", "text": "Si no dices como quieres la respuesta, recibes texto libre dificil de reutilizar.\n\nArreglo: termina el prompt con el formato exacto: \"Devuelve solo una tabla con columnas X, Y, Z\".", "points": 10}, {"type": "example", "title": "Antidoto: el prompt 'a prueba de errores'", "code": "Tarea unica: clasifica estos comentarios como POSITIVO/NEGATIVO/NEUTRO.\nMaterial: <<<\n  ...comentarios...\n>>>\nReglas: si dudas, marca NEUTRO. No expliques.\nFormato: tabla de 2 columnas (comentario, etiqueta).", "points": 15}, {"type": "interactive_quiz", "title": "Que error comete este prompt?", "question": "\"Eres abogado. Dame el articulo exacto del codigo civil que aplica a mi caso\" (sin dar el caso ni pais).", "options": [{"text": "Asume datos que no tiene + falta contexto", "correct": true, "reason": "Correcto: no dio el caso ni el pais, y pide una cita exacta verificable.", "points": 20}, {"text": "Es demasiado corto", "correct": false, "reason": "La longitud no es el problema, sino la falta de datos y el riesgo de cita inventada.", "points": 0}, {"text": "Usa rol, eso esta mal", "correct": false, "reason": "Usar un rol es correcto; el problema es otro.", "points": 0}], "points": 20}, {"type": "challenge", "title": "Reto: cuantas tareas?", "instruction": "Cuantas tareas distintas mete este prompt: \"resume, traduce al ingles y dame 3 hashtags\"?", "answer": "3", "hint": "Resumir, traducir y generar hashtags son tres tareas; conviene separarlas.", "points": 25}, {"type": "matching_game", "title": "Error y solucion", "pairs": [{"left": "Demasiadas tareas", "right": "Una por prompt", "points": 15}, {"left": "Ambiguedad", "right": "Feedback concreto", "points": 15}, {"left": "Datos inventados", "right": "Verificar y citar", "points": 15}, {"left": "Salida desordenada", "right": "Definir formato", "points": 15}]}, {"type": "badge", "name": "🚦 Detector de Errores", "description": "Reconoces y evitas los errores de prompting mas comunes."}];
         let idx = 0;
         let totalPoints = parseInt(localStorage.getItem('total_points_m3l4') || '0');
         document.getElementById('total-points').textContent = totalPoints + ' pts';
@@ -231,7 +231,7 @@
                     if (!selected) {
                         selected = item;
                         item.style.background = 'white';
-                        item.style.boxShadow = '0 0 0 3px #8B5CF644';
+                        item.style.boxShadow = '0 0 0 3px #A855F744';
                     } else {
                         const pair1 = parseInt(selected.dataset.pair);
                         const pair2 = parseInt(item.dataset.pair);

@@ -10,15 +10,15 @@
         body { background: linear-gradient(135deg, #f5f7fa 0%, #f0f4f8 100%); color: #1f2937; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
         
         .header { 
-            padding: 16px 20px; background: white; border-bottom: 3px solid #06B6D4; 
+            padding: 16px 20px; background: white; border-bottom: 3px solid #059669; 
             display: flex; justify-content: space-between; align-items: center; flex-shrink: 0;
             box-shadow: 0 2px 8px rgba(0,0,0,0.06);
         }
         .header-left { display: flex; gap: 12px; align-items: center; }
-        .eyebrow { font-size: 12px; color: #06B6D4; text-transform: uppercase; font-weight: 800; letter-spacing: 0.5px; }
+        .eyebrow { font-size: 12px; color: #059669; text-transform: uppercase; font-weight: 800; letter-spacing: 0.5px; }
         .title { font-size: 20px; font-weight: 700; color: #1f2937; }
         .points-badge {
-            background: linear-gradient(135deg, #06B6D4, #06B6D4dd);
+            background: linear-gradient(135deg, #059669, #059669dd);
             color: white;
             padding: 8px 14px;
             border-radius: 20px;
@@ -32,9 +32,9 @@
             position: relative; overflow: hidden;
         }
         .progress-fill { 
-            height: 100%; background: linear-gradient(90deg, #06B6D4, #06B6D4dd);
+            height: 100%; background: linear-gradient(90deg, #059669, #059669dd);
             transition: width 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-            box-shadow: 0 0 12px #06B6D466;
+            box-shadow: 0 0 12px #05966966;
         }
         
         .content { 
@@ -45,12 +45,12 @@
         .card { 
             background: white; border-radius: 12px; padding: 20px;
             margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            border-left: 4px solid #06B6D4;
+            border-left: 4px solid #059669;
             animation: slideIn 0.3s ease-out;
         }
         @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
-        .card-title { font-size: 18px; color: #06B6D4; margin-bottom: 12px; font-weight: 700; }
+        .card-title { font-size: 18px; color: #059669; margin-bottom: 12px; font-weight: 700; }
         .card-text { font-size: 14px; color: #374151; line-height: 1.8; white-space: pre-wrap; word-wrap: break-word; }
         
         .code { 
@@ -65,7 +65,7 @@
             cursor: pointer; background: white; font-size: 14px;
             transition: all 0.2s; font-weight: 500;
         }
-        .quiz-option:hover { border-color: #06B6D4; background: ##06B6D411; }
+        .quiz-option:hover { border-color: #059669; background: ##05966911; }
         .quiz-option.correct { background: #ecfdf5; border-color: #10b981; color: #047857; }
         .quiz-option.incorrect { background: #fef2f2; border-color: #ef4444; color: #dc2626; }
         
@@ -79,9 +79,9 @@
         
         .badge { 
             text-align: center; padding: 30px;
-            background: linear-gradient(135deg, #06B6D4, #06B6D4dd);
+            background: linear-gradient(135deg, #059669, #059669dd);
             color: white; border-radius: 12px;
-            box-shadow: 0 8px 16px #06B6D433;
+            box-shadow: 0 8px 16px #05966933;
         }
         .badge-icon { font-size: 48px; margin-bottom: 12px; }
         .badge h3 { font-size: 20px; margin-bottom: 8px; }
@@ -91,15 +91,15 @@
             border: 2px solid #e5e7eb; border-radius: 6px; 
             margin: 10px 0; font-family: inherit; font-size: 14px;
         }
-        input:focus { outline: none; border-color: #06B6D4; box-shadow: 0 0 0 3px #06B6D411; }
+        input:focus { outline: none; border-color: #059669; box-shadow: 0 0 0 3px #05966911; }
         
         button { 
-            background: linear-gradient(135deg, #06B6D4, #06B6D4dd);
+            background: linear-gradient(135deg, #059669, #059669dd);
             color: white; border: none; padding: 10px 18px;
             border-radius: 6px; cursor: pointer; font-weight: 600;
             transition: all 0.2s; font-family: inherit; font-size: 14px;
         }
-        button:hover { transform: translateY(-2px); box-shadow: 0 4px 12px #06B6D444; }
+        button:hover { transform: translateY(-2px); box-shadow: 0 4px 12px #05966944; }
         button:active { transform: translateY(0); }
         
         .nav { 
@@ -110,8 +110,8 @@
         .counter { font-size: 13px; color: #6b7280; font-weight: 600; }
         
         .instruction { 
-            background: ##06B6D411; padding: 12px 14px; border-radius: 6px;
-            margin-bottom: 12px; font-size: 14px; color: #06B6D4; font-weight: 500;
+            background: ##05966911; padding: 12px 14px; border-radius: 6px;
+            margin-bottom: 12px; font-size: 14px; color: #059669; font-weight: 500;
         }
         
         .matching-grid {
@@ -122,7 +122,7 @@
             border-radius: 8px; cursor: pointer; transition: all 0.2s;
             text-align: center; font-weight: 500; font-size: 13px;
         }
-        .match-item:hover { border-color: #06B6D4; background: ##06B6D411; }
+        .match-item:hover { border-color: #059669; background: ##05966911; }
         .match-item.matched { background: #ecfdf5; border-color: #10b981; color: #047857; }
     </style>
 </head>
@@ -131,7 +131,7 @@
     <div class="header">
         <div class="header-left">
             <div>
-                <div class="eyebrow">M5 • L4 • Casos de Uso</div>
+                <div class="eyebrow">M5 • L4 • Herramientas</div>
                 <div class="title">Módulo 5 - Lección 4</div>
             </div>
         </div>
@@ -140,12 +140,12 @@
     <div class="content" id="content"></div>
     <div class="nav">
         <button id="prev">← Anterior</button>
-        <span class="counter"><span id="cnt">1</span>/10</span>
+        <span class="counter"><span id="cnt">1</span>/9</span>
         <button id="next">Siguiente →</button>
     </div>
     
     <script>
-        const slides = [{"type": "intro", "points": 0}, {"type": "content", "title": "Introducci\u00f3n al tema", "text": "Bienvenido a M\u00f3dulo 5, Lecci\u00f3n 4\n\nEste m\u00f3dulo cubre:\n\u2022 Conceptos fundamentales\n\u2022 Aplicaciones pr\u00e1cticas\n\u2022 Best practices\n\u2022 Casos de uso reales\n\nAprender\u00e1s a usar estas herramientas effectivamente en producci\u00f3n.", "points": 10}, {"type": "content", "title": "Concepto 1", "text": "Concepto importante que necesitas entender.\n\nPuntos clave:\n\u2022 Punto A\n\u2022 Punto B\n\u2022 Punto C\n\nEstos conceptos son fundamentales para avanzar.", "points": 10}, {"type": "content", "title": "Concepto 2", "text": "Otro concepto importante.\n\nAplicaciones:\n\u2022 Caso de uso 1\n\u2022 Caso de uso 2\n\u2022 Caso de uso 3\n\nEntiende las implicaciones pr\u00e1cticas.", "points": 10}, {"type": "example", "title": "Ejemplo pr\u00e1ctico", "code": "# Ejemplo M\u00f3dulo 5\nresult = process_example()\nprint(f'Resultado: {result}')", "points": 15}, {"type": "content", "title": "Mejores pr\u00e1cticas", "text": "\u2713 Pr\u00e1ctica 1\n\u2713 Pr\u00e1ctica 2\n\u2713 Pr\u00e1ctica 3\n\u2713 Pr\u00e1ctica 4\n\u2713 Pr\u00e1ctica 5\n\nSigue estos patrones para \u00e9xito.", "points": 10}, {"type": "interactive_quiz", "title": "Quiz", "question": "\u00bfCu\u00e1l es el concepto principal?", "options": [{"text": "Concepto correcto", "correct": true, "reason": "\u00a1Correcto! Este es el concepto central", "points": 20}, {"text": "Concepto incorrecto", "correct": false, "reason": "No es el concepto principal", "points": 0}], "points": 20}, {"type": "challenge", "title": "Desaf\u00edo", "instruction": "Completa: El concepto principal es ___", "answer": "concepto correcto", "hint": "Piensa en lo que aprendiste...", "points": 25}, {"type": "content", "title": "Recursos adicionales", "text": "Para profundizar:\n\u2022 Documentaci\u00f3n oficial\n\u2022 Ejemplos en comunidad  \n\u2022 Proyectos open source\n\u2022 Comunidad Discord\n\nSigue aprendiendo despu\u00e9s de esta lecci\u00f3n.", "points": 10}, {"type": "badge", "name": "\u2728 M5L4 Completado", "description": "Finalizaste Lecci\u00f3n 4 del M\u00f3dulo 5"}];
+        const slides = [{"type": "intro", "points": 0}, {"type": "content", "title": "Como 'recuerda' Claude", "text": "Dentro de una conversacion, Claude recuerda todo lo dicho hasta el limite del context window.\n\nPero por defecto, cada conversacion nueva empieza de cero: no recuerda chats anteriores salvo que existan funciones de memoria o tu repitas el contexto.", "points": 10}, {"type": "content", "title": "El context window como memoria a corto plazo", "text": "Todo lo que esta en la conversacion actual es 'memoria viva'.\n\n• Puedes referirte a mensajes anteriores del mismo hilo\n• Si la conversacion es muy larga, lo mas antiguo puede salir del contexto\n• Resume tu mismo los puntos clave si el hilo crece mucho", "points": 10}, {"type": "content", "title": "Estrategias para mantener contexto", "text": "• Trabaja temas relacionados en el mismo hilo\n• Empieza un hilo nuevo para temas distintos (mas limpio)\n• Pega un breve resumen al iniciar si necesitas continuidad\n• Usa Proyectos para guardar contexto reutilizable", "points": 10}, {"type": "content", "title": "Privacidad y memoria", "text": "Piensa que comparte cada hilo:\n• No pegues datos sensibles que no necesites\n• Revisa la configuracion de datos de tu cuenta\n• Para informacion confidencial, minimiza lo que incluyes\n\nMas sobre esto en el modulo de Buenas Practicas y Limites.", "points": 10}, {"type": "interactive_quiz", "title": "Recuerda Claude entre conversaciones?", "question": "Por defecto, que pasa al abrir una conversacion nueva?", "options": [{"text": "Recuerda todos tus chats anteriores", "correct": false, "reason": "No por defecto; cada hilo suele empezar limpio.", "points": 0}, {"text": "Empieza sin memoria del hilo anterior salvo que des contexto", "correct": true, "reason": "Correcto: hay que aportar el contexto o usar funciones de memoria/proyectos.", "points": 20}, {"text": "Borra tus archivos", "correct": false, "reason": "Abrir un chat no borra nada tuyo.", "points": 0}], "points": 20}, {"type": "challenge", "title": "Reto: nombre del 'espacio'", "instruction": "Como se llama la cantidad de texto que Claude puede tener presente en una conversacion? (dos palabras en ingles)", "answer": "context window", "hint": "Es el 'context window' o ventana de contexto.", "points": 25}, {"type": "matching_game", "title": "Memoria", "pairs": [{"left": "Mismo hilo", "right": "Recuerda lo dicho", "points": 15}, {"left": "Hilo nuevo", "right": "Empieza limpio", "points": 15}, {"left": "Context window", "right": "Memoria del hilo", "points": 15}, {"left": "Proyectos", "right": "Contexto reutilizable", "points": 15}]}, {"type": "badge", "name": "🧩 Gestor de Contexto", "description": "Entiendes como funciona la memoria de Claude y como mantener continuidad."}];
         let idx = 0;
         let totalPoints = parseInt(localStorage.getItem('total_points_m5l4') || '0');
         document.getElementById('total-points').textContent = totalPoints + ' pts';
@@ -231,7 +231,7 @@
                     if (!selected) {
                         selected = item;
                         item.style.background = 'white';
-                        item.style.boxShadow = '0 0 0 3px #06B6D444';
+                        item.style.boxShadow = '0 0 0 3px #05966944';
                     } else {
                         const pair1 = parseInt(selected.dataset.pair);
                         const pair2 = parseInt(item.dataset.pair);
