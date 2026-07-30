@@ -25,6 +25,7 @@ import trackRouter from './routes/track.js';
 import contactRouter from './routes/contact.js';
 import certificatesRouter from './routes/certificates.js';
 import quizRouter from './routes/quiz.js';
+import libroRouter, { getChapterSlugs } from './routes/libro.js';
 import { requireAuth } from './middleware/requireAuth.js';
 import { requirePaid } from './middleware/requirePaid.js';
 import { vhost } from './middleware/vhost.js';
@@ -152,7 +153,7 @@ app.use(helmet({
       'font-src': ["'self'", 'https://fonts.gstatic.com', 'data:'],
       'img-src': ["'self'", 'data:', 'https:'],
       'connect-src': ["'self'", 'https://api.stripe.com', 'https://www.googletagmanager.com', 'https://www.google-analytics.com', 'https://*.google-analytics.com', 'https://*.analytics.google.com', 'https://region1.google-analytics.com'],
-      'frame-src': ["'self'", 'https://js.stripe.com', 'https://hooks.stripe.com'],
+      'frame-src': ["'self'", 'https://js.stripe.com', 'https://hooks.stripe.com', 'https://www.youtube-nocookie.com', 'https://www.youtube.com'],
       'object-src': ["'none'"],
       'base-uri': ["'self'"],
       'form-action': ["'self'", 'https://checkout.stripe.com'],
@@ -254,6 +255,8 @@ app.get('/sitemap.xml', (_req, res) => {
     { loc: '/login', priority: '0.4', changefreq: 'monthly' },
     { loc: '/terminos', priority: '0.3', changefreq: 'yearly' },
     { loc: '/privacidad', priority: '0.3', changefreq: 'yearly' },
+    { loc: '/libro', priority: '0.8', changefreq: 'weekly' },
+    ...getChapterSlugs().map((slug) => ({ loc: `/libro/${slug}`, priority: '0.7', changefreq: 'monthly' })),
   ];
   const today = new Date().toISOString().split('T')[0];
   res.type('application/xml').send(`<?xml version="1.0" encoding="UTF-8"?>
@@ -323,6 +326,9 @@ app.get('/api/config', (_req, res) => {
     company: process.env.COMPANY_NAME || 'Claude 101',
   });
 });
+
+// Ampliaciones del libro (páginas públicas enlazadas por QR)
+app.use('/libro', libroRouter);
 
 // ============================================================
 // 7) Rutas gated

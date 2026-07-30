@@ -1,0 +1,164 @@
+{
+  "book": {
+    "title": "IA para Abogados",
+    "author": "José Salto Masáts · Enrique Masats",
+    "subtitle": "Guía práctica de inteligencia artificial para el ejercicio de la abogacía",
+    "intro": "Has escaneado un código del libro. Aquí tienes la ampliación del capítulo: un adelanto gratuito y, cuando esté listo, el vídeo-tutorial. El material completo (plantillas, casos y ejercicios paso a paso) está dentro de la plataforma."
+  },
+  "chapters": [
+    {
+      "n": 1,
+      "slug": "situacion-del-abogado",
+      "title": "La situación actual del abogado",
+      "tagline": "Por qué la IA ya no es opcional en tu despacho",
+      "teaser": "Plazos que no esperan, trabajo que se acumula y cada año más horas para ganar lo mismo. Este capítulo pone nombre a esa realidad y explica por qué la IA es, esta vez, una oportunidad que el sector legal no se puede permitir dejar pasar como pasó con internet.",
+      "bullets": [
+        "El diagnóstico honesto de la profesión hoy",
+        "Qué cambia (de verdad) con la IA y qué es humo",
+        "Cómo empezar sin morir en el intento"
+      ],
+      "videoId": "",
+      "resource": null
+    },
+    {
+      "n": 2,
+      "slug": "teoria-basica-ia",
+      "title": "Teoría básica de IA: ¿sabes lo que estás usando?",
+      "tagline": "Lo justo para no meter la pata",
+      "teaser": "No necesitas ser ingeniero, pero sí entender por qué la IA a veces «alucina» y se inventa jurisprudencia que no existe. Aquí está la teoría mínima imprescindible para usarla sin exponerte a una sanción.",
+      "bullets": [
+        "Qué es un modelo de lenguaje, en cristiano",
+        "Las alucinaciones: por qué ocurren y cómo detectarlas",
+        "El límite que nunca debes cruzar con datos de clientes"
+      ],
+      "videoId": "",
+      "resource": null
+    },
+    {
+      "n": 3,
+      "slug": "herramientas-ia",
+      "title": "Tus herramientas: ChatGPT, Claude, Gemini y Perplexity",
+      "tagline": "Cuál usar y cuándo",
+      "teaser": "Cada modelo tiene su fuerte. Este capítulo compara las cuatro herramientas más populares desde la óptica del trabajo jurídico y te da una regla clara para decidir cuál abrir según la tarea que tengas delante.",
+      "bullets": [
+        "Fortalezas y debilidades de cada herramienta",
+        "Cuál «piensa» mejor antes de responder",
+        "Tabla rápida: tarea → herramienta recomendada"
+      ],
+      "videoId": "",
+      "resource": null
+    },
+    {
+      "n": 4,
+      "slug": "prompting-juridico",
+      "title": "Prompting jurídico: cómo hablarle a la IA para que te entienda",
+      "tagline": "Preguntas genéricas dan respuestas genéricas",
+      "teaser": "El 90% de los malos resultados vienen de malos prompts. Aquí tienes la anatomía de un buen prompt jurídico —rol, contexto, tarea, formato y verificación— con ejemplos reales que puedes copiar y adaptar a tu materia.",
+      "bullets": [
+        "La plantilla de prompt jurídico paso a paso",
+        "Ejemplos listos para escritos, dictámenes y emails",
+        "La advertencia final sobre verificación que no puedes saltarte"
+      ],
+      "videoId": "",
+      "resource": null
+    },
+    {
+      "n": 5,
+      "slug": "despacho-virtual",
+      "title": "Cómo comenzar a crear tu despacho virtual",
+      "tagline": "Tu contexto permanente, una sola vez",
+      "teaser": "Deja de repetirle a la IA quién eres y cómo trabajas en cada conversación. Aprende a montar un «proyecto» con tu contexto y tus documentos de referencia para que responda siempre como tu despacho necesita.",
+      "bullets": [
+        "Qué es un proyecto y por qué lo cambia todo",
+        "Cómo construir tu contexto permanente",
+        "Qué documentos subir (y cuáles no)"
+      ],
+      "videoId": "",
+      "resource": null
+    },
+    {
+      "n": 6,
+      "slug": "herramientas-agentes",
+      "title": "Herramientas que trabajan con tus agentes de IA",
+      "tagline": "Por cuenta ajena y por cuenta propia",
+      "teaser": "Del gestor de notas a las herramientas que orquestan tareas: un recorrido por el ecosistema que rodea a la IA, con ejemplos concretos de cómo un abogado los encaja en su día a día.",
+      "bullets": [
+        "Obsidian y compañía: tu segundo cerebro",
+        "Montártelo tú mismo vs. usar lo que ya existe",
+        "Qué merece la pena para un despacho pequeño"
+      ],
+      "videoId": "",
+      "resource": null
+    },
+    {
+      "n": 7,
+      "slug": "automatizacion",
+      "title": "Automatización: las tareas que ya no deberías hacer tú",
+      "tagline": "Y, de regalo, tu primer bot",
+      "teaser": "Clasificar correos, redactar borradores, avisarte de lo urgente: hay tareas que un flujo automático hace por ti mientras duermes. En este capítulo montas tu primer agente sin programar, con Make, paso a paso y con la regla de oro que evita desastres.",
+      "bullets": [
+        "Zapier, Make y n8n: cuál elegir",
+        "Tu primer agente de email, motor a motor",
+        "La regla de oro (no negociable) y la supervisión que no puedes delegar"
+      ],
+      "videoId": "",
+      "resource": null
+    },
+    {
+      "n": 8,
+      "slug": "agentes",
+      "title": "Agentes: cuando la IA trabaja sola",
+      "tagline": "Qué es un agente, una API y un MCP",
+      "teaser": "Un agente no solo responde: actúa. Aquí entiendes de una vez qué son los agentes, las APIs y los MCP —sin tecnicismos innecesarios— y hasta dónde conviene (y hasta dónde no) dejar que la IA trabaje por su cuenta.",
+      "bullets": [
+        "Agente, API y MCP explicados con analogías",
+        "Local vs. nube: qué arquitectura te conviene",
+        "El límite cabal de la automatización"
+      ],
+      "videoId": "",
+      "resource": null
+    },
+    {
+      "n": 9,
+      "slug": "espacio-profesional",
+      "title": "Tu espacio profesional en la red",
+      "tagline": "Que te encuentren los clientes correctos",
+      "teaser": "De poco sirve dominar la IA si nadie te encuentra. Este capítulo aterriza tu presencia digital como abogado: qué proyectar, dónde y cómo, apoyándote en la IA para producir sin perder tu voz.",
+      "bullets": [
+        "Tu presencia mínima viable en la red",
+        "Cómo usar la IA sin sonar a robot",
+        "Errores que espantan clientes"
+      ],
+      "videoId": "",
+      "resource": null
+    },
+    {
+      "n": 10,
+      "slug": "legislacion-etica",
+      "title": "Legislación y ética: lo que no puedes ignorar",
+      "tagline": "RGPD, secreto profesional y AI Act",
+      "teaser": "Usar IA con datos de clientes tiene reglas, y saltárselas sale caro. Aquí tienes lo esencial de protección de datos, secreto profesional y la nueva regulación europea de IA, traducido a decisiones prácticas para tu despacho.",
+      "bullets": [
+        "Qué datos puedes (y no puedes) meter en la IA",
+        "Secreto profesional y confidencialidad en la práctica",
+        "AI Act: lo que te afecta como abogado"
+      ],
+      "videoId": "",
+      "resource": null
+    },
+    {
+      "n": 11,
+      "slug": "cuestiones-varias",
+      "title": "Cuestiones varias que no debemos olvidar",
+      "tagline": "Cabos sueltos que marcan la diferencia",
+      "teaser": "Los detalles que no encajan en un capítulo pero que, sumados, separan al que usa la IA con criterio del que solo juega con ella. Un cierre práctico antes del glosario.",
+      "bullets": [
+        "Buenas prácticas que se te olvidarán (y no deberían)",
+        "Errores comunes de los primeros meses",
+        "Por dónde seguir cuando termines el libro"
+      ],
+      "videoId": "",
+      "resource": null
+    }
+  ]
+}
