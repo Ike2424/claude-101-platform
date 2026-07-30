@@ -55,6 +55,7 @@ COPY --from=builder --chown=app:app /build/middleware ./middleware
 COPY --from=builder --chown=app:app /build/routes ./routes
 COPY --from=builder --chown=app:app /build/scripts ./scripts
 COPY --from=builder --chown=app:app /build/public ./public
+COPY --from=builder --chown=app:app /build/content ./content
 
 # Volumen para SQLite (si DB_DRIVER=sqlite)
 # To persist /app/db, attach a Railway Volume via the dashboard mounted at /app/db
