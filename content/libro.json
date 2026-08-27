@@ -155,7 +155,23 @@
         { "label": "Banner de cookies (ejemplo)", "href": "/modelos-web/banner-cookies-ejemplo.html", "type": "HTML · copiar y pegar", "size": "~2 KB" }
       ],
       "resourcesTitle": "Lo mínimo que tu web necesita por obligación",
-      "resourcesNote": "Modelos de ejemplo, educativos y con huecos [entre corchetes] para rellenar. No son asesoramiento jurídico: adáptalos a tu despacho y a los datos que realmente tratas."
+      "resourcesNote": "Modelos de ejemplo, educativos y con huecos [entre corchetes] para rellenar. No son asesoramiento jurídico: adáptalos a tu despacho y a los datos que realmente tratas.",
+      "checklist": {
+        "title": "Checklist: ¿tu web capta o solo decora?",
+        "intro": "Tu web no es un folleto: es tu comercial que no duerme. El objetivo no es «tener web», es «tener clientes». Marca lo que ya tienes (se guarda en tu navegador).",
+        "items": [
+          "Se entiende en 5 segundos QUÉ problema resuelves y a quién",
+          "Prueba social visible: reseñas reales de clientes",
+          "Un botón de contacto claro, siempre a la vista",
+          "Un formulario para que quien te busca a medianoche deje sus datos y pida cita",
+          "Teléfono o WhatsApp a un clic desde el móvil",
+          "Carga rápida y se ve bien en el móvil",
+          "Aviso legal, política de privacidad y banner de cookies (el bloque de arriba)",
+          "Una llamada a la acción clara en cada página, no solo en «Contacto»",
+          "El diseño bonito es lo último: primero captar, luego decorar"
+        ],
+        "download": { "label": "Textos base para tu web", "href": "/modelos-web/textos-base-web.md", "type": "Markdown · copia y adapta", "size": "~2 KB" }
+      }
     },
     {
       "n": 10,

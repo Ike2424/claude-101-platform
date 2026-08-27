@@ -99,6 +99,53 @@ function calculatorHTML(c) {
     </script>`;
 }
 
+// Checklist interactivo (capítulo 9): marcable y persistente en el navegador.
+function checklistHTML(c) {
+  const cl = c.checklist;
+  if (!cl || !Array.isArray(cl.items) || !cl.items.length) return '';
+  const key = `web-checklist-c${c.n}`;
+  const items = cl.items.map((it, i) => `
+      <label class="check-item"><input type="checkbox" data-i="${i}"><span>${esc(it)}</span></label>`).join('');
+  const dl = cl.download && cl.download.href ? `
+      <a class="doc check-dl" style="max-width:340px;" href="${esc(cl.download.href)}" download onclick="track&&track('libro_textos_base',{n:${c.n}})">
+        <div class="dtype">${esc(cl.download.type || 'Descarga')}</div>
+        <div class="dname">${esc(cl.download.label)}</div>
+        <div class="dgo">⬇ Descargar${cl.download.size ? ` · ${esc(cl.download.size)}` : ''}</div>
+      </a>` : '';
+  return `
+    <section class="check">
+      <h2>${esc(cl.title || 'Checklist')}</h2>
+      ${cl.intro ? `<p>${esc(cl.intro)}</p>` : ''}
+      <div class="check-progress" id="checkProg"></div>
+      <div class="check-list">${items}</div>
+      ${dl}
+    </section>
+    <script>
+    (function(){
+      var KEY=${JSON.stringify(key)}, N=${cl.items.length};
+      var boxes=[].slice.call(document.querySelectorAll('.check-item input[data-i]'));
+      var prog=document.getElementById('checkProg');
+      var saved=[];
+      try{ saved=JSON.parse(localStorage.getItem(KEY)||'[]'); }catch(e){}
+      function render(){
+        var done=boxes.filter(function(b){return b.checked;}).length;
+        var msg = done===0?'empieza a marcar' : (done>=N?'¡lista para captar!':'vas bien');
+        prog.innerHTML = done+' / '+N+' — <b>'+msg+'</b>';
+      }
+      boxes.forEach(function(b){
+        var i=+b.getAttribute('data-i');
+        if(saved.indexOf(i)!==-1) b.checked=true;
+        b.addEventListener('change',function(){
+          var on=boxes.filter(function(x){return x.checked;}).map(function(x){return +x.getAttribute('data-i');});
+          try{ localStorage.setItem(KEY, JSON.stringify(on)); }catch(e){}
+          render();
+        });
+      });
+      render();
+    })();
+    </script>`;
+}
+
 function layout({ title, description, canonical, body }) {
   return `<!DOCTYPE html>
 <html lang="es">
@@ -226,6 +273,20 @@ function layout({ title, description, canonical, body }) {
 .doc .dname { font-weight: 600; font-size: 15px; }
 .doc .dgo { font-family: var(--mono); font-size: 12px; color: var(--accent); margin-top: auto; }
 .docs-note { font-size: 12px; color: var(--muted); text-align: center; margin: 8px 0 28px; }
+
+/* Checklist interactivo (capítulo 9) */
+.check { background: var(--card); border: 1px solid var(--line); border-radius: var(--r-lg); padding: clamp(22px,4vw,30px); margin: 0 0 26px; }
+.check h2 { font-family: var(--display); font-size: clamp(20px,3vw,26px); margin-bottom: 6px; }
+.check > p { color: var(--ink-2); font-size: 15px; margin-bottom: 16px; }
+.check-progress { font-family: var(--mono); font-size: 13px; color: var(--muted); margin-bottom: 14px; }
+.check-progress b { color: var(--accent); }
+.check-list { display: grid; gap: 2px; margin-bottom: 18px; }
+.check-item { display: flex; gap: 12px; align-items: flex-start; padding: 12px; border-radius: var(--r-md); cursor: pointer; transition: background .15s var(--ease); }
+.check-item:hover { background: var(--bg-3); }
+.check-item input { width: 20px; height: 20px; margin-top: 1px; accent-color: var(--accent); flex-shrink: 0; cursor: pointer; }
+.check-item span { font-size: 15px; line-height: 1.5; color: var(--ink-1); }
+.check-item input:checked ~ span { color: var(--muted); text-decoration: line-through; }
+.check-dl { display: inline-flex; }
 
 @media (max-width: 720px) {
   .chapters { grid-template-columns: 1fr; }
@@ -434,6 +495,7 @@ router.get('/:slug', (req, res) => {
     : '';
 
   const calculator = c.calculator ? calculatorHTML(c) : '';
+  const checklist = checklistHTML(c);
 
   const resources = c.resources && c.resources.length ? `
     <h2 class="inside" style="text-align:center;">${esc(c.resourcesTitle || 'Descargas del capítulo')}</h2>
@@ -465,6 +527,8 @@ router.get('/:slug', (req, res) => {
     ${calculator}
 
     ${resources}
+
+    ${checklist}
 
     ${video}
 
