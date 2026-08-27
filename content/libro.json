@@ -148,7 +148,14 @@
         "Errores que espantan clientes"
       ],
       "videoId": "",
-      "resource": null
+      "resource": null,
+      "resources": [
+        { "label": "Aviso legal (modelo)", "href": "/modelos-web/aviso-legal-modelo.md", "type": "Markdown · plantilla", "size": "~2 KB" },
+        { "label": "Política de privacidad (modelo)", "href": "/modelos-web/politica-privacidad-modelo.md", "type": "Markdown · plantilla", "size": "~2 KB" },
+        { "label": "Banner de cookies (ejemplo)", "href": "/modelos-web/banner-cookies-ejemplo.html", "type": "HTML · copiar y pegar", "size": "~2 KB" }
+      ],
+      "resourcesTitle": "Lo mínimo que tu web necesita por obligación",
+      "resourcesNote": "Modelos de ejemplo, educativos y con huecos [entre corchetes] para rellenar. No son asesoramiento jurídico: adáptalos a tu despacho y a los datos que realmente tratas."
     },
     {
       "n": 10,

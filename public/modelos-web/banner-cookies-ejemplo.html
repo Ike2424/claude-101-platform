@@ -1,0 +1,63 @@
+<!--
+  Banner de consentimiento de cookies — EJEMPLO / MODELO
+  Del libro «IA para Abogados». Plantilla educativa, no es asesoramiento jurídico.
+
+  Cómo usarlo:
+  1) Copia este bloque (estilos + HTML + script) antes de </body> en tu web.
+  2) Cambia [ENLACE A TU POLÍTICA DE COOKIES] por la URL real.
+  3) Sustituye cargarAnaliticaTrasConsentimiento() por tu script de analítica
+     (Google Analytics, Clarity…). CLAVE: no cargues analítica hasta que el
+     usuario acepte. Rechazar debe funcionar de verdad.
+-->
+
+<!-- ===== Estilos ===== -->
+<style>
+  #cookie-banner{position:fixed;left:0;right:0;bottom:0;z-index:9999;display:none;
+    background:#1C1A16;color:#F4EFE3;padding:18px 20px;font:14px/1.5 system-ui,sans-serif;
+    box-shadow:0 -4px 24px rgba(0,0,0,.2)}
+  #cookie-banner .inner{max-width:960px;margin:0 auto;display:flex;gap:16px;
+    align-items:center;flex-wrap:wrap;justify-content:space-between}
+  #cookie-banner a{color:#C8542B}
+  #cookie-banner .acts{display:flex;gap:8px;flex-shrink:0}
+  #cookie-banner button{border:0;border-radius:8px;padding:10px 18px;font:600 14px system-ui;
+    cursor:pointer}
+  #cookie-banner .rechazar{background:transparent;color:#F4EFE3;border:1px solid rgba(244,239,227,.4)}
+  #cookie-banner .aceptar{background:#C8542B;color:#fff}
+</style>
+
+<!-- ===== HTML ===== -->
+<div id="cookie-banner" role="dialog" aria-live="polite" aria-label="Consentimiento de cookies">
+  <div class="inner">
+    <div>Usamos cookies de analítica para entender cómo se usa la web y mejorarla.
+      Puedes aceptarlas o rechazarlas. <a href="[ENLACE A TU POLÍTICA DE COOKIES]">Más información</a>.</div>
+    <div class="acts">
+      <button class="rechazar" onclick="cookieConsent(false)">Rechazar</button>
+      <button class="aceptar" onclick="cookieConsent(true)">Aceptar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Script ===== -->
+<script>
+  (function () {
+    var KEY = 'cookie-consent'; // 'accept' | 'reject'
+    var banner = document.getElementById('cookie-banner');
+    var previo = null;
+    try { previo = localStorage.getItem(KEY); } catch (e) {}
+
+    if (previo === 'accept') { cargarAnaliticaTrasConsentimiento(); }
+    else if (previo !== 'reject') { banner.style.display = 'block'; } // aún no ha decidido
+
+    window.cookieConsent = function (acepta) {
+      try { localStorage.setItem(KEY, acepta ? 'accept' : 'reject'); } catch (e) {}
+      banner.style.display = 'none';
+      if (acepta) cargarAnaliticaTrasConsentimiento();
+      // Si rechaza: no se carga nada. Ese es el punto.
+    };
+
+    function cargarAnaliticaTrasConsentimiento() {
+      // TODO: pega aquí tu script de analítica (Google Analytics, Clarity, etc.).
+      // Solo se ejecuta si el usuario ha aceptado.
+    }
+  })();
+</script>
