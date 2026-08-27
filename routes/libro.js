@@ -435,6 +435,18 @@ router.get('/:slug', (req, res) => {
 
   const calculator = c.calculator ? calculatorHTML(c) : '';
 
+  const resources = c.resources && c.resources.length ? `
+    <h2 class="inside" style="text-align:center;">${esc(c.resourcesTitle || 'Descargas del capítulo')}</h2>
+    <div class="docs">
+      ${c.resources.map((r) => `
+        <a class="doc" href="${esc(r.href)}" download onclick="track&&track('libro_resource_dl',{n:${c.n}})">
+          <div class="dtype">${esc(r.type || 'Descarga')}</div>
+          <div class="dname">${esc(r.label)}</div>
+          <div class="dgo">⬇ Descargar${r.size ? ` · ${esc(r.size)}` : ''}</div>
+        </a>`).join('')}
+    </div>
+    ${c.resourcesNote ? `<p class="docs-note">${esc(c.resourcesNote)}</p>` : ''}` : '';
+
   const body = `
   <nav class="crumbs wrap-narrow"><a href="/libro">← Todas las ampliaciones</a></nav>
   <header class="libro-hero wrap-narrow">
@@ -451,6 +463,8 @@ router.get('/:slug', (req, res) => {
     </article>
 
     ${calculator}
+
+    ${resources}
 
     ${video}
 

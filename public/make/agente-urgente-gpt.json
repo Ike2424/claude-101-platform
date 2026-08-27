@@ -1,0 +1,97 @@
+{
+  "name": "Agente: correo urgente -> borrador (GPT / OpenAI)",
+  "flow": [
+    {
+      "id": 1,
+      "module": "google-email:TriggerNewEmail",
+      "version": 2,
+      "parameters": {
+        "account": "__GMAIL_CONNECTION__",
+        "maxResults": 1
+      },
+      "mapper": {
+        "folder": "INBOX",
+        "query": "subject:urgente is:unread",
+        "markAsRead": false
+      },
+      "metadata": {
+        "designer": {
+          "x": 0,
+          "y": 0
+        },
+        "restore": {},
+        "expect": []
+      }
+    },
+    {
+      "id": 2,
+      "module": "openai-gpt-3:createChatCompletion",
+      "version": 1,
+      "parameters": {
+        "account": "__OPENAI_CONNECTION__"
+      },
+      "mapper": {
+        "model": "MODELO_VIGENTE",
+        "max_tokens": 300,
+        "messages": [
+          {
+            "role": "user",
+            "content": "Actúa como asistente de un abogado español. Redacta un BORRADOR de respuesta al correo del cliente siguiendo estas reglas: 1) tono profesional y cercano; 2) NO comprometas plazos, cifras ni decisiones que el abogado no haya autorizado; 3) si el cliente pide algo que exige una decisión, di que lo estás valorando, sin prometer un resultado; 4) responde en el mismo idioma del correo; 5) termina SIEMPRE con la etiqueta [BORRADOR PENDIENTE DE REVISIÓN]. Asunto: {{1.subject}}. Email del cliente: {{1.text}}"
+          }
+        ]
+      },
+      "metadata": {
+        "designer": {
+          "x": 300,
+          "y": 0
+        }
+      }
+    },
+    {
+      "id": 3,
+      "module": "google-email:ActionCreateDraft",
+      "version": 2,
+      "parameters": {
+        "account": "__GMAIL_CONNECTION__"
+      },
+      "mapper": {
+        "to": [
+          "{{1.from.address}}"
+        ],
+        "subject": "RE: {{1.subject}}",
+        "contentType": "text",
+        "content": "{{2.result}}"
+      },
+      "metadata": {
+        "designer": {
+          "x": 600,
+          "y": 0
+        }
+      }
+    }
+  ],
+  "metadata": {
+    "instant": false,
+    "version": 1,
+    "scenario": {
+      "roundtrips": 1,
+      "maxErrors": 3,
+      "autoCommit": true,
+      "autoCommitTriggerLast": true,
+      "sequential": false,
+      "confidential": false,
+      "dataloss": false,
+      "dlq": false,
+      "freshVariables": false
+    },
+    "designer": {
+      "orphans": []
+    },
+    "zone": "eu2.make.com",
+    "notes": [
+      "Agente del capitulo 8 de 'IA para Abogados'. Gmail (urgente) -> IA redacta borrador -> Gmail crea borrador (NO envia).",
+      "Al importar: reconecta las cuentas de Gmail y de tu proveedor de IA, y sustituye MODELO_VIGENTE por el modelo economico actual.",
+      "Regla de oro: el modulo final es 'Create Draft', nunca 'Send Email'."
+    ]
+  }
+}

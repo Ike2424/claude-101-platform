@@ -106,7 +106,14 @@
         "La regla de oro (no negociable) y la supervisión que no puedes delegar"
       ],
       "videoId": "",
-      "resource": null
+      "resource": null,
+      "resources": [
+        { "label": "Escenario de Make · Claude", "href": "/make/agente-urgente-claude.json", "type": "JSON · blueprint para importar", "size": "~3 KB" },
+        { "label": "Variante GPT (OpenAI)", "href": "/make/agente-urgente-gpt.json", "type": "JSON · blueprint" },
+        { "label": "Variante Gemini (Google)", "href": "/make/agente-urgente-gemini.json", "type": "JSON · blueprint" }
+      ],
+      "resourcesTitle": "El escenario de Make, listo para importar",
+      "resourcesNote": "Impórtalo en Make (Crear escenario → ··· → Import Blueprint). Al importar, reconecta tus cuentas y sustituye MODELO_VIGENTE por el modelo económico actual. El módulo final crea un borrador, nunca envía."
     },
     {
       "n": 8,
@@ -120,7 +127,14 @@
         "El límite cabal de la automatización"
       ],
       "videoId": "",
-      "resource": null
+      "resource": null,
+      "resources": [
+        { "label": "Escenario de Make · Claude", "href": "/make/agente-urgente-claude.json", "type": "JSON · blueprint para importar", "size": "~3 KB" },
+        { "label": "Variante GPT (OpenAI)", "href": "/make/agente-urgente-gpt.json", "type": "JSON · blueprint" },
+        { "label": "Variante Gemini (Google)", "href": "/make/agente-urgente-gemini.json", "type": "JSON · blueprint" }
+      ],
+      "resourcesTitle": "El agente del capítulo, listo para importar en Make",
+      "resourcesNote": "Impórtalo en Make (Crear escenario → ··· → Import Blueprint). Al importar, reconecta tus cuentas y sustituye MODELO_VIGENTE por el modelo económico actual. El módulo final crea un borrador, nunca envía."
     },
     {
       "n": 9,
