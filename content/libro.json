@@ -164,5 +164,35 @@
       "videoId": "",
       "resource": null
     }
-  ]
+  ],
+  "caso": {
+    "slug": "caso-garcia",
+    "kicker": "Caso práctico",
+    "title": "El caso García, de principio a fin",
+    "tagline": "El hilo conductor del libro, en una sola página",
+    "intro": "El Sr. García nos acompaña de principio a fin: comercial con siete años de antigüedad, despedido por carta alegando un bajo rendimiento que la empresa no acredita. Así se lleva su asunto con IA, paso a paso, respetando el secreto profesional.",
+    "protagonista": "Sr. García · comercial, 7 años de antigüedad · despido disciplinario por carta, con un bajo rendimiento que la empresa no acredita.",
+    "stages": [
+      { "n": "I", "chapter": 4, "chapterSlug": "prompting-juridico", "title": "El primer prompt", "text": "Del «¿es válido este despido?» genérico al prompt jurídico que analiza su carta y localiza los defectos. Misma IA, respuesta radicalmente mejor." },
+      { "n": "II", "chapter": 5, "chapterSlug": "despacho-virtual", "title": "El proyecto «García. Despido»", "text": "Se crea un proyecto con la carta anonimizada, el modelo de demanda y las instrucciones de estilo. La IA deja de empezar de cero en cada conversación." },
+      { "n": "III", "chapter": 6, "chapterSlug": "herramientas-agentes", "title": "OCR y anonimización en local", "text": "El burofax y la carta llegan escaneados: OCR, Markdown y anonimización en tu propio equipo antes de subir nada. El secreto profesional no sale del despacho." },
+      { "n": "IV", "chapter": 7, "chapterSlug": "automatizacion", "title": "Los plazos que no perdonan", "text": "Se configura un recordatorio automático de la conciliación y del plazo de la demanda, con dos avisos previos. La automatización que más disgustos evita." },
+      { "n": "V", "chapter": 8, "chapterSlug": "agentes", "title": "Reparto entre agentes", "text": "El asunto (anonimizado y en local) se reparte entre varios agentes de IA: cada uno hace lo que mejor sabe. Y García se despide de nosotros." }
+    ],
+    "demo": {
+      "bad": {
+        "prompt": "¿Este despido es válido?",
+        "result": "Respuesta genérica de manual: la teoría del despido disciplinario, sin tu contexto y sin mirar los papeles. Inservible para el asunto."
+      },
+      "good": {
+        "prompt": "ROL: abogado laboralista español.\nCONTEXTO: comercial, 7 años; despido disciplinario por carta; causa alegada: bajo rendimiento NO acreditado; adjunto la carta.\nTAREA: localiza defectos de forma, debilidades de fondo y argumentos de improcedencia.\nFORMATO: tabla [Punto | Por qué | Riesgo para la empresa].\nVERIFICACIÓN: no des por cierto nada que no esté en la carta; dime qué debo comprobar yo.",
+        "result": "Análisis a medida: tabla de defectos concretos de la carta, con el porqué jurídico y el riesgo para la empresa, más una lista de lo que debes verificar tú."
+      }
+    },
+    "docs": [
+      { "label": "Carta de despido (ficticia)", "href": "/caso-garcia/carta-despido-garcia.pdf", "type": "PDF · para practicar OCR", "size": "~3 KB" },
+      { "label": "Modelo de demanda (plantilla)", "href": "/caso-garcia/modelo-demanda-despido.md", "type": "Markdown · plantilla", "size": "~2 KB" },
+      { "label": "Prompts del caso", "href": "/caso-garcia/prompts-caso-garcia.md", "type": "Markdown", "size": "~3 KB" }
+    ]
+  }
 }

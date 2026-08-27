@@ -184,9 +184,53 @@ function layout({ title, description, canonical, body }) {
 .calc-ratio { margin-top: 10px; font-size: 13px; color: rgba(244,239,227,.7); min-height: 18px; }
 .calc-foot { font-size: 12px; color: var(--muted); margin-top: 16px; line-height: 1.5; }
 
+/* Caso práctico (García) */
+.caso-card { grid-column: 1 / -1; background: linear-gradient(135deg, var(--ink), #2b2620); color: var(--bg); border: 1px solid var(--line); border-radius: var(--r-lg); padding: 30px; display: flex; flex-direction: column; gap: 10px; text-decoration: none; transition: all .25s var(--ease); }
+.caso-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+.caso-card .badge { align-self: flex-start; font-family: var(--mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--ink); background: var(--accent); padding: 4px 11px; border-radius: 100px; }
+.caso-card h3 { font-family: var(--display); font-style: italic; font-size: 26px; color: var(--bg); line-height: 1.1; }
+.caso-card .tag { color: rgba(244,239,227,.75); font-size: 15px; line-height: 1.55; max-width: 66ch; }
+.caso-card .go { font-family: var(--mono); font-size: 12px; color: var(--accent); margin-top: 4px; }
+
+.caso-proto { font-family: var(--mono); font-size: 13px; color: var(--ink-2); background: var(--bg-3); border-radius: var(--r-md); padding: 14px 16px; margin: 0 0 28px; text-align: center; line-height: 1.5; }
+
+.timeline { margin: 6px 0 30px; }
+.tl-item { display: grid; grid-template-columns: 44px 1fr; gap: 16px; }
+.tl-rail { display: flex; flex-direction: column; align-items: center; }
+.tl-badge { width: 40px; height: 40px; border-radius: 50%; background: var(--accent); color: var(--bg); font-family: var(--display); font-weight: 600; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; }
+.tl-line { width: 2px; flex: 1; background: var(--line-2); margin: 6px 0; }
+.tl-item:last-child .tl-line { display: none; }
+.tl-body { padding-bottom: 26px; }
+.tl-cap { font-family: var(--mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.tl-body h3 { font-family: var(--display); font-size: 20px; margin: 2px 0 6px; }
+.tl-body p { color: var(--ink-2); line-height: 1.6; font-size: 15px; margin-bottom: 8px; }
+.tl-body a { font-family: var(--mono); font-size: 12px; }
+
+.demo { background: var(--card); border: 1px solid var(--line); border-radius: var(--r-lg); padding: clamp(22px,4vw,30px); margin: 0 0 26px; }
+.demo h2 { font-family: var(--display); font-size: clamp(20px,3vw,26px); margin-bottom: 6px; }
+.demo > p { color: var(--ink-2); font-size: 15px; margin-bottom: 16px; }
+.demo-tabs { display: inline-flex; background: var(--bg-3); border-radius: 100px; padding: 4px; gap: 4px; margin-bottom: 18px; }
+.demo-tab { font-family: var(--mono); font-size: 12px; padding: 8px 16px; border-radius: 100px; border: 0; background: transparent; color: var(--ink-2); cursor: pointer; transition: all .15s var(--ease); }
+.demo-tab[aria-selected="true"] { background: var(--card); color: var(--ink); box-shadow: var(--shadow-sm); }
+.demo-panel { display: none; }
+.demo-panel[data-active="true"] { display: block; }
+.demo-block { margin-bottom: 14px; }
+.demo-block .lbl { font-family: var(--mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+.demo-prompt { font-family: var(--mono); font-size: 13px; line-height: 1.6; white-space: pre-wrap; background: var(--ink); color: var(--bg); padding: 16px; border-radius: var(--r-md); }
+.demo-result { font-size: 15px; line-height: 1.6; color: var(--ink-1); border-left: 3px solid var(--accent); padding: 4px 0 4px 14px; }
+
+.docs { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin: 0 0 10px; }
+.doc { background: var(--card); border: 1px solid var(--line); border-radius: var(--r-md); padding: 18px; display: flex; flex-direction: column; gap: 8px; text-decoration: none; color: inherit; transition: all .2s var(--ease); }
+.doc:hover { border-color: var(--accent); transform: translateY(-2px); }
+.doc .dtype { font-family: var(--mono); font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.doc .dname { font-weight: 600; font-size: 15px; }
+.doc .dgo { font-family: var(--mono); font-size: 12px; color: var(--accent); margin-top: auto; }
+.docs-note { font-size: 12px; color: var(--muted); text-align: center; margin: 8px 0 28px; }
+
 @media (max-width: 720px) {
   .chapters { grid-template-columns: 1fr; }
   .calc-grid { grid-template-columns: 1fr; }
+  .docs { grid-template-columns: 1fr; }
 }
 </style>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
@@ -226,17 +270,114 @@ ${body}
 // Para el sitemap: lista de slugs de capítulos.
 export function getChapterSlugs() {
   try {
-    return loadData().chapters.map((c) => c.slug);
+    const d = loadData();
+    const slugs = d.chapters.map((c) => c.slug);
+    if (d.caso && d.caso.slug) slugs.push(d.caso.slug);
+    return slugs;
   } catch {
     return [];
   }
+}
+
+// Página del caso práctico (recorrido + demo prompt + documentos ficticios).
+function casoHTML(caso, book) {
+  const stages = (caso.stages || []).map((s) => `
+    <div class="tl-item">
+      <div class="tl-rail"><div class="tl-badge">${esc(s.n)}</div><div class="tl-line"></div></div>
+      <div class="tl-body">
+        <div class="tl-cap">Entrega ${esc(s.n)}${s.chapter ? ` · Capítulo ${esc(String(s.chapter))}` : ''}</div>
+        <h3>${esc(s.title)}</h3>
+        <p>${esc(s.text)}</p>
+        ${s.chapterSlug ? `<a href="/libro/${esc(s.chapterSlug)}">Ver el capítulo ${esc(String(s.chapter))} →</a>` : ''}
+      </div>
+    </div>`).join('');
+
+  const d = caso.demo || {};
+  const demo = d.bad && d.good ? `
+    <section class="demo">
+      <h2>El mismo caso, dos prompts</h2>
+      <p>La diferencia no está en la IA, sino en cómo le hablas. Compáralo:</p>
+      <div class="demo-tabs" role="tablist">
+        <button class="demo-tab" role="tab" aria-selected="true" data-tab="bad">Prompt genérico</button>
+        <button class="demo-tab" role="tab" aria-selected="false" data-tab="good">Prompt jurídico</button>
+      </div>
+      <div class="demo-panel" data-tab="bad" data-active="true">
+        <div class="demo-block"><div class="lbl">Lo que escribes</div><div class="demo-prompt">${esc(d.bad.prompt)}</div></div>
+        <div class="demo-block"><div class="lbl">Lo que obtienes</div><div class="demo-result">${esc(d.bad.result)}</div></div>
+      </div>
+      <div class="demo-panel" data-tab="good" data-active="false">
+        <div class="demo-block"><div class="lbl">Lo que escribes</div><div class="demo-prompt">${esc(d.good.prompt)}</div></div>
+        <div class="demo-block"><div class="lbl">Lo que obtienes</div><div class="demo-result">${esc(d.good.result)}</div></div>
+      </div>
+    </section>` : '';
+
+  const docs = caso.docs && caso.docs.length ? `
+    <h2 class="inside" style="text-align:center;">Documentos del caso <span style="color:var(--muted);font-weight:400;font-style:italic;">(ficticios, para practicar)</span></h2>
+    <div class="docs">
+      ${caso.docs.map((doc) => `
+        <a class="doc" href="${esc(doc.href)}" download onclick="track&&track('caso_doc',{f:'${esc(doc.label)}'})">
+          <div class="dtype">${esc(doc.type || 'Descarga')}</div>
+          <div class="dname">${esc(doc.label)}</div>
+          <div class="dgo">⬇ Descargar${doc.size ? ` · ${esc(doc.size)}` : ''}</div>
+        </a>`).join('')}
+    </div>
+    <p class="docs-note">Documentos de ejemplo, ficticios y anonimizados. No son asesoramiento jurídico.</p>` : '';
+
+  const body = `
+  <nav class="crumbs wrap-narrow"><a href="/libro">← Todas las ampliaciones</a></nav>
+  <header class="libro-hero wrap-narrow">
+    <div class="libro-kicker">${esc(book.title)} · ${esc(caso.kicker || 'Caso práctico')}</div>
+    <h1>${esc(caso.title)}</h1>
+    ${caso.intro ? `<p class="lead">${esc(caso.intro)}</p>` : ''}
+  </header>
+  <div class="wrap-narrow">
+    ${caso.protagonista ? `<div class="caso-proto">${esc(caso.protagonista)}</div>` : ''}
+    <div class="timeline">${stages}</div>
+    ${demo}
+    ${docs}
+    <section class="cta-book">
+      <h2>El caso completo, <em>dentro</em></h2>
+      <p>El paso a paso de cada entrega —con los prompts, la configuración y el flujo real— está en la plataforma. Acceso completo, un único pago.</p>
+      <div class="cta-actions">
+        <a class="btn btn-accent btn-lg" href="/#precio" onclick="track&&track('caso_cta_precio')">Ver el curso completo</a>
+        <a class="btn btn-ghost btn-lg" href="/login">Ya tengo acceso</a>
+      </div>
+    </section>
+    <nav class="chap-nav"><a href="/libro">← Todas las ampliaciones</a><span></span></nav>
+  </div>
+  <script>
+  (function(){
+    var tabs=[].slice.call(document.querySelectorAll('.demo-tab'));
+    var panels=[].slice.call(document.querySelectorAll('.demo-panel'));
+    tabs.forEach(function(t){
+      t.addEventListener('click',function(){
+        tabs.forEach(function(x){x.setAttribute('aria-selected', x===t?'true':'false');});
+        panels.forEach(function(p){p.setAttribute('data-active', p.getAttribute('data-tab')===t.getAttribute('data-tab')?'true':'false');});
+      });
+    });
+  })();
+  </script>`;
+
+  return layout({
+    title: `${caso.title} · ${book.title}`,
+    description: (caso.intro || caso.title).slice(0, 155),
+    canonical: `/libro/${caso.slug}`,
+    body,
+  });
 }
 
 const router = Router();
 
 // GET /libro — índice de capítulos (hub)
 router.get('/', (_req, res) => {
-  const { book, chapters } = loadData();
+  const { book, chapters, caso } = loadData();
+  const casoCard = caso ? `
+    <a class="caso-card" href="/libro/${esc(caso.slug)}" onclick="track&&track('libro_caso_open')">
+      <span class="badge">${esc(caso.kicker || 'Caso práctico')}</span>
+      <h3>${esc(caso.title)}</h3>
+      <div class="tag">${esc(caso.intro || caso.tagline || '')}</div>
+      <div class="go">Abrir el caso →</div>
+    </a>` : '';
   const cards = chapters.map((c) => `
     <a class="chapter-card" href="/libro/${esc(c.slug)}" onclick="track&&track('libro_chapter_open',{n:${c.n}})">
       <div class="num">Capítulo ${c.n}</div>
@@ -251,7 +392,7 @@ router.get('/', (_req, res) => {
     <h1>Amplía el <em>libro</em></h1>
     <p class="lead">${esc(book.intro)}</p>
   </header>
-  <section class="chapters">${cards}</section>`;
+  <section class="chapters">${casoCard}${cards}</section>`;
 
   res.set('Cache-Control', 'no-cache');
   res.send(layout({
@@ -264,7 +405,12 @@ router.get('/', (_req, res) => {
 
 // GET /libro/:slug — página de un capítulo
 router.get('/:slug', (req, res) => {
-  const { book, chapters } = loadData();
+  const { book, chapters, caso } = loadData();
+  // Caso práctico (García): página propia
+  if (caso && req.params.slug === caso.slug) {
+    res.set('Cache-Control', 'no-cache');
+    return res.send(casoHTML(caso, book));
+  }
   let idx = chapters.findIndex((c) => c.slug === req.params.slug);
   if (idx === -1) {
     // Alias numérico /libro/cap-N (el libro enlaza así algunos capítulos)

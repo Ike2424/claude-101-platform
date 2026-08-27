@@ -146,13 +146,13 @@ app.use(helmet({
     useDefaults: true,
     directives: {
       'default-src': ["'self'"],
-      'script-src': ["'self'", "'unsafe-inline'", 'https://cdnjs.cloudflare.com', 'https://www.googletagmanager.com'], // inline + cdnjs + Google Analytics
+      'script-src': ["'self'", "'unsafe-inline'", 'https://cdnjs.cloudflare.com', 'https://www.googletagmanager.com', 'https://www.clarity.ms', 'https://*.clarity.ms'], // inline + cdnjs + Google Analytics + Microsoft Clarity
       'script-src-attr': ["'unsafe-inline'"],      // inline event handlers (onsubmit, onclick, oninput)
       'style-src': ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
       'style-src-attr': ["'unsafe-inline'"],       // inline style attributes
       'font-src': ["'self'", 'https://fonts.gstatic.com', 'data:'],
       'img-src': ["'self'", 'data:', 'https:'],
-      'connect-src': ["'self'", 'https://api.stripe.com', 'https://www.googletagmanager.com', 'https://www.google-analytics.com', 'https://*.google-analytics.com', 'https://*.analytics.google.com', 'https://region1.google-analytics.com'],
+      'connect-src': ["'self'", 'https://api.stripe.com', 'https://www.googletagmanager.com', 'https://www.google-analytics.com', 'https://*.google-analytics.com', 'https://*.analytics.google.com', 'https://region1.google-analytics.com', 'https://*.clarity.ms'],
       'frame-src': ["'self'", 'https://js.stripe.com', 'https://hooks.stripe.com', 'https://www.youtube-nocookie.com', 'https://www.youtube.com'],
       'object-src': ["'none'"],
       'base-uri': ["'self'"],
