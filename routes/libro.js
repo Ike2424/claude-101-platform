@@ -29,6 +29,76 @@ const esc = (s = '') =>
 // YouTube id válido: 11 chars [A-Za-z0-9_-]
 const isYouTubeId = (id) => typeof id === 'string' && /^[A-Za-z0-9_-]{11}$/.test(id);
 
+const num = (v, def) => (Number.isFinite(Number(v)) ? Number(v) : def);
+
+// Calculadora de ROI del capítulo 1 (valor/hora × horas recuperadas vs. cuota).
+function calculatorHTML(c) {
+  const cfg = c.calculator && typeof c.calculator === 'object' ? c.calculator : {};
+  const d = cfg.defaults || {};
+  const rate = num(d.rate, 60);
+  const hours = num(d.hours, 20);
+  const tool = num(d.toolCost, 20);
+  const bench = cfg.benchmark ||
+    'El sector estima entre 40 y 100 h/mes en tareas mecánicas; estudios independientes apuntan a ~5 h/semana (≈ 20 h/mes).';
+  return `
+    <section class="calc" aria-labelledby="calcTitle">
+      <div class="calc-head">
+        <div class="calc-kicker">Calculadora</div>
+        <h2 id="calcTitle">¿Cuánto te ahorra la IA al mes?</h2>
+        <p>Pon lo que vale tu hora y las horas que recuperas al mes. Ese número —y no la cuota de la herramienta— es la cuenta que importa.</p>
+      </div>
+      <div class="calc-grid">
+        <div class="calc-controls">
+          <div class="calc-field">
+            <label class="l" for="cRate">¿Cuánto vale tu hora?</label>
+            <span class="v"><input id="cRate" type="number" min="0" max="1000" step="5" value="${rate}" inputmode="numeric"> €/h</span>
+            <input id="cRateR" class="range" type="range" min="20" max="300" step="5" value="${rate}" aria-label="Valor de tu hora en euros">
+          </div>
+          <div class="calc-field">
+            <label class="l" for="cHours">¿Cuántas horas recuperas al mes?</label>
+            <span class="v"><input id="cHours" type="number" min="0" max="300" step="1" value="${hours}" inputmode="numeric"> h/mes</span>
+            <input id="cHoursR" class="range" type="range" min="0" max="100" step="1" value="${hours}" aria-label="Horas recuperadas al mes">
+            <span class="hint">${esc(bench)}</span>
+          </div>
+          <div class="calc-field">
+            <label class="l" for="cTool">Cuota mensual de tus herramientas de IA</label>
+            <span class="v"><input id="cTool" type="number" min="0" max="1000" step="5" value="${tool}" inputmode="numeric"> €/mes</span>
+            <input id="cToolR" class="range" type="range" min="0" max="200" step="5" value="${tool}" aria-label="Cuota mensual de las herramientas">
+          </div>
+        </div>
+        <div class="calc-out" aria-live="polite">
+          <div class="calc-big"><span id="oMonth">—</span><small>al mes recuperados</small></div>
+          <div class="calc-year"><span id="oYear">—</span> al año</div>
+          <div class="calc-net">Descontando la cuota: <strong id="oNet">—</strong> netos al mes</div>
+          <div class="calc-ratio" id="oRatio"></div>
+        </div>
+      </div>
+      <p class="calc-foot">Cálculo orientativo. El rango de horas procede de estimaciones del sector y de estudios independientes citados en el libro.</p>
+    </section>
+    <script>
+    (function(){
+      var f=new Intl.NumberFormat('es-ES',{style:'currency',currency:'EUR',maximumFractionDigits:0,useGrouping:true});
+      function g(id){return document.getElementById(id);}
+      var pairs=[['cRate','cRateR'],['cHours','cHoursR'],['cTool','cToolR']];
+      function calc(){
+        var r=Math.max(0,+g('cRate').value||0), h=Math.max(0,+g('cHours').value||0), t=Math.max(0,+g('cTool').value||0);
+        var month=r*h, year=month*12, net=month-t;
+        g('oMonth').textContent=f.format(month);
+        g('oYear').textContent=f.format(year);
+        g('oNet').textContent=f.format(net);
+        g('oRatio').textContent=(t>0&&month>0)?('Por cada 1 € en la herramienta, recuperas '+Math.round(month/t)+' €.'):'';
+      }
+      pairs.forEach(function(p){
+        var a=g(p[0]), b=g(p[1]);
+        a.addEventListener('input',function(){b.value=a.value;calc();});
+        b.addEventListener('input',function(){a.value=b.value;calc();});
+      });
+      calc();
+      if(window.track) window.track('libro_calc_view',{n:1});
+    })();
+    </script>`;
+}
+
 function layout({ title, description, canonical, body }) {
   return `<!DOCTYPE html>
 <html lang="es">
@@ -90,8 +160,33 @@ function layout({ title, description, canonical, body }) {
 .chap-nav a { color: var(--accent); }
 .chap-nav span { color: var(--muted); }
 
+/* Calculadora de ROI (capítulo 1) */
+.calc { background: var(--card); border: 1px solid var(--line); border-radius: var(--r-lg); padding: clamp(22px,4vw,34px); margin: 8px 0 22px; }
+.calc-kicker { font-family: var(--mono); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
+.calc-head h2 { font-family: var(--display); font-size: clamp(22px,3vw,30px); line-height: 1.1; margin-bottom: 8px; }
+.calc-head p { color: var(--ink-2); line-height: 1.6; max-width: 62ch; font-size: 15px; }
+.calc-grid { display: grid; grid-template-columns: 1.05fr .95fr; gap: 24px; margin-top: 24px; align-items: stretch; }
+.calc-controls { display: grid; gap: 20px; align-content: start; }
+.calc-field { display: grid; gap: 8px; }
+.calc-field .l { font-weight: 600; font-size: 15px; color: var(--ink); }
+.calc-field .v { font-family: var(--mono); font-size: 13px; color: var(--muted); display: flex; align-items: center; gap: 6px; }
+.calc-field .v input { width: 90px; font-family: var(--mono); font-size: 15px; padding: 6px 8px; border: 1px solid var(--line-2); border-radius: 8px; background: var(--bg); color: var(--ink); }
+.calc-field .range { width: 100%; accent-color: var(--accent); cursor: pointer; }
+.calc-field .hint { font-size: 12px; color: var(--muted); line-height: 1.5; }
+.calc-out { background: var(--ink); color: var(--bg); border-radius: var(--r-md); padding: 26px 24px; text-align: center; display: flex; flex-direction: column; justify-content: center; }
+.calc-big { display: flex; flex-direction: column; gap: 2px; }
+.calc-big span { font-family: var(--display); font-size: clamp(36px,6vw,50px); color: var(--accent); font-weight: 600; line-height: 1; }
+.calc-big small { color: rgba(244,239,227,.7); font-size: 13px; }
+.calc-year { margin-top: 14px; font-size: 15px; color: rgba(244,239,227,.9); }
+.calc-year span { font-weight: 600; }
+.calc-net { margin-top: 16px; padding-top: 14px; border-top: 1px solid rgba(244,239,227,.15); font-size: 14px; color: rgba(244,239,227,.85); }
+.calc-net strong { color: var(--bg); }
+.calc-ratio { margin-top: 10px; font-size: 13px; color: rgba(244,239,227,.7); min-height: 18px; }
+.calc-foot { font-size: 12px; color: var(--muted); margin-top: 16px; line-height: 1.5; }
+
 @media (max-width: 720px) {
   .chapters { grid-template-columns: 1fr; }
+  .calc-grid { grid-template-columns: 1fr; }
 }
 </style>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
@@ -170,7 +265,12 @@ router.get('/', (_req, res) => {
 // GET /libro/:slug — página de un capítulo
 router.get('/:slug', (req, res) => {
   const { book, chapters } = loadData();
-  const idx = chapters.findIndex((c) => c.slug === req.params.slug);
+  let idx = chapters.findIndex((c) => c.slug === req.params.slug);
+  if (idx === -1) {
+    // Alias numérico /libro/cap-N (el libro enlaza así algunos capítulos)
+    const m = /^cap-(\d+)$/.exec(req.params.slug);
+    if (m) idx = chapters.findIndex((c) => String(c.n) === m[1]);
+  }
   if (idx === -1) return res.redirect('/libro'); // QR mal escaneado → al hub del libro
   const c = chapters[idx];
   const prev = chapters[idx - 1];
@@ -187,6 +287,8 @@ router.get('/:slug', (req, res) => {
     ? `<p style="margin-top:18px;"><a class="btn btn-ghost btn-sm" href="${esc(c.resource.href)}" download onclick="track&&track('libro_resource',{n:${c.n}})">⬇ ${esc(c.resource.label || 'Descargar recurso')}</a></p>`
     : '';
 
+  const calculator = c.calculator ? calculatorHTML(c) : '';
+
   const body = `
   <nav class="crumbs wrap-narrow"><a href="/libro">← Todas las ampliaciones</a></nav>
   <header class="libro-hero wrap-narrow">
@@ -201,6 +303,8 @@ router.get('/:slug', (req, res) => {
       ${bullets ? `<h2 class="inside">Dentro del curso completo</h2><ul class="inside-list">${bullets}</ul>` : ''}
       ${resource}
     </article>
+
+    ${calculator}
 
     ${video}
 

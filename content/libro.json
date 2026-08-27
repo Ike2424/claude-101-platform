@@ -18,7 +18,11 @@
         "Cómo empezar sin morir en el intento"
       ],
       "videoId": "",
-      "resource": null
+      "resource": null,
+      "calculator": {
+        "defaults": { "rate": 60, "hours": 20, "toolCost": 20 },
+        "benchmark": "El sector estima entre 40 y 100 h/mes perdidas en tareas mecánicas. Estudios independientes (Thomson Reuters, +2.000 profesionales) apuntan a ~5 h/semana ≈ 20 h/mes."
+      }
     },
     {
       "n": 2,
