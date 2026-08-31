@@ -146,6 +146,117 @@ function checklistHTML(c) {
     </script>`;
 }
 
+// Biblioteca de prompts (capítulo 4): buscador + filtros + copiar.
+function promptLibraryHTML(c) {
+  const pl = c.promptLibrary;
+  if (!pl || !Array.isArray(pl.prompts) || !pl.prompts.length) return '';
+  const chips = (pl.categories || []).map((cat) =>
+    `<button class="plib-chip" type="button" data-cat="${esc(cat)}" aria-pressed="false">${esc(cat)}</button>`).join('');
+  const cards = pl.prompts.map((p, i) => {
+    const text = (p.lines || []).join('\n');
+    const hay = ((p.title || '') + ' ' + (p.cat || '') + ' ' + text).toLowerCase();
+    return `<article class="pcard" data-cat="${esc(p.cat || '')}" data-search="${esc(hay)}">
+        <div class="pcard-head"><span class="t">${esc(p.title || '')}</span><span class="tag">${esc(p.cat || '')}</span></div>
+        <pre id="pl${c.n}-${i}">${esc(text)}</pre>
+        <button class="pcopy" type="button" data-copy="pl${c.n}-${i}">Copiar</button>
+      </article>`;
+  }).join('');
+  return `
+    <section class="plib">
+      <h2>${esc(pl.title || 'Biblioteca de prompts')}</h2>
+      ${pl.intro ? `<p>${esc(pl.intro)}</p>` : ''}
+      <div class="plib-controls">
+        <input class="plib-search" type="search" placeholder="Buscar prompt…" aria-label="Buscar prompt">
+        <div class="plib-chips">${chips}</div>
+      </div>
+      <div class="plib-count" id="plibCount"></div>
+      <div class="plib-list">${cards}</div>
+      <div class="plib-empty" id="plibEmpty" style="display:none;">No hay prompts para ese filtro.</div>
+    </section>
+    <script>
+    (function(){
+      var search=document.querySelector('.plib-search');
+      var chips=[].slice.call(document.querySelectorAll('.plib-chip'));
+      var cards=[].slice.call(document.querySelectorAll('.pcard'));
+      var count=document.getElementById('plibCount');
+      var empty=document.getElementById('plibEmpty');
+      var activeCat=null;
+      function apply(){
+        var q=(search.value||'').trim().toLowerCase(); var vis=0;
+        cards.forEach(function(card){
+          var okCat=!activeCat || card.getAttribute('data-cat')===activeCat;
+          var okQ=!q || card.getAttribute('data-search').indexOf(q)!==-1;
+          var show=okCat&&okQ; card.classList.toggle('hidden',!show); if(show)vis++;
+        });
+        count.textContent=vis+' prompt'+(vis===1?'':'s');
+        empty.style.display=vis?'none':'block';
+      }
+      search.addEventListener('input',apply);
+      chips.forEach(function(ch){ ch.addEventListener('click',function(){
+        var cat=ch.getAttribute('data-cat'); activeCat=(activeCat===cat)?null:cat;
+        chips.forEach(function(x){x.setAttribute('aria-pressed', x.getAttribute('data-cat')===activeCat?'true':'false');});
+        apply();
+      });});
+      function fallback(txt,cb){ var t=document.createElement('textarea'); t.value=txt; document.body.appendChild(t); t.select(); try{document.execCommand('copy');}catch(e){} document.body.removeChild(t); cb(); }
+      document.querySelectorAll('.pcopy').forEach(function(btn){ btn.addEventListener('click',function(){
+        var el=document.getElementById(btn.getAttribute('data-copy')); var txt=el.textContent;
+        function done(){ btn.textContent='¡Copiado!'; btn.classList.add('ok'); setTimeout(function(){btn.textContent='Copiar';btn.classList.remove('ok');},1500); if(window.track)window.track('libro_prompt_copy'); }
+        if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(txt).then(done).catch(function(){fallback(txt,done);}); } else { fallback(txt,done); }
+      });});
+      apply();
+    })();
+    </script>`;
+}
+
+// Explorador Tareas → herramientas + ROI (capítulo 11).
+function explorerHTML(c) {
+  const ex = c.explorer;
+  if (!ex || !Array.isArray(ex.tasks) || !ex.tasks.length) return '';
+  const rate = num((ex.defaults || {}).rate, 60);
+  const rows = ex.tasks.map((t, i) => `
+      <label class="etask">
+        <input type="checkbox" data-h="${Number(t.hours) || 0}" data-i="${i}">
+        <span class="info">
+          <span class="lab">${esc(t.label)}</span>
+          <span class="combo">${esc(t.combo || '')}${t.chapterSlug ? ` · <a href="/libro/${esc(t.chapterSlug)}">cap. ${esc(String(t.chapter))} →</a>` : ''}</span>
+        </span>
+        <span class="hrs">${Number(t.hours) || 0} h/mes</span>
+      </label>`).join('');
+  return `
+    <section class="expl">
+      <h2>${esc(ex.title || 'Tu plan de IA')}</h2>
+      ${ex.intro ? `<p>${esc(ex.intro)}</p>` : ''}
+      <div class="expl-rate"><label for="exRate">¿Cuánto vale tu hora?</label><input id="exRate" type="number" min="0" max="1000" step="5" value="${rate}"> €/h</div>
+      <div class="expl-grid">${rows}</div>
+      <div class="expl-out" aria-live="polite">
+        <div><div class="n" id="exHours">0 h</div><div class="l">al mes recuperadas</div></div>
+        <div><div class="n" id="exMonth">0 €</div><div class="l">al mes</div></div>
+        <div><div class="n" id="exYear">0 €</div><div class="l">al año</div></div>
+      </div>
+      <p class="expl-note">Estimación orientativa: las horas son una referencia para un despacho pequeño. El ahorro real depende de tu volumen y de cómo implementes cada combinación.</p>
+    </section>
+    <script>
+    (function(){
+      var KEY='explorer-c${c.n}';
+      var f=new Intl.NumberFormat('es-ES',{style:'currency',currency:'EUR',maximumFractionDigits:0,useGrouping:true});
+      var boxes=[].slice.call(document.querySelectorAll('.etask input[data-i]'));
+      var rate=document.getElementById('exRate');
+      var saved=[]; try{saved=JSON.parse(localStorage.getItem(KEY)||'[]');}catch(e){}
+      function calc(){
+        var hrs=0; boxes.forEach(function(b){ if(b.checked) hrs+=(+b.getAttribute('data-h')||0); });
+        var r=Math.max(0,+rate.value||0); var month=hrs*r;
+        document.getElementById('exHours').textContent=hrs+' h';
+        document.getElementById('exMonth').textContent=f.format(month);
+        document.getElementById('exYear').textContent=f.format(month*12);
+      }
+      function save(){ var on=boxes.filter(function(b){return b.checked;}).map(function(b){return +b.getAttribute('data-i');}); try{localStorage.setItem(KEY,JSON.stringify(on));}catch(e){} }
+      boxes.forEach(function(b){ var i=+b.getAttribute('data-i'); if(saved.indexOf(i)!==-1)b.checked=true; b.addEventListener('change',function(){save();calc();}); });
+      rate.addEventListener('input',calc);
+      calc();
+    })();
+    </script>`;
+}
+
 function layout({ title, description, canonical, body }) {
   return `<!DOCTYPE html>
 <html lang="es">
@@ -288,10 +399,51 @@ function layout({ title, description, canonical, body }) {
 .check-item input:checked ~ span { color: var(--muted); text-decoration: line-through; }
 .check-dl { display: inline-flex; }
 
+/* Biblioteca de prompts (capítulo 4) */
+.plib { background: var(--card); border: 1px solid var(--line); border-radius: var(--r-lg); padding: clamp(22px,4vw,30px); margin: 0 0 26px; }
+.plib h2 { font-family: var(--display); font-size: clamp(20px,3vw,26px); margin-bottom: 6px; }
+.plib > p { color: var(--ink-2); font-size: 14px; line-height: 1.6; margin-bottom: 16px; }
+.plib-controls { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-bottom: 14px; }
+.plib-search { flex: 1; min-width: 200px; padding: 10px 14px; border: 1px solid var(--line-2); border-radius: 100px; background: var(--bg); color: var(--ink); font-size: 14px; }
+.plib-chips { display: flex; gap: 6px; flex-wrap: wrap; }
+.plib-chip { font-family: var(--mono); font-size: 12px; padding: 7px 13px; border-radius: 100px; border: 1px solid var(--line-2); background: transparent; color: var(--ink-2); cursor: pointer; transition: all .15s var(--ease); }
+.plib-chip[aria-pressed="true"] { background: var(--accent); color: #fff; border-color: var(--accent); }
+.plib-count { font-family: var(--mono); font-size: 12px; color: var(--muted); margin-bottom: 12px; }
+.plib-list { display: grid; gap: 12px; }
+.pcard { border: 1px solid var(--line); border-radius: var(--r-md); padding: 16px; background: var(--bg-2); }
+.pcard.hidden { display: none; }
+.pcard-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 10px; }
+.pcard-head .t { font-weight: 600; font-size: 15px; }
+.pcard-head .tag { font-family: var(--mono); font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); flex-shrink: 0; }
+.pcard pre { font-family: var(--mono); font-size: 12.5px; line-height: 1.6; white-space: pre-wrap; background: var(--ink); color: var(--bg); padding: 14px; border-radius: 8px; margin: 0 0 10px; overflow-x: auto; }
+.pcopy { font-family: var(--mono); font-size: 12px; padding: 8px 14px; border-radius: 8px; border: 1px solid var(--line-2); background: var(--card); color: var(--ink); cursor: pointer; transition: all .15s var(--ease); }
+.pcopy.ok { background: var(--accent); color: #fff; border-color: var(--accent); }
+.plib-empty { color: var(--muted); font-size: 14px; padding: 16px 0; }
+
+/* Explorador Tareas → herramientas + ROI (capítulo 11) */
+.expl { background: var(--card); border: 1px solid var(--line); border-radius: var(--r-lg); padding: clamp(22px,4vw,30px); margin: 0 0 26px; }
+.expl h2 { font-family: var(--display); font-size: clamp(20px,3vw,26px); margin-bottom: 6px; }
+.expl > p { color: var(--ink-2); font-size: 14px; line-height: 1.6; margin-bottom: 16px; }
+.expl-rate { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; font-size: 14px; font-weight: 600; }
+.expl-rate input { width: 90px; padding: 6px 8px; border: 1px solid var(--line-2); border-radius: 8px; background: var(--bg); color: var(--ink); font-family: var(--mono); font-size: 15px; }
+.expl-grid { display: grid; gap: 8px; margin-bottom: 20px; }
+.etask { display: flex; gap: 12px; align-items: flex-start; padding: 14px; border: 1px solid var(--line); border-radius: var(--r-md); cursor: pointer; transition: border-color .15s var(--ease); }
+.etask:hover { border-color: var(--accent); }
+.etask input { width: 20px; height: 20px; margin-top: 2px; accent-color: var(--accent); flex-shrink: 0; cursor: pointer; }
+.etask .info { flex: 1; }
+.etask .lab { font-weight: 600; font-size: 15px; display: block; }
+.etask .combo { font-size: 13px; color: var(--ink-2); margin-top: 2px; }
+.etask .hrs { font-family: var(--mono); font-size: 12px; color: var(--muted); white-space: nowrap; }
+.expl-out { background: var(--ink); color: var(--bg); border-radius: var(--r-md); padding: 22px; display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; text-align: center; }
+.expl-out .n { font-family: var(--display); font-size: clamp(24px,4vw,34px); color: var(--accent); font-weight: 600; line-height: 1; }
+.expl-out .l { font-size: 12px; color: rgba(244,239,227,.7); margin-top: 4px; }
+.expl-note { font-size: 12px; color: var(--muted); margin-top: 14px; line-height: 1.5; }
+
 @media (max-width: 720px) {
   .chapters { grid-template-columns: 1fr; }
   .calc-grid { grid-template-columns: 1fr; }
   .docs { grid-template-columns: 1fr; }
+  .expl-out { grid-template-columns: 1fr; }
 }
 </style>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
@@ -496,6 +648,8 @@ router.get('/:slug', (req, res) => {
 
   const calculator = c.calculator ? calculatorHTML(c) : '';
   const checklist = checklistHTML(c);
+  const promptLibrary = promptLibraryHTML(c);
+  const explorer = explorerHTML(c);
 
   const resources = c.resources && c.resources.length ? `
     <h2 class="inside" style="text-align:center;">${esc(c.resourcesTitle || 'Descargas del capítulo')}</h2>
@@ -526,9 +680,13 @@ router.get('/:slug', (req, res) => {
 
     ${calculator}
 
+    ${promptLibrary}
+
     ${resources}
 
     ${checklist}
+
+    ${explorer}
 
     ${video}
 

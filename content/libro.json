@@ -64,7 +64,26 @@
         "La advertencia final sobre verificación que no puedes saltarte"
       ],
       "videoId": "",
-      "resource": null
+      "resource": null,
+      "promptLibrary": {
+        "title": "Biblioteca de prompts jurídicos",
+        "intro": "Copia, pega y adapta. Filtra por tarea o busca. Recuerda: anonimiza los datos del cliente y verifica siempre lo que devuelve la IA (no inventes jurisprudencia). Esto es una muestra; la colección completa está dentro del curso.",
+        "categories": ["Redacción", "Análisis", "Resúmenes", "Búsqueda", "Cliente", "Productividad"],
+        "prompts": [
+          { "cat": "Redacción", "title": "Borrador de respuesta a cliente", "lines": ["ROL: asistente de un abogado español.", "TAREA: redacta un borrador de respuesta al correo del cliente.", "REGLAS: no comprometas plazos ni decisiones; tono profesional y cercano; responde en el idioma del correo.", "CIERRE: termina con [BORRADOR PENDIENTE DE REVISIÓN].", "EMAIL: <pega aquí el correo>"] },
+          { "cat": "Análisis", "title": "Revisar un contrato", "lines": ["ROL: abogado revisor de contratos.", "TAREA: localiza cláusulas problemáticas o abusivas en el contrato adjunto.", "FORMATO: tabla [Cláusula | Riesgo | Alternativa sugerida].", "VERIFICACIÓN: no inventes; si falta contexto, pídemelo.", "CONTRATO: <pega el texto>"] },
+          { "cat": "Análisis", "title": "Defectos en una carta de despido", "lines": ["ROL: abogado laboralista.", "TAREA: identifica defectos de forma y de fondo en la carta de despido.", "FORMATO: lista de [defecto | por qué | argumento de improcedencia].", "VERIFICACIÓN: cíñete a lo que diga la carta, no añadas hechos.", "CARTA: <pega el texto>"] },
+          { "cat": "Resúmenes", "title": "Resumen de sentencia o expediente", "lines": ["ROL: jurista redactor.", "TAREA: resume el documento en: hechos, fundamentos, fallo y qué implica para mi caso.", "FORMATO: máximo 10 líneas + 3 puntos de acción.", "DOC: <pega el texto>"] },
+          { "cat": "Resúmenes", "title": "Extraer hechos y fechas clave", "lines": ["TAREA: extrae del documento todos los hechos con su fecha, en orden cronológico.", "FORMATO: tabla [Fecha | Hecho | Página/fuente].", "No añadas nada que no esté en el texto.", "DOC: <pega el texto>"] },
+          { "cat": "Búsqueda", "title": "Estrategia de búsqueda de jurisprudencia", "lines": ["TAREA: propón una estrategia para buscar jurisprudencia sobre <cuestión>.", "Dame: términos de búsqueda, tribunales relevantes y qué debo verificar.", "ADVERTENCIA: no cites sentencias concretas si no puedes verificarlas; márcalas como 'a comprobar'."] },
+          { "cat": "Cliente", "title": "Explicar en lenguaje llano", "lines": ["ROL: abogado que explica a un cliente sin formación jurídica.", "TAREA: explica esta resolución o escrito en lenguaje sencillo, sin tecnicismos.", "FORMATO: 5-6 frases + un apartado 'qué significa para ti'.", "TEXTO: <pega el texto>"] },
+          { "cat": "Cliente", "title": "Responder una reclamación o queja", "lines": ["ROL: asistente del despacho.", "TAREA: redacta un borrador de respuesta a esta queja, con tono calmado y profesional, sin admitir responsabilidad no confirmada.", "CIERRE: [BORRADOR PENDIENTE DE REVISIÓN].", "MENSAJE: <pega el mensaje>"] },
+          { "cat": "Redacción", "title": "Estructura de un escrito de trámite", "lines": ["TAREA: prepárame la estructura de un escrito de <tipo>.", "Incluye: encabezamiento, alegaciones numeradas y súplica.", "Deja huecos [entre corchetes] para los datos.", "No inventes datos del asunto."] },
+          { "cat": "Análisis", "title": "Comparar dos textos o cláusulas", "lines": ["TAREA: compara el TEXTO A y el TEXTO B; señala diferencias relevantes y cuál es más favorable para mi cliente y por qué.", "FORMATO: tabla comparativa + recomendación.", "TEXTO A: <...>", "TEXTO B: <...>"] },
+          { "cat": "Productividad", "title": "Notas de reunión → tareas", "lines": ["TAREA: convierte estas notas en una lista de tareas con responsable y plazo.", "FORMATO: [Tarea | Responsable | Fecha límite].", "NOTAS: <pega las notas>"] },
+          { "cat": "Cliente", "title": "Primer correo de captación", "lines": ["ROL: abogado cercano.", "TAREA: redacta un primer correo de respuesta a un posible cliente que ha dejado su consulta en la web.", "Incluye: acuse de recibo, siguiente paso y una llamada a agendar cita. Sin comprometer honorarios ni resultado.", "CONSULTA: <pega la consulta>"] }
+        ]
+      }
     },
     {
       "n": 5,
@@ -199,7 +218,21 @@
         "Por dónde seguir cuando termines el libro"
       ],
       "videoId": "",
-      "resource": null
+      "resource": null,
+      "explorer": {
+        "title": "Tu plan de IA: elige tus tareas y mira lo que ganas",
+        "intro": "Marca las tareas que quieres delegar en la IA. Verás con qué combinación montarla (y el capítulo donde está) y cuánto tiempo y dinero recuperarías al mes. Las horas son estimaciones orientativas para un despacho pequeño; ajústalas a tu realidad.",
+        "defaults": { "rate": 60 },
+        "tasks": [
+          { "id": "emails", "label": "Responder emails y el «¿cómo va lo mío?»", "hours": 6, "combo": "Agente en Make: Gmail → IA → borrador", "chapter": 8, "chapterSlug": "agentes" },
+          { "id": "borradores", "label": "Redactar borradores repetitivos", "hours": 5, "combo": "Prompt jurídico + proyecto con tu contexto", "chapter": 4, "chapterSlug": "prompting-juridico" },
+          { "id": "resumenes", "label": "Resumir expedientes y sentencias", "hours": 5, "combo": "Proyecto en tu IA (contexto permanente)", "chapter": 5, "chapterSlug": "despacho-virtual" },
+          { "id": "jurisprudencia", "label": "Buscar jurisprudencia", "hours": 4, "combo": "Perplexity + verificación manual", "chapter": 3, "chapterSlug": "herramientas-ia" },
+          { "id": "plazos", "label": "Controlar plazos y vencimientos", "hours": 3, "combo": "Automatización con recordatorios y avisos", "chapter": 7, "chapterSlug": "automatizacion" },
+          { "id": "ocr", "label": "OCR y anonimización de escaneados", "hours": 2, "combo": "Herramientas locales (secreto profesional)", "chapter": 6, "chapterSlug": "herramientas-agentes" },
+          { "id": "captacion", "label": "Captar clientes con tu web", "hours": 2, "combo": "Web que capta + textos base", "chapter": 9, "chapterSlug": "espacio-profesional" }
+        ]
+      }
     }
   ],
   "caso": {
