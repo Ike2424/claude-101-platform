@@ -167,6 +167,10 @@
       <input type="email" name="email" class="input" placeholder="tu@email.com" required>
       <button type="submit" class="btn btn-accent btn-lg" id="nlBtn">Suscribirme</button>
     </form>
+    <label style="display:flex;gap:9px;align-items:flex-start;max-width:440px;margin:14px auto 0;text-align:left;font-size:12px;line-height:1.5;color:rgba(244,239,227,.8);cursor:pointer;">
+      <input type="checkbox" id="nlConsent" required style="margin-top:2px;flex-shrink:0;accent-color:var(--accent);width:16px;height:16px;">
+      <span id="nlConsentText">Acepto recibir emails y la política de privacidad.</span>
+    </label>
     <p id="nlResult" style="margin-top:14px;color:rgba(244,239,227,.85);min-height:20px;" role="status" aria-live="polite"></p>
   </div>
 
@@ -187,24 +191,31 @@
 </footer>
 <script src="/track.js"></script>
 <script>
+// El texto de la casilla se pide al servidor: misma fuente que la que se guarda.
+fetch('/api/lead/consent').then(function (r) { return r.json(); }).then(function (c) {
+  if (c && c.text) document.getElementById('nlConsentText').textContent = c.text;
+}).catch(function () {});
+
 async function subscribeNewsletter(e) {
   e.preventDefault();
   const btn = document.getElementById('nlBtn');
   const result = document.getElementById('nlResult');
+  const consent = document.getElementById('nlConsent');
   const email = e.target.email.value.trim();
+  if (!consent.checked) { result.textContent = '✗ Debes marcar la casilla para suscribirte.'; return false; }
   btn.disabled = true; btn.innerHTML = '<span class="spin"></span> Suscribiendo…';
-  // Reutilizamos /api/contact con topic 'newsletter'
   try {
-    const r = await fetch('/api/contact', {
+    const r = await fetch('/api/lead', {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name: 'Newsletter', email, topic: 'newsletter', message: 'Quiero suscribirme a la newsletter de Claude 101.' })
+      body: JSON.stringify({ email, consent: true, source: 'newsletter' })
     });
     if (r.ok) {
       result.textContent = '✓ Suscrito. Recibirás el próximo email cuando salga.';
-      e.target.reset();
+      e.target.reset(); consent.checked = false;
       if (window.track) window.track('newsletter_subscribe');
     } else {
-      result.textContent = '✗ No se pudo. Inténtalo más tarde.';
+      const j = await r.json().catch(function () { return {}; });
+      result.textContent = '✗ ' + (j.error || 'No se pudo. Inténtalo más tarde.');
     }
   } catch {
     result.textContent = '✗ Error de red.';

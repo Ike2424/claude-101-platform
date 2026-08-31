@@ -134,6 +134,22 @@ CREATE TABLE IF NOT EXISTS certificates (
 CREATE INDEX IF NOT EXISTS idx_certificates_user ON certificates(user_id);
 CREATE INDEX IF NOT EXISTS idx_certificates_code ON certificates(code);
 
+-- BOOK_LEADS: emails captados (newsletter / libro) con PRUEBA de consentimiento
+CREATE TABLE IF NOT EXISTS book_leads (
+  id              INTEGER PRIMARY KEY AUTOINCREMENT,
+  email           TEXT NOT NULL UNIQUE,
+  source          TEXT,                          -- 'newsletter' | 'libro' | ...
+  consent         INTEGER NOT NULL DEFAULT 1,    -- 0/1
+  consent_text    TEXT NOT NULL,                 -- literal EXACTO aceptado (prueba)
+  consent_version TEXT NOT NULL,                 -- versión del literal, p.ej. '2026-08-v1'
+  ip_hash         TEXT,                          -- IP hasheada en el alta (prueba minimizada)
+  unsubscribed_at TEXT,                          -- NULL = activo; fecha = dado de baja
+  created_at      TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at      TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_book_leads_email ON book_leads(email);
+
 -- QUIZ_ATTEMPTS: intentos de quiz por módulo (para scoring y badges)
 CREATE TABLE IF NOT EXISTS quiz_attempts (
   id          INTEGER PRIMARY KEY AUTOINCREMENT,
