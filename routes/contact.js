@@ -12,7 +12,7 @@ router.post('/', limit, async (req, res) => {
   const email = String(req.body?.email || '').trim().toLowerCase().slice(0, 200);
   const topicRaw = String(req.body?.topic || '').trim().slice(0, 80);
   // Whitelist anti-injection: solo aceptamos tópicos predefinidos
-  const ALLOWED_TOPICS = ['general', 'soporte', 'facturacion', 'bug', 'sugerencia', 'newsletter', 'partnership'];
+  const ALLOWED_TOPICS = ['general', 'soporte', 'facturacion', 'bug', 'sugerencia', 'newsletter', 'partnership', 'proteccion-datos'];
   const topic = ALLOWED_TOPICS.includes(topicRaw) ? topicRaw : 'general';
   const message = String(req.body?.message || '').trim().slice(0, 4000);
 
