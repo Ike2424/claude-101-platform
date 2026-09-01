@@ -9,6 +9,8 @@ import { Router } from 'express';
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { one, exec } from '../lib/db.js';
+import { verifyUnsub } from '../lib/token.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const DATA_PATH = path.join(__dirname, '..', 'content', 'libro.json');
@@ -267,9 +269,7 @@ function layout({ title, description, canonical, body }) {
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(description)}">
 <link rel="canonical" href="${esc(canonical)}">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Geist:wght@300..700&family=Geist+Mono:wght@400..600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/fonts.css">
 <link rel="stylesheet" href="/styles-shared.css">
 <style>
 .libro-hero { padding: 60px 0 24px; text-align: center; }
@@ -612,6 +612,47 @@ router.get('/', (_req, res) => {
     title: `Amplía el libro · ${book.title}`,
     description: `Recursos y vídeos que amplían "${book.title}" de ${book.author}. Adelanto gratuito; el material completo, dentro de la plataforma.`,
     canonical: '/libro',
+    body,
+  }));
+});
+
+// GET /libro/baja?token=... — baja de marketing en un clic (sin email en la URL)
+router.get('/baja', async (req, res) => {
+  const p = verifyUnsub(String(req.query.token || ''));
+  let ok = false;
+  let already = false;
+  if (p) {
+    const lead = await one('SELECT id, unsubscribed_at FROM book_leads WHERE id = ?', [p.lid]);
+    if (lead) {
+      if (lead.unsubscribed_at) {
+        already = true; ok = true;
+      } else {
+        await exec(
+          'UPDATE book_leads SET consent = 0, unsubscribed_at = CURRENT_TIMESTAMP, updated_at = CURRENT_TIMESTAMP WHERE id = ?',
+          [p.lid]
+        );
+        ok = true;
+      }
+    }
+  }
+  const body = ok
+    ? `<div class="wrap-narrow" style="text-align:center;padding:80px 0;">
+        <div class="libro-kicker">academia101.com</div>
+        <h1 style="font-family:var(--display);font-style:italic;font-size:clamp(30px,4vw,44px);margin-bottom:14px;">Baja <em style="font-style:normal;color:var(--accent);">confirmada</em></h1>
+        <p style="color:var(--ink-2);font-size:17px;max-width:52ch;margin:0 auto 8px;">${already ? 'Ya estabas dado de baja.' : 'Hemos retirado tu email de la lista de correo.'} No recibirás más emails de marketing.</p>
+        <p style="color:var(--muted);font-size:14px;margin-top:20px;">Si tienes el curso, tu compra y tu acceso no se ven afectados.</p>
+        <p style="margin-top:28px;"><a class="btn btn-ghost btn-sm" href="/">Volver al inicio</a></p>
+      </div>`
+    : `<div class="wrap-narrow" style="text-align:center;padding:80px 0;">
+        <h1 style="font-family:var(--display);font-style:italic;font-size:clamp(28px,4vw,40px);margin-bottom:14px;">Enlace no válido</h1>
+        <p style="color:var(--ink-2);font-size:16px;max-width:52ch;margin:0 auto;">Este enlace de baja no es válido. Si sigues recibiendo emails, escríbenos y te damos de baja a mano.</p>
+        <p style="margin-top:24px;"><a class="btn btn-ghost btn-sm" href="/contacto">Contacto</a></p>
+      </div>`;
+  res.set('Cache-Control', 'no-store');
+  res.status(ok ? 200 : 400).send(layout({
+    title: ok ? 'Baja confirmada · academia101.com' : 'Enlace no válido',
+    description: 'Gestión de baja de la lista de correo.',
+    canonical: '/libro/baja',
     body,
   }));
 });

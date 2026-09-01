@@ -13,6 +13,7 @@ import { fileURLToPath } from 'node:url';
 import { logger, httpLogger } from './lib/logger.js';
 import { close as closeDb } from './lib/db.js';
 import { runMigration, isInitialized } from './db/migrate.js';
+import { runExtraMigrations } from './db/migrations.js';
 import { initSentry, captureException } from './lib/sentry.js';
 import { requestId } from './middleware/requestId.js';
 
@@ -23,6 +24,7 @@ import courseRouter from './routes/course.js';
 import adminRouter from './routes/admin.js';
 import trackRouter from './routes/track.js';
 import contactRouter from './routes/contact.js';
+import leadRouter from './routes/lead.js';
 import certificatesRouter from './routes/certificates.js';
 import quizRouter from './routes/quiz.js';
 import libroRouter, { getChapterSlugs } from './routes/libro.js';
@@ -88,6 +90,7 @@ async function ensureSchema() {
       logger.debug('Schema ya inicializado; ejecutando migración idempotente');
     }
     await runMigration();
+    await runExtraMigrations();
     schemaReady = true;
     logger.info('Schema OK');
   } catch (err) {
@@ -192,6 +195,7 @@ app.use('/api/', rateLimit({
 app.use('/api/auth', authRouter);
 app.use('/api/checkout', checkoutRouter);
 app.use('/api/track', trackRouter);
+app.use('/api/lead', leadRouter);
 app.use('/api/contact', contactRouter);
 app.use('/api/admin', adminRouter);
 app.use('/api/certificates', certificatesRouter);
