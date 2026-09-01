@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<!-- Analítica (GA + Clarity) SOLO tras consentimiento — ver /ga.js -->
+<script src="/ga.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Política de cookies · academia101.com</title>
+<link rel="canonical" href="/cookies">
+<link rel="stylesheet" href="/fonts.css">
+<link rel="stylesheet" href="/styles-shared.css">
+<style>
+.legal { max-width: 720px; margin: 0 auto; padding: 60px 32px; }
+.legal h1 { font-family: var(--display); font-size: 42px; font-style: italic; margin-bottom: 8px; }
+.legal h1 em { font-style: normal; color: var(--accent); }
+.legal .meta { color: var(--muted); margin-bottom: 32px; font-size: 13px; }
+.legal h2 { font-family: var(--display); font-size: 22px; margin-top: 32px; margin-bottom: 10px; }
+.legal p, .legal li { color: var(--ink-2); font-size: 14px; line-height: 1.7; }
+.legal ul { padding-left: 24px; margin: 8px 0 14px; }
+.legal a { color: var(--accent); }
+.legal table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 13px; }
+.legal th, .legal td { border: 1px solid var(--line); padding: 8px 12px; text-align: left; vertical-align: top; }
+.legal th { background: var(--bg-2); }
+.legal .foot-legal { margin-top: 48px; padding-top: 20px; border-top: 1px solid var(--line); font-size: 13px; color: var(--muted); }
+.cc-box { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 20px; margin: 16px 0; }
+.cc-box .row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+#ccState { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+</style>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/favicon.svg">
+</head>
+<body>
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="brand">Claude<em>·101</em></a>
+    <div class="nav-links"><a href="/">← Volver</a></div>
+  </div>
+</nav>
+
+<main class="legal">
+  <h1>Política de <em>cookies</em></h1>
+  <p class="meta">Última actualización: agosto de 2026.</p>
+
+  <h2>1. Qué usamos</h2>
+  <p>Usamos cookies e identificadores propios estrictamente necesarios y, <strong>solo si los aceptas</strong>, herramientas de analítica. Nada de analítica se carga antes de tu consentimiento.</p>
+
+  <h2>2. Cookies e identificadores técnicos (no requieren consentimiento)</h2>
+  <table>
+    <thead><tr><th>Nombre</th><th>Tipo</th><th>Para qué</th></tr></thead>
+    <tbody>
+      <tr><td><code>session</code></td><td>Cookie (HttpOnly)</td><td>Mantener tu sesión iniciada</td></tr>
+      <tr><td><code>oauth_state</code></td><td>Cookie (10 min)</td><td>Seguridad del inicio de sesión con Google</td></tr>
+      <tr><td><code>admin_token</code></td><td>Cookie (HttpOnly)</td><td>Sesión de administración</td></tr>
+      <tr><td><code>c101_consent</code></td><td>localStorage</td><td>Recordar tu decisión sobre cookies</td></tr>
+    </tbody>
+  </table>
+
+  <h2>3. Analítica (solo con tu consentimiento)</h2>
+  <table>
+    <thead><tr><th>Herramienta</th><th>Identificadores</th><th>Para qué</th></tr></thead>
+    <tbody>
+      <tr><td>Google Analytics 4</td><td><code>_ga</code>, <code>_ga_*</code></td><td>Estadísticas de uso agregadas</td></tr>
+      <tr><td>Microsoft Clarity</td><td><code>_clck</code>, <code>_clsk</code></td><td>Analítica de uso y mapas de calor (grabación de sesión)</td></tr>
+      <tr><td>Analítica propia</td><td><code>c101_vid</code> (localStorage)</td><td>Métricas de uso propias</td></tr>
+    </tbody>
+  </table>
+  <p>Estas herramientas pueden implicar el tratamiento de datos por Google y Microsoft, incluidas posibles transferencias internacionales con garantías adecuadas (ver <a href="/privacidad">Política de privacidad</a>).</p>
+
+  <h2>4. Fuentes tipográficas</h2>
+  <p>Las tipografías se sirven desde nuestro propio dominio (no desde un CDN externo), por lo que no se transfiere tu IP a terceros por este motivo.</p>
+
+  <h2>5. Cambiar tu decisión</h2>
+  <div class="cc-box">
+    <p id="ccState">Tu decisión actual: comprobando…</p>
+    <div class="row">
+      <button class="btn btn-accent btn-sm" type="button" onclick="if(window.c101SetConsent){c101SetConsent(true)};ccRefresh();">Aceptar analítica</button>
+      <button class="btn btn-ghost btn-sm" type="button" onclick="if(window.c101SetConsent){c101SetConsent(false)};ccRefresh();">Rechazar analítica</button>
+    </div>
+  </div>
+
+  <div class="foot-legal">
+    <a href="/aviso-legal">Aviso legal</a> · <a href="/privacidad">Privacidad</a> · <a href="/condiciones">Condiciones de contratación</a> · <a href="/contacto">Contacto</a>
+  </div>
+</main>
+
+<script src="/track.js"></script>
+<script>
+function ccRefresh(){
+  var v = null; try { v = localStorage.getItem('c101_consent'); } catch(e){}
+  var t = v === 'granted' ? 'aceptada' : (v === 'denied' ? 'rechazada' : 'sin decidir');
+  document.getElementById('ccState').textContent = 'Tu decisión actual: analítica ' + t + '.';
+}
+ccRefresh();
+</script>
+</body>
+</html>
