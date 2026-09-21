@@ -18,6 +18,12 @@
 - [Marketing jurídico con IA](https://academia101.com/blog/marketing-juridico-con-ia-captar-clientes-despacho)
 - [Automatizar un despacho con IA: 7 tareas](https://academia101.com/blog/automatizar-despacho-abogados-con-ia-tareas)
 - [Prompts para abogados laboralistas](https://academia101.com/blog/prompts-para-abogados-laboralistas)
+- [Abogado multado por citar sentencias falsas de IA: qué dijo el TSJ de Canarias](https://academia101.com/blog/abogado-multado-sentencias-falsas-ia-tsj-canarias)
+- [Circular 3/2026 del CGAE sobre inteligencia artificial: qué obliga al abogado](https://academia101.com/blog/circular-3-2026-cgae-inteligencia-artificial-abogados)
+- [¿Puedo usar ChatGPT con datos de clientes? Versión gratuita, de pago y profesional](https://academia101.com/blog/chatgpt-datos-clientes-abogados-version-gratuita-o-profesional)
+- [IA jurídicas en España: generalistas frente a especializadas, cuál elegir](https://academia101.com/blog/mejores-ia-juridicas-espana-generalistas-vs-especializadas)
+- [Cómo redactar escritos judiciales con IA sin inventar jurisprudencia](https://academia101.com/blog/como-redactar-escritos-judiciales-con-ia)
+- [IA para procuradores y personal de despacho: LexNET, plazos y tareas](https://academia101.com/blog/ia-para-procuradores-y-personal-de-despacho)
 
 ## El libro
 - [Ampliaciones del libro "IA para Abogados"](https://academia101.com/libro)

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<!-- Google Analytics 4 -->
+<script src="/ga.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cómo redactar escritos judiciales con IA sin inventar jurisprudencia · Academia101</title>
+<meta name="description" content="Método en 6 pasos para redactar demandas, contestaciones y recursos con ayuda de IA: encuadre, hechos, estructura, redacción, verificación de citas y revisión final. Con prompts.">
+<link rel="canonical" href="https://academia101.com/blog/como-redactar-escritos-judiciales-con-ia">
+<link rel="alternate" hreflang="es-ES" href="https://academia101.com/blog/como-redactar-escritos-judiciales-con-ia">
+<link rel="alternate" hreflang="es-419" href="https://academia101.com/blog/como-redactar-escritos-judiciales-con-ia">
+<link rel="alternate" hreflang="es" href="https://academia101.com/blog/como-redactar-escritos-judiciales-con-ia">
+<link rel="alternate" hreflang="x-default" href="https://academia101.com/blog/como-redactar-escritos-judiciales-con-ia">
+<link rel="stylesheet" href="/fonts.css">
+<link rel="stylesheet" href="/styles-shared.css">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Cómo redactar escritos judiciales con IA sin inventar jurisprudencia">
+<meta property="og:description" content="Método en 6 pasos para redactar demandas, contestaciones y recursos con ayuda de IA: encuadre, hechos, estructura, redacción, verificación de citas y revisión final. Con prompts.">
+<meta property="og:image" content="https://academia101.com/og-image.png">
+<meta property="og:locale" content="es_ES">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "Article", "headline": "Cómo redactar escritos judiciales con IA sin inventar jurisprudencia", "description": "Método en 6 pasos para redactar demandas, contestaciones y recursos con ayuda de IA: encuadre, hechos, estructura, redacción, verificación de citas y revisión final. Con prompts.", "datePublished": "2026-09-21", "dateModified": "2026-09-21", "author": {"@type": "Organization", "name": "Academia101", "url": "https://academia101.com"}, "publisher": {"@type": "Organization", "name": "Tacto Agencia SLU", "url": "https://academia101.com"}, "image": "https://academia101.com/og-image.png", "inLanguage": "es", "mainEntityOfPage": "https://academia101.com/blog/como-redactar-escritos-judiciales-con-ia"}
+</script>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "¿Se puede redactar una demanda con IA?", "acceptedAnswer": {"@type": "Answer", "text": "Puede ayudarte con estructura y redacción, pero el abogado es quien decide los fundamentos, verifica todas las citas y firma bajo su responsabilidad."}}, {"@type": "Question", "name": "¿Qué parte del escrito es más segura para la IA?", "acceptedAnswer": {"@type": "Answer", "text": "Mejorar la redacción de párrafos que ya has escrito tú o proponer estructuras; lo más arriesgado es delegar citas y fundamentos jurídicos."}}, {"@type": "Question", "name": "¿Qué prompt uso para un escrito?", "acceptedAnswer": {"@type": "Answer", "text": "Uno con rol, contexto, tarea, formato y verificación, indicando que no invente hechos ni citas. Ver ejemplos en el artículo."}}]}
+</script>
+<style>
+.article-wrap { max-width: 720px; margin: 0 auto; padding: 48px 0 80px; }
+.article-meta { display: flex; gap: 14px; align-items: center; font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-bottom: 20px; }
+.article-meta .cat { color: var(--accent); }
+.article-wrap h1 { font-family: var(--display); font-style: italic; font-size: clamp(32px, 4.5vw, 52px); line-height: 1.1; margin-bottom: 18px; }
+.article-wrap h1 em { font-style: normal; color: var(--accent); }
+.article-wrap .lede { font-size: 19px; color: var(--ink-2); line-height: 1.6; margin-bottom: 36px; }
+.article-wrap h2 { font-family: var(--display); font-size: 28px; margin: 40px 0 14px; }
+.article-wrap h2 em { font-style: italic; color: var(--accent); }
+.article-wrap h3 { font-family: var(--display); font-size: 21px; margin: 24px 0 8px; }
+.article-wrap p, .article-wrap li { font-size: 16px; color: var(--ink-2); line-height: 1.75; }
+.article-wrap p { margin-bottom: 14px; }
+.article-wrap ul, .article-wrap ol { margin: 12px 0 14px 22px; }
+.article-wrap blockquote { border-left: 3px solid var(--accent); padding: 8px 0 8px 20px; font-family: var(--display); font-style: italic; font-size: 19px; color: var(--ink); margin: 24px 0; }
+.article-wrap table { width:100%; border-collapse:collapse; margin:16px 0; font-size:14px; }
+.article-wrap th, .article-wrap td { border:1px solid var(--line); padding:10px 12px; text-align:left; vertical-align:top; }
+.article-wrap th { background: var(--card); font-family: var(--mono); font-size:11px; letter-spacing:.06em; text-transform:uppercase; }
+.prompt-box { font-family: var(--mono); background: var(--bg-2); padding: 12px; border-radius: 8px; font-size: 13px; }
+.faq-q { font-family: var(--display); font-size: 19px; margin: 20px 0 6px; }
+.step-card { background: var(--card); border: 1px solid var(--line); border-radius: var(--r-lg); padding: 24px; margin: 16px 0; }
+.step-card h3 { margin-top: 0; }
+.step-card .pill { display: inline-block; background: var(--accent-soft); color: var(--accent); padding: 4px 10px; border-radius: var(--r-pill); font-family: var(--mono); font-size: 10px; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 10px; }
+.cta-end { background: linear-gradient(135deg, var(--accent), var(--gold)); color: var(--bg); border-radius: var(--r-xl); padding: 36px; text-align: center; margin: 48px 0 0; }
+.cta-end h3 { color: var(--bg); font-family: var(--display); font-style: italic; font-size: 26px; margin-bottom: 10px; }
+.cta-end p { color: rgba(244,239,227,.85); margin-bottom: 18px; }
+.cta-end .btn { background: var(--bg); color: var(--ink); border-color: var(--bg); }
+</style>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/favicon.svg">
+</head>
+<body>
+<a href="#main" class="skip-link">Saltar al contenido</a>
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="brand">Claude<em>·101</em></a>
+    <div class="nav-links"><a href="/blog">← Blog</a><a href="/#precio" class="btn btn-ghost btn-sm">Comprar acceso</a></div>
+  </div>
+</nav>
+
+<main id="main" class="container">
+  <article class="article-wrap">
+    <div class="article-meta"><span class="cat">Método</span><span>· 8 min</span><span>· Septiembre 2026</span></div>
+    <h1>Cómo <em>redactar escritos judiciales con IA</em> sin inventar jurisprudencia</h1>
+    <p class="lede">La IA acelera el primer borrador de un escrito, pero no lo firma. Este es un método en seis pasos para usarla en demandas, contestaciones y recursos sin caer en los errores que ya han acabado en multas.</p>
+
+<blockquote>Anonimiza los datos del asunto antes de usar una IA y verifica normas y jurisprudencia en fuentes oficiales.</blockquote>
+
+<h2>Paso 1 · Encuadra el escrito</h2>
+<p>Indica tipo de escrito, jurisdicción, órgano y objetivo procesal. Cuanto más concreto, menos genérico el borrador.</p>
+<p class="prompt-box">ROL: abogado procesalista español.<br>TAREA: prepara la estructura de una contestación a la demanda en juicio &lt;tipo&gt;.<br>CONTEXTO: &lt;objeto, cuantía, órgano&gt;.<br>FORMATO: esquema con encabezamiento, hechos, fundamentos y súplica; huecos [entre corchetes] para datos.</p>
+
+<h2>Paso 2 · Aporta los hechos, sin inventar</h2>
+<p>Pega los hechos anonimizados y ordénalos. Instruye: «no añadas hechos que no consten».</p>
+
+<h2>Paso 3 · Pide la estructura, no la sentencia</h2>
+<p>Solicita un esquema de alegaciones y los puntos a acreditar. Los fundamentos jurídicos los decides tú.</p>
+
+<h2>Paso 4 · Redacta por partes</h2>
+<p>Pide párrafos concretos y revísalos uno a uno; mejorar la redacción de un párrafo tuyo es un uso de bajo riesgo.</p>
+<p class="prompt-box">TAREA: reescribe este párrafo con registro jurídico formal, más claro y conciso, sin cambiar su contenido ni añadir citas.</p>
+
+<h2>Paso 5 · Verifica cada cita</h2>
+<p>Ninguna norma ni sentencia entra en el escrito sin comprobarla en una fuente oficial. Recuerda <a href="/blog/abogado-multado-sentencias-falsas-ia-tsj-canarias">las multas por citas inventadas</a> y el <a href="/blog/alucinaciones-ia-jurisprudencia-inventada-abogados">protocolo de verificación</a>.</p>
+
+<h2>Paso 6 · Revisión final y plazos</h2>
+<p>Relee el escrito entero, comprueba plazos y requisitos formales y firma bajo tu responsabilidad.</p>
+<p>Un ejemplo completo con un despido en <a href="/blog/redactar-demanda-despido-con-ia-caso-practico">este caso práctico</a>.</p>
+
+<h2>Preguntas <em>frecuentes</em></h2>
+<p class="faq-q">¿Se puede redactar una demanda con IA?</p>
+<p>Puede ayudarte con estructura y redacción, pero el abogado es quien decide los fundamentos, verifica todas las citas y firma bajo su responsabilidad.</p>
+<p class="faq-q">¿Qué parte del escrito es más segura para la IA?</p>
+<p>Mejorar la redacción de párrafos que ya has escrito tú o proponer estructuras; lo más arriesgado es delegar citas y fundamentos jurídicos.</p>
+<p class="faq-q">¿Qué prompt uso para un escrito?</p>
+<p>Uno con rol, contexto, tarea, formato y verificación, indicando que no invente hechos ni citas. Ver ejemplos en el artículo.</p>
+
+<h2>Sigue <em>leyendo</em></h2>
+<ul>
+<li><a href="/blog/redactar-demanda-despido-con-ia-caso-practico">Preparar una demanda por despido con IA: caso práctico paso a paso</a></li>
+<li><a href="/blog/prompts-juridicos-para-abogados">Prompts jurídicos para abogados: plantillas para copiar y adaptar</a></li>
+<li><a href="/blog/alucinaciones-ia-jurisprudencia-inventada-abogados">Alucinaciones de la IA: cómo evitar citar jurisprudencia inventada</a></li>
+</ul>
+
+    <div class="cta-end">
+      <h3>IA para abogados, en la práctica</h3>
+      <p>Curso online con prompts jurídicos, plantillas y el caso García resuelto paso a paso. Pago único, acceso vitalicio.</p>
+      <a href="/#precio" class="btn btn-lg" onclick="track('blog_cta_click', { post: 'como-redactar-escritos-judiciales-con-ia' })">Ver el curso →</a>
+    </div>
+  </article>
+</main>
+
+<footer class="foot">
+  <div class="foot-inner"><div class="foot-bottom"><a href="/" class="brand">Claude<em>·101</em></a><div><a href="/blog">Más artículos</a> · <a href="/terminos">Términos</a> · <a href="/contacto">Contacto</a></div></div></div>
+</footer>
+<script src="/track.js"></script>
+</body>
+</html>
