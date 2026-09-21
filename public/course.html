@@ -3085,6 +3085,165 @@ if __name__ == "__main__":
       }
     ]
   }
+  ,
+  {
+    id: 'm10',
+    title: 'IA para abogados',
+    badge: 'ABOGADOS',
+    lessons: [
+      {
+        id: 'l10-1',
+        title: 'La IA en el despacho: qué cambia y qué es humo',
+        emphasis: 'humo',
+        summary: 'Qué puede hacer hoy la IA por un abogado, qué no debe hacer nunca y cómo empezar sin cambiar toda tu forma de trabajar.',
+        defaultVideo: '',
+        body: `
+  <h3>Dónde aporta de verdad</h3>
+  <p>Una IA generativa es, ante todo, una herramienta de <strong>lenguaje</strong>: lee, resume, compara, reformula y redacta. Eso encaja con buena parte del trabajo diario de un despacho: primeros borradores de escritos de trámite, análisis de contratos y cartas, resúmenes de sentencias y expedientes, comunicación con el cliente y organización de tareas.</p>
+
+  <h3>Dónde no debes fiarte</h3>
+  <p>La IA <strong>no es una base de datos jurídica</strong>. Puede inventar una sentencia con número de recurso, ponente y fecha, o atribuir a un artículo un contenido que no tiene. Lo hace con total seguridad aparente. Tampoco asume tu responsabilidad profesional: si un escrito contiene una cita falsa, el responsable eres tú, no la herramienta.</p>
+
+  <div class="callout">
+    <div class="callout-label">Idea clave</div>
+    <p>El flujo correcto es siempre el mismo: <strong>la IA propone, tú verificas y tú decides</strong>. Tu criterio, tu firma y tu ética siguen siendo lo que vendes.</p>
+  </div>
+
+  <h3>Cómo empezar sin morir en el intento</h3>
+  <ol>
+    <li>Elige <strong>una sola tarea repetitiva</strong> que te robe tiempo cada semana.</li>
+    <li>Pruébala con un caso <strong>anonimizado o ficticio</strong>.</li>
+    <li>Compara con lo que habrías tardado sin IA.</li>
+    <li>Si ahorras tiempo real, incorpórala a tu rutina; si no, descártala.</li>
+  </ol>
+  <p>No hace falta rehacer tu despacho. Basta con una tarea y un método.</p>
+        `
+      },
+      {
+        id: 'l10-2',
+        title: 'Prompting jurídico: rol, tarea, formato y verificación',
+        emphasis: 'Prompting jurídico',
+        summary: 'La estructura de un prompt que devuelve algo útil para un caso concreto, con plantillas para contratos, cartas de despido y resúmenes.',
+        defaultVideo: '',
+        body: `
+  <h3>El mismo caso, dos prompts</h3>
+  <p>Compara lo que ocurre con un prompt genérico y con uno jurídico sobre el mismo asunto:</p>
+  <div class="example">
+<span class="example-label">Prompt genérico</span>¿Este despido es válido?
+  </div>
+  <div class="example">
+<span class="example-label">Prompt jurídico</span>ROL: actúa como abogado laboralista español con experiencia en despido disciplinario. CONTEXTO: comercial con 7 años de antigüedad, despido por carta alegando bajo rendimiento, sin datos objetivos que lo acrediten. TAREA: analiza la carta adjunta y localiza defectos de forma, debilidades de fondo y argumentos de improcedencia. FORMATO: tabla [Punto | Por qué | Riesgo para la empresa]. VERIFICACIÓN: no des por cierto ningún dato que no aparezca en la carta; al final, dime qué debo comprobar yo (convenio aplicable, plazos).
+  </div>
+  <p>El primero devuelve teoría de manual sin tu contexto. El segundo devuelve algo utilizable, porque la IA sabe exactamente lo que necesitas.</p>
+
+  <h3>Las cinco piezas</h3>
+  <ol>
+    <li><strong>Rol:</strong> desde qué perspectiva debe responder.</li>
+    <li><strong>Contexto:</strong> hechos relevantes, siempre anonimizados.</li>
+    <li><strong>Tarea:</strong> qué debe hacer, punto por punto.</li>
+    <li><strong>Formato:</strong> tabla, lista, máximo de líneas.</li>
+    <li><strong>Verificación:</strong> qué no debe inventar y qué debes comprobar tú.</li>
+  </ol>
+
+  <h3>Plantillas base</h3>
+  <div class="example">
+<span class="example-label">Revisar un contrato</span>ROL: abogado revisor de contratos. TAREA: localiza cláusulas problemáticas o abusivas en el contrato adjunto. FORMATO: tabla [Cláusula | Riesgo | Alternativa sugerida]. VERIFICACIÓN: no inventes; si falta contexto, pídemelo.
+  </div>
+  <div class="example">
+<span class="example-label">Resumir una sentencia</span>ROL: jurista redactor. TAREA: resume el documento en hechos, fundamentos, fallo y qué implica para mi caso. FORMATO: máximo 10 líneas + 3 puntos de acción.
+  </div>
+  <div class="example">
+<span class="example-label">Borrador al cliente</span>ROL: asistente de un abogado español. TAREA: redacta un borrador de respuesta al correo del cliente. REGLAS: no comprometas plazos ni decisiones; tono profesional y cercano. CIERRE: termina con [BORRADOR PENDIENTE DE REVISIÓN].
+  </div>
+
+  <div class="callout">
+    <div class="callout-label">Para llevarte</div>
+    <p>Pídele siempre que <strong>te haga preguntas si falta contexto</strong>, itera sobre la primera respuesta y guarda tus mejores prompts como plantillas por tipo de asunto. Tienes más plantillas en la sección de recursos del módulo.</p>
+  </div>
+        `
+      },
+      {
+        id: 'l10-3',
+        title: 'Confidencialidad, RGPD y secreto profesional',
+        emphasis: 'secreto profesional',
+        summary: 'Qué ocurre con los datos que pegas en una IA y cuatro reglas prácticas para no incumplir tu deber de confidencialidad.',
+        defaultVideo: '',
+        body: `
+  <h3>El riesgo más inmediato (y más ignorado)</h3>
+  <p>Cuando introduces información de un cliente en una IA, esa información sale de tu despacho hacia los servidores de la empresa que opera el modelo. Según la herramienta, el plan y la configuración, puede conservarse y, en algunos casos, usarse para mejorar futuros modelos. Para un abogado eso toca tu <strong>deber de secreto profesional</strong>, el <strong>RGPD</strong> (Reglamento (UE) 2016/679 y la LOPDGDD) y la confianza del cliente.</p>
+
+  <h3>Cuatro reglas prácticas</h3>
+  <ol>
+    <li><strong>Anonimiza antes de pegar.</strong> Sustituye nombres por marcadores ("Cliente", "Empresa A"), elimina DNI/NIE, direcciones, IBAN y números de expediente, y revisa los metadatos de los archivos.</li>
+    <li><strong>Configura la herramienta.</strong> Desactiva el uso de tus conversaciones para entrenar modelos si existe la opción, y valora los planes profesionales, que suelen ofrecer más garantías contractuales.</li>
+    <li><strong>La responsabilidad no se delega.</strong> El cliente contrató contigo, no con la herramienta. Revisa siempre lo que entregas.</li>
+    <li><strong>Transparencia cuando afecte al cliente.</strong> Usar IA como herramienta interna para borradores que revisas no es distinto de usar otro software; pero si tiene implicaciones para el cliente (sus datos, cómo se ha generado un documento, riesgos específicos), habla con él.</li>
+  </ol>
+
+  <div class="callout">
+    <div class="callout-label">Aviso</div>
+    <p>No compartas públicamente conversaciones con IA. Si la herramienta ofrece "compartir enlace", trátalo como publicar: hay casos documentados de conversaciones compartidas que acabaron indexadas en buscadores.</p>
+  </div>
+
+  <p>Estas pautas son divulgativas y no sustituyen el asesoramiento jurídico ni los criterios de tu colegio profesional, que irán evolucionando.</p>
+        `
+      },
+      {
+        id: 'l10-4',
+        title: 'Alucinaciones: verifica antes de firmar',
+        emphasis: 'Alucinaciones',
+        summary: 'Por qué la IA inventa sentencias y un protocolo de comprobación en cinco pasos.',
+        defaultVideo: '',
+        body: `
+  <h3>Por qué ocurre</h3>
+  <p>Un modelo de lenguaje genera texto que <em>suena</em> correcto a partir de patrones; no consulta una base de datos verificada. Cuando no tiene el dato, puede fabricar una respuesta plausible en lugar de decir que no lo sabe. En 2023, el caso <em>Mata v. Avianca</em> en Nueva York terminó en sanción para unos abogados que presentaron resoluciones generadas por ChatGPT que no existían. La lección no es "no uses IA", sino "no presentes nada que no hayas verificado".</p>
+
+  <h3>Protocolo de verificación en 5 pasos</h3>
+  <ol>
+    <li><strong>Trata toda cita como "a comprobar".</strong> Pídele que marque así cualquier sentencia que no pueda verificar.</li>
+    <li><strong>Localízala en una fuente oficial:</strong> la base de datos del CGPJ (CENDOJ), el BOE o tu base colegial.</li>
+    <li><strong>Léela completa,</strong> no solo el extracto: comprueba que dice lo que la IA afirma.</li>
+    <li><strong>Confirma la vigencia</strong> de la norma o del criterio.</li>
+    <li><strong>Anota tu comprobación</strong> en el expediente. Si dudas, no la cites.</li>
+  </ol>
+
+  <div class="example">
+<span class="example-label">Prompt de búsqueda seguro</span>TAREA: propón una estrategia para buscar jurisprudencia sobre [cuestión]. Dame términos de búsqueda, tribunales relevantes y qué debo verificar. ADVERTENCIA: no cites sentencias concretas si no puedes verificarlas; márcalas como "a comprobar".
+  </div>
+
+  <div class="callout">
+    <div class="callout-label">Idea clave</div>
+    <p>Usa la IA para <strong>orientar la búsqueda</strong> y la base oficial para <strong>encontrar la resolución</strong>. La IA propone; tú verificas.</p>
+  </div>
+        `
+      },
+      {
+        id: 'l10-5',
+        title: 'El caso García y cuánto te cuesta (y te ahorra) la IA',
+        emphasis: 'caso García',
+        summary: 'Un despido resuelto de principio a fin con IA y un método para medir si las herramientas te compensan.',
+        defaultVideo: '',
+        body: `
+  <h3>El caso García</h3>
+  <p>El Sr. García es comercial, con siete años de antigüedad, despedido por carta alegando un bajo rendimiento que la empresa no acredita. Es un caso <strong>ficticio y con fines educativos</strong>, no asesoramiento jurídico. Lo recorres por fases: análisis de la carta con un prompt jurídico, cronología de hechos, estructura de la demanda y comunicación con el cliente. Puedes descargar los materiales en la sección de recursos del módulo y en <a href="/libro/caso-garcia" target="_top">la página del caso</a>.</p>
+
+  <h3>Mide el retorno, no la cuota</h3>
+  <p>Al final, la pregunta no es cuánto cuesta la herramienta sino cuántas horas recuperas. Un ejemplo de cálculo: si entre varias herramientas gastas 60 € al mes y recuperas 5 horas, y valoras tu hora en 60 €, has recuperado 300 € de capacidad a cambio de 60 €. Si pagas varias suscripciones que apenas usas, solo has cambiado unas cuotas por otras.</p>
+  <ol>
+    <li>Durante un mes, anota qué tareas haces con IA y cuánto habrían tardado antes.</li>
+    <li>Calcula las horas ahorradas y multiplícalas por el valor de tu hora.</li>
+    <li>Compáralo con lo que pagas al mes en herramientas.</li>
+    <li>Decide con tus propios números si subir, bajar o cambiar de plan.</li>
+  </ol>
+
+  <div class="callout">
+    <div class="callout-label">Para llevarte</div>
+    <p>Elijas lo que elijas, la base de datos del CGPJ y la que incluya tu cuota colegial siguen ahí, gratis. Los precios de las herramientas cambian con frecuencia: compruébalos siempre antes de contratar.</p>
+  </div>
+        `
+      }
+    ]
+  }
 ];
 
 // ============================================

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<!-- Google Analytics 4 -->
+<script src="/ga.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Recursos M10 · IA para abogados</title>
+<link rel="stylesheet" href="/fonts.css">
+<style>
+
+:root {
+  --bg: #F4EFE3; --bg-2: #EFE9DA; --card: #FBF8F0;
+  --ink: #1C1A16; --ink-2: #3A352D; --muted: #756B5B; --muted-2: #A39782;
+  --line: #E1D8C2; --line-2: #CFC4AA;
+  --accent: #C8542B; --accent-2: #8B3A1E;
+  --olive: #4F5D38; --gold: #B08436;
+  --display: 'Fraunces', Georgia, serif;
+  --body: 'Geist', system-ui, sans-serif;
+  --mono: 'Geist Mono', ui-monospace, monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: var(--bg); color: var(--ink); font-family: var(--body); line-height: 1.55; }
+body {
+  background-image:
+    radial-gradient(circle at 12% 8%, rgba(200,84,43,.06) 0%, transparent 40%),
+    radial-gradient(circle at 88% 92%, rgba(79,93,56,.05) 0%, transparent 40%);
+  min-height: 100vh;
+}
+
+/* === HEADER === */
+.topbar {
+  position: sticky; top: 0; z-index: 50;
+  background: rgba(244,239,227,.85); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+  padding: 14px 32px; display: flex; align-items: center; gap: 20px;
+}
+.back-link {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--muted); text-decoration: none;
+  padding: 8px 14px; border-radius: 100px; border: 1px solid var(--line-2);
+  transition: all .2s;
+}
+.back-link:hover { color: var(--ink); border-color: var(--accent); }
+.topbar-title {
+  font-family: var(--display); font-style: italic; font-size: 22px;
+  font-weight: 400; color: var(--ink); flex: 1;
+}
+.topbar-title em { color: var(--accent); font-style: italic; }
+.topbar-badge {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--muted);
+  padding: 6px 12px; background: var(--card); border: 1px solid var(--line); border-radius: 6px;
+}
+
+
+.hero { padding: 60px 32px 24px; max-width: 900px; margin: 0 auto; text-align: center; }
+.hero .eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; }
+.hero h1 { font-family: var(--display); font-style: italic; font-weight: 400; font-size: clamp(34px, 5vw, 56px); line-height: 1.05; margin-bottom: 14px; }
+.hero h1 em { font-style: normal; color: var(--accent); }
+.hero .lede { font-size: 17px; color: var(--ink-2); max-width: 60ch; margin: 0 auto; }
+.wrap { max-width: 900px; margin: 0 auto; padding: 16px 32px 80px; }
+.warn { background: var(--card); border: 1px solid var(--line-2); border-left: 4px solid var(--accent); border-radius: 8px; padding: 14px 18px; margin: 20px 0 30px; font-size: 14px; color: var(--ink-2); }
+h2 { font-family: var(--display); font-style: italic; font-weight: 400; font-size: 30px; margin: 34px 0 14px; }
+.pcard { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; margin-bottom: 14px; }
+.pcard h3 { font-family: var(--display); font-size: 19px; margin-bottom: 10px; font-weight: 500; }
+.pcard pre { font-family: var(--mono); font-size: 13px; white-space: pre-wrap; background: var(--bg-2); padding: 12px; border-radius: 8px; color: var(--ink-2); }
+ul.check { list-style: none; }
+ul.check li { padding: 8px 0 8px 28px; position: relative; border-bottom: 1px solid var(--line); font-size: 15px; color: var(--ink-2); }
+ul.check li::before { content: "☐"; position: absolute; left: 0; color: var(--accent); }
+.dl a { display: inline-block; margin: 0 10px 10px 0; padding: 10px 16px; border: 1px solid var(--line-2); border-radius: 100px; color: var(--ink); text-decoration: none; font-size: 14px; background: var(--card); }
+.dl a:hover { border-color: var(--accent); }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <a class="back-link" href="/app" target="_top">← Curso</a>
+  <div class="topbar-title">Recursos <em>M10</em></div>
+  <div class="topbar-badge">IA para abogados</div>
+</header>
+<section class="hero">
+  <div class="eyebrow">Módulo 10</div>
+  <h1>IA para <em>abogados</em></h1>
+  <p class="lede">Plantillas de prompts jurídicos, checklist de confidencialidad y materiales del caso García.</p>
+</section>
+<main class="wrap">
+  <div class="warn">Anonimiza siempre los datos del cliente antes de pegar nada en una IA y verifica todo lo que devuelve. No cites jurisprudencia que no hayas comprobado en una fuente oficial. Material educativo, no asesoramiento jurídico.</div>
+
+  <h2>Plantillas de <em style="color:var(--accent);font-style:normal">prompts</em></h2>
+  <div class="pcard"><h3>Revisar un contrato</h3><pre>ROL: abogado revisor de contratos.
+TAREA: localiza cláusulas problemáticas o abusivas en el contrato adjunto.
+FORMATO: tabla [Cláusula | Riesgo | Alternativa sugerida].
+VERIFICACIÓN: no inventes; si falta contexto, pídemelo.
+CONTRATO: &lt;pega el texto anonimizado&gt;</pre></div><div class="pcard"><h3>Defectos en una carta de despido</h3><pre>ROL: abogado laboralista español.
+TAREA: identifica defectos de forma y de fondo en la carta de despido.
+FORMATO: lista de [defecto | por qué | argumento de improcedencia].
+VERIFICACIÓN: cíñete a lo que diga la carta, no añadas hechos; indica qué debo comprobar (convenio, plazos).
+CARTA: &lt;pega el texto anonimizado&gt;</pre></div><div class="pcard"><h3>Resumen de sentencia o expediente</h3><pre>ROL: jurista redactor.
+TAREA: resume el documento en hechos, fundamentos, fallo y qué implica para mi caso.
+FORMATO: máximo 10 líneas + 3 puntos de acción.
+DOC: &lt;pega el texto&gt;</pre></div><div class="pcard"><h3>Hechos y fechas clave</h3><pre>TAREA: extrae del documento todos los hechos con su fecha, en orden cronológico.
+FORMATO: tabla [Fecha | Hecho | Página/fuente].
+No añadas nada que no esté en el texto.</pre></div><div class="pcard"><h3>Borrador de respuesta a cliente</h3><pre>ROL: asistente de un abogado español.
+TAREA: redacta un borrador de respuesta al correo del cliente.
+REGLAS: no comprometas plazos ni decisiones; tono profesional y cercano.
+CIERRE: termina con [BORRADOR PENDIENTE DE REVISIÓN].
+EMAIL: &lt;pega el correo anonimizado&gt;</pre></div><div class="pcard"><h3>Explicar en lenguaje llano</h3><pre>ROL: abogado que explica a un cliente sin formación jurídica.
+TAREA: explica esta resolución en lenguaje sencillo, sin tecnicismos.
+FORMATO: 5-6 frases + un apartado &#x27;qué significa para ti&#x27;.</pre></div><div class="pcard"><h3>Estrategia de búsqueda de jurisprudencia</h3><pre>TAREA: propón una estrategia para buscar jurisprudencia sobre &lt;cuestión&gt;.
+Dame términos de búsqueda, tribunales relevantes y qué debo verificar.
+ADVERTENCIA: no cites sentencias concretas si no puedes verificarlas; márcalas como &#x27;a comprobar&#x27;.</pre></div><div class="pcard"><h3>Comparar dos textos o cláusulas</h3><pre>TAREA: compara el TEXTO A y el TEXTO B; señala diferencias relevantes y cuál es más favorable para mi cliente y por qué.
+FORMATO: tabla comparativa + recomendación.</pre></div>
+
+  <h2>Checklist antes de usar IA con un asunto</h2>
+  <ul class="check">
+    <li>He anonimizado nombres, DNI/NIE, direcciones, IBAN y números de expediente.</li>
+    <li>Tengo desactivado el uso de mis conversaciones para entrenar modelos (si existe la opción).</li>
+    <li>Conozco la política de privacidad de la herramienta que voy a usar.</li>
+    <li>Voy a tratar todo lo generado como borrador y a revisarlo entero.</li>
+    <li>Cada sentencia o artículo citado está comprobado en una fuente oficial (CENDOJ, BOE, base colegial).</li>
+    <li>He valorado si debo informar al cliente del uso de IA.</li>
+  </ul>
+
+  <h2>Materiales del caso García</h2>
+  <div class="dl">
+    <a href="/caso-garcia/carta-despido-garcia.pdf" download>Carta de despido (PDF, ficticia)</a>
+    <a href="/caso-garcia/modelo-demanda-despido.md" download>Modelo de demanda (plantilla)</a>
+    <a href="/caso-garcia/prompts-caso-garcia.md" download>Prompts del caso</a>
+  </div>
+</main>
+<script src="/track.js"></script>
+</body>
+</html>
