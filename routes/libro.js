@@ -259,7 +259,10 @@ function explorerHTML(c) {
     </script>`;
 }
 
+const SITE_URL = process.env.PUBLIC_URL || 'https://academia101.com';
+
 function layout({ title, description, canonical, body }) {
+  const absCanonical = /^https?:\/\//.test(canonical) ? canonical : SITE_URL + canonical;
   return `<!DOCTYPE html>
 <html lang="es">
 <head>
@@ -268,7 +271,13 @@ function layout({ title, description, canonical, body }) {
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(description)}">
-<link rel="canonical" href="${esc(canonical)}">
+<link rel="canonical" href="${esc(absCanonical)}">
+<meta property="og:type" content="article">
+<meta property="og:title" content="${esc(title)}">
+<meta property="og:description" content="${esc(description)}">
+<meta property="og:image" content="${SITE_URL}/og-image.png">
+<meta property="og:locale" content="es_ES">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="stylesheet" href="/fonts.css">
 <link rel="stylesheet" href="/styles-shared.css">
 <style>

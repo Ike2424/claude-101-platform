@@ -1,0 +1,26 @@
+# Academia101 — IA para abogados
+
+> Curso online en español de inteligencia artificial para abogados y despachos, basado en el libro "IA para Abogados" (José Salto Masáts y Enrique Masats). Pago único de 60 €, acceso vitalicio. Enseña a usar Claude con criterio: prompts jurídicos, confidencialidad y RGPD, verificación de alucinaciones y un caso práctico completo (caso García).
+
+## Curso
+- [Landing del curso](https://academia101.com/): programa de 10 módulos, casos de uso jurídicos y precio.
+
+## Guías para abogados
+- [IA para abogados: guía práctica](https://academia101.com/blog/ia-para-abogados-guia-practica)
+- [ChatGPT vs Claude para abogados](https://academia101.com/blog/chatgpt-vs-claude-para-abogados)
+- [IA, RGPD y secreto profesional](https://academia101.com/blog/datos-clientes-ia-rgpd-secreto-profesional-abogados)
+- [Prompts jurídicos para copiar y adaptar](https://academia101.com/blog/prompts-juridicos-para-abogados)
+- [Alucinaciones: cómo evitar jurisprudencia inventada](https://academia101.com/blog/alucinaciones-ia-jurisprudencia-inventada-abogados)
+- [Reglamento europeo de IA (AI Act) para abogados](https://academia101.com/blog/reglamento-europeo-ia-abogados-ai-act)
+- [Cuánto cuesta la IA para un despacho](https://academia101.com/blog/cuanto-cuesta-ia-para-despacho-abogados)
+- [Claude para abogados: qué es y cómo usarlo](https://academia101.com/blog/claude-para-abogados-como-usarlo-en-tu-despacho)
+- [Preparar una demanda por despido con IA: caso práctico](https://academia101.com/blog/redactar-demanda-despido-con-ia-caso-practico)
+- [Marketing jurídico con IA](https://academia101.com/blog/marketing-juridico-con-ia-captar-clientes-despacho)
+- [Automatizar un despacho con IA: 7 tareas](https://academia101.com/blog/automatizar-despacho-abogados-con-ia-tareas)
+- [Prompts para abogados laboralistas](https://academia101.com/blog/prompts-para-abogados-laboralistas)
+
+## El libro
+- [Ampliaciones del libro "IA para Abogados"](https://academia101.com/libro)
+
+## Optional
+- [Blog completo](https://academia101.com/blog)
