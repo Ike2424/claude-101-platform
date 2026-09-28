@@ -417,6 +417,24 @@ app.use((req, res, next) => {
   next();
 });
 
+// 7.6) URLs canónicas del blog: /blog (sin barra) y /blog/<slug> (sin .html).
+// Sin esto, /blog redirigía a /blog/ mientras el canonical y el sitemap
+// apuntaban a /blog, y /blog/<slug>.html duplicaba cada artículo.
+app.use((req, res, next) => {
+  if (req.method !== 'GET' && req.method !== 'HEAD') return next();
+  const qs = req.originalUrl.slice(req.path.length);
+  if (req.path === '/blog/' || req.path === '/blog/index' || req.path === '/blog/index.html') {
+    return res.redirect(301, '/blog' + qs);
+  }
+  const m = req.path.match(/^\/blog\/([a-z0-9-]+)\.html$/);
+  if (m) return res.redirect(301, `/blog/${m[1]}${qs}`);
+  if (req.path === '/blog') {
+    res.setHeader('Cache-Control', 'no-cache');
+    return res.sendFile(path.join(__dirname, 'public', 'blog', 'index.html'));
+  }
+  next();
+});
+
 // ============================================================
 // 8) Static público
 // ============================================================
