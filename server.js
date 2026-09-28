@@ -255,6 +255,7 @@ app.get('/sitemap.xml', (_req, res) => {
     { loc: '/blog/automatizar-despacho-abogados-con-ia-tareas', priority: '0.8', changefreq: 'monthly' },
     { loc: '/blog/prompts-para-abogados-laboralistas', priority: '0.8', changefreq: 'monthly' },
     { loc: '/blog/abogado-multado-sentencias-falsas-ia-tsj-canarias', priority: '0.9', changefreq: 'monthly' },
+    { loc: '/blog/politica-uso-ia-despacho-abogados-plantilla', priority: '0.9', changefreq: 'monthly' },
     { loc: '/blog/circular-3-2026-cgae-inteligencia-artificial-abogados', priority: '0.9', changefreq: 'monthly' },
     { loc: '/blog/chatgpt-datos-clientes-abogados-version-gratuita-o-profesional', priority: '0.9', changefreq: 'monthly' },
     { loc: '/blog/mejores-ia-juridicas-espana-generalistas-vs-especializadas', priority: '0.9', changefreq: 'monthly' },
