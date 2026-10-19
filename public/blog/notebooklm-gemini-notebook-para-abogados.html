@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<!-- Google Analytics 4 -->
+<script src="/ga.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NotebookLM (Gemini Notebook) para abogados: guía de uso · Academia101</title>
+<meta name="description" content="NotebookLM ahora es Gemini Notebook. Cómo usarlo en un despacho de abogados: usos útiles, prompts, cuenta personal o Workspace y qué datos no conviene subir.">
+<link rel="canonical" href="https://academia101.com/blog/notebooklm-gemini-notebook-para-abogados">
+<link rel="alternate" hreflang="es-ES" href="https://academia101.com/blog/notebooklm-gemini-notebook-para-abogados">
+<link rel="alternate" hreflang="es-419" href="https://academia101.com/blog/notebooklm-gemini-notebook-para-abogados">
+<link rel="alternate" hreflang="es" href="https://academia101.com/blog/notebooklm-gemini-notebook-para-abogados">
+<link rel="alternate" hreflang="x-default" href="https://academia101.com/blog/notebooklm-gemini-notebook-para-abogados">
+<link rel="stylesheet" href="/fonts.css">
+<link rel="stylesheet" href="/styles-shared.css">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NotebookLM, ahora Gemini Notebook, para abogados: usos, prompts y confidencialidad">
+<meta property="og:description" content="NotebookLM ahora es Gemini Notebook. Cómo usarlo en un despacho de abogados: usos útiles, prompts, cuenta personal o Workspace y qué datos no conviene subir.">
+<meta property="og:image" content="https://academia101.com/og-image.png">
+<meta property="og:locale" content="es_ES">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "Article", "headline": "NotebookLM, ahora Gemini Notebook, para abogados: usos, prompts y confidencialidad", "description": "NotebookLM ahora es Gemini Notebook. Cómo usarlo en un despacho de abogados: usos útiles, prompts, cuenta personal o Workspace y qué datos no conviene subir.", "datePublished": "2026-10-19", "dateModified": "2026-10-19", "author": {"@type": "Organization", "name": "Academia101", "url": "https://academia101.com"}, "publisher": {"@type": "Organization", "name": "Tacto Agencia SLU", "url": "https://academia101.com"}, "image": "https://academia101.com/og-image.png", "inLanguage": "es", "mainEntityOfPage": "https://academia101.com/blog/notebooklm-gemini-notebook-para-abogados"}
+</script>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "¿NotebookLM y Gemini Notebook son lo mismo?", "acceptedAnswer": {"@type": "Answer", "text": "Sí. Google anunció el 16 de julio de 2026 que renombraba NotebookLM como Gemini Notebook. Según Google, es el mismo producto independiente, con nuevas funciones, y los cuadernos y enlaces existentes se mantienen mediante redirecciones automáticas."}}, {"@type": "Question", "name": "¿Puedo subir documentos de clientes a Gemini Notebook?", "acceptedAnswer": {"@type": "Answer", "text": "Depende de la cuenta y del contenido. Según la ayuda de Google, con cuentas de Google Workspace las subidas, consultas y respuestas no las revisan personas ni se usan para entrenar modelos. Las cuentas personales se rigen por los Términos de Servicio de Google y, si envías comentarios, Google puede revisar esa interacción. Con información de clientes, lo prudente es usar una cuenta de empresa revisada y anonimizar."}}, {"@type": "Question", "name": "¿Gemini Notebook se inventa jurisprudencia?", "acceptedAnswer": {"@type": "Answer", "text": "Trabaja sobre las fuentes que subes y cita fragmentos de ellas, lo que reduce el riesgo, pero no lo elimina: puede interpretar mal un documento o mezclar datos. Toda cita debe comprobarse en el documento original o en una base de datos jurídica antes de usarla."}}]}
+</script>
+<style>
+.article-wrap { max-width: 720px; margin: 0 auto; padding: 48px 0 80px; }
+.article-meta { display: flex; gap: 14px; align-items: center; font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-bottom: 20px; }
+.article-meta .cat { color: var(--accent); }
+.article-wrap h1 { font-family: var(--display); font-style: italic; font-size: clamp(32px, 4.5vw, 52px); line-height: 1.1; margin-bottom: 18px; }
+.article-wrap h1 em { font-style: normal; color: var(--accent); }
+.article-wrap .lede { font-size: 19px; color: var(--ink-2); line-height: 1.6; margin-bottom: 36px; }
+.article-wrap h2 { font-family: var(--display); font-size: 28px; margin: 40px 0 14px; }
+.article-wrap h2 em { font-style: italic; color: var(--accent); }
+.article-wrap h3 { font-family: var(--display); font-size: 21px; margin: 24px 0 8px; }
+.article-wrap p, .article-wrap li { font-size: 16px; color: var(--ink-2); line-height: 1.75; }
+.article-wrap p { margin-bottom: 14px; }
+.article-wrap ul, .article-wrap ol { margin: 12px 0 14px 22px; }
+.article-wrap blockquote { border-left: 3px solid var(--accent); padding: 8px 0 8px 20px; font-family: var(--display); font-style: italic; font-size: 19px; color: var(--ink); margin: 24px 0; }
+.article-wrap table { width:100%; border-collapse:collapse; margin:16px 0; font-size:14px; }
+.article-wrap th, .article-wrap td { border:1px solid var(--line); padding:10px 12px; text-align:left; vertical-align:top; }
+.article-wrap th { background: var(--card); font-family: var(--mono); font-size:11px; letter-spacing:.06em; text-transform:uppercase; }
+.table-scroll { overflow-x: auto; }
+.prompt-box { font-family: var(--mono); background: var(--bg-2); padding: 12px; border-radius: 8px; font-size: 13px; }
+.faq-q { font-family: var(--display); font-size: 19px; margin: 20px 0 6px; }
+.step-card { background: var(--card); border: 1px solid var(--line); border-radius: var(--r-lg); padding: 24px; margin: 16px 0; }
+.step-card h3 { margin-top: 0; }
+.step-card .pill { display: inline-block; background: var(--accent-soft); color: var(--accent); padding: 4px 10px; border-radius: var(--r-pill); font-family: var(--mono); font-size: 10px; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 10px; }
+.cta-end { background: linear-gradient(135deg, var(--accent), var(--gold)); color: var(--bg); border-radius: var(--r-xl); padding: 36px; text-align: center; margin: 48px 0 0; }
+.cta-end h3 { color: var(--bg); font-family: var(--display); font-style: italic; font-size: 26px; margin-bottom: 10px; }
+.cta-end p { color: rgba(244,239,227,.85); margin-bottom: 18px; }
+.cta-end .btn { background: var(--bg); color: var(--ink); border-color: var(--bg); }
+</style>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/favicon.svg">
+</head>
+<body>
+<a href="#main" class="skip-link">Saltar al contenido</a>
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="brand">Claude<em>·101</em></a>
+    <div class="nav-links"><a href="/blog">← Blog</a><a href="/#precio" class="btn btn-ghost btn-sm">Comprar acceso</a></div>
+  </div>
+</nav>
+
+<main id="main" class="container">
+  <article class="article-wrap">
+    <div class="article-meta"><span class="cat">Herramientas</span><span>· 6 min</span><span>· Octubre 2026</span></div>
+    <h1><em>NotebookLM</em>, ahora Gemini Notebook, para abogados: usos, prompts y confidencialidad</h1>
+    <p class="lede">Si buscas «NotebookLM para abogados» y no encuentras el botón, no es un error: desde julio de 2026 la herramienta se llama Gemini Notebook. Sigue siendo una de las IA más útiles para un despacho porque responde a partir de los documentos que tú le subes, no de lo que «recuerda» de internet. Esto es lo que conviene saber antes de meter en ella un expediente.</p>
+
+<blockquote>Contenido divulgativo basado en fuentes públicas; no es asesoramiento jurídico. Las condiciones de Google pueden cambiar: revisa siempre la versión vigente.</blockquote>
+
+<h2>Qué ha cambiado: <em>de NotebookLM a Gemini Notebook</em></h2>
+<p>El 16 de julio de 2026 Google anunció en su <a href="https://blog.google/innovation-and-ai/products/gemini-notebook/notebooklm-gemini-notebook/" rel="noopener">blog oficial</a> que renombraba NotebookLM como Gemini Notebook. Lo describe como «el mismo producto independiente», con dos novedades: los cuadernos pueden ejecutar código para analizar datos (de momento en los planes AI Ultra y en algunos complementos de Workspace) y se sincronizan con la app de Gemini.</p>
+<p>Según el <a href="https://workspaceupdates.googleblog.com/2026/07/notebooklm-now-gemini-notebook.html" rel="noopener">blog de novedades de Google Workspace</a>, los cuadernos compartidos y los enlaces antiguos siguen funcionando gracias a redirecciones automáticas, y los administradores no tienen que hacer nada. Ese anuncio no menciona cambios en las condiciones de datos.</p>
+
+<h2>Para qué sirve <em>en un despacho</em></h2>
+<p>La diferencia con un chat generalista como ChatGPT o Claude es que trabaja sobre tus fuentes: PDF, documentos, notas o páginas web que añades al cuaderno. Sus respuestas incluyen referencias al fragmento de donde salen, lo que facilita comprobarlas. Usos razonables:</p>
+<ul>
+<li><strong>Estudiar un expediente largo:</strong> cronología de hechos, contradicciones entre documentos, lista de pruebas.</li>
+<li><strong>Preparar una vista:</strong> resumen de declaraciones previas y posibles preguntas al testigo a partir de las actas.</li>
+<li><strong>Normativa de una materia:</strong> subir la ley, el reglamento y las circulares aplicables y preguntar sobre ellos, con el texto oficial delante.</li>
+<li><strong>Formación interna:</strong> un cuaderno con la <a href="/blog/politica-uso-ia-despacho-abogados-plantilla">política de uso de IA del despacho</a> y los modelos de escritos para que el equipo consulte.</li>
+</ul>
+
+<h2>Prompts <em>que funcionan</em></h2>
+<p>Pide siempre que se limite a las fuentes y que cite. Tres ejemplos para adaptar:</p>
+<p class="prompt-box">Con las fuentes de este cuaderno, elabora una cronología de hechos con fecha, hecho y documento de origen. Si una fecha no consta, escribe «no consta». No añadas nada que no esté en las fuentes.</p>
+<p class="prompt-box">Compara la declaración del documento 3 con la del documento 7 y señala contradicciones concretas, citando el fragmento literal de cada una.</p>
+<p class="prompt-box">A partir de las actas, propón 10 preguntas para el interrogatorio del testigo, cada una con el hecho que pretende acreditar y la fuente en la que se apoya.</p>
+<p>Encontrarás más plantillas en <a href="/blog/prompts-juridicos-para-abogados">prompts jurídicos para abogados</a>.</p>
+
+<h2>Confidencialidad: <em>cuenta personal o Workspace</em></h2>
+<p>Es la cuestión clave para un abogado. La <a href="https://support.google.com/notebooklm/answer/16164461?hl=es" rel="noopener">página de ayuda de Google sobre privacidad</a> distingue dos situaciones:</p>
+<div class="table-scroll">
+<table>
+<thead><tr><th>Aspecto</th><th>Cuenta personal de Google</th><th>Cuenta de Google Workspace</th></tr></thead>
+<tbody>
+<tr><td>Entrenamiento de modelos</td><td>No se usan tus datos, salvo que envíes comentarios</td><td>No se usan para entrenar modelos</td></tr>
+<tr><td>Revisión humana</td><td>Si envías comentarios, Google puede revisar la interacción completa (consultas, archivos y respuestas)</td><td>No las examinan revisores humanos</td></tr></tbody>
+</table>
+</div>
+<p>Las cuentas personales quedan sujetas a los Términos de Servicio de Google. La ayuda indica también que Google puede procesar datos para evitar fraudes, abusos y problemas técnicos. En la práctica: <strong>no uses una cuenta personal con información de clientes</strong>, no pulses los botones de valoración en cuadernos con datos reales y, aun con Workspace, anonimiza lo que no sea necesario. El secreto profesional y el RGPD siguen aplicando igual; lo explicamos en <a href="/blog/datos-clientes-ia-rgpd-secreto-profesional-abogados">datos de clientes, RGPD y secreto profesional</a>.</p>
+
+<h2>Límites y <em>verificación</em></h2>
+<p>Que responda sobre tus fuentes no garantiza que acierte: puede resumir mal, omitir un matiz o confundir dos documentos. La <a href="/blog/circular-3-2026-cgae-inteligencia-artificial-abogados">Circular 3/2026 del CGAE</a> recuerda que quien firma responde del contenido y que todo resultado debe leerse críticamente y contrastarse. Si le pides jurisprudencia que no está en el cuaderno, trátala con la misma cautela que en cualquier otra IA (ver <a href="/blog/alucinaciones-ia-jurisprudencia-inventada-abogados">alucinaciones y jurisprudencia inventada</a>).</p>
+
+<h2>Preguntas <em>frecuentes</em></h2>
+<p class="faq-q">¿NotebookLM y Gemini Notebook son lo mismo?</p>
+<p>Sí. Google anunció el 16 de julio de 2026 que renombraba NotebookLM como Gemini Notebook. Según Google, es el mismo producto independiente, con nuevas funciones, y los cuadernos y enlaces existentes se mantienen mediante redirecciones automáticas.</p>
+<p class="faq-q">¿Puedo subir documentos de clientes a Gemini Notebook?</p>
+<p>Depende de la cuenta y del contenido. Según la ayuda de Google, con cuentas de Google Workspace las subidas, consultas y respuestas no las revisan personas ni se usan para entrenar modelos. Las cuentas personales se rigen por los Términos de Servicio de Google y, si envías comentarios, Google puede revisar esa interacción. Con información de clientes, lo prudente es usar una cuenta de empresa revisada y anonimizar.</p>
+<p class="faq-q">¿Gemini Notebook se inventa jurisprudencia?</p>
+<p>Trabaja sobre las fuentes que subes y cita fragmentos de ellas, lo que reduce el riesgo, pero no lo elimina: puede interpretar mal un documento o mezclar datos. Toda cita debe comprobarse en el documento original o en una base de datos jurídica antes de usarla.</p>
+
+<h2>Sigue <em>leyendo</em></h2>
+<ul>
+<li><a href="/blog/mejores-ia-juridicas-espana-generalistas-vs-especializadas">Mejores IA jurídicas en España: generalistas frente a especializadas</a></li>
+<li><a href="/blog/chatgpt-datos-clientes-abogados-version-gratuita-o-profesional">¿Puedo usar ChatGPT con datos de clientes? Versión gratuita, de pago y profesional</a></li>
+<li><a href="/blog/como-redactar-escritos-judiciales-con-ia">Cómo redactar escritos judiciales con IA</a></li>
+</ul>
+
+    <div class="cta-end">
+      <h3>Aprende a trabajar con IA sobre tus propios documentos</h3>
+      <p>Curso online con prompts jurídicos, plantillas y el caso García resuelto paso a paso. Pago único, acceso vitalicio.</p>
+      <a href="/#precio" class="btn btn-lg" onclick="track('blog_cta_click', { post: 'notebooklm-gemini-notebook-para-abogados' })">Ver el curso →</a>
+    </div>
+  </article>
+</main>
+
+<footer class="foot">
+  <div class="foot-inner"><div class="foot-bottom"><a href="/" class="brand">Claude<em>·101</em></a><div><a href="/blog">Más artículos</a> · <a href="/terminos">Términos</a> · <a href="/contacto">Contacto</a></div></div></div>
+</footer>
+<script src="/track.js"></script>
+</body>
+</html>
