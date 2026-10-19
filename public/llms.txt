@@ -20,6 +20,7 @@
 - [Prompts para abogados laboralistas](https://academia101.com/blog/prompts-para-abogados-laboralistas)
 - [Abogado multado por citar sentencias falsas de IA: qué dijo el TSJ de Canarias](https://academia101.com/blog/abogado-multado-sentencias-falsas-ia-tsj-canarias)
 - [Política interna de uso de IA para despachos de abogados: plantilla y registro de uso](https://academia101.com/blog/politica-uso-ia-despacho-abogados-plantilla)
+- [NotebookLM, ahora Gemini Notebook, para abogados: usos, prompts y confidencialidad](https://academia101.com/blog/notebooklm-gemini-notebook-para-abogados)
 - [Circular 3/2026 del CGAE sobre inteligencia artificial: qué obliga al abogado](https://academia101.com/blog/circular-3-2026-cgae-inteligencia-artificial-abogados)
 - [¿Puedo usar ChatGPT con datos de clientes? Versión gratuita, de pago y profesional](https://academia101.com/blog/chatgpt-datos-clientes-abogados-version-gratuita-o-profesional)
 - [IA jurídicas en España: generalistas frente a especializadas, cuál elegir](https://academia101.com/blog/mejores-ia-juridicas-espana-generalistas-vs-especializadas)
