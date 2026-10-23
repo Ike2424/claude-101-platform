@@ -5,7 +5,7 @@
 # =====================================================
 
 # ---------- BUILDER ----------
-FROM node:22-bookworm-slim AS builder
+FROM node:22.23.4-bookworm-slim AS builder
 
 ENV NODE_ENV=production \
     NPM_CONFIG_FUND=false \
@@ -29,7 +29,7 @@ COPY . .
 RUN npm rebuild better-sqlite3 || true
 
 # ---------- RUNTIME ----------
-FROM node:22-bookworm-slim AS runtime
+FROM node:22.23.4-bookworm-slim AS runtime
 
 ENV NODE_ENV=production \
     PORT=3000 \
