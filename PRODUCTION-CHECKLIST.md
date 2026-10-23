@@ -11,9 +11,9 @@
 
 ```bash
 cd ~/Downloads/claude-101-platform
-nvm install                          # lee .nvmrc → 22.11.0
+nvm install                          # lee .nvmrc → 22.23.4
 nvm use
-node --version                       # debe imprimir v22.11.0
+node --version                       # debe imprimir v22.23.4
 rm -rf node_modules package-lock.json
 npm install                          # 1-2 min, compila better-sqlite3
 npm run setup-demo                   # smoke local
