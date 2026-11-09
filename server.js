@@ -276,7 +276,6 @@ app.get('/sitemap.xml', (_req, res) => {
     { loc: '/docs', priority: '0.6', changefreq: 'monthly' },
     { loc: '/comunidad', priority: '0.6', changefreq: 'monthly' },
     { loc: '/contacto', priority: '0.6', changefreq: 'monthly' },
-    { loc: '/login', priority: '0.4', changefreq: 'monthly' },
     { loc: '/terminos', priority: '0.3', changefreq: 'yearly' },
     { loc: '/privacidad', priority: '0.3', changefreq: 'yearly' },
     { loc: '/libro', priority: '0.8', changefreq: 'weekly' },
